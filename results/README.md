@@ -19,5 +19,7 @@ not committed.
 - `systems/full-token-budget.json`: full-index token-work latency.
 - `systems/*-correctness.json`: fixed-batch versus token-work score and Top-k
   equivalence.
+- `systems/versioned-visual-smoke.json`: real embedding-bank correctness smoke
+  for the immutable text base, visual delta, cache-hit, and rollback contract.
 
 Machine-specific source paths have been removed from these summaries.

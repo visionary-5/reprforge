@@ -38,6 +38,7 @@ The repository currently provides:
 - explainable route-intervention analysis;
 - a budgeted representation allocator;
 - a compact physical heterogeneous index;
+- a minimal versioned text-base + visual-delta cache;
 - NumPy and PyTorch MaxSim runtimes;
 - a token-work scheduler that turns fewer vectors into fewer GPU batches.
 
@@ -99,6 +100,7 @@ environment.
 
 - [Research contract](docs/research-contract.md)
 - [System design](docs/system.md)
+- [Versioned visual delta index](docs/versioned-visual-index.md)
 - [Evaluation protocol](docs/evaluation.md)
 - [Current results](docs/results.md)
 - [Research roadmap](docs/roadmap.md)

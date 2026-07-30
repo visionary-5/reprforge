@@ -1,0 +1,39 @@
+{
+  "artifact": {
+    "active_manifest_sha256": "78bfd7bc6f59bb8d22ec7ef590df5d58b46871b575c390720ee0bd192e450297",
+    "base_manifest_sha256": "35cd501d59a97b5e1f5fe3d2255f413ea07dd2e71a5b3137d9558f8e2ecbe9b9",
+    "root_manifest_sha256": "c4ccf3f03c40b8d1815bb7afc6422faf666c75519a32805442c81b9b504a10c8",
+    "serialized_directory_bytes": 22282762,
+    "version_1_manifest_sha256": "07742c43708d0da6359fcda109efa54ed459b9ae3b5788cbc9dc904e2400b861"
+  },
+  "contract": {
+    "base_route": "text",
+    "execution": "NumPy reference MaxSim",
+    "merge_semantics": "active-delta-overrides-base",
+    "source_embedding_bank_manifest_sha256": "7c60b2d1828c5fa43d123123e016d649fd687afbcc13fa9848277197a11efaac",
+    "visual_route": "image",
+    "writer": "single-writer atomic pointer"
+  },
+  "correctness": {
+    "active_after_final_publish": 1,
+    "cache_hit_created_version": false,
+    "cached_items": 3,
+    "changed_scores": 3,
+    "direct_visual_max_abs_error": 0.0,
+    "rollback_0_to_1_passed": true,
+    "untouched_base_max_abs_error": 0.0
+  },
+  "index": {
+    "base_compact_vector_bytes": 20570624,
+    "base_items": 781,
+    "delta_compact_vector_bytes": 1582080,
+    "delta_items": 3,
+    "dimension": 128,
+    "storage_dtype": "float32"
+  },
+  "non_claims": [
+    "No live model encoding was performed.",
+    "No GPU latency or throughput was measured.",
+    "The smoke validates physical state and score semantics only."
+  ]
+}

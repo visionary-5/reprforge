@@ -77,4 +77,21 @@ fixed-batch execution and 4.02× faster than full visual execution. Across 46
 queries, fixed and token-work scheduling have identical Top-10 results; the
 maximum absolute score difference is \(3.81\times10^{-6}\).
 
+## Versioned visual delta smoke
+
+A real 781-item embedding bank was compiled into a 20.57 MB immutable text
+base. Materializing three visual items created a 1.58 MB version-1 delta.
+Requesting two already cached items created no new version.
+
+For one real query embedding:
+
+- all three active delta scores exactly matched direct image MaxSim;
+- all 778 untouched item scores exactly matched the text base;
+- switching the active pointer from version 1 to 0 and back to 1 preserved the
+  expected cache state.
+
+This is a physical-state and score-correctness milestone. It is not yet a GPU
+latency result: the smoke used the NumPy reference runtime and copied existing
+route embeddings rather than running the visual model.
+
 Machine-readable summaries are indexed in `results/README.md`.

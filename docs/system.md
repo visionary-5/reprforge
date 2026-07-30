@@ -32,6 +32,10 @@ layout metadata + rendered crops + queries
     route-local contiguous vector shards
                     |
                     v
+       versioned visual delta cache
+   immutable base + atomic generation switch
+                    |
+                    v
       NumPy reference or PyTorch runtime
        MaxSim -> Top-k -> evaluation
 ```
@@ -82,6 +86,7 @@ lengths, without changing scores or rankings.
 | `route_mechanism_analysis` | Exact one-layout evidence/risk interventions |
 | `representation_allocator` | Budgeted route allocation |
 | `heterogeneous_index` | Compile, load, amplify, and execute physical indexes |
+| `versioned_visual_index` | Materialize, publish, query, and roll back visual delta generations |
 | `run_end_to_end` | Compile, verify, evaluate, and benchmark in one run |
 
 All command-line tools expose `--help` through `python -m`, for example:
