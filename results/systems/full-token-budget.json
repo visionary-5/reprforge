@@ -1,0 +1,27 @@
+{
+  "compact_vector_bytes": 6589890560,
+  "device": "cuda:0",
+  "document_batch_size": 64,
+  "engine": "torch",
+  "execution_batches": 196,
+  "index_items": 12496,
+  "latency_ms": {
+    "mean": 36.656298399295494,
+    "p50": 36.28403227776289,
+    "p95": 38.61758420243858,
+    "p99": 42.89405815303324
+  },
+  "measurements": 460,
+  "qps": 27.28044138846325,
+  "queries": 46,
+  "repetitions": 10,
+  "resident_dtype_expansion_bytes": 0,
+  "resident_padding_bytes": 0,
+  "resident_unpadded_vector_bytes": 6589890560,
+  "resident_vector_bytes": 6589890560,
+  "score_digest_sha256": "7b781df5d603ecfa281bb96928c27541f9ee3c78f85d1f995eb55bec7b2a831d",
+  "search_scope": "all-indexed-items",
+  "token_batch_budget": 65920,
+  "top_k": 10,
+  "warmup": 3
+}

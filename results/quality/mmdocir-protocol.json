@@ -1,0 +1,472 @@
+{
+  "documents": [
+    {
+      "document_index": 2,
+      "document_name": "0e94b4197b10096b1f4c699701570fbf.pdf",
+      "domain": "Tutorial/Workshop",
+      "fixed_pilot": true,
+      "layout_range_inclusive": [
+        166346,
+        166382
+      ],
+      "layouts": 37,
+      "questions": 7,
+      "role": "prior-development"
+    },
+    {
+      "document_index": 18,
+      "document_name": "fd76bbefe469561966e5387aa709c482.pdf",
+      "domain": "Academic paper",
+      "fixed_pilot": true,
+      "layout_range_inclusive": [
+        730,
+        810
+      ],
+      "layouts": 81,
+      "questions": 4,
+      "role": "prior-development"
+    },
+    {
+      "document_index": 19,
+      "document_name": "379f44022bb27aa53efd5d322c7b57bf.pdf",
+      "domain": "Research report / Introduction",
+      "fixed_pilot": false,
+      "layout_range_inclusive": [
+        159963,
+        160176
+      ],
+      "layouts": 214,
+      "questions": 3,
+      "role": "final-evaluation"
+    },
+    {
+      "document_index": 21,
+      "document_name": "edb88a99670417f64a6b719646aed326.pdf",
+      "domain": "Administration/Industry file",
+      "fixed_pilot": false,
+      "layout_range_inclusive": [
+        14454,
+        14612
+      ],
+      "layouts": 159,
+      "questions": 3,
+      "role": "mechanism-design"
+    },
+    {
+      "document_index": 31,
+      "document_name": "PIP_Seniors-and-Tech-Use_040314.pdf",
+      "domain": "Research report / Introduction",
+      "fixed_pilot": false,
+      "layout_range_inclusive": [
+        160786,
+        160964
+      ],
+      "layouts": 179,
+      "questions": 7,
+      "role": "mechanism-design"
+    },
+    {
+      "document_index": 43,
+      "document_name": "obs-productdesc-en.pdf",
+      "domain": "Guidebook",
+      "fixed_pilot": false,
+      "layout_range_inclusive": [
+        124986,
+        125260
+      ],
+      "layouts": 275,
+      "questions": 5,
+      "role": "mechanism-design"
+    },
+    {
+      "document_index": 48,
+      "document_name": "afe620b9beac86c1027b96d31d396407.pdf",
+      "domain": "Financial report",
+      "fixed_pilot": false,
+      "layout_range_inclusive": [
+        20377,
+        20605
+      ],
+      "layouts": 229,
+      "questions": 10,
+      "role": "final-evaluation"
+    },
+    {
+      "document_index": 60,
+      "document_name": "q1-2023-bilibili-inc-investor-presentation.pdf",
+      "domain": "Financial report",
+      "fixed_pilot": false,
+      "layout_range_inclusive": [
+        20606,
+        20771
+      ],
+      "layouts": 166,
+      "questions": 6,
+      "role": "mechanism-design"
+    },
+    {
+      "document_index": 77,
+      "document_name": "competitiveoutcomes-091006065143-phpapp01_95.pdf",
+      "domain": "Tutorial/Workshop",
+      "fixed_pilot": false,
+      "layout_range_inclusive": [
+        169058,
+        169246
+      ],
+      "layouts": 189,
+      "questions": 4,
+      "role": "mechanism-design"
+    },
+    {
+      "document_index": 82,
+      "document_name": "DSA-278777.pdf",
+      "domain": "Guidebook",
+      "fixed_pilot": true,
+      "layout_range_inclusive": [
+        134816,
+        134978
+      ],
+      "layouts": 163,
+      "questions": 5,
+      "role": "prior-development"
+    },
+    {
+      "document_index": 83,
+      "document_name": "owners-manual-2170416.pdf",
+      "domain": "Guidebook",
+      "fixed_pilot": false,
+      "layout_range_inclusive": [
+        134979,
+        135340
+      ],
+      "layouts": 362,
+      "questions": 4,
+      "role": "final-evaluation"
+    },
+    {
+      "document_index": 85,
+      "document_name": "ISEP_student_handbook_2020.pdf",
+      "domain": "Brochure",
+      "fixed_pilot": false,
+      "layout_range_inclusive": [
+        18798,
+        19006
+      ],
+      "layouts": 209,
+      "questions": 4,
+      "role": "mechanism-design"
+    },
+    {
+      "document_index": 88,
+      "document_name": "7c3f6204b3241f142f0f8eb8e1fefe7a.pdf",
+      "domain": "Administration/Industry file",
+      "fixed_pilot": false,
+      "layout_range_inclusive": [
+        15635,
+        15830
+      ],
+      "layouts": 196,
+      "questions": 3,
+      "role": "final-evaluation"
+    },
+    {
+      "document_index": 90,
+      "document_name": "936c0e2c2e6c8e0c07c51bfaf7fd0a83.pdf",
+      "domain": "Administration/Industry file",
+      "fixed_pilot": true,
+      "layout_range_inclusive": [
+        15831,
+        15914
+      ],
+      "layouts": 84,
+      "questions": 5,
+      "role": "prior-development"
+    },
+    {
+      "document_index": 94,
+      "document_name": "2306.05425v1.pdf",
+      "domain": "Academic paper",
+      "fixed_pilot": false,
+      "layout_range_inclusive": [
+        6566,
+        6771
+      ],
+      "layouts": 206,
+      "questions": 6,
+      "role": "final-evaluation"
+    },
+    {
+      "document_index": 96,
+      "document_name": "2405.09818v1.pdf",
+      "domain": "Academic paper",
+      "fixed_pilot": false,
+      "layout_range_inclusive": [
+        6885,
+        7124
+      ],
+      "layouts": 240,
+      "questions": 6,
+      "role": "mechanism-design"
+    },
+    {
+      "document_index": 100,
+      "document_name": "transform-software-delivery-with-valueedge-brochure.pdf",
+      "domain": "Brochure",
+      "fixed_pilot": true,
+      "layout_range_inclusive": [
+        19134,
+        19237
+      ],
+      "layouts": 104,
+      "questions": 4,
+      "role": "prior-development"
+    },
+    {
+      "document_index": 104,
+      "document_name": "nielsen2015musicbizpresentation-final-150526143534-lva1-app6891_95.pdf",
+      "domain": "Research report / Introduction",
+      "fixed_pilot": true,
+      "layout_range_inclusive": [
+        165575,
+        165681
+      ],
+      "layouts": 107,
+      "questions": 5,
+      "role": "prior-development"
+    },
+    {
+      "document_index": 115,
+      "document_name": "f86d073b0d735ac873a65d906ba82758.pdf",
+      "domain": "Financial report",
+      "fixed_pilot": false,
+      "layout_range_inclusive": [
+        20772,
+        21009
+      ],
+      "layouts": 238,
+      "questions": 7,
+      "role": "mechanism-design"
+    },
+    {
+      "document_index": 117,
+      "document_name": "csewt7zsecmmbzjufbyx-signature-24d91a254426c21c3079384270e1f138dc43a271cfe15d6d520d68205855b2a3-poli-150306115347-conversion-gate01.pdf",
+      "domain": "Brochure",
+      "fixed_pilot": false,
+      "layout_range_inclusive": [
+        19540,
+        19763
+      ],
+      "layouts": 224,
+      "questions": 5,
+      "role": "final-evaluation"
+    },
+    {
+      "document_index": 119,
+      "document_name": "disciplined-agile-business-analysis-160218012713_95.pdf",
+      "domain": "Tutorial/Workshop",
+      "fixed_pilot": false,
+      "layout_range_inclusive": [
+        170190,
+        170337
+      ],
+      "layouts": 148,
+      "questions": 5,
+      "role": "final-evaluation"
+    },
+    {
+      "document_index": 139,
+      "document_name": "W18-5713.pdf",
+      "domain": "Academic paper",
+      "fixed_pilot": true,
+      "layout_range_inclusive": [
+        9036,
+        9092
+      ],
+      "layouts": 57,
+      "questions": 8,
+      "role": "prior-development"
+    },
+    {
+      "document_index": 176,
+      "document_name": "2020.acl-main.48.pdf",
+      "domain": "Academic paper",
+      "fixed_pilot": false,
+      "layout_range_inclusive": [
+        13309,
+        13415
+      ],
+      "layouts": 107,
+      "questions": 8,
+      "role": "mechanism-design"
+    },
+    {
+      "document_index": 220,
+      "document_name": "ASX_AJY_2020.pdf",
+      "domain": "Financial report",
+      "fixed_pilot": true,
+      "layout_range_inclusive": [
+        97833,
+        97922
+      ],
+      "layouts": 90,
+      "questions": 6,
+      "role": "prior-development"
+    },
+    {
+      "document_index": 230,
+      "document_name": "USCOURTS-laed-2_16-md-02740-84.pdf",
+      "domain": "Government",
+      "fixed_pilot": true,
+      "layout_range_inclusive": [
+        104261,
+        104305
+      ],
+      "layouts": 45,
+      "questions": 1,
+      "role": "prior-development"
+    },
+    {
+      "document_index": 243,
+      "document_name": "FBS_PM_29NOV2023_Public.pdf",
+      "domain": "Government",
+      "fixed_pilot": false,
+      "layout_range_inclusive": [
+        108320,
+        108411
+      ],
+      "layouts": 92,
+      "questions": 2,
+      "role": "final-evaluation"
+    },
+    {
+      "document_index": 260,
+      "document_name": "USCOURTS-laed-2_23-cv-06661-0.pdf",
+      "domain": "Government",
+      "fixed_pilot": false,
+      "layout_range_inclusive": [
+        115864,
+        115899
+      ],
+      "layouts": 36,
+      "questions": 3,
+      "role": "mechanism-design"
+    },
+    {
+      "document_index": 277,
+      "document_name": "2021687417.pdf",
+      "domain": "Laws",
+      "fixed_pilot": true,
+      "layout_range_inclusive": [
+        143092,
+        143104
+      ],
+      "layouts": 13,
+      "questions": 2,
+      "role": "prior-development"
+    },
+    {
+      "document_index": 289,
+      "document_name": "2022666112.pdf",
+      "domain": "Laws",
+      "fixed_pilot": false,
+      "layout_range_inclusive": [
+        146953,
+        147263
+      ],
+      "layouts": 311,
+      "questions": 2,
+      "role": "final-evaluation"
+    },
+    {
+      "document_index": 298,
+      "document_name": "2023555933.pdf",
+      "domain": "Laws",
+      "fixed_pilot": false,
+      "layout_range_inclusive": [
+        151193,
+        151274
+      ],
+      "layouts": 82,
+      "questions": 4,
+      "role": "mechanism-design"
+    }
+  ],
+  "protocol": "reprforge-mmdocir-expansion-v1",
+  "quality_contract": {
+    "candidate_pool": "official within-document MMDocIR candidates",
+    "final-evaluation": "must remain sealed until V1 features, allocator, and budgets are frozen",
+    "mechanism-design": "may be inspected for explanatory analysis and V1 design",
+    "primary_metrics": [
+      "ndcg_at_10",
+      "recall_at_5",
+      "recall_at_10"
+    ],
+    "prior-development": "may be used for implementation and prior design; never reported as untouched evidence",
+    "required_baselines": [
+      "uniform-image-pool-4",
+      "uniform-image-pool-9",
+      "uniform-image-pool-25",
+      "uniform-image",
+      "fixed-hybrid",
+      "ReprForge-V0"
+    ]
+  },
+  "role_counts": {
+    "final-evaluation": 9,
+    "mechanism-design": 11,
+    "prior-development": 10
+  },
+  "role_domain_counts": {
+    "final-evaluation": {
+      "Academic paper": 1,
+      "Administration/Industry file": 1,
+      "Brochure": 1,
+      "Financial report": 1,
+      "Government": 1,
+      "Guidebook": 1,
+      "Laws": 1,
+      "Research report / Introduction": 1,
+      "Tutorial/Workshop": 1
+    },
+    "mechanism-design": {
+      "Academic paper": 2,
+      "Administration/Industry file": 1,
+      "Brochure": 1,
+      "Financial report": 2,
+      "Government": 1,
+      "Guidebook": 1,
+      "Laws": 1,
+      "Research report / Introduction": 1,
+      "Tutorial/Workshop": 1
+    },
+    "prior-development": {
+      "Academic paper": 2,
+      "Administration/Industry file": 1,
+      "Brochure": 1,
+      "Financial report": 1,
+      "Government": 1,
+      "Guidebook": 1,
+      "Laws": 1,
+      "Research report / Introduction": 1,
+      "Tutorial/Workshop": 1
+    }
+  },
+  "role_layout_counts": {
+    "final-evaluation": 1982,
+    "mechanism-design": 1880,
+    "prior-development": 781
+  },
+  "role_question_counts": {
+    "final-evaluation": 40,
+    "mechanism-design": 57,
+    "prior-development": 47
+  },
+  "roles_assigned_without_scores_or_labels": true,
+  "scale_contract": {
+    "allowed_claim": "latency, throughput, memory, and scaling only",
+    "forbidden_claim": "replicated unjudged candidates cannot support retrieval quality",
+    "method": "physical vector replication with distinct identifiers",
+    "quality_labels_valid": false
+  },
+  "selection_sha256": "0eaad737f599c4f2bf4bd0db02994ddbd1a9e63bef9828804faf76dc1a27243b"
+}

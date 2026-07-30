@@ -1,0 +1,292 @@
+{
+  "absolute_tolerance": 0.0001,
+  "all_scores_close": true,
+  "all_top_k_equal": true,
+  "fixed_execution_batches": 196,
+  "index": "uniform-full-factor16",
+  "items": 12496,
+  "max_absolute_error": 0.0,
+  "max_relative_error": 0.0,
+  "per_query": {
+    "query:10": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:11": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:12": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:1234": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:1235": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:1236": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:1237": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:1238": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:1239": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:1297": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:13": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:14": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:1406": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:1407": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:15": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:475": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:476": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:477": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:478": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:479": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:514": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:515": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:516": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:517": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:518": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:576": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:577": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:578": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:579": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:599": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:600": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:601": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:602": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:603": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:813": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:814": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:815": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:816": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:817": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:818": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:819": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:820": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:9": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:97": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:98": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    },
+    "query:99": {
+      "all_close": true,
+      "max_absolute_error": 0.0,
+      "max_relative_error": 0.0,
+      "top_k_equal": true
+    }
+  },
+  "queries": 46,
+  "relative_tolerance": 0.0001,
+  "token_batch_budget": 65920,
+  "token_execution_batches": 196
+}
