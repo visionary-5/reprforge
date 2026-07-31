@@ -15,6 +15,8 @@ import json
 from pathlib import Path
 from typing import Any, Sequence
 
+import numpy as np
+
 from reprforge.vidore_pipeline import ReprForgeViDoRePipeline
 
 
@@ -177,6 +179,75 @@ def load_local_vidore(
     )
 
 
+def write_score_trace(
+    root: Path,
+    *,
+    pipeline: ReprForgeViDoRePipeline,
+    query_ids: Sequence[str],
+    corpus_ids: Sequence[str],
+    qrels: dict[str, dict[str, int]],
+    source: dict[str, Any],
+) -> dict[str, Any]:
+    """Write runtime replay state and oracle-only labels separately."""
+
+    trace = pipeline.export_score_trace(query_ids)
+    query_positions = {value: index for index, value in enumerate(query_ids)}
+    corpus_positions = {value: index for index, value in enumerate(corpus_ids)}
+    label_query: list[int] = []
+    label_corpus: list[int] = []
+    label_relevance: list[int] = []
+    for query_id in query_ids:
+        for corpus_id, relevance in sorted(qrels[query_id].items()):
+            label_query.append(query_positions[query_id])
+            label_corpus.append(corpus_positions[corpus_id])
+            label_relevance.append(int(relevance))
+
+    root.mkdir(parents=True, exist_ok=True)
+    runtime_path = root / "runtime.npz"
+    labels_path = root / "oracle-labels.npz"
+    np.savez_compressed(
+        runtime_path,
+        query_ids=trace["query_ids"],
+        corpus_ids=trace["corpus_ids"],
+        scores=trace["scores"],
+        vector_bytes=trace["vector_bytes"],
+        encode_ms=trace["encode_ms"],
+        index_total_ms=trace["index_total_ms"],
+        model_load_ms=trace["model_load_ms"],
+    )
+    np.savez_compressed(
+        labels_path,
+        query_positions=np.asarray(label_query, dtype=np.int32),
+        corpus_positions=np.asarray(label_corpus, dtype=np.int32),
+        relevance=np.asarray(label_relevance, dtype=np.int16),
+    )
+    manifest = {
+        "schema_version": 1,
+        "mode": trace["mode"],
+        "runtime_file": runtime_path.name,
+        "runtime_sha256": _sha256(runtime_path),
+        "oracle_labels_file": labels_path.name,
+        "oracle_labels_sha256": _sha256(labels_path),
+        "query_count": len(query_ids),
+        "corpus_count": len(corpus_ids),
+        "score_shape": list(trace["scores"].shape),
+        "index_total_ms": float(trace["index_total_ms"]),
+        "per_item_encode_ms_sum": float(trace["encode_ms"].sum()),
+        "label_count": len(label_relevance),
+        "labels_are_runtime_visible": False,
+        "official_upstream_commit": (
+            "a70f23af8bb3b33efe8a4a6c6c15a6e2d978035e"
+        ),
+        "source_sha256": source["sha256"],
+    }
+    manifest_path = root / "manifest.json"
+    manifest_path.write_text(
+        json.dumps(manifest, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    return manifest
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--data-root", type=Path, required=True)
@@ -205,7 +276,17 @@ def main() -> None:
     parser.add_argument("--cache-capacity-items", type=int, default=0)
     parser.add_argument("--smoke-queries", type=int, default=0)
     parser.add_argument("--smoke-corpus", type=int, default=0)
+    parser.add_argument(
+        "--score-trace-dir",
+        type=Path,
+        help=(
+            "write the complete score/cost surface and separate oracle labels; "
+            "supported for text and visual modes"
+        ),
+    )
     args = parser.parse_args()
+    if args.score_trace_dir is not None and args.mode not in {"text", "visual"}:
+        parser.error("--score-trace-dir requires --mode text or visual")
 
     from vidore_benchmark.pipeline_evaluation import (
         aggregate_results,
@@ -238,6 +319,7 @@ def main() -> None:
         top_k=args.top_k,
         image_pool_factor=args.image_pool_factor,
         cache_capacity_items=args.cache_capacity_items,
+        capture_score_trace=args.score_trace_dir is not None,
     )
     per_query = evaluate_retrieval(
         pipeline=pipeline,
@@ -251,6 +333,16 @@ def main() -> None:
         metrics=OFFICIAL_METRICS,
     )
     aggregated = aggregate_results(per_query, query_languages)
+    score_trace = None
+    if args.score_trace_dir is not None:
+        score_trace = write_score_trace(
+            args.score_trace_dir,
+            pipeline=pipeline,
+            query_ids=query_ids,
+            corpus_ids=corpus_ids,
+            qrels=qrels,
+            source=source,
+        )
     payload = {
         "dataset": args.dataset_name,
         "split": "test",
@@ -272,6 +364,7 @@ def main() -> None:
         ),
         "local_source": source,
         "aggregated_metrics": aggregated,
+        "score_trace": score_trace,
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(

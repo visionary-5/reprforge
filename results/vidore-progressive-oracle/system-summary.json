@@ -1,0 +1,62 @@
+{
+  "benchmark": "vidore_v3_hr_en",
+  "corpus_count": 1110,
+  "query_count": 318,
+  "corrected_baselines": {
+    "text": {
+      "ndcg_at_10": 0.49465096173584905,
+      "recall_at_100": 0.844425069489484,
+      "build_ms": 32908.8778,
+      "search_ms": 6721.4725,
+      "total_ms": 39630.3504,
+      "vector_bytes": 315128320,
+      "raw_sha256": "2fea0b37676f98eaaee8ce02c55fc77d8d24101ce5e2a14bb33d8855c2649532",
+      "runtime_trace_sha256": "1e47a93c577b57b6b2212a88a0fc744a50e90fd751d38418dc45479bfa2edd78"
+    },
+    "full_visual": {
+      "ndcg_at_10": 0.5177793764220113,
+      "recall_at_100": 0.8745865635247695,
+      "build_ms": 100730.8037,
+      "search_ms": 8011.7304,
+      "total_ms": 108742.5342,
+      "vector_bytes": 585369600,
+      "raw_sha256": "b5451b09e800c9e0a070b2f9d216abb67057768533be9e7bf8092f5e42c74449",
+      "runtime_trace_sha256": "8a6e8ec222a446c2499c89b3fc92294ab641f1b338b4c789c90e4917025c7eef",
+      "scores_bitwise_identical_to_png_roundtrip_run": true
+    },
+    "tiered_k20": {
+      "ndcg_at_10": 0.5009117103623912,
+      "recall_at_100": 0.8238905216989888,
+      "build_ms": 32712.6491,
+      "search_ms": 100513.7796,
+      "total_ms": 133226.4287,
+      "visualized_pages": 932,
+      "visualized_fraction": 0.8396396396396396,
+      "visual_encoder_calls": 189,
+      "cache_hits": 5428,
+      "cache_misses": 932,
+      "peak_visual_cache_bytes": 491499520,
+      "raw_sha256": "3d85c5bcacb0df59033a20720fbf2aef071430fabdbec7c2d7147e90fba34385"
+    }
+  },
+  "oracle_witness": {
+    "selector": "positive_relevant_rank_sensitivity",
+    "runtime_deployable": false,
+    "first_gate_resident_count": 25,
+    "first_gate_resident_fraction": 0.02252252252252252,
+    "first_gate_ndcg_at_10": 0.5194166959241328,
+    "best_le_30_percent_resident_count": 150,
+    "best_le_30_percent_resident_fraction": 0.13513513513513514,
+    "best_le_30_percent_ndcg_at_10": 0.5436303595046251,
+    "best_le_30_percent_base_plus_visual_bytes": 394232320,
+    "best_le_30_percent_estimated_batched_build_ms": 46537.97870904207,
+    "positive_visual_intervention_pages": 249,
+    "relevant_pages": 613
+  },
+  "source_sha256": {
+    "corpus": "79ae6980099204c7bc670317ef0ef31a0c9929c3e73476db64868a32f0594834",
+    "queries": "bbf0bfa70498e036e93b4b4567e37ce23ad3a658f2b7dd3567bbd70285c03606",
+    "qrels": "cebab8cba5e9c283de546a88ed1a99df2e4aa7fdfd6ea14e6332f94fda80040a",
+    "oracle_labels_trace": "5557a6d1f641b3db01a839b67cb52a6a6a8e87a60d2f3642110034414bc5511d"
+  }
+}

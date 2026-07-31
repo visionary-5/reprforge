@@ -111,6 +111,70 @@ def test_text_and_visual_modes_build_different_representations() -> None:
     assert visual_backend.image_calls == [("image-a", "image-b", "image-c")]
 
 
+def test_score_trace_exports_complete_surface_without_labels() -> None:
+    backend = FakeBackend()
+    pipeline = _pipeline("text", backend, capture_score_trace=True)
+    _index(pipeline)
+    pipeline.search(["q1", "q2"], ["q-a", "q-b"])
+
+    trace = pipeline.export_score_trace(["q1", "q2"])
+
+    assert trace["mode"] == "text"
+    assert trace["scores"].shape == (2, 3)
+    assert trace["scores"].dtype == np.float32
+    assert trace["vector_bytes"].tolist() == [8, 8, 8]
+    assert trace["encode_ms"].tolist() == [0.0, 0.0, 0.0]
+    assert float(trace["index_total_ms"]) >= 0.0
+    assert "qrels" not in trace
+
+
+def test_score_trace_rejects_identifiers_from_another_search() -> None:
+    backend = FakeBackend()
+    pipeline = _pipeline("text", backend, capture_score_trace=True)
+    _index(pipeline)
+    pipeline.search(["q1"], ["q-a"])
+
+    try:
+        pipeline.export_score_trace(["different"])
+    except RuntimeError as error:
+        assert "latest search" in str(error)
+    else:
+        raise AssertionError("expected mismatched trace identifiers to fail")
+
+
+def test_score_trace_is_opt_in() -> None:
+    backend = FakeBackend()
+    pipeline = _pipeline("text", backend)
+    _index(pipeline)
+    pipeline.search(["q1"], ["q-a"])
+
+    try:
+        pipeline.export_score_trace(["q1"])
+    except RuntimeError as error:
+        assert "not enabled" in str(error)
+    else:
+        raise AssertionError("expected disabled trace export to fail")
+
+
+def test_visual_pipeline_passes_decoded_images_without_png_roundtrip() -> None:
+    sentinel = object()
+
+    class PassthroughBackend(FakeBackend):
+        def __init__(self) -> None:
+            super().__init__()
+            self.received: list[Any] = []
+
+        def encode_images(self, images: Sequence[Any]) -> EncodedBatch:
+            self.received.extend(images)
+            return _batch([(1.0, 0.0) for _ in images])
+
+    backend = PassthroughBackend()
+    pipeline = _pipeline("visual", backend, top_k=1, candidate_k=1)
+    pipeline.index(["a"], [sentinel], ["text-a"], dataset_name="vidore/test")
+
+    assert backend.received == [sentinel]
+
+
 def test_two_stage_only_materializes_query_candidates() -> None:
     backend = FakeBackend()
     pipeline = _pipeline("two-stage", backend)

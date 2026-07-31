@@ -23,6 +23,14 @@ query/corpus/qrel semantics to the same upstream `evaluate_retrieval` and
 `aggregate_results` functions.  Every result records the three source
 SHA-256 digests.  This transport fallback is not a replacement evaluator.
 
+For oracle/replay work, add `--score-trace-dir /path/to/trace`. This is
+supported only for `text` and `visual` modes. It writes `runtime.npz` with the
+complete query--corpus score surface and per-page costs, plus a separate
+`oracle-labels.npz` containing qrels. The separation is deliberate: qrels are
+not runtime-visible policy features. See
+[`progressive-visual-index-contract.md`](progressive-visual-index-contract.md)
+for the frozen oracle and online replay semantics.
+
 ## What is being tested
 
 ViDoRe is the first external full-corpus test of ReprForge's representation

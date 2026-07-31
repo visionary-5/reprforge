@@ -42,13 +42,14 @@ establish a general allocation algorithm.
 
 ## Intended contribution
 
-The target system is a workload-aware representation compiler with three
-connected mechanisms:
+The target system is a workload-aware progressive representation index with
+three connected mechanisms:
 
-1. **Evidence–risk estimation:** estimate which route preserves useful
-   evidence without inflating distractors for the current workload.
-2. **Migration-aware allocation:** change only layouts whose expected utility
-   gain justifies rebuild and deployment cost.
+1. **Estimate--verify utility:** use cheap signals to select transient visual
+   refinements, then measure their score/rank interventions instead of
+   predicting unseen visual value entirely from heuristics.
+2. **Admission and eviction:** persist only representations whose expected
+   future reuse justifies build, search, storage, and churn cost.
 3. **Work-normalized execution:** schedule the compiled heterogeneous index by
    padded vector work so resource reduction yields GPU latency reduction.
 
@@ -63,6 +64,13 @@ For workload episode \(t\), a candidate dynamic objective is:
 subject to storage, build, and serving budgets. Here `M` is measured
 migration cost. Versioning is an implementation mechanism for atomic
 deployment and rollback; it is not a novelty claim by itself.
+
+The rejected `tiered-selective K=20` policy is the unconditional
+admit-on-first-touch baseline. It already provides the query-driven
+materialization pattern, so database cracking alone is not a contribution.
+The open challenge is a reliable ranking-utility what-if estimate and its
+translation into persistent physical state. See
+[`progressive-visual-index-contract.md`](progressive-visual-index-contract.md).
 
 ## Required evidence
 

@@ -629,13 +629,21 @@ class ColPaliBackend:
             ),
         )
 
-    def encode_images(self, images: Sequence[bytes]) -> EncodedBatch:
+    def encode_images(self, images: Sequence[Any]) -> EncodedBatch:
         from PIL import Image
 
-        def make_batch(values: Sequence[bytes]) -> Any:
-            pictures = [
-                Image.open(io.BytesIO(value)).convert("RGB") for value in values
-            ]
+        def make_batch(values: Sequence[Any]) -> Any:
+            pictures = []
+            for value in values:
+                if isinstance(value, bytes):
+                    picture = Image.open(io.BytesIO(value)).convert("RGB")
+                elif hasattr(value, "convert"):
+                    picture = value.convert("RGB")
+                else:
+                    raise TypeError(
+                        "image inputs must be encoded bytes or PIL-like objects"
+                    )
+                pictures.append(picture)
             return self.processor(
                 text=["Describe the image."] * len(pictures),
                 images=pictures,

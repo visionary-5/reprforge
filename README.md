@@ -68,9 +68,12 @@ The current results are promising, but not yet a finished paper claim.
   cache residency from per-query score replacement, avoiding cache-induced
   ranking pollution.
 - On the official ViDoRe v3 HR English split, full visual improves nDCG@10
-  from **0.495** to **0.518** over Markdown, but costs **8.20x** as much build
-  time. The first tiered K=20 transfer is a negative design result: it
-  eventually visualizes 84% of pages and reaches only **0.501** nDCG@10.
+  from **0.495** to **0.518** over Markdown at **3.06x** corrected build time.
+  Removing a redundant PIL--PNG--PIL adapter round-trip reduced visual build
+  from 276.7 to 100.7 seconds without changing any score. Tiered K=20 still
+  visualizes 84% of pages, is 22.5% slower end-to-end than full visual, and
+  reaches only **0.501**. An oracle-only 13.5% visual witness reaches
+  **0.544**, establishing allocation headroom but not a deployable policy.
 
 These findings establish a working end-to-end system and a real
 quality–resource trade-off. The planner is still a heuristic; the next
@@ -120,6 +123,8 @@ environment.
 - [Strong baseline comparison](docs/baseline-comparison-result.md)
 - [Official ViDoRe v3 integration](docs/vidore-integration.md)
 - [ViDoRe v3 HR transfer result](docs/vidore-v3-hr-result.md)
+- [Progressive visual-index contract](docs/progressive-visual-index-contract.md)
+- [Progressive visual oracle result](docs/progressive-visual-oracle-result.md)
 - [Evaluation protocol](docs/evaluation.md)
 - [Current results](docs/results.md)
 - [Research roadmap](docs/roadmap.md)

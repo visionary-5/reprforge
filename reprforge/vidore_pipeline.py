@@ -13,7 +13,6 @@ When loaded by the official CLI, ``ReprForgeViDoRePipeline`` inherits the real
 
 from __future__ import annotations
 
-import io
 import time
 from collections import OrderedDict
 from pathlib import Path
@@ -58,7 +57,7 @@ class RepresentationBackend(Protocol):
 
     def encode_texts(self, texts: Sequence[str]) -> EncodedBatch: ...
 
-    def encode_images(self, images: Sequence[bytes]) -> EncodedBatch: ...
+    def encode_images(self, images: Sequence[Any]) -> EncodedBatch: ...
 
     def derive_image_routes(
         self,
@@ -85,20 +84,6 @@ def _embedding_bytes(embedding: Any) -> int:
 
 def _batch_bytes(batch: EncodedBatch) -> int:
     return sum(_embedding_bytes(value) for value in batch.embeddings)
-
-
-def _image_bytes(image: Any) -> bytes:
-    """Return deterministic PNG bytes accepted by the existing ColPali backend."""
-
-    if isinstance(image, bytes):
-        return image
-    if not hasattr(image, "save"):
-        raise TypeError(
-            "ViDoRe corpus images must be PIL-like objects or encoded bytes"
-        )
-    output = io.BytesIO()
-    image.convert("RGB").save(output, format="PNG", optimize=False)
-    return output.getvalue()
 
 
 def _rank(
@@ -153,6 +138,7 @@ class ReprForgeViDoRePipeline(BasePipeline):
         top_k: int = 100,
         image_pool_factor: int = 25,
         cache_capacity_items: int = 0,
+        capture_score_trace: bool = False,
         backend_factory: Callable[[], RepresentationBackend] | None = None,
     ) -> None:
         if mode not in MODES:
@@ -189,6 +175,7 @@ class ReprForgeViDoRePipeline(BasePipeline):
         self.candidate_k = candidate_k
         self.top_k = top_k
         self.image_pool_factor = image_pool_factor
+        self.capture_score_trace = capture_score_trace
         # Zero means an unbounded cache for tiered-selective, not no cache.
         self.cache_capacity_items = cache_capacity_items
 
@@ -218,10 +205,15 @@ class ReprForgeViDoRePipeline(BasePipeline):
         self._visual_cache: OrderedDict[str, Any] = OrderedDict()
         self._index_info: dict[str, Any] = {}
         self._search_info: dict[str, Any] = {}
+        self._last_query_ids: tuple[str, ...] = ()
+        self._last_score_matrix: tuple[tuple[float, ...], ...] = ()
 
     def _encode_images(self, positions: Sequence[int]) -> EncodedBatch:
+        # Official ViDoRe already supplies decoded PIL pages. Pass them through
+        # directly: a previous adapter encoded each page as PNG only for the
+        # backend to decode it again, adding substantial non-model build cost.
         return self.backend.encode_images(
-            [_image_bytes(self.corpus_images[position]) for position in positions]
+            [self.corpus_images[position] for position in positions]
         )
 
     def index(
@@ -248,6 +240,8 @@ class ReprForgeViDoRePipeline(BasePipeline):
         self._base = None
         self._visual = None
         self._visual_cache.clear()
+        self._last_query_ids = ()
+        self._last_score_matrix = ()
 
         began = time.perf_counter()
         visual_materializations = 0
@@ -285,6 +279,7 @@ class ReprForgeViDoRePipeline(BasePipeline):
                 len(self.corpus_ids) - visual_materializations
             ),
             "pooling_reuses_full_visual_encoding": self.mode == "visual-pool",
+            "decoded_images_passed_through_without_png_roundtrip": True,
         }
 
     def _base_scores(self, queries: EncodedBatch) -> list[list[float]]:
@@ -427,6 +422,14 @@ class ReprForgeViDoRePipeline(BasePipeline):
 
         scoring_began = time.perf_counter()
         base_scores = self._base_scores(encoded_queries)
+        if self.capture_score_trace:
+            # Preserve the complete query--corpus score surface only for an
+            # explicitly requested offline replay. Ordinary evaluation avoids
+            # this Python copy and its corpus-scale memory overhead.
+            self._last_query_ids = tuple(str(value) for value in query_ids)
+            self._last_score_matrix = tuple(
+                tuple(float(value) for value in row) for row in base_scores
+            )
         selective_counters: dict[str, int] = {
             "candidate_events": 0,
             "cache_hits": 0,
@@ -480,3 +483,41 @@ class ReprForgeViDoRePipeline(BasePipeline):
             "backend": dict(self.backend.environment()),
         }
         return results, self._search_info
+
+    def export_score_trace(
+        self,
+        query_ids: Sequence[str],
+    ) -> dict[str, Any]:
+        """Return the frozen score/cost surface from the latest search.
+
+        The method deliberately excludes relevance labels.  The local ViDoRe
+        runner writes those to a separate file so deployable policies cannot
+        accidentally treat qrels as runtime context.
+        """
+
+        expected = tuple(str(value) for value in query_ids)
+        if not self.capture_score_trace:
+            raise RuntimeError("score trace capture was not enabled")
+        if not self._last_score_matrix or expected != self._last_query_ids:
+            raise RuntimeError(
+                "score trace requires the identifiers from the latest search"
+            )
+        index = self._base if self._base is not None else self._visual
+        if index is None:
+            raise RuntimeError("index() must be called before exporting a trace")
+        return {
+            "mode": self.mode,
+            "query_ids": np.asarray(expected),
+            "corpus_ids": np.asarray(self.corpus_ids),
+            "scores": np.asarray(self._last_score_matrix, dtype=np.float32),
+            "vector_bytes": np.asarray(
+                [_embedding_bytes(value) for value in index.embeddings],
+                dtype=np.int64,
+            ),
+            "encode_ms": np.asarray(index.encode_ms, dtype=np.float32),
+            "index_total_ms": np.asarray(
+                self._index_info["measured_index_ms_inside_pipeline"],
+                dtype=np.float64,
+            ),
+            "model_load_ms": np.asarray(self.model_load_ms, dtype=np.float64),
+        }

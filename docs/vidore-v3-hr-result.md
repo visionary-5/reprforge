@@ -6,8 +6,8 @@ The official ViDoRe v3 HR consumer confirms the problem but rejects the
 current K=20 policy.
 
 On 318 English queries over 1,110 pages, full visual indexing improves
-nDCG@10 by 0.023 absolute over the Markdown representation, but costs 8.20x
-as much build time and 1.86x as many compact vector bytes.  This is a real
+nDCG@10 by 0.023 absolute over the Markdown representation, but costs 3.06x
+as much corrected build time and 1.86x as many compact vector bytes.  This is a real
 quality--construction-cost gap on a public full-corpus benchmark.
 
 The current `tiered-selective` design does not close that gap.  It uses
@@ -26,18 +26,26 @@ used.  Results use the unmodified official evaluator pinned at
 
 | Policy | nDCG@10 | Recall@10 | Recall@100 | Build | Search | Representation bytes |
 |---|---:|---:|---:|---:|---:|---:|
-| Markdown | 0.4947 | 0.5389 | 0.8444 | 33.7 s | 6.90 s | 315 MB |
-| Full visual | 0.5178 | 0.5584 | 0.8746 | 276.7 s | 6.96 s | 585 MB |
-| Tiered K=20 | 0.5009 | 0.5230 | 0.8239 | 33.5 s | 244.4 s | 315 MB base + 491 MB peak cache |
+| Markdown | 0.4947 | 0.5389 | 0.8444 | 32.91 s | 6.72 s | 315 MB |
+| Full visual | 0.5178 | 0.5584 | 0.8746 | 100.73 s | 8.01 s | 585 MB |
+| Tiered K=20 | 0.5009 | 0.5230 | 0.8239 | 32.71 s | 100.51 s | 315 MB base + 491 MB peak cache |
 
 Tiered K=20 observes 6,360 candidate events.  It has 5,428 cache hits and 932
 misses, an 85.3% event hit rate, but the misses cover 84.0% of the entire
-corpus.  Its final build-plus-search time is about 277.9 seconds, only about
-2% below full visual's 283.6 seconds, while its nDCG@10 is 0.0169 lower.
+corpus.  Its final build-plus-search time is 133.23 seconds, 22.5% above full
+visual's 108.74 seconds, while its nDCG@10 is 0.0169 lower. It also invokes
+the visual encoder in 189 small query-sized batches instead of one efficient
+corpus batch.
 
-The compact summary and raw-result digests are stored in
-`results/vidore-v3-hr/summary.json`.  Models, images, embeddings, and
-machine-specific logs are intentionally excluded from Git.
+The earlier 276.7-second visual result included a redundant PIL--PNG--PIL
+round trip in the local adapter. Passing decoded images directly reduces the
+visual build to 100.7 seconds; the score matrix is bitwise identical. The
+old run is retained as provenance, but it is superseded for cost claims.
+
+Corrected compact measurements and raw-result digests are stored in
+`results/vidore-progressive-oracle/system-summary.json`. The original run is
+retained in `results/vidore-v3-hr/summary.json`. Models, images, embeddings,
+and machine-specific logs are intentionally excluded from Git.
 
 ## What this proves
 
@@ -75,14 +83,16 @@ claim.
 
 ## Design review
 
-The next system mechanism should be a selective visual **utility gate**, not a
-larger cache:
+The next system mechanism should be a progressive visual-index controller,
+not a larger cache. The rejected K=20 run is already a query-driven
+materialization baseline: its failure shows that "first candidate touch"
+cannot double as a persistent-admission decision.
 
 ```text
 Markdown retrieval
        |
        v
-candidate evidence + uncertainty + lifecycle state
+candidate evidence + verified score intervention + lifecycle state
        |
        +---- stay Markdown
        |
@@ -93,22 +103,30 @@ candidate evidence + uncertainty + lifecycle state
        +---- evict when reuse value decays
 ```
 
-The gate must predict an action, not merely a content label.  Candidate
-features should be available before visual encoding: Markdown score/margin,
-candidate rank, query--page lexical overlap, page content type, prior access
-count, recency, and remaining cache budget.  Full-visual scores and qrels may
-be used only as offline labels.
+The controller must predict an action, not merely a content label. It should
+first estimate which candidates justify transient refinement, then use the
+observed visual score intervention plus reuse state to decide whether to admit
+the result. Candidate rank, Markdown margin, prior access count, recency, and
+remaining cache budget are runtime-visible. Full-visual scores and qrels may
+be used only by the offline oracle or a disjoint training split.
 
-Before training or designing a complex model, the next experiment should
-persist per-query traces and ask whether an oracle utility gate can
-simultaneously:
+The score trace is now persisted and the offline oracle passes the registered
+headroom gate. A 25-page (2.25%) witness already exceeds the 95%-gain target;
+the best tested point below 30% residency uses 150 pages (13.5%) and reaches
+0.5436 nDCG@10. Simple qrel frequency and full-stream text Top-20 frequency do
+not pass. This establishes that the representation pair contains selective
+value, but only the successful selector uses qrels and complete future rank
+outcomes.
+
+The next experiment is therefore an online estimate--verify--commit replay.
+It must ask whether a runtime-visible policy can:
 
 - materialize at most 30% of pages over the full HR query stream;
 - retain at least 95% of the full-visual nDCG@10 gain over Markdown;
 - keep combined base-plus-cache bytes below the full-visual index; and
 - beat both fixed Markdown and full visual at a stated query horizon.
 
-If the oracle cannot meet these constraints, no learned gate or cache policy
-can rescue this representation pair, and the system should change its cheap
-locator or visual action rather than tune thresholds.
-
+The frozen experiment and baseline contract is specified in
+[`progressive-visual-index-contract.md`](progressive-visual-index-contract.md),
+and the measured oracle result is reported in
+[`progressive-visual-oracle-result.md`](progressive-visual-oracle-result.md).
