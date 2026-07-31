@@ -7,6 +7,7 @@ import pytest
 from reprforge.heterogeneous_index import write_embedding_bank
 from reprforge.versioned_visual_index import (
     TieredNumpyRuntime,
+    TieredTorchRuntime,
     VersionedVisualIndex,
     create_versioned_visual_index,
 )
@@ -208,3 +209,44 @@ def test_create_rejects_invalid_routes_and_existing_output(
             base_route="text",
             visual_route="image",
         )
+
+
+def test_tiered_torch_matches_numpy_and_reports_physical_state(
+    tmp_path: Path,
+) -> None:
+    pytest.importorskip("torch")
+    bank = tmp_path / "bank"
+    _write_bank(bank)
+    root = tmp_path / "tiered"
+    create_versioned_visual_index(
+        bank=bank,
+        output=root,
+        base_route="text",
+        visual_route="image",
+    )
+    index = VersionedVisualIndex(root)
+    index.materialize(["item-a", "item-c"])
+    query = _embedding([[1.0, 0.0], [0.0, 1.0]])
+
+    reference = TieredNumpyRuntime(root)
+    runtime = TieredTorchRuntime(
+        root,
+        device="cpu",
+        document_batch_size=2,
+    )
+    assert np.allclose(runtime.score(query), reference.score(query))
+    observed = runtime.search(query, top_k=3)
+    expected = reference.search(query, top_k=3)
+    assert [item_id for item_id, _ in observed] == [
+        item_id for item_id, _ in expected
+    ]
+    assert np.allclose(
+        [score for _, score in observed],
+        [score for _, score in expected],
+    )
+    assert runtime.cached_item_ids == frozenset({"item-a", "item-c"})
+    assert runtime.execution_batch_count == (
+        runtime.base.execution_batch_count
+        + runtime.delta.execution_batch_count
+    )
+    assert runtime.resident_vector_bytes >= runtime.compact_vector_bytes

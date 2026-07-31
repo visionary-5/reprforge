@@ -38,7 +38,7 @@ The repository currently provides:
 - explainable route-intervention analysis;
 - a budgeted representation allocator;
 - a compact physical heterogeneous index;
-- a minimal versioned text-base + visual-delta cache;
+- a versioned compressed-base + full-visual-delta index;
 - NumPy and PyTorch MaxSim runtimes;
 - a token-work scheduler that turns fewer vectors into fewer GPU batches.
 
@@ -56,6 +56,11 @@ The current results are promising, but not yet a finished paper claim.
   **35.10 ms to 9.03 ms**. Under the same scheduler it is **4.02× faster**
   than the full-visual index, with identical Top-10 results for all 46
   evaluated queries.
+- On the public 781-layout MMDocIR bank, a pool-25 base plus full visual
+  representations for visual layouts reaches **0.684 nDCG@10**, versus
+  **0.624** for uniform full visual. Its compiled form is **75.7% smaller**
+  and **2.46× faster**. The versioned physical index reproduces all 46 full
+  rankings exactly and remains **2.24× faster** than uniform full visual.
 
 These findings establish a working end-to-end system and a real
 quality–resource trade-off. The planner is still a heuristic; the next
@@ -101,6 +106,7 @@ environment.
 - [Research contract](docs/research-contract.md)
 - [System design](docs/system.md)
 - [Versioned visual delta index](docs/versioned-visual-index.md)
+- [Public A100 benchmark](docs/public-benchmark-result.md)
 - [Evaluation protocol](docs/evaluation.md)
 - [Current results](docs/results.md)
 - [Research roadmap](docs/roadmap.md)

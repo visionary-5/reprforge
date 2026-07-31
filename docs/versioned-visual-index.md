@@ -80,10 +80,20 @@ python -m reprforge.versioned_visual_index rollback \
 Repeated materialization of already resident item IDs is a no-op cache hit and
 does not create a new generation.
 
+## Torch execution
+
+`TieredTorchRuntime` executes the base and active visual generation as
+independently compiled length-bucketed batches. Both score vectors remain on
+the selected Torch device, delta replacement happens on that device, and only
+the merged result is copied to the host.
+
+On the public 781-layout MMDocIR bank, this path exactly reproduces the full
+ranking of an equivalent single compiled index for all 46 queries. The
+measured cost of preserving independent tiers is 9.8% P50 latency. See
+`public-benchmark-result.md`.
+
 ## Deliberate V0 limits
 
-- NumPy reference query path only; the existing Torch token-work runtime has
-  not yet been adapted to base+delta execution.
 - One writer and no filesystem lock.
 - Every generation snapshots all currently cached visual items. This makes
   rollback simple but duplicates storage across versions.

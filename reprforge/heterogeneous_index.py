@@ -749,7 +749,14 @@ class TorchMaxSimRuntime:
         if self.device.type == "cuda":
             self.torch.cuda.synchronize(self.device)
 
-    def score(self, query_embedding: Any) -> np.ndarray:
+    def score_tensor(self, query_embedding: Any) -> Any:
+        """Return scores on the runtime device without an implicit sync.
+
+        Keeping this boundary device-resident lets composed runtimes merge
+        multiple physical tiers without copying one full score vector per
+        tier back to the host.
+        """
+
         query = self.torch.as_tensor(
             np.array(
                 _numpy_embedding(query_embedding),
@@ -782,7 +789,10 @@ class TorchMaxSimRuntime:
             )
             values = similarities.max(dim=-1).values.sum(dim=-1)
             output[batch.global_positions] = values
-        return output.detach().cpu().numpy()
+        return output
+
+    def score(self, query_embedding: Any) -> np.ndarray:
+        return self.score_tensor(query_embedding).detach().cpu().numpy()
 
     def search(
         self,

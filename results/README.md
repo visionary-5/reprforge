@@ -10,6 +10,8 @@ not committed.
   dataset contract.
 - `quality/typed-capacity-v1.json`: sealed Typed-Capacity V1 evaluation,
   including per-document and aggregate metrics.
+- `quality/pool25-visual-transfer.json`: role-separated transfer result for a
+  pool-25 base with full visual capacity on visual layouts.
 
 ## Systems
 
@@ -21,5 +23,8 @@ not committed.
   equivalence.
 - `systems/versioned-visual-smoke.json`: real embedding-bank correctness smoke
   for the immutable text base, visual delta, cache-hit, and rollback contract.
+- `systems/public-mmdocir-a100-final/versioned-suite.json`: final public
+  MMDocIR A100 comparison of text, full visual, pool-25, fixed hybrid,
+  equivalent compiled plans, and versioned base-plus-delta execution.
 
 Machine-specific source paths have been removed from these summaries.

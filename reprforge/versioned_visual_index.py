@@ -26,12 +26,15 @@ import numpy as np
 from reprforge.heterogeneous_index import (
     FORMAT_VERSION,
     NumpyMaxSimRuntime,
+    TorchMaxSimRuntime,
     _json,
     _load_shard,
     _read_manifest,
     _sha256,
     _write_shard,
+    benchmark_runtime,
     compile_heterogeneous_index,
+    load_query_bank,
 )
 
 
@@ -360,6 +363,22 @@ class VersionedVisualIndex:
             version=self.active_version if version is None else version,
         )
 
+    def torch_runtime(
+        self,
+        *,
+        device: str,
+        version: int | None = None,
+        document_batch_size: int = 64,
+        token_batch_budget: int | None = None,
+    ) -> "TieredTorchRuntime":
+        return TieredTorchRuntime(
+            self.root,
+            device=device,
+            version=self.active_version if version is None else version,
+            document_batch_size=document_batch_size,
+            token_batch_budget=token_batch_budget,
+        )
+
 
 class TieredNumpyRuntime:
     """Exact reference query path for base plus one visual generation."""
@@ -429,6 +448,123 @@ class TieredNumpyRuntime:
         ]
 
 
+class TieredTorchRuntime:
+    """CUDA/CPU Torch query path with device-resident delta replacement.
+
+    Base and delta remain independently compiled so a new immutable delta can
+    be published without rebuilding the base. Both tiers produce device
+    tensors; replacement happens on that device and only the merged score
+    vector crosses back to the host.
+    """
+
+    def __init__(
+        self,
+        root: Path,
+        *,
+        device: str,
+        version: int | None = None,
+        document_batch_size: int = 64,
+        token_batch_budget: int | None = None,
+    ) -> None:
+        self.root = root
+        self.manifest = _root_manifest(root)
+        runtime_options = {
+            "device": device,
+            "document_batch_size": document_batch_size,
+            "token_batch_budget": token_batch_budget,
+        }
+        self.base = TorchMaxSimRuntime(root / "base", **runtime_options)
+        self.item_ids = self.base.item_ids
+        self._positions = {
+            item_id: index for index, item_id in enumerate(self.item_ids)
+        }
+        self.version = _active_version(root) if version is None else version
+        if self.version == 0:
+            self.delta = None
+            self._delta_positions = None
+        else:
+            _version_payload(root, self.version)
+            self.delta = TorchMaxSimRuntime(
+                _version_path(root, self.version) / "index",
+                **runtime_options,
+            )
+            unknown = set(self.delta.item_ids) - set(self._positions)
+            if unknown:
+                raise ValueError(
+                    f"delta contains unknown base items: {sorted(unknown)[:5]}"
+                )
+            self._delta_positions = self.base.torch.tensor(
+                [self._positions[item_id] for item_id in self.delta.item_ids],
+                device=self.base.device,
+                dtype=self.base.torch.int64,
+            )
+
+    @property
+    def cached_item_ids(self) -> frozenset[str]:
+        return (
+            frozenset()
+            if self.delta is None
+            else frozenset(self.delta.item_ids)
+        )
+
+    @property
+    def compact_vector_bytes(self) -> int:
+        delta_bytes = 0 if self.delta is None else self.delta.compact_vector_bytes
+        return self.base.compact_vector_bytes + delta_bytes
+
+    @property
+    def resident_vector_bytes(self) -> int:
+        delta_bytes = 0 if self.delta is None else self.delta.resident_vector_bytes
+        return self.base.resident_vector_bytes + delta_bytes
+
+    @property
+    def resident_unpadded_vector_bytes(self) -> int:
+        delta_bytes = (
+            0
+            if self.delta is None
+            else self.delta.resident_unpadded_vector_bytes
+        )
+        return self.base.resident_unpadded_vector_bytes + delta_bytes
+
+    @property
+    def execution_batch_count(self) -> int:
+        delta_batches = (
+            0 if self.delta is None else self.delta.execution_batch_count
+        )
+        return self.base.execution_batch_count + delta_batches
+
+    def synchronize(self) -> None:
+        self.base.synchronize()
+
+    def score_tensor(self, query_embedding: Any) -> Any:
+        scores = self.base.score_tensor(query_embedding)
+        if self.delta is None:
+            return scores
+        delta_scores = self.delta.score_tensor(query_embedding)
+        return scores.index_copy(0, self._delta_positions, delta_scores)
+
+    def score(self, query_embedding: Any) -> np.ndarray:
+        return self.score_tensor(query_embedding).detach().cpu().numpy()
+
+    def search(
+        self,
+        query_embedding: Any,
+        *,
+        top_k: int,
+    ) -> list[tuple[str, float]]:
+        if top_k <= 0:
+            raise ValueError("top_k must be positive")
+        scores = self.score(query_embedding)
+        ranked = sorted(
+            range(len(self.item_ids)),
+            key=lambda index: (-float(scores[index]), self.item_ids[index]),
+        )
+        return [
+            (self.item_ids[index], float(scores[index]))
+            for index in ranked[:top_k]
+        ]
+
+
 def _read_item_ids(path: Path) -> list[str]:
     payload = json.loads(path.read_text(encoding="utf-8"))
     if isinstance(payload, Mapping):
@@ -461,6 +597,19 @@ def main() -> None:
     status = commands.add_parser("status")
     status.add_argument("--index", type=Path, required=True)
 
+    benchmark = commands.add_parser("benchmark")
+    benchmark.add_argument("--index", type=Path, required=True)
+    benchmark.add_argument("--query-bank", type=Path, required=True)
+    benchmark.add_argument("--engine", choices=("numpy", "torch"), default="torch")
+    benchmark.add_argument("--device", default="cuda:0")
+    benchmark.add_argument("--version", type=int)
+    benchmark.add_argument("--document-batch-size", type=int, default=64)
+    benchmark.add_argument("--token-batch-budget", type=int)
+    benchmark.add_argument("--warmup", type=int, default=5)
+    benchmark.add_argument("--repetitions", type=int, default=20)
+    benchmark.add_argument("--top-k", type=int, default=10)
+    benchmark.add_argument("--output", type=Path, required=True)
+
     args = parser.parse_args()
     if args.command == "create":
         result = create_versioned_visual_index(
@@ -481,6 +630,45 @@ def main() -> None:
         index = VersionedVisualIndex(args.index)
         index.rollback(args.version)
         result = index.status()
+    elif args.command == "benchmark":
+        index = VersionedVisualIndex(args.index)
+        if args.engine == "torch":
+            runtime = index.torch_runtime(
+                device=args.device,
+                version=args.version,
+                document_batch_size=args.document_batch_size,
+                token_batch_budget=args.token_batch_budget,
+            )
+        else:
+            runtime = index.runtime(version=args.version)
+        query_ids, query_embeddings = load_query_bank(args.query_bank)
+        result = benchmark_runtime(
+            runtime,
+            query_ids=query_ids,
+            query_embeddings=query_embeddings,
+            warmup=args.warmup,
+            repetitions=args.repetitions,
+            top_k=args.top_k,
+        )
+        result.update(
+            {
+                "system": "versioned-base-plus-visual-delta",
+                "engine": args.engine,
+                "device": args.device if args.engine == "torch" else "cpu",
+                "version": runtime.version,
+                "cached_items": len(runtime.cached_item_ids),
+                "base_items": len(runtime.item_ids),
+                "document_batch_size": (
+                    args.document_batch_size
+                    if args.engine == "torch"
+                    else None
+                ),
+                "token_batch_budget": (
+                    args.token_batch_budget if args.engine == "torch" else None
+                ),
+            }
+        )
+        _json(args.output, result)
     else:
         result = VersionedVisualIndex(args.index).status()
     print(json.dumps(result, indent=2, sort_keys=True))
