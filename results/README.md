@@ -12,6 +12,9 @@ not committed.
   including per-document and aggregate metrics.
 - `quality/pool25-visual-transfer.json`: role-separated transfer result for a
   pool-25 base with full visual capacity on visual layouts.
+- `quality/baseline-transfer.json`: three-role quality comparison of pool-25,
+  exact two-stage reranking, static visual upgrades, and query-scoped
+  activation.
 
 ## Systems
 
@@ -26,5 +29,10 @@ not committed.
 - `systems/public-mmdocir-a100-final/versioned-suite.json`: final public
   MMDocIR A100 comparison of text, full visual, pool-25, fixed hybrid,
   equivalent compiled plans, and versioned base-plus-delta execution.
+- `systems/public-baseline-comparison/versioned-suite.json`: adds pooled
+  candidate generation plus exact full-vector reranking at K=10/20/50.
+- `systems/lifecycle-a100/`: no-cache pageable/pinned host transfer,
+  globally-active cache, query-scoped activation, and three pinned-host
+  stability repetitions.
 
 Machine-specific source paths have been removed from these summaries.

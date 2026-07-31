@@ -61,6 +61,11 @@ The current results are promising, but not yet a finished paper claim.
   **0.624** for uniform full visual. Its compiled form is **75.7% smaller**
   and **2.46× faster**. The versioned physical index reproduces all 46 full
   rankings exactly and remains **2.24× faster** than uniform full visual.
+- Query-scoped delta activation improves pilot nDCG@10 from **0.635** for
+  pooled Top-10 + exact-full reranking to **0.699**, while using 86.5 MB
+  rather than 428.3 MB of resident representations. It separates physical
+  cache residency from per-query score replacement, avoiding cache-induced
+  ranking pollution.
 
 These findings establish a working end-to-end system and a real
 quality–resource trade-off. The planner is still a heuristic; the next
@@ -107,6 +112,7 @@ environment.
 - [System design](docs/system.md)
 - [Versioned visual delta index](docs/versioned-visual-index.md)
 - [Public A100 benchmark](docs/public-benchmark-result.md)
+- [Strong baseline comparison](docs/baseline-comparison-result.md)
 - [Evaluation protocol](docs/evaluation.md)
 - [Current results](docs/results.md)
 - [Research roadmap](docs/roadmap.md)

@@ -379,6 +379,22 @@ class VersionedVisualIndex:
             token_batch_budget=token_batch_budget,
         )
 
+    def selective_torch_runtime(
+        self,
+        *,
+        device: str,
+        version: int | None = None,
+        document_batch_size: int = 64,
+        token_batch_budget: int | None = None,
+    ) -> "TieredSelectiveTorchRuntime":
+        return TieredSelectiveTorchRuntime(
+            self.root,
+            device=device,
+            version=self.active_version if version is None else version,
+            document_batch_size=document_batch_size,
+            token_batch_budget=token_batch_budget,
+        )
+
 
 class TieredNumpyRuntime:
     """Exact reference query path for base plus one visual generation."""
@@ -562,6 +578,135 @@ class TieredTorchRuntime:
         return [
             (self.item_ids[index], float(scores[index]))
             for index in ranked[:top_k]
+        ]
+
+
+class TieredSelectiveTorchRuntime:
+    """Resident delta whose logical activation is query scoped.
+
+    Physical cache membership controls which full vectors are available
+    without host transfer or re-encoding. It does not force those vectors to
+    override the compressed base for every query. Callers provide the active
+    subset selected for the current query, preventing unrelated cached visual
+    items from becoming permanent ranking distractors.
+    """
+
+    def __init__(
+        self,
+        root: Path,
+        *,
+        device: str,
+        version: int | None = None,
+        document_batch_size: int = 64,
+        token_batch_budget: int | None = None,
+    ) -> None:
+        from reprforge.retrieval_baselines import TorchResidentReranker
+
+        self.root = root
+        self.manifest = _root_manifest(root)
+        self.base = TorchMaxSimRuntime(
+            root / "base",
+            device=device,
+            document_batch_size=document_batch_size,
+            token_batch_budget=token_batch_budget,
+        )
+        self.torch = self.base.torch
+        self.device = self.base.device
+        self.item_ids = self.base.item_ids
+        self._positions = {
+            item_id: index for index, item_id in enumerate(self.item_ids)
+        }
+        self.version = _active_version(root) if version is None else version
+        if self.version == 0:
+            self.delta = None
+        else:
+            _version_payload(root, self.version)
+            self.delta = TorchResidentReranker(
+                _version_path(root, self.version) / "index",
+                device=device,
+            )
+            unknown = set(self.delta.item_ids) - set(self._positions)
+            if unknown:
+                raise ValueError(
+                    f"delta contains unknown base items: {sorted(unknown)[:5]}"
+                )
+
+    @property
+    def cached_item_ids(self) -> frozenset[str]:
+        return (
+            frozenset()
+            if self.delta is None
+            else frozenset(self.delta.item_ids)
+        )
+
+    @property
+    def compact_vector_bytes(self) -> int:
+        delta_bytes = 0 if self.delta is None else self.delta.compact_vector_bytes
+        return self.base.compact_vector_bytes + delta_bytes
+
+    @property
+    def resident_vector_bytes(self) -> int:
+        delta_bytes = 0 if self.delta is None else self.delta.resident_vector_bytes
+        return self.base.resident_vector_bytes + delta_bytes
+
+    @property
+    def resident_unpadded_vector_bytes(self) -> int:
+        delta_bytes = (
+            0
+            if self.delta is None
+            else self.delta.resident_unpadded_vector_bytes
+        )
+        return self.base.resident_unpadded_vector_bytes + delta_bytes
+
+    @property
+    def execution_batch_count(self) -> int:
+        return self.base.execution_batch_count + int(self.delta is not None)
+
+    def synchronize(self) -> None:
+        self.base.synchronize()
+
+    def search_selected(
+        self,
+        query_embedding: Any,
+        *,
+        selected_item_ids: Sequence[str],
+        top_k: int,
+    ) -> list[tuple[str, float]]:
+        if self.delta is None:
+            if selected_item_ids:
+                raise ValueError("cannot activate items from an empty delta")
+            return self.base.search(query_embedding, top_k=top_k)
+        uncached = set(selected_item_ids) - self.cached_item_ids
+        if uncached:
+            raise ValueError(
+                f"query activates uncached visual items: {sorted(uncached)[:5]}"
+            )
+        scores = self.base.score_tensor(query_embedding)
+        if selected_item_ids:
+            delta_positions = self.delta.positions(selected_item_ids)
+            exact_scores = self.delta.score_positions_tensor(
+                query_embedding,
+                delta_positions,
+            )
+            global_positions = self.torch.tensor(
+                [self._positions[item_id] for item_id in selected_item_ids],
+                device=self.device,
+                dtype=self.torch.int64,
+            )
+            scores = scores.index_copy(
+                0,
+                global_positions,
+                exact_scores,
+            )
+        count = min(top_k, len(self.item_ids))
+        values, winners = self.torch.topk(scores, k=count, sorted=True)
+        return [
+            (self.item_ids[position], float(score))
+            for position, score in zip(
+                winners.detach().cpu().tolist(),
+                values.detach().cpu().tolist(),
+                strict=True,
+            )
         ]
 
 

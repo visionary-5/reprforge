@@ -250,3 +250,41 @@ def test_tiered_torch_matches_numpy_and_reports_physical_state(
         + runtime.delta.execution_batch_count
     )
     assert runtime.resident_vector_bytes >= runtime.compact_vector_bytes
+
+
+def test_selective_torch_activation_does_not_promote_every_cached_item(
+    tmp_path: Path,
+) -> None:
+    pytest.importorskip("torch")
+    bank = tmp_path / "bank"
+    _write_bank(bank)
+    root = tmp_path / "tiered"
+    create_versioned_visual_index(
+        bank=bank,
+        output=root,
+        base_route="text",
+        visual_route="image",
+    )
+    index = VersionedVisualIndex(root)
+    index.materialize(["item-a", "item-c"])
+    runtime = index.selective_torch_runtime(device="cpu")
+    query = _embedding([[1.0, 0.0], [0.0, 1.0]])
+
+    # item-c is physically cached but remains on its base score because this
+    # query activates only item-a.
+    scores = dict(
+        runtime.search_selected(
+            query,
+            selected_item_ids=("item-a",),
+            top_k=3,
+        )
+    )
+    assert scores["item-a"] == pytest.approx(0.4)
+    assert scores["item-b"] == pytest.approx(1.0)
+    assert scores["item-c"] == pytest.approx(1.0)
+    with pytest.raises(ValueError, match="uncached"):
+        runtime.search_selected(
+            query,
+            selected_item_ids=("item-b",),
+            top_k=3,
+        )

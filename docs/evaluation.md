@@ -48,9 +48,15 @@ Lifecycle evaluation additionally compares:
 - a text base with a full-visual delta;
 - static full visual, static pool-25, and MMDocIR's fixed hybrid.
 
-The closest external efficiency baselines to add are Visual RAG Toolkit's
-pooled candidate generation plus exact reranking and Deferred Visual
-Ingestion's structural location plus query-time visual processing.
+The implemented external-mechanism baselines are:
+
+- Visual RAG Toolkit-style pooled candidate generation followed by exact
+  full-vector reranking at K=10/20/50;
+- structural location followed by preencoded full-vector host transfer with
+  both pageable and pinned memory.
+
+The latter is only a systems lower bound for Deferred Visual Ingestion.
+Faithful DVI comparison still requires query-time image/VLM execution.
 
 An offline oracle may inspect all route outcomes to decompose headroom. It has
 information unavailable to a deployable runtime and is never reported as a

@@ -1,0 +1,61 @@
+{
+  "contract": {
+    "candidate_semantics": "official-within-document-MMDocIR-candidates",
+    "dataset": "MMDocIR/MMDocIR_Evaluation_Dataset",
+    "locator_k": 10,
+    "role_assignment": "results/quality/mmdocir-protocol.json",
+    "score_source": "frozen-public-route-replay",
+    "two_stage": "pool25-candidate-generation-then-exact-full-MaxSim",
+    "versioned_selective": "structural-BM25-top10-query-scoped-full-activation"
+  },
+  "roles": {
+    "final-evaluation": {
+      "documents": 9,
+      "pool25": {
+        "ndcg_at_10": 0.5311314528491381
+      },
+      "pool25-visual-full": {
+        "ndcg_at_10": 0.5865351547219287
+      },
+      "queries": 38,
+      "two-stage-k10": {
+        "ndcg_at_10": 0.5782406018206591
+      },
+      "versioned-selective-k10": {
+        "ndcg_at_10": 0.5991971600350435
+      }
+    },
+    "mechanism-design": {
+      "documents": 11,
+      "pool25": {
+        "ndcg_at_10": 0.5323341047461135
+      },
+      "pool25-visual-full": {
+        "ndcg_at_10": 0.6121977964771167
+      },
+      "queries": 57,
+      "two-stage-k10": {
+        "ndcg_at_10": 0.5336381330299045
+      },
+      "versioned-selective-k10": {
+        "ndcg_at_10": 0.5792649752648533
+      }
+    },
+    "prior-development": {
+      "documents": 10,
+      "pool25": {
+        "ndcg_at_10": 0.6303343872571974
+      },
+      "pool25-visual-full": {
+        "ndcg_at_10": 0.6839158953158764
+      },
+      "queries": 46,
+      "two-stage-k10": {
+        "ndcg_at_10": 0.6345373485610663
+      },
+      "versioned-selective-k10": {
+        "ndcg_at_10": 0.6989967265991741
+      }
+    }
+  }
+}

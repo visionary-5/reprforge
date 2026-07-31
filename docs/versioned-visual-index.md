@@ -92,6 +92,16 @@ ranking of an equivalent single compiled index for all 46 queries. The
 measured cost of preserving independent tiers is 9.8% P50 latency. See
 `public-benchmark-result.md`.
 
+`TieredSelectiveTorchRuntime` additionally separates physical cache
+membership from logical query activation. The active generation may contain a
+union of full-visual items learned across many queries, while each query
+activates only its selected subset. This prevents unrelated cached items from
+permanently replacing their compressed base scores.
+
+On the registered MMDocIR cyclic-4 workload, selective activation produces
+the same result digest as query-specific no-cache execution and reduces P50
+from 1.092 ms for globally active cache semantics to 0.659 ms.
+
 ## Deliberate V0 limits
 
 - One writer and no filesystem lock.

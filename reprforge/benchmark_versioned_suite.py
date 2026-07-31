@@ -37,6 +37,10 @@ from reprforge.policy_replay import (
     load_replay_data,
     uniform_plan,
 )
+from reprforge.retrieval_baselines import (
+    PooledExactRerankRuntime,
+    evaluate_two_stage_runtime,
+)
 from reprforge.versioned_visual_index import (
     VersionedVisualIndex,
     create_versioned_visual_index,
@@ -155,6 +159,7 @@ def run_suite(
     }
     output.mkdir(parents=True, exist_ok=True)
     baselines: dict[str, Any] = {}
+    two_stage_results: dict[str, Any] = {}
     lifecycle_results: dict[str, Any] = {}
     equivalence_results: dict[str, Any] = {}
 
@@ -197,6 +202,38 @@ def run_suite(
                 "performance": performance,
             }
             static_paths[name] = index_path
+            del runtime
+            _clear_cuda_cache()
+
+        for candidate_k in (10, 20, 50):
+            name = f"pool25-exact-rerank-{candidate_k}"
+            runtime = PooledExactRerankRuntime(
+                static_paths["uniform-image-pool-25"],
+                static_paths["uniform-image"],
+                device=device,
+                candidate_k=candidate_k,
+                document_batch_size=document_batch_size,
+                token_batch_budget=token_batch_budget,
+            )
+            quality = evaluate_two_stage_runtime(
+                runtime,
+                query_ids=query_ids,
+                query_embeddings=query_embeddings,
+                replay_directory=route_bank_directory,
+            )
+            performance = benchmark_runtime(
+                runtime,
+                query_ids=query_ids,
+                query_embeddings=query_embeddings,
+                warmup=warmup,
+                repetitions=repetitions,
+                top_k=top_k,
+            )
+            two_stage_results[name] = {
+                "candidate_k": candidate_k,
+                "quality": quality,
+                "performance": performance,
+            }
             del runtime
             _clear_cuda_cache()
 
@@ -286,6 +323,7 @@ def run_suite(
             "routes": list(replay.routes),
         },
         "baselines": baselines,
+        "two_stage_baselines": two_stage_results,
         "versioned_systems": lifecycle_results,
         "physical_equivalence": equivalence_results,
     }
@@ -337,6 +375,19 @@ def main() -> None:
                 "latency_p95_ms": row["performance"]["latency_ms"]["p95"],
             }
             for name, row in result["baselines"].items()
+        },
+        "two_stage_baselines": {
+            name: {
+                "candidate_k": row["candidate_k"],
+                "ndcg_at_10": row["quality"]["ndcg_at_10"],
+                "recall_at_5": row["quality"]["recall_at_5"],
+                "compact_vector_bytes": row["performance"][
+                    "compact_vector_bytes"
+                ],
+                "latency_p50_ms": row["performance"]["latency_ms"]["p50"],
+                "latency_p95_ms": row["performance"]["latency_ms"]["p95"],
+            }
+            for name, row in result["two_stage_baselines"].items()
         },
         "versioned_systems": {
             name: {
