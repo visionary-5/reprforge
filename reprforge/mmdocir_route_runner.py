@@ -459,6 +459,7 @@ class ColPaliBackend:
         device: str,
         batch_size: int,
         image_pool_factors: Sequence[int] = (),
+        scoring_batch_size: int | None = None,
     ) -> None:
         import torch
         from colpali_engine.models import ColPaliProcessor
@@ -468,6 +469,11 @@ class ColPaliBackend:
         self.torch = torch
         self.device = torch.device(device)
         self.batch_size = batch_size
+        self.scoring_batch_size = (
+            batch_size if scoring_batch_size is None else scoring_batch_size
+        )
+        if self.scoring_batch_size <= 0:
+            raise ValueError("scoring_batch_size must be positive")
         self.image_pool_factors = tuple(sorted(set(image_pool_factors)))
         if any(factor < 2 for factor in self.image_pool_factors):
             raise ValueError("image pool factors must be at least 2")
@@ -813,17 +819,43 @@ class ColPaliBackend:
         queries: Sequence[Any],
         documents: Sequence[Any],
     ) -> Sequence[Sequence[float]]:
+        if not queries:
+            return []
+        if not documents:
+            return [[] for _ in queries]
+
         rows: list[list[float]] = []
-        for query in queries:
-            query_on_device = query.to(self.device, dtype=self.torch.float32)
-            query_scores: list[float] = []
-            for start in range(0, len(documents), self.batch_size):
-                document_batch = documents[start : start + self.batch_size]
-                lengths = self.torch.tensor(
+        score_batch = self.scoring_batch_size
+        for query_start in range(0, len(queries), score_batch):
+            query_batch = queries[query_start : query_start + score_batch]
+            query_lengths = self.torch.tensor(
+                [query.shape[0] for query in query_batch],
+                device=self.device,
+            )
+            padded_queries = self.torch.nn.utils.rnn.pad_sequence(
+                [
+                    query.to(self.device, dtype=self.torch.float32)
+                    for query in query_batch
+                ],
+                batch_first=True,
+            )
+            query_positions = self.torch.arange(
+                padded_queries.shape[1],
+                device=self.device,
+            )
+            query_mask = (
+                query_positions[None, :] < query_lengths[:, None]
+            )
+            query_rows: list[Any] = []
+            for document_start in range(0, len(documents), score_batch):
+                document_batch = documents[
+                    document_start : document_start + score_batch
+                ]
+                document_lengths = self.torch.tensor(
                     [document.shape[0] for document in document_batch],
                     device=self.device,
                 )
-                padded = self.torch.nn.utils.rnn.pad_sequence(
+                padded_documents = self.torch.nn.utils.rnn.pad_sequence(
                     [
                         document.to(self.device, dtype=self.torch.float32)
                         for document in document_batch
@@ -831,22 +863,29 @@ class ColPaliBackend:
                     batch_first=True,
                 )
                 similarities = self.torch.einsum(
-                    "qd,bkd->bqk",
-                    query_on_device,
-                    padded,
+                    "aqd,bkd->abqk",
+                    padded_queries,
+                    padded_documents,
                 )
-                positions = self.torch.arange(
-                    padded.shape[1],
+                document_positions = self.torch.arange(
+                    padded_documents.shape[1],
                     device=self.device,
                 )
                 similarities = similarities.masked_fill(
-                    positions[None, None, :] >= lengths[:, None, None],
+                    document_positions[None, None, None, :]
+                    >= document_lengths[None, :, None, None],
                     float("-inf"),
                 )
-                query_scores.extend(
-                    similarities.max(dim=-1).values.sum(dim=-1).cpu().tolist()
-                )
-            rows.append([float(value) for value in query_scores])
+                maxsim = similarities.max(dim=-1).values
+                scores = (
+                    maxsim * query_mask[:, None, :]
+                ).sum(dim=-1)
+                query_rows.append(scores)
+            matrix = self.torch.cat(query_rows, dim=1).cpu()
+            rows.extend(
+                [float(value) for value in row]
+                for row in matrix.tolist()
+            )
         return rows
 
     def environment(self) -> Mapping[str, Any]:
@@ -860,6 +899,7 @@ class ColPaliBackend:
             "adapter_path": str(self.adapter.resolve()),
             "adapter_lora_parameter_tensors": self.adapter_parameter_count,
             "batch_size": self.batch_size,
+            "scoring_batch_size": self.scoring_batch_size,
             "image_pool_factors": list(self.image_pool_factors),
             "image_pooling": (
                 "colpali_engine.HierarchicalTokenPooler"

@@ -39,6 +39,7 @@ The repository currently provides:
 - a budgeted representation allocator;
 - a compact physical heterogeneous index;
 - a versioned compressed-base + full-visual-delta index;
+- an official ViDoRe v3 complex-pipeline adapter for full-corpus transfer;
 - NumPy and PyTorch MaxSim runtimes;
 - a token-work scheduler that turns fewer vectors into fewer GPU batches.
 
@@ -66,6 +67,10 @@ The current results are promising, but not yet a finished paper claim.
   rather than 428.3 MB of resident representations. It separates physical
   cache residency from per-query score replacement, avoiding cache-induced
   ranking pollution.
+- On the official ViDoRe v3 HR English split, full visual improves nDCG@10
+  from **0.495** to **0.518** over Markdown, but costs **8.20x** as much build
+  time. The first tiered K=20 transfer is a negative design result: it
+  eventually visualizes 84% of pages and reaches only **0.501** nDCG@10.
 
 These findings establish a working end-to-end system and a real
 quality–resource trade-off. The planner is still a heuristic; the next
@@ -113,6 +118,8 @@ environment.
 - [Versioned visual delta index](docs/versioned-visual-index.md)
 - [Public A100 benchmark](docs/public-benchmark-result.md)
 - [Strong baseline comparison](docs/baseline-comparison-result.md)
+- [Official ViDoRe v3 integration](docs/vidore-integration.md)
+- [ViDoRe v3 HR transfer result](docs/vidore-v3-hr-result.md)
 - [Evaluation protocol](docs/evaluation.md)
 - [Current results](docs/results.md)
 - [Research roadmap](docs/roadmap.md)

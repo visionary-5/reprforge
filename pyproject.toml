@@ -20,6 +20,12 @@ gpu = [
     "torch>=2.5",
     "transformers",
 ]
+vidore = [
+    "colpali-engine==0.3.12",
+    "pytrec-eval-terrier==0.5.10",
+    "transformers==4.53.2",
+    "vidore-benchmark @ git+https://github.com/illuin-tech/vidore-benchmark.git@a70f23af8bb3b33efe8a4a6c6c15a6e2d978035e",
+]
 dev = [
     "pytest>=8",
 ]
