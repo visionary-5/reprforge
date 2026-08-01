@@ -1,0 +1,33 @@
+{
+  "dataset": "vidore/vidore_v3_finance_en",
+  "dataset_revision": "7f432c176d82e27546501ad8064a713ac3071809",
+  "workload": {"queries": 309, "corpus": 2942},
+  "hardware": {"visual": "NVIDIA A100-SXM4-80GB", "bm25": "same server CPU, nice -n 10"},
+  "algorithm": "BM25 top-20; cohort z-score BM25 and visual scores; equal-weight sum",
+  "ndcg@10": {
+    "bm25": 0.5285173146681087,
+    "full_visual": 0.4731569596546872,
+    "visual_rerank_k20": 0.50449908436668,
+    "rrf_k20": 0.5485967173698643,
+    "candidate_relative_fusion_k20": 0.5628003944844325
+  },
+  "cost": {
+    "bm25_build_ms": 561.116548255086,
+    "bm25_309_query_score_total_ms": 3093.2332407683134,
+    "full_visual_build_ms": 308385.44527068734,
+    "k20_unique_visual_pages": 1855,
+    "k20_corpus_coverage_fraction": 0.6305234534330387,
+    "k20_visual_encode_work_fraction": 0.6229701239710411,
+    "k20_bm25_plus_visual_build_ms": 190149.56245584786,
+    "k20_build_ratio_to_full_visual": 0.6165970715282715,
+    "k20_first_touch_visual_p95_ms": 1696.2469009399408
+  },
+  "source": {
+    "bm25_runtime_sha256": "55bf5d9921a5df5151d346db394fbf4e0069b1751ec787117853fc4f1b67fa65",
+    "visual_runtime_sha256": "a6bbbf5bb26dadd4d060df40b225d9511b05a8470b574b71463ca4eadb635944",
+    "oracle_labels_sha256": "8fa8613e7244c60332584b4a64186da31d979b4fb0c0d4cc6be10ad86d6b0336",
+    "corpus_combined_sha256": "63283779b0b8a364685bef7e74d7368c15bf80b09d4a2ac087258c13a22c9601",
+    "queries_sha256": "3ab1f931bf8522750be06b300d5e8efe3b7cb68cb749705b19416b4032b7ad8b",
+    "qrels_sha256": "fedeef5802d0bcea2661601345222d40c98b7a09b09f142e63339aa0d671342d"
+  }
+}

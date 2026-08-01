@@ -40,18 +40,38 @@ The present artifact demonstrates that:
 The current Typed-Capacity V1 planner is a transparent heuristic and does not
 establish a general allocation algorithm.
 
+## Updated mechanism after intervention testing
+
+Independent page utility is not a valid first-order model for the current
+retrieval path. On the frozen HR trace, replacing the scores of a Top-20
+cohort has an average delta nDCG@10 of +0.00347, while the sum of the same 20
+single-page interventions is -0.03114. Ranking competition creates a mean
+absolute interaction of 0.1584. A held-out intervention learner consequently
+has only 0.0145 Pearson correlation with exact page utility.
+
+The current positive mechanism is instead set-level: use a cheap Markdown
+BM25 locator, form a fixed candidate cohort, normalize BM25 and visual scores
+inside that cohort, and fuse the two evidence sources. With K=20 fixed across
+datasets it beats both single representations on HR and Finance-EN. This
+changes the target system from a per-page utility allocator to a
+query-generated cohort compiler.
+
 ## Intended contribution
 
 The target system is a workload-aware progressive representation index with
 three connected mechanisms:
 
-1. **Estimate--verify utility:** use cheap signals to select transient visual
-   refinements, then measure their score/rank interventions instead of
-   predicting unseen visual value entirely from heuristics.
-2. **Admission and eviction:** persist only representations whose expected
-   future reuse justifies build, search, storage, and churn cost.
+1. **Candidate-relative evidence composition:** compare heterogeneous scores
+   only in the cohort where they compete, rather than replacing globally
+   incomparable raw scores.
+2. **Asynchronous cohort compilation:** build query-requested visual state in
+   batches without turning representation savings into cold-query stalls.
 3. **Work-normalized execution:** schedule the compiled heterogeneous index by
    padded vector work so resource reduction yields GPU latency reduction.
+
+Admission and eviction become a later mechanism only if a public temporal
+workload demonstrates that persistence beats transient refinement and simple
+caches. ViDoRe query order is not a natural production trace.
 
 For workload episode \(t\), a candidate dynamic objective is:
 
@@ -68,8 +88,9 @@ deployment and rollback; it is not a novelty claim by itself.
 The rejected `tiered-selective K=20` policy is the unconditional
 admit-on-first-touch baseline. It already provides the query-driven
 materialization pattern, so database cracking alone is not a contribution.
-The open challenge is a reliable ranking-utility what-if estimate and its
-translation into persistent physical state. See
+The open challenge is no longer a more elaborate per-page what-if estimator.
+It is scheduling cohort construction under a latency/resource budget while
+preserving candidate-relative fusion quality. See
 [`progressive-visual-index-contract.md`](progressive-visual-index-contract.md).
 
 ## Required evidence

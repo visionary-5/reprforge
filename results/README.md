@@ -18,6 +18,9 @@ not committed.
 
 ## Systems
 
+- `candidate-fusion/`: two-dataset BM25/visual candidate-relative fusion
+  quality, representation work, and frozen trace digests.
+
 - `systems/candidate-scaling-summary.json`: 1×/4×/16× physical candidate
   scaling summary.
 - `systems/reprforge-token-budget.json`: compressed-index token-work latency.

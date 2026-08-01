@@ -1,5 +1,12 @@
 # Progressive Visual Index: Static Oracle Result
 
+> **Superseded interpretation (2026-08-01).** This remains an all-query,
+> qrel-visible headroom witness, not evidence that independent page utility is
+> learnable. Subsequent exact interventions show strong non-additivity, and a
+> held-out page-utility model fails. The deployable positive result is now
+> candidate-relative cohort fusion; see
+> `candidate-relative-fusion-result.md`.
+
 ## Decision
 
 The first allocation-headroom gate passes. This is evidence that a useful

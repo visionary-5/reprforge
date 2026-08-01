@@ -52,11 +52,38 @@ def _sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
-def _read_rows(path: Path, columns: Sequence[str]) -> list[dict[str, Any]]:
+def _read_rows(
+    paths: Sequence[Path],
+    columns: Sequence[str],
+) -> list[dict[str, Any]]:
     import pyarrow.parquet as pq
 
-    table = pq.read_table(path, columns=list(columns))
-    return [dict(row) for row in table.to_pylist()]
+    rows: list[dict[str, Any]] = []
+    for path in paths:
+        table = pq.read_table(path, columns=list(columns))
+        rows.extend(dict(row) for row in table.to_pylist())
+    return rows
+
+
+def _component_paths(root: Path, part: str) -> tuple[Path, ...]:
+    paths = tuple(sorted((root / part).glob("test-*.parquet")))
+    if not paths:
+        raise FileNotFoundError(
+            f"missing local ViDoRe Parquet shards: {root / part}"
+        )
+    return paths
+
+
+def _component_sha256(paths: Sequence[Path]) -> str:
+    if len(paths) == 1:
+        return _sha256(paths[0])
+    digest = hashlib.sha256()
+    for path in paths:
+        digest.update(path.name.encode("utf-8"))
+        digest.update(b"\0")
+        digest.update(_sha256(path).encode("ascii"))
+        digest.update(b"\n")
+    return digest.hexdigest()
 
 
 def _decode_image(value: Any) -> Any:
@@ -90,12 +117,9 @@ def load_local_vidore(
     """Load official columns, optionally deriving a deterministic smoke slice."""
 
     paths = {
-        part: root / part / "test-00000-of-00001.parquet"
+        part: _component_paths(root, part)
         for part in ("queries", "corpus", "qrels")
     }
-    missing = [str(path) for path in paths.values() if not path.is_file()]
-    if missing:
-        raise FileNotFoundError(f"missing local ViDoRe Parquet: {missing}")
 
     query_rows = _read_rows(
         paths["queries"],
@@ -159,7 +183,12 @@ def load_local_vidore(
         "source": "official-local-parquet",
         "root": str(root.resolve()),
         "sha256": {
-            part: _sha256(path) for part, path in paths.items()
+            part: _component_sha256(part_paths)
+            for part, part_paths in paths.items()
+        },
+        "parquet_shards": {
+            part: [path.name for path in part_paths]
+            for part, part_paths in paths.items()
         },
         "smoke_queries": smoke_queries,
         "smoke_corpus": smoke_corpus,

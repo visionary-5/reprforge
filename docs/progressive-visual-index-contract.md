@@ -1,5 +1,12 @@
 # Progressive Visual Index Contract
 
+> **Status update (2026-08-01).** The independent page-utility branch defined
+> below has been executed and rejected: cohort interactions dominate the
+> single-page labels, and held-out prediction fails. The document remains the
+> preregistration record. The active mechanism is candidate-relative fusion
+> followed by asynchronous cohort compilation; see
+> `candidate-relative-fusion-result.md`.
+
 ## Research question
 
 Can a multimodal retrieval system begin with a cheap corpus-wide

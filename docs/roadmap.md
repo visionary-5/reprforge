@@ -22,41 +22,32 @@ set below 30% residency uses 150 pages (13.5%) and reaches 0.5436 nDCG@10.
 Uniform full visual reaches 0.5178. This proves that selective representation
 has headroom, not that the useful pages can be predicted online.
 
-The next proof is whether observed interventions plus past reuse can predict
-admissions without future queries or test qrels. It must also quantify:
+The proposed page-level estimator has now been tested and rejected. Exact
+single-page utilities are strongly non-additive, and neither a linear
+intervention model nor a semantic nearest-neighbour cohort controller beats
+robust fixed baselines. It must not remain the default next step.
 
-1. how non-additive page upgrade utilities are under ranking competition;
-2. whether transient refinement dominates persistence when all costs are
-   charged; and
-3. whether the oracle headroom survives chronological or frozen shuffled
-   train/validation/test query prefixes.
-
-The runtime-visible sketch may contain query-cluster frequencies, retrieval
-boundary statistics, and score changes observed after a paid transient
-refinement. It must not contain relevance labels or future queries. The
-offline oracle can use labels only to measure headroom.
+The new proof-of-mechanism is candidate-relative normalized fusion. With a
+fixed BM25 Top-20 cohort it reaches 0.5373 nDCG@10 on HR and 0.5628 on
+Finance-EN, above both single-representation baselines. The complete streams
+use 79.7% and 61.7% of full-visual build-equivalent work, respectively.
 
 ## Candidate mechanism
 
-For each page and representation action, estimate:
+The next minimal system is an asynchronous cohort compiler:
 
-\[
-U_t(i,r) = \operatorname{Evidence}_t(i,r)
-- \lambda \operatorname{DistractorRisk}_t(i,r).
-\]
+1. BM25 immediately produces a Top-20 cohort;
+2. resident visual candidates are fused with candidate-relative calibration;
+3. missing candidates enter a GPU batch queue rather than twenty small
+   synchronous calls;
+4. compiled visual state becomes visible through the existing versioned delta
+   index;
+5. every experiment reports time-to-quality, cold-query P95, total GPU work,
+   and final resident coverage.
 
-Promising pages are first refined transiently. Their measured intervention
-and estimated future reuse then drive admission under a storage/serving
-budget. Charge:
-
-\[
-\operatorname{MigrationCost}(r_{\text{old}}, r_{\text{new}}).
-\]
-
-Use hysteresis so small estimated utility changes do not churn the index.
-Compile changed layouts into a delta generation, validate it, and atomically
-switch the active manifest. The existing token-work scheduler executes mixed
-generations without changing retrieval semantics.
+Synchronous refine-and-wait, full visual prebuild, and unconditional
+admit-on-first-touch are required baselines. LFU/two-hit admission is added
+only when a defensible repeated or temporal workload is available.
 
 The required first-stage baselines now include a LightSTAR-style transient
 selection/refinement cascade and a fixed compact visual representation such as
@@ -79,8 +70,10 @@ The next complete evaluation needs:
 
 ## Decision boundary
 
-The dynamic system is motivated only if workload episodes produce a
-meaningful plan boundary:
+The asynchronous compiler is motivated only if it produces a stable Pareto
+improvement over full prebuild and synchronous refinement. A dynamic
+lifecycle system is motivated only if workload episodes produce a meaningful
+plan boundary:
 
 - a static deployable plan has material regret;
 - the regret is not removed by a single robust fixed plan;

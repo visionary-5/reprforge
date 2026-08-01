@@ -1,0 +1,29 @@
+{
+  "dataset": "vidore/vidore_v3_hr",
+  "workload": {"queries": 318, "corpus": 1110},
+  "hardware": {"visual": "NVIDIA A100-SXM4-80GB", "bm25": "same server CPU, nice -n 10"},
+  "algorithm": "BM25 top-20; cohort z-score BM25 and visual scores; equal-weight sum",
+  "ndcg@10": {
+    "bm25": 0.48600271104154996,
+    "full_visual": 0.5177793764220116,
+    "visual_rerank_k20": 0.5175412838798062,
+    "rrf_k20": 0.5293565012530902,
+    "candidate_relative_fusion_k20": 0.5372924271280891
+  },
+  "cost": {
+    "bm25_build_ms": 193.50750371813774,
+    "bm25_318_query_score_total_ms": 1246.1221870034933,
+    "full_visual_build_ms": 100729.20364327729,
+    "k20_unique_visual_pages": 895,
+    "k20_corpus_coverage_fraction": 0.8063063063063063,
+    "k20_visual_encode_work_fraction": 0.8051986646466772,
+    "k20_bm25_plus_visual_build_ms": 80326.96184942126,
+    "k20_build_ratio_to_full_visual": 0.7974545508558909,
+    "k20_first_touch_visual_p95_ms": 1175.5165046691884
+  },
+  "source": {
+    "bm25_runtime_sha256": "f057d766ab4d50e2cab00f3ecb63d15de0bf0b2b4840ec29330a38d045a1bc84",
+    "visual_runtime_sha256": "8a6e8ec222a446c2499c89b3fc92294ab641f1b338b4c789c90e4917025c7eef",
+    "oracle_labels_sha256": "5557a6d1f641b3db01a839b67cb52a6a6a8e87a60d2f3642110034414bc5511d"
+  }
+}

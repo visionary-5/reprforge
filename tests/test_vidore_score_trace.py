@@ -50,7 +50,7 @@ def test_load_local_vidore_returns_aligned_official_columns(
     monkeypatch.setattr(
         local_eval,
         "_read_rows",
-        lambda path, columns: rows[path.parent.name],
+        lambda paths, columns: rows[paths[0].parent.name],
     )
     monkeypatch.setattr(local_eval, "_decode_image", lambda value: value)
 
@@ -61,6 +61,27 @@ def test_load_local_vidore_returns_aligned_official_columns(
     assert loaded[2] == ["d1"]
     assert loaded[5] == {"q1": {"d1": 2}}
     assert loaded[7]["selected_queries"] == 1
+
+
+def test_component_paths_support_multiple_parquet_shards(tmp_path) -> None:
+    root = tmp_path / "data"
+    corpus = root / "corpus"
+    corpus.mkdir(parents=True)
+    for name in (
+        "test-00001-of-00002.parquet",
+        "test-00000-of-00002.parquet",
+    ):
+        (corpus / name).write_bytes(name.encode("utf-8"))
+
+    paths = local_eval._component_paths(root, "corpus")
+
+    assert [path.name for path in paths] == [
+        "test-00000-of-00002.parquet",
+        "test-00001-of-00002.parquet",
+    ]
+    digest = local_eval._component_sha256(paths)
+    paths[1].write_bytes(b"changed")
+    assert local_eval._component_sha256(paths) != digest
 
 
 def test_write_score_trace_separates_runtime_and_oracle_labels(tmp_path) -> None:
