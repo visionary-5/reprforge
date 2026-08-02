@@ -26,6 +26,8 @@ not committed.
   transfer against the official full-visual A100 baseline.
 - `systems/cohort-trace-parity.json`: Top-100 online/offline rank parity on HR
   and Finance-EN, with raw replay digests.
+- `systems/irpapers-transfer.json`: independent 3,230-page IRPAPERS BM25,
+  full-visual, static-fusion, resident K=10/K=20 and oracle-headroom result.
 
 - `systems/candidate-scaling-summary.json`: 1×/4×/16× physical candidate
   scaling summary.

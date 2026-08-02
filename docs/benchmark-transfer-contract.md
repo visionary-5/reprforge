@@ -72,6 +72,12 @@ code and weights are released.
 
 ## Phase A: IRPAPERS mechanism transfer
 
+**Execution status (2026-08-02):** the first controlled transfer is complete;
+see [`irpapers-transfer-result.md`](irpapers-transfer-result.md). Resident K=10
+passes the construction/time and static-hybrid Recall@1-retention gates on the
+released query order. The phase is not fully closed because three query
+permutations and a current dense/visual baseline remain outstanding.
+
 Why first:
 
 - 3,230 pages fit a bounded one-GPU experiment;
@@ -172,7 +178,7 @@ A later temporal phase needs a separately reviewed trace with:
 Until then, LRU/LFU results are cache sensitivity studies, not evidence for an
 adaptive production lifecycle.
 
-## Immediate stopping point
+## Immediate stopping point (superseded)
 
 The next implementation task is limited to an IRPAPERS adapter and a dry-run
 manifest.  Before GPU execution it must prove:
@@ -188,3 +194,8 @@ manifest.  Before GPU execution it must prove:
 No new admission algorithm is justified before this transfer exposes a
 measured miss in the current compiler.
 
+The transfer has now exposed that miss: fixed K=10 spends 1,800 visual
+page-events, while a qrel-only minimum-action oracle reaches higher Recall@1
+with 110. The next bounded implementation is therefore a paper-disjoint
+estimate--verify--expand policy, not a cache eviction or temporal-maintenance
+mechanism.

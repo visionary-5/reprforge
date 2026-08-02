@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "dataset": {
+    "name": "weaviate/IRPAPERS",
+    "revision": "7d8ca2f6dd9efded3e27013d15782d584f93e9da",
+    "docs_sha256": "8fe316290b55c71bd1641603b5feb02117672028f7d1af45bcad1c111c53611b",
+    "queries_sha256": "a87d8263d8b498cdaceb6cb719abcd0a584ded3993910aad41edab1db8fa6ed3",
+    "pages": 3230,
+    "papers": 166,
+    "queries": 180,
+    "query_source_papers": 19,
+    "query_metadata_mismatches": [
+      {
+        "csv_row": 144,
+        "dataset_id": "16_7",
+        "declared_pdf_page": "15_7"
+      }
+    ]
+  },
+  "hardware": "1x NVIDIA A100-SXM4-80GB",
+  "software": {
+    "python": "3.11.15",
+    "torch": "2.5.1",
+    "cuda": "12.4",
+    "colpali_v1_1_revision": "a0f15e3bcf97110e7ac1bb4be4bcd30eeb31992a",
+    "image_batch_size": 4,
+    "scoring_batch_size": 16,
+    "request_batch_size": 8
+  },
+  "controlled_runs": {
+    "local_bm25": {
+      "recall_1": 0.4722222222222222,
+      "recall_5": 0.7833333333333333,
+      "recall_20": 0.9277777777777778,
+      "build_and_score_seconds": 3.352750340476632,
+      "logical_index_bytes": 7231199,
+      "visual_pages": 0
+    },
+    "full_visual_colpali_v1_1": {
+      "recall_1": 0.3888888888888889,
+      "recall_5": 0.6722222222222223,
+      "recall_20": 0.8388888888888889,
+      "end_to_end_seconds_excluding_model_and_dataset": 695.8707097750157,
+      "visual_index_bytes": 1705026560,
+      "visual_pages": 3230
+    },
+    "static_full_zscore_fusion": {
+      "recall_1": 0.48333333333333334,
+      "recall_5": 0.8333333333333334,
+      "recall_20": 0.9388888888888889,
+      "combined_logical_index_bytes": 1712257759,
+      "visual_pages": 3230
+    },
+    "resident_compiler_k10": {
+      "recall_1": 0.4888888888888889,
+      "recall_5": 0.8222222222222222,
+      "recall_20": 0.9277777777777778,
+      "end_to_end_seconds_excluding_model_and_dataset": 118.13679530657828,
+      "bm25_index_bytes": 7231199,
+      "resident_visual_bytes": 269742592,
+      "visual_pages": 511,
+      "candidate_events": 1800,
+      "cache_hit_fraction": 0.5433333333333333,
+      "within_batch_dedup_fraction": 0.4855555555555555,
+      "visual_encoder_calls": 22
+    },
+    "resident_compiler_k20": {
+      "recall_1": 0.4888888888888889,
+      "recall_5": 0.8277777777777777,
+      "recall_20": 0.9277777777777778,
+      "end_to_end_seconds_excluding_model_and_dataset": 223.01521583274007,
+      "bm25_index_bytes": 7231199,
+      "resident_visual_bytes": 521009664,
+      "visual_pages": 987,
+      "candidate_events": 3600,
+      "cache_hit_fraction": 0.6316666666666667,
+      "within_batch_dedup_fraction": 0.42361111111111116,
+      "visual_encoder_calls": 23
+    },
+    "candidate_fusion_replay_k50": {
+      "recall_1": 0.4777777777777778,
+      "recall_5": 0.8388888888888889,
+      "recall_20": 0.9388888888888889,
+      "resident_unique_pages": 1799,
+      "candidate_events": 9000,
+      "timing_is_not_deployable": true
+    }
+  },
+  "comparisons": {
+    "k10_vs_full_visual": {
+      "end_to_end_speedup": 5.890380790922531,
+      "combined_index_byte_reduction": 6.1559129975586755,
+      "visual_corpus_fraction": 0.15820433436532508
+    },
+    "k20_vs_full_visual": {
+      "end_to_end_speedup": 3.120283551849279,
+      "combined_index_byte_reduction": 3.227744537438407,
+      "visual_corpus_fraction": 0.30557275541795664
+    },
+    "k10_quality_delta_vs_static_full_fusion": {
+      "recall_1": 0.005555555555555536,
+      "recall_5": -0.011111111111111183,
+      "recall_20": -0.011111111111111072
+    }
+  },
+  "minimum_action_oracle": {
+    "uses_qrels": true,
+    "deployable": false,
+    "recall_1": {
+      "success_rate": 0.5277777777777778,
+      "visual_page_events": 110,
+      "selection_counts": {"0": 85, "10": 9, "20": 1, "unresolved": 85}
+    },
+    "recall_5": {
+      "success_rate": 0.8611111111111112,
+      "visual_page_events": 170,
+      "selection_counts": {"0": 141, "10": 11, "20": 3, "unresolved": 25}
+    },
+    "recall_20": {
+      "success_rate": 0.9444444444444444,
+      "visual_page_events": 150,
+      "selection_counts": {"0": 167, "50": 3, "unresolved": 10}
+    }
+  },
+  "official_reported_references": {
+    "BM25": {"recall_1": 0.45, "recall_5": 0.71, "recall_20": 0.90},
+    "ColPali": {"recall_1": 0.45, "recall_5": 0.79, "recall_20": 0.93},
+    "ColQwen2": {"recall_1": 0.49, "recall_5": 0.81, "recall_20": 0.94},
+    "open_static_hybrid": {"recall_1": 0.49, "recall_5": 0.81, "recall_20": 0.95},
+    "current_closed_hybrid": {"recall_1": 0.58, "recall_5": 0.91, "recall_20": 0.98}
+  },
+  "raw_artifact_sha256": {
+    "summary": "d03b00a6db765e258eaf47d371f11798ae9e0839809145d1cba9cb8fb0a32a76",
+    "resident_k10": "46c153680ff2d477d1ecbda97c8fcb5d5f730914293403efba0df21c69e81dfd",
+    "runtime_score_surface": "8a1553afbe257fc8590ac60a2b363a9672158b97957505925d9a36fa1d21718b"
+  },
+  "decision": "PROMISING STATIC TRANSFER: fixed K=10 is a strong measured Pareto point; study a deployable per-query estimate-verify-expand policy. Dynamic update maintenance remains untested because IRPAPERS has no temporal trace."
+}

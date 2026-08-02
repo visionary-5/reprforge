@@ -84,13 +84,20 @@ The current results are promising, but not yet a finished paper claim.
   persistence supplies most of the gain: batch-8 adds only 1.07x over batch-1
   resident and misses its 1.10x mechanism gate. Synchronous batch P95 remains
   9.0--9.1 seconds, so low-latency asynchronous construction is not claimed.
+- On the independent 3,230-page IRPAPERS benchmark, resident K=10 reaches
+  **48.9/82.2/92.8 Recall@1/5/20** while visually constructing 511 pages.
+  It completes in **118.1 s**, versus 695.9 s for the controlled full-visual
+  ColPali-v1.1 path, and uses 6.16x fewer combined index bytes. A qrel-only
+  minimum-action oracle reaches 52.8% Recall@1 with only 110 visual page-events,
+  identifying per-query action estimation as the next algorithmic gap.
 
 These findings establish a working end-to-end system and a real
 quality–resource trade-off. The independent per-page utility abstraction has
 been rejected: rank interactions make representation value cohort-dependent.
-The next research step is bounded admission or serve-then-refine execution
-that preserves the fusion gain without making cold queries wait. Lifecycle
-adaptation remains conditional on a real temporal workload.
+The next research step is an estimate--verify--expand compiler that decides
+whether a query needs no visual work, a small refinement cohort, or deeper
+expansion. Persistence remains a separate action, and lifecycle adaptation
+remains conditional on a real temporal workload.
 
 ## Repository
 
@@ -142,6 +149,7 @@ environment.
 - [Online cohort compiler result](docs/cohort-compiler-result.md)
 - [Public benchmark and baseline landscape](docs/benchmark-landscape.md)
 - [Benchmark transfer contract](docs/benchmark-transfer-contract.md)
+- [IRPAPERS transfer result](docs/irpapers-transfer-result.md)
 - [Evaluation protocol](docs/evaluation.md)
 - [Current results](docs/results.md)
 - [Research roadmap](docs/roadmap.md)

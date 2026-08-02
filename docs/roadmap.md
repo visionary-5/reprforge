@@ -54,8 +54,12 @@ and Recall@100.
 
 The next mechanism is not a larger batch queue. LFU/two-hit or another bounded
 admission rule is added only when a defensible repeated or temporal workload
-is available. Otherwise the constructive path is serve-then-refine with
-explicit result revision and time-to-quality metrics.
+is available. The IRPAPERS transfer now supplies a more concrete constructive
+path: estimate whether a query needs no visual work, verify uncertain cases on
+a small cohort, and expand only when the observed intervention can affect the
+requested cutoff. Fixed K=10 spends 1,800 page-events; a non-deployable
+qrel-only oracle reaches higher Recall@1 with 110. Closing that gap on
+paper-disjoint queries is the immediate algorithmic objective.
 
 The required first-stage baselines now include a LightSTAR-style transient
 selection/refinement cascade and a fixed compact visual representation such as
@@ -67,9 +71,13 @@ incremental value.
 
 The public benchmark audit is recorded in `benchmark-landscape.md`, and the
 bounded execution gates are frozen in `benchmark-transfer-contract.md`.  The
-priority order is now:
+IRPAPERS phase A is complete: K=10 visually represents 15.8% of the corpus,
+is 5.89x faster than the controlled full-visual build+retrieval path, and lies
+within 1.11 Recall points of the same-score static full hybrid at cutoffs 5 and
+20. It is a promising static transfer, not a dynamic-maintenance result. The
+remaining priority order is now:
 
-1. IRPAPERS for a text/image complementary-failure transfer;
+1. paper-disjoint IRPAPERS action estimation against fixed-K baselines;
 2. Invoice Haystack for visually homogeneous hard negatives;
 3. MIRACL-VISION for multilingual 338K-page scale;
 4. M3DocVQA or MMDocRAG for downstream answer use.
