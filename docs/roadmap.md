@@ -73,6 +73,23 @@ step is no longer another score replay. It is a cold A100 executor that tests
 whether fewer admitted pages become proportionally fewer physical encodes and
 at least 1.15x lower construction-plus-retrieval time.
 
+The database-style representation-view control plane is now implemented. A
+view remains metadata-only through candidate generation, moves through a
+budgeted probe and verification state, and becomes visible only after an
+executor reports a complete materialization result. The BM25 cohort compiler
+can execute a published page set without encoding unadmitted candidates. A
+ViDoRe-v3-like CPU stress test reaches 30,594 candidate views with 1.17 seconds
+of candidate generation, 0.10 seconds of materialization planning and 80 MB
+peak Python allocation. This closes the control-plane scalability question,
+not the utility-estimation question.
+
+The immediate research gate is now sparse what-if estimation: determine
+whether a bounded set of real visual probes predicts future rank-boundary or
+answer utility well enough to outperform frequency under physical A100
+accounting. At least two observed candidates are currently required for stable
+candidate-relative visual normalization; pairwise probe construction or a
+cross-query calibrated score model must be compared explicitly.
+
 The required first-stage baselines now include a LightSTAR-style transient
 selection/refinement cascade and a fixed compact visual representation such as
 MURE when reproducible artifacts are available. These are stronger than the

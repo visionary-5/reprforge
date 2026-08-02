@@ -28,6 +28,8 @@ not committed.
   and Finance-EN, with raw replay digests.
 - `systems/irpapers-transfer.json`: independent 3,230-page IRPAPERS BM25,
   full-visual, static-fusion, resident K=10/K=20 and oracle-headroom result.
+- `systems/representation-view-control-plane.json`: deterministic IRPAPERS- and
+  ViDoRe-v3-scale metadata lifecycle measurements; no quality claim.
 
 - `systems/candidate-scaling-summary.json`: 1×/4×/16× physical candidate
   scaling summary.

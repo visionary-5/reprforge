@@ -43,6 +43,8 @@ The repository currently provides:
 - an online BM25-to-visual cohort compiler with atomic resident generations;
 - NumPy and PyTorch MaxSim runtimes;
 - a token-work scheduler that turns fewer vectors into fewer GPU batches.
+- a database-style candidate representation catalog with budgeted
+  probe--verify--materialize transitions and admission-aware execution.
 
 ## Current evidence
 
@@ -100,6 +102,10 @@ The current results are promising, but not yet a finished paper claim.
   of eligible visual pages and reaches **83.3% Recall@5**, versus 69.7% and
   81.7% for frequency-only admission under the same train-only risk target.
   This passes the offline mechanism gate; physical A100 timing remains open.
+- The candidate-view control plane scales to 30,594 hypothetical views at a
+  ViDoRe-v3-like workload size in 1.17 seconds of candidate generation and
+  0.10 seconds of materialization planning, using 80 MB peak Python memory.
+  This validates systems feasibility only; its utility values are synthetic.
 
 These findings establish a working end-to-end system and a real
 quality–resource trade-off. The independent per-page utility abstraction has
@@ -163,6 +169,8 @@ environment.
 - [IRPAPERS transfer result](docs/irpapers-transfer-result.md)
 - [Progressive evidence mechanism probe](docs/progressive-evidence-probe.md)
 - [Boundary-weighted admission gate](docs/boundary-admission-gate.md)
+- [Candidate representation view contract](docs/representation-view-contract.md)
+- [Candidate view scale result](docs/representation-view-scale-result.md)
 - [Evaluation protocol](docs/evaluation.md)
 - [Current results](docs/results.md)
 - [Research roadmap](docs/roadmap.md)

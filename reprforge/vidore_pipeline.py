@@ -152,6 +152,8 @@ class ReprForgeViDoRePipeline(BasePipeline):
         cache_capacity_items: int = 0,
         request_batch_size: int = 8,
         cohort_cache_policy: str = "resident",
+        admitted_item_ids: Sequence[str] | None = None,
+        visual_prior_by_rank: Sequence[float] | None = None,
         capture_score_trace: bool = False,
         backend_factory: Callable[[], RepresentationBackend] | None = None,
     ) -> None:
@@ -170,6 +172,11 @@ class ReprForgeViDoRePipeline(BasePipeline):
             )
         if cohort_cache_policy not in {"none", "resident"}:
             raise ValueError("cohort_cache_policy must be 'none' or 'resident'")
+        if admitted_item_ids is not None and mode not in {
+            "bm25-fusion-sync",
+            "bm25-fusion-batched",
+        }:
+            raise ValueError("representation admission requires a BM25 fusion mode")
         if image_pool_factor < 2:
             raise ValueError("image_pool_factor must be at least 2")
         if cache_capacity_items < 0:
@@ -195,6 +202,16 @@ class ReprForgeViDoRePipeline(BasePipeline):
         self.capture_score_trace = capture_score_trace
         self.request_batch_size = request_batch_size
         self.cohort_cache_policy = cohort_cache_policy
+        self.admitted_item_ids = (
+            None
+            if admitted_item_ids is None
+            else tuple(str(value) for value in admitted_item_ids)
+        )
+        self.visual_prior_by_rank = (
+            None
+            if visual_prior_by_rank is None
+            else tuple(float(value) for value in visual_prior_by_rank)
+        )
         # Zero means an unbounded cache for tiered-selective, not no cache.
         self.cache_capacity_items = cache_capacity_items
 
@@ -286,6 +303,8 @@ class ReprForgeViDoRePipeline(BasePipeline):
                     if self.mode == "bm25-fusion-sync"
                     else self.cohort_cache_policy
                 ),
+                admitted_item_ids=self.admitted_item_ids,
+                visual_prior_by_rank=self.visual_prior_by_rank,
             )
         elif self.mode == "visual":
             self._visual = self._encode_images(range(len(self.corpus_ids)))

@@ -12,7 +12,7 @@ from __future__ import annotations
 
 import time
 from dataclasses import dataclass
-from typing import Any, Mapping, Protocol, Sequence
+from typing import Any, Iterable, Mapping, Protocol, Sequence
 
 import numpy as np
 
@@ -77,6 +77,8 @@ class CohortCompiler:
         top_k: int = 100,
         request_batch_size: int = 1,
         cache_policy: str = "resident",
+        admitted_item_ids: Iterable[str] | None = None,
+        visual_prior_by_rank: Sequence[float] | None = None,
     ) -> None:
         if (
             len(corpus_ids) == 0
@@ -92,6 +94,10 @@ class CohortCompiler:
             )
         if cache_policy not in {"none", "resident"}:
             raise ValueError("cache_policy must be 'none' or 'resident'")
+        if (admitted_item_ids is None) != (visual_prior_by_rank is None):
+            raise ValueError(
+                "admitted_item_ids and visual_prior_by_rank must be supplied together"
+            )
         self.corpus_ids = tuple(str(value) for value in corpus_ids)
         self.corpus_texts = tuple(str(value) for value in corpus_texts)
         self.corpus_images = tuple(corpus_images)
@@ -100,6 +106,30 @@ class CohortCompiler:
         self.top_k = min(top_k, len(self.corpus_ids))
         self.request_batch_size = request_batch_size
         self.cache_policy = cache_policy
+        self._admitted_item_ids = (
+            None
+            if admitted_item_ids is None
+            else frozenset(str(value) for value in admitted_item_ids)
+        )
+        unknown_admissions = (
+            set()
+            if self._admitted_item_ids is None
+            else set(self._admitted_item_ids) - set(self.corpus_ids)
+        )
+        if unknown_admissions:
+            raise ValueError(
+                f"admission plan contains unknown items: {sorted(unknown_admissions)[:5]}"
+            )
+        self._visual_prior_by_rank = (
+            None
+            if visual_prior_by_rank is None
+            else np.asarray(visual_prior_by_rank, dtype=np.float64)
+        )
+        if (
+            self._visual_prior_by_rank is not None
+            and self._visual_prior_by_rank.shape != (self.candidate_k,)
+        ):
+            raise ValueError("visual rank prior must match candidate_k")
         began = time.perf_counter()
         self._bm25_state, posting_bytes, vocabulary_bytes = build_index(
             self.corpus_texts
@@ -131,12 +161,58 @@ class CohortCompiler:
     ) -> dict[str, float]:
         if len(candidate_positions) != len(visual_scores):
             raise ValueError("candidate and visual scores differ in length")
-        candidate_ids = [
-            self.corpus_ids[position] for position in candidate_positions
-        ]
         fused = _zscore(locator_scores[list(candidate_positions)]) + _zscore(
             visual_scores
         )
+        return self._rank_fused_candidates(
+            locator_scores,
+            candidate_positions,
+            fused,
+        )
+
+    def _partially_fused_result(
+        self,
+        locator_scores: np.ndarray,
+        candidate_positions: Sequence[int],
+        observed_visual_scores: Mapping[int, float],
+    ) -> dict[str, float]:
+        """Fuse an admitted subset and use historical priors for missing views."""
+
+        if self._visual_prior_by_rank is None:
+            raise AssertionError("partial fusion requires a visual rank prior")
+        estimated_visual = self._visual_prior_by_rank.copy()
+        observed_ranks = [
+            rank
+            for rank, position in enumerate(candidate_positions)
+            if position in observed_visual_scores
+        ]
+        # Candidate-relative visual scores have no global scale.  As in the
+        # offline admission contract, at least two observed pages are needed
+        # to derive a deployable within-query z-score.  One observed page is
+        # retained physically for reuse but contributes only its historical
+        # rank prior to this query.
+        if len(observed_ranks) >= 2:
+            values = [
+                observed_visual_scores[candidate_positions[rank]]
+                for rank in observed_ranks
+            ]
+            estimated_visual[np.asarray(observed_ranks, dtype=np.int32)] = _zscore(
+                values
+            )
+        fused = _zscore(locator_scores[list(candidate_positions)]) + estimated_visual
+        return self._rank_fused_candidates(
+            locator_scores,
+            candidate_positions,
+            fused,
+        )
+
+    def _rank_fused_candidates(
+        self,
+        locator_scores: np.ndarray,
+        candidate_positions: Sequence[int],
+        fused: Sequence[float],
+    ) -> dict[str, float]:
+        candidate_ids = [self.corpus_ids[position] for position in candidate_positions]
         candidate_order = sorted(
             range(len(candidate_ids)),
             key=lambda offset: (-float(fused[offset]), candidate_ids[offset]),
@@ -156,7 +232,7 @@ class CohortCompiler:
         ordered_ids = [candidate_ids[offset] for offset in candidate_order]
         ordered_ids.extend(self.corpus_ids[position] for position in tail)
         count = min(self.top_k, len(ordered_ids))
-        # pytrec_eval consumes scores rather than insertion order.  Synthetic
+        # pytrec_eval consumes scores rather than insertion order. Synthetic
         # monotonic scores faithfully encode the heterogeneous ranking without
         # pretending BM25 and normalized fusion share a global score scale.
         return {
@@ -179,6 +255,7 @@ class CohortCompiler:
         execution_began = time.perf_counter()
         results: dict[str, dict[str, float]] = {}
         candidate_events = 0
+        admitted_candidate_events = 0
         unique_candidates = 0
         cache_hit_events = 0
         encoded_pages = 0
@@ -218,16 +295,35 @@ class CohortCompiler:
                         requested_positions.append(position)
             unique_candidates += len(requested_positions)
 
+            visual_positions = (
+                requested_positions
+                if self._admitted_item_ids is None
+                else [
+                    position
+                    for position in requested_positions
+                    if self.corpus_ids[position] in self._admitted_item_ids
+                ]
+            )
+            batch_admitted_events = sum(
+                self._admitted_item_ids is None
+                or self.corpus_ids[position] in self._admitted_item_ids
+                for cohort in cohorts
+                for position in cohort
+            )
+            admitted_candidate_events += batch_admitted_events
+
             resident_at_start = self._resident
             batch_cache_hits = sum(
                 self.corpus_ids[position] in resident_at_start
                 for cohort in cohorts
                 for position in cohort
+                if self._admitted_item_ids is None
+                or self.corpus_ids[position] in self._admitted_item_ids
             )
             cache_hit_events += batch_cache_hits
             missing_positions = [
                 position
-                for position in requested_positions
+                for position in visual_positions
                 if self.corpus_ids[position] not in resident_at_start
             ]
             staged: dict[str, Any] = {}
@@ -255,28 +351,33 @@ class CohortCompiler:
                 encoded_pages += len(missing_positions)
                 encoder_calls += 1
 
-            began = time.perf_counter()
-            encoded_queries = self.backend.encode_queries(batch_texts)
-            query_call_ms = (time.perf_counter() - began) * 1000.0
-            query_encode_ms += query_call_ms
             visible: Mapping[str, Any] = {**resident_at_start, **staged}
             union_embeddings = [
                 visible[self.corpus_ids[position]]
-                for position in requested_positions
+                for position in visual_positions
             ]
             union_offsets = {
                 position: offset
-                for offset, position in enumerate(requested_positions)
+                for offset, position in enumerate(visual_positions)
             }
-            began = time.perf_counter()
-            union_scores = self.backend.score(
-                encoded_queries.embeddings,
-                union_embeddings,
-            )
-            score_call_ms = (time.perf_counter() - began) * 1000.0
-            visual_score_ms += score_call_ms
-            if len(union_scores) != len(batch_ids):
-                raise RuntimeError("visual backend returned incomplete query scores")
+            query_call_ms = 0.0
+            score_call_ms = 0.0
+            if union_embeddings:
+                began = time.perf_counter()
+                encoded_queries = self.backend.encode_queries(batch_texts)
+                query_call_ms = (time.perf_counter() - began) * 1000.0
+                query_encode_ms += query_call_ms
+                began = time.perf_counter()
+                union_scores = self.backend.score(
+                    encoded_queries.embeddings,
+                    union_embeddings,
+                )
+                score_call_ms = (time.perf_counter() - began) * 1000.0
+                visual_score_ms += score_call_ms
+                if len(union_scores) != len(batch_ids):
+                    raise RuntimeError("visual backend returned incomplete query scores")
+            else:
+                union_scores = [[] for _ in batch_ids]
             staged_results: dict[str, dict[str, float]] = {}
             for query_id, score_row, locator_row, cohort in zip(
                 batch_ids,
@@ -285,20 +386,33 @@ class CohortCompiler:
                 cohorts,
                 strict=True,
             ):
-                if len(score_row) != len(requested_positions):
+                if len(score_row) != len(visual_positions):
                     raise RuntimeError(
                         "visual backend returned incomplete document scores"
                     )
-                visual_scores = [
-                    float(score_row[union_offsets[position]])
-                    for position in cohort
-                ]
-                visual_score_pairs += len(visual_scores)
-                staged_results[query_id] = self._fused_result(
-                    locator_row,
-                    cohort,
-                    visual_scores,
-                )
+                if self._admitted_item_ids is None:
+                    visual_scores = [
+                        float(score_row[union_offsets[position]])
+                        for position in cohort
+                    ]
+                    visual_score_pairs += len(visual_scores)
+                    staged_results[query_id] = self._fused_result(
+                        locator_row,
+                        cohort,
+                        visual_scores,
+                    )
+                else:
+                    observed = {
+                        position: float(score_row[union_offsets[position]])
+                        for position in cohort
+                        if position in union_offsets
+                    }
+                    visual_score_pairs += len(observed)
+                    staged_results[query_id] = self._partially_fused_result(
+                        locator_row,
+                        cohort,
+                        observed,
+                    )
 
             # Publish only after encoding and every query score succeeds.
             if self.cache_policy == "resident" and staged:
@@ -314,7 +428,9 @@ class CohortCompiler:
                     "query_offset_start": start,
                     "query_count": len(batch_ids),
                     "candidate_events": batch_candidate_events,
+                    "admitted_candidate_events": batch_admitted_events,
                     "unique_candidates": len(requested_positions),
+                    "unique_admitted_candidates": len(visual_positions),
                     "cache_hit_events": batch_cache_hits,
                     "visual_pages_encoded": len(missing_positions),
                     "visual_encode_ms": encode_call_ms,
@@ -336,6 +452,12 @@ class CohortCompiler:
             "request_batch_size": self.request_batch_size,
             "cache_policy": self.cache_policy,
             "candidate_events": candidate_events,
+            "admitted_candidate_events": admitted_candidate_events,
+            "admitted_candidate_fraction": (
+                admitted_candidate_events / candidate_events
+                if candidate_events
+                else 0.0
+            ),
             "unique_candidates_within_batches": unique_candidates,
             "within_batch_deduplicated_events": candidate_events - unique_candidates,
             "within_batch_dedup_fraction": (
@@ -345,7 +467,9 @@ class CohortCompiler:
             ),
             "cache_hit_events": cache_hit_events,
             "cache_hit_fraction": (
-                cache_hit_events / candidate_events if candidate_events else 0.0
+                cache_hit_events / admitted_candidate_events
+                if admitted_candidate_events
+                else 0.0
             ),
             "visual_pages_encoded": encoded_pages,
             "visual_encoder_calls": encoder_calls,
@@ -365,5 +489,11 @@ class CohortCompiler:
             "active_generation": self._generation,
             "atomic_publish": True,
             "logical_visual_activation_is_query_scoped": True,
+            "representation_admission_enabled": self._admitted_item_ids is not None,
+            "admitted_plan_items": (
+                len(self._admitted_item_ids)
+                if self._admitted_item_ids is not None
+                else len(self.corpus_ids)
+            ),
         }
         return CohortExecution(results=results, metrics=metrics)

@@ -66,6 +66,8 @@ def _compiler(
     cache_policy: str = "none",
     candidate_k: int = 3,
     top_k: int = 4,
+    admitted_item_ids: set[str] | None = None,
+    visual_prior_by_rank: Sequence[float] | None = None,
 ) -> CohortCompiler:
     return CohortCompiler(
         corpus_ids=["a", "b", "c", "d"],
@@ -81,6 +83,8 @@ def _compiler(
         top_k=top_k,
         request_batch_size=request_batch_size,
         cache_policy=cache_policy,
+        admitted_item_ids=admitted_item_ids,
+        visual_prior_by_rank=visual_prior_by_rank,
     )
 
 
@@ -175,3 +179,61 @@ def test_non_candidate_tail_preserves_bm25_order() -> None:
     # The visual fusion may reorder d/a, while the untouched BM25 tail remains
     # b before c.  This makes the heterogeneous Top-100 rank deterministic.
     assert list(execution.results["q1"])[-2:] == ["b", "c"]
+
+
+def test_admission_plan_encodes_only_published_representation_views() -> None:
+    backend = FakeCohortBackend()
+    compiler = _compiler(
+        backend,
+        request_batch_size=2,
+        cache_policy="resident",
+        admitted_item_ids={"b", "c"},
+        visual_prior_by_rank=[0.0, 0.0, 0.0],
+    )
+
+    execution = compiler.execute_batch(["q1", "q2"], ["revenue", "policy"])
+
+    assert backend.image_calls == [("image-b", "image-c")]
+    assert compiler.resident_item_ids == frozenset({"b", "c"})
+    assert execution.metrics["candidate_events"] == 6
+    assert execution.metrics["admitted_candidate_events"] == 3
+    assert execution.metrics["visual_pages_encoded"] == 2
+    assert execution.metrics["visual_score_pairs"] == 3
+    assert execution.metrics["representation_admission_enabled"] is True
+    assert execution.metrics["admitted_plan_items"] == 2
+    assert execution.metrics["batch_trace"][0]["unique_admitted_candidates"] == 2
+
+
+def test_empty_admission_plan_uses_priors_without_loading_visual_backend() -> None:
+    backend = FakeCohortBackend()
+    compiler = _compiler(
+        backend,
+        request_batch_size=1,
+        admitted_item_ids=set(),
+        visual_prior_by_rank=[0.0, 0.0, 0.0],
+    )
+
+    execution = compiler.execute_batch(["q1"], ["revenue"])
+
+    assert backend.image_calls == []
+    assert backend.score_shapes == []
+    assert execution.metrics["visual_pages_encoded"] == 0
+    assert execution.metrics["admitted_candidate_events"] == 0
+    assert list(execution.results["q1"])[0] == "d"
+
+
+def test_admission_plan_requires_matching_rank_prior() -> None:
+    backend = FakeCohortBackend()
+    with pytest.raises(ValueError, match="supplied together"):
+        _compiler(
+            backend,
+            request_batch_size=1,
+            admitted_item_ids={"a"},
+        )
+    with pytest.raises(ValueError, match="match candidate_k"):
+        _compiler(
+            backend,
+            request_batch_size=1,
+            admitted_item_ids={"a"},
+            visual_prior_by_rank=[0.0],
+        )

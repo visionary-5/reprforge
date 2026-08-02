@@ -265,3 +265,23 @@ def test_bm25_fusion_batched_matches_sync_and_deduplicates_visual_work() -> None
     assert sync_info["index_kind"] == "bm25-locator"
     assert batch_info["within_batch_deduplicated_events"] == 2
     assert batch_info["logical_visual_activation_is_query_scoped"] is True
+
+
+def test_bm25_pipeline_executes_a_published_representation_plan() -> None:
+    backend = FakeBackend()
+    pipeline = _pipeline(
+        "bm25-fusion-batched",
+        backend,
+        top_k=3,
+        request_batch_size=2,
+        admitted_item_ids=["b"],
+        visual_prior_by_rank=[0.0, 0.0],
+    )
+    _index(pipeline)
+
+    _, info = pipeline.search(["q1", "q2"], ["q-a", "q-b"])
+
+    assert backend.image_calls == [("image-b",)]
+    assert info["representation_admission_enabled"] is True
+    assert info["admitted_plan_items"] == 1
+    assert info["visual_pages_encoded"] == 1
