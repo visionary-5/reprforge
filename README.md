@@ -90,14 +90,20 @@ The current results are promising, but not yet a finished paper claim.
   ColPali-v1.1 path, and uses 6.16x fewer combined index bytes. A qrel-only
   minimum-action oracle reaches 52.8% Recall@1 with only 110 visual page-events,
   identifying per-query action estimation as the next algorithmic gap.
+- A first paper-disjoint progressive-acquisition probe replaces fixed K with
+  observed ranking intervention. It reduces visual candidate events from
+  **1,800 to 992** and unique candidate pages from **511 to 309**, while
+  matching K=10's **48.9% Recall@1**. It does not preserve Recall@5 (78.3%
+  versus 82.2%), so it is a mechanism signal rather than the final algorithm.
 
 These findings establish a working end-to-end system and a real
 quality–resource trade-off. The independent per-page utility abstraction has
 been rejected: rank interactions make representation value cohort-dependent.
-The next research step is an estimate--verify--expand compiler that decides
-whether a query needs no visual work, a small refinement cohort, or deeper
-expansion. Persistence remains a separate action, and lifecycle adaptation
-remains conditional on a real temporal workload.
+The next research step is cutoff-aware active evidence acquisition: choose the
+unbuilt candidate most likely to cross the requested rank boundary, then stop
+only when the remaining candidates are safely separated from that boundary.
+Persistence remains a separate action, and lifecycle adaptation remains
+conditional on a real temporal workload.
 
 ## Repository
 
@@ -150,6 +156,7 @@ environment.
 - [Public benchmark and baseline landscape](docs/benchmark-landscape.md)
 - [Benchmark transfer contract](docs/benchmark-transfer-contract.md)
 - [IRPAPERS transfer result](docs/irpapers-transfer-result.md)
+- [Progressive evidence mechanism probe](docs/progressive-evidence-probe.md)
 - [Evaluation protocol](docs/evaluation.md)
 - [Current results](docs/results.md)
 - [Research roadmap](docs/roadmap.md)

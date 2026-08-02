@@ -55,11 +55,14 @@ and Recall@100.
 The next mechanism is not a larger batch queue. LFU/two-hit or another bounded
 admission rule is added only when a defensible repeated or temporal workload
 is available. The IRPAPERS transfer now supplies a more concrete constructive
-path: estimate whether a query needs no visual work, verify uncertain cases on
-a small cohort, and expand only when the observed intervention can affect the
-requested cutoff. Fixed K=10 spends 1,800 page-events; a non-deployable
-qrel-only oracle reaches higher Recall@1 with 110. Closing that gap on
-paper-disjoint queries is the immediate algorithmic objective.
+path. A first paper-disjoint progressive probe reduces fixed K=10 from 1,800
+to 992 page-events and preserves Recall@1, whereas a BM25-only margin router
+requires 1,390 events. However, it lowers Recall@5 from 82.2% to 78.3%.
+Observed intervention is therefore useful for Top-1 stopping, but prefix
+acquisition cannot yet protect a listwise boundary. The immediate algorithmic
+objective is a cutoff-aware active acquisition policy that chooses the next
+candidate by boundary-crossing value and stops from calibrated bounds on all
+unobserved candidates.
 
 The required first-stage baselines now include a LightSTAR-style transient
 selection/refinement cascade and a fixed compact visual representation such as
@@ -77,7 +80,8 @@ within 1.11 Recall points of the same-score static full hybrid at cutoffs 5 and
 20. It is a promising static transfer, not a dynamic-maintenance result. The
 remaining priority order is now:
 
-1. paper-disjoint IRPAPERS action estimation against fixed-K baselines;
+1. paper-disjoint IRPAPERS active acquisition against fixed-K, BM25-margin and
+   certified-pruning-style baselines;
 2. Invoice Haystack for visually homogeneous hard negatives;
 3. MIRACL-VISION for multilingual 338K-page scale;
 4. M3DocVQA or MMDocRAG for downstream answer use.
