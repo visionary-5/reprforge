@@ -110,6 +110,13 @@ The current results are promising, but not yet a finished paper claim.
   score pairs. Two eager, interleaved A100 repetitions reach only **1.121x**
   and **1.032x**, missing the frozen 1.15x speed gate. The mechanism is kept;
   the current performance claim is rejected.
+- A sparse cost--risk controller now replaces full-history exact matching with
+  source-paper-cross-fitted what-if evidence, an interpretable rank/margin risk
+  table and a measured A100 page-cost model. At 20% historical query probes it
+  selects 24.4% fewer pages than sparse independent admission, predicts 1.32x
+  less online visual work and raises held-out Recall@5 from 79.44% to 80.56%.
+  The probes themselves require an estimated 29.6 workload episodes to
+  amortize, so the cold-start system gate fails and no new speed claim is made.
 - The candidate-view control plane scales to 30,594 hypothetical views at a
   ViDoRe-v3-like workload size in 1.17 seconds of candidate generation and
   0.10 seconds of materialization planning, using 80 MB peak Python memory.
@@ -183,6 +190,8 @@ environment.
 - [Candidate view scale result](docs/representation-view-scale-result.md)
 - [Pairwise what-if contract](docs/pairwise-what-if-contract.md)
 - [Pairwise representation admission result](docs/pairwise-view-admission-result.md)
+- [Sparse cost--risk admission contract](docs/sparse-risk-admission-contract.md)
+- [Sparse cost--risk admission result](docs/sparse-risk-admission-result.md)
 - [Evaluation protocol](docs/evaluation.md)
 - [Current results](docs/results.md)
 - [Research roadmap](docs/roadmap.md)

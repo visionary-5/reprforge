@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "experiment": "sparse-risk-constrained-representation-admission",
+  "status": "algorithmic-headroom-positive-probe-debt-unresolved",
+  "contract": {
+    "outer_split": "source-paper-disjoint-five-fold",
+    "cross_fit_unit": "source-paper",
+    "heldout_visual_visible_to_planner": false,
+    "qrels_visible_to_planner": false,
+    "probe_artifacts_charged": true,
+    "risk_tolerance": 0.05,
+    "confidence": 0.9
+  },
+  "cost_model": {
+    "a100_observations": 20,
+    "page_ms": 268.79963792543793,
+    "batch_ms": 0.0,
+    "score_event_ms": 0.0,
+    "relative_rmse": 0.09535388291734365
+  },
+  "probe_20_percent": {
+    "selected_page_reduction_fraction": 0.24444444444444446,
+    "predicted_online_speedup": 1.3235294117647058,
+    "exact_teacher_agreement_delta": -0.016666666666666663,
+    "baseline_recall_5": 0.7944444444444444,
+    "selected_recall_5": 0.8055555555555556,
+    "fold_recall_regressions": 0,
+    "probe_unique_pages_outer_sum": 978,
+    "probe_estimated_ms": 262886.0458910783,
+    "online_saved_ms_per_episode": 8870.388051539452,
+    "probe_amortization_episodes": 29.636363636363637
+  },
+  "probe_40_percent": {
+    "selected_page_reduction_fraction": 0.28148148148148144,
+    "predicted_online_speedup": 1.3917525773195876,
+    "exact_teacher_agreement_delta": -0.02777777777777779,
+    "baseline_recall_5": 0.7944444444444444,
+    "selected_recall_5": 0.8166666666666667,
+    "fold_recall_regressions": 0,
+    "probe_unique_pages_outer_sum": 1410,
+    "probe_estimated_ms": 379007.48947486747,
+    "online_saved_ms_per_episode": 10214.386241166641,
+    "probe_amortization_episodes": 37.10526315789473
+  },
+  "source_hashes": {
+    "runtime_score_surface_npz": "8a1553afbe257fc8590ac60a2b363a9672158b97957505925d9a36fa1d21718b",
+    "query_metadata_csv": "a87d8263d8b498cdaceb6cb719abcd0a584ded3993910aad41edab1db8fa6ed3",
+    "physical_run_json": "694b09df85b0e54cc1f23fa93c4a577f1a56c0ede1aea52b41f811d286de7cb6",
+    "complete_analysis_json": "801b46d29526235dc48bc555159e6221e9554db0561e979addd6c2808f55366d"
+  },
+  "paper_claim_ready": false,
+  "a100_physical_rerun_authorized_by_gate": false
+}
