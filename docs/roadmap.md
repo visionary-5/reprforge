@@ -65,6 +65,19 @@ incremental value.
 
 ## Evaluation expansion
 
+The public benchmark audit is recorded in `benchmark-landscape.md`, and the
+bounded execution gates are frozen in `benchmark-transfer-contract.md`.  The
+priority order is now:
+
+1. IRPAPERS for a text/image complementary-failure transfer;
+2. Invoice Haystack for visually homogeneous hard negatives;
+3. MIRACL-VISION for multilingual 338K-page scale;
+4. M3DocVQA or MMDocRAG for downstream answer use.
+
+MultiDocR is a high-value paraphrase and graded-relevance test, but remains
+blocked on a public artifact.  MMLongBench is a reader stress test rather than
+an index benchmark and cannot substitute for these transfers.
+
 The next complete evaluation needs:
 
 - at least two public multimodal document workloads or independently defined

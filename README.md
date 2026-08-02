@@ -140,6 +140,8 @@ environment.
 - [Progressive visual oracle result](docs/progressive-visual-oracle-result.md)
 - [Candidate-relative fusion result](docs/candidate-relative-fusion-result.md)
 - [Online cohort compiler result](docs/cohort-compiler-result.md)
+- [Public benchmark and baseline landscape](docs/benchmark-landscape.md)
+- [Benchmark transfer contract](docs/benchmark-transfer-contract.md)
 - [Evaluation protocol](docs/evaluation.md)
 - [Current results](docs/results.md)
 - [Research roadmap](docs/roadmap.md)
