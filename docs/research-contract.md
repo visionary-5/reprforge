@@ -64,8 +64,8 @@ three connected mechanisms:
 1. **Candidate-relative evidence composition:** compare heterogeneous scores
    only in the cohort where they compete, rather than replacing globally
    incomparable raw scores.
-2. **Asynchronous cohort compilation:** build query-requested visual state in
-   batches without turning representation savings into cold-query stalls.
+2. **Progressive cohort compilation:** build query-requested visual state in
+   deduplicated batches and publish reusable state atomically.
 3. **Work-normalized execution:** schedule the compiled heterogeneous index by
    padded vector work so resource reduction yields GPU latency reduction.
 
@@ -88,9 +88,16 @@ deployment and rollback; it is not a novelty claim by itself.
 The rejected `tiered-selective K=20` policy is the unconditional
 admit-on-first-touch baseline. It already provides the query-driven
 materialization pattern, so database cracking alone is not a contribution.
-The open challenge is no longer a more elaborate per-page what-if estimator.
-It is scheduling cohort construction under a latency/resource budget while
-preserving candidate-relative fusion quality. See
+The first synchronous compiler is now measured.  On HR it is 1.11x faster
+end-to-end than full visual prebuild, and on Finance-EN it is 1.68x faster,
+while improving nDCG@10 on both.  HR ablation shows that physical reuse is the
+main lever: batching adds only 1.07x over batch-1 resident and misses its 1.10x
+mechanism gate.  P95 synchronous batch completion remains about nine seconds.
+
+The open challenge is no longer a more elaborate per-page what-if estimator
+or more aggressive microbatching.  It is deciding what visual state to admit,
+or serving a provisional result before refinement, under an explicit
+latency/resource budget. See
 [`progressive-visual-index-contract.md`](progressive-visual-index-contract.md).
 
 ## Required evidence

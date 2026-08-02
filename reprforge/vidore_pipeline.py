@@ -38,6 +38,7 @@ except ImportError:  # pragma: no cover - exercised only without the optional ex
             self.corpus_texts = corpus_texts
 
 
+from reprforge.cohort_compiler import CohortCompiler
 from reprforge.mmdocir_route_runner import ColPaliBackend, EncodedBatch
 
 
@@ -47,6 +48,8 @@ MODES = {
     "visual-pool",
     "two-stage",
     "tiered-selective",
+    "bm25-fusion-sync",
+    "bm25-fusion-batched",
 }
 
 
@@ -123,6 +126,15 @@ class ReprForgeViDoRePipeline(BasePipeline):
         visual representations into an optional LRU cache, and replace text
         scores only for pages selected by the current query.  Physical cache
         residency is therefore distinct from logical score activation.
+    ``bm25-fusion-sync``
+        Use BM25 to form one query cohort at a time, encode its visual pages,
+        and rank by candidate-relative normalized BM25/visual fusion.  This is
+        the no-reuse execution baseline for the online algorithm.
+    ``bm25-fusion-batched``
+        Compile several BM25 cohorts together, encode their deduplicated union
+        once, score the query--union matrix once, and optionally retain visual
+        representations across request batches.  Only the current query's
+        cohort is logically activated in its ranking.
     """
 
     def __init__(
@@ -138,6 +150,8 @@ class ReprForgeViDoRePipeline(BasePipeline):
         top_k: int = 100,
         image_pool_factor: int = 25,
         cache_capacity_items: int = 0,
+        request_batch_size: int = 8,
+        cohort_cache_policy: str = "resident",
         capture_score_trace: bool = False,
         backend_factory: Callable[[], RepresentationBackend] | None = None,
     ) -> None:
@@ -148,11 +162,14 @@ class ReprForgeViDoRePipeline(BasePipeline):
             or scoring_batch_size <= 0
             or candidate_k <= 0
             or top_k <= 0
+            or request_batch_size <= 0
         ):
             raise ValueError(
-                "batch_size, scoring_batch_size, candidate_k, and top_k "
-                "must be positive"
+                "batch_size, scoring_batch_size, candidate_k, top_k, and "
+                "request_batch_size must be positive"
             )
+        if cohort_cache_policy not in {"none", "resident"}:
+            raise ValueError("cohort_cache_policy must be 'none' or 'resident'")
         if image_pool_factor < 2:
             raise ValueError("image_pool_factor must be at least 2")
         if cache_capacity_items < 0:
@@ -176,6 +193,8 @@ class ReprForgeViDoRePipeline(BasePipeline):
         self.top_k = top_k
         self.image_pool_factor = image_pool_factor
         self.capture_score_trace = capture_score_trace
+        self.request_batch_size = request_batch_size
+        self.cohort_cache_policy = cohort_cache_policy
         # Zero means an unbounded cache for tiered-selective, not no cache.
         self.cache_capacity_items = cache_capacity_items
 
@@ -203,6 +222,7 @@ class ReprForgeViDoRePipeline(BasePipeline):
         self._base: EncodedBatch | None = None
         self._visual: EncodedBatch | None = None
         self._visual_cache: OrderedDict[str, Any] = OrderedDict()
+        self._cohort_compiler: CohortCompiler | None = None
         self._index_info: dict[str, Any] = {}
         self._search_info: dict[str, Any] = {}
         self._last_query_ids: tuple[str, ...] = ()
@@ -239,6 +259,7 @@ class ReprForgeViDoRePipeline(BasePipeline):
         }
         self._base = None
         self._visual = None
+        self._cohort_compiler = None
         self._visual_cache.clear()
         self._last_query_ids = ()
         self._last_score_matrix = ()
@@ -247,6 +268,25 @@ class ReprForgeViDoRePipeline(BasePipeline):
         visual_materializations = 0
         if self.mode in {"text", "two-stage", "tiered-selective"}:
             self._base = self.backend.encode_texts(self.corpus_texts)
+        elif self.mode in {"bm25-fusion-sync", "bm25-fusion-batched"}:
+            self._cohort_compiler = CohortCompiler(
+                corpus_ids=self.corpus_ids,
+                corpus_texts=self.corpus_texts,
+                corpus_images=self.corpus_images,
+                backend=self.backend,
+                candidate_k=self.candidate_k,
+                top_k=self.top_k,
+                request_batch_size=(
+                    1
+                    if self.mode == "bm25-fusion-sync"
+                    else self.request_batch_size
+                ),
+                cache_policy=(
+                    "none"
+                    if self.mode == "bm25-fusion-sync"
+                    else self.cohort_cache_policy
+                ),
+            )
         elif self.mode == "visual":
             self._visual = self._encode_images(range(len(self.corpus_ids)))
             visual_materializations = len(self.corpus_ids)
@@ -263,16 +303,28 @@ class ReprForgeViDoRePipeline(BasePipeline):
         elapsed_ms = (time.perf_counter() - began) * 1000.0
 
         index = self._base if self._base is not None else self._visual
-        assert index is not None
+        if index is None and self._cohort_compiler is None:
+            raise AssertionError("index construction produced no representation")
         self._index_info = {
             "dataset_name": dataset_name,
             "mode": self.mode,
             "corpus_items": len(self.corpus_ids),
             "model_load_ms_outside_official_index_timer": self.model_load_ms,
             "measured_index_ms_inside_pipeline": elapsed_ms,
-            "index_vector_bytes": _batch_bytes(index),
-            "index_vectors": sum(
-                int(embedding.shape[0]) for embedding in index.embeddings
+            "index_vector_bytes": (
+                _batch_bytes(index)
+                if index is not None
+                else self._cohort_compiler.logical_bm25_bytes
+            ),
+            "index_vectors": (
+                sum(int(embedding.shape[0]) for embedding in index.embeddings)
+                if index is not None
+                else 0
+            ),
+            "index_kind": (
+                "bm25-locator"
+                if self._cohort_compiler is not None
+                else "late-interaction"
             ),
             "visual_materializations_during_index": visual_materializations,
             "visual_encoding_avoided_during_index": (
@@ -415,6 +467,28 @@ class ReprForgeViDoRePipeline(BasePipeline):
             raise ValueError("query identifiers and texts differ in length")
         if not self.corpus_ids:
             raise RuntimeError("index() must be called before search()")
+
+        if self.mode in {"bm25-fusion-sync", "bm25-fusion-batched"}:
+            if self._cohort_compiler is None:
+                raise RuntimeError("index() must be called before search()")
+            execution = self._cohort_compiler.execute_batch(query_ids, queries)
+            metrics = execution.metrics
+            self._search_info = {
+                **self._index_info,
+                **metrics,
+                "query_encode_ms_inside_search": metrics["query_encode_ms"],
+                "retrieval_and_materialization_ms_inside_search": metrics[
+                    "total_execution_ms"
+                ],
+                "current_cached_items": metrics["current_resident_items"],
+                "current_cached_vector_bytes": metrics[
+                    "current_resident_vector_bytes"
+                ],
+                "cache_capacity_items": None,
+                "physical_cache_is_query_scoped": False,
+                "backend": dict(self.backend.environment()),
+            }
+            return execution.results, self._search_info
 
         began = time.perf_counter()
         encoded_queries = self.backend.encode_queries(queries)

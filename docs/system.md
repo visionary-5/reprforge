@@ -87,7 +87,23 @@ lengths, without changing scores or rankings.
 | `representation_allocator` | Budgeted route allocation |
 | `heterogeneous_index` | Compile, load, amplify, and execute physical indexes |
 | `versioned_visual_index` | Materialize, publish, query, and roll back visual delta generations |
+| `bm25` | Deterministic sparse locator shared by trace and online execution |
+| `cohort_compiler` | Deduplicate, construct, score, fuse, and atomically publish query cohorts |
+| `cohort_trace_parity` | Verify online Top-100 ranks against frozen score surfaces |
 | `run_end_to_end` | Compile, verify, evaluate, and benchmark in one run |
+
+## Online cohort path
+
+The official ViDoRe adapter also exposes an online path that does not require
+a prebuilt late-interaction corpus.  It builds a small BM25 locator, selects a
+Top-20 cohort for each query, constructs missing visual representations, and
+fuses standardized BM25 and visual scores within that cohort.  A request batch
+scores all queries against the deduplicated candidate union.  Staged resident
+state is published only after every score in that request batch succeeds.
+
+The current backend stores compiled visual vectors in CPU memory and transfers
+only the active union for GPU MaxSim.  It is synchronous: request batching is
+a throughput mechanism and does not hide cold construction latency.
 
 All command-line tools expose `--help` through `python -m`, for example:
 

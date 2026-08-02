@@ -20,6 +20,12 @@ not committed.
 
 - `candidate-fusion/`: two-dataset BM25/visual candidate-relative fusion
   quality, representation work, and frozen trace digests.
+- `systems/cohort-compiler-hr.json`: official HR full-visual, synchronous
+  no-reuse, batch-1 resident, and batch-8 resident A100 comparison.
+- `systems/cohort-compiler-finance.json`: held-out Finance-EN batch-8 resident
+  transfer against the official full-visual A100 baseline.
+- `systems/cohort-trace-parity.json`: Top-100 online/offline rank parity on HR
+  and Finance-EN, with raw replay digests.
 
 - `systems/candidate-scaling-summary.json`: 1×/4×/16× physical candidate
   scaling summary.

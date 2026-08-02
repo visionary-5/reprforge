@@ -1,5 +1,8 @@
 # Candidate-Relative Fusion Result
 
+> This offline proof has now been implemented and measured as an online
+> compiler; see [`cohort-compiler-result.md`](cohort-compiler-result.md).
+
 ## Decision
 
 ReprForge now has a concrete positive algorithm, but not yet a complete paper
@@ -92,13 +95,12 @@ The prospective system contribution is narrower:
 > in the cohort where they will compete, and schedule their construction so
 > the quality gain does not appear as multi-second cold-query latency.
 
-The next design must compare synchronous transient refinement, full visual
-prebuild, unconditional caching, simple admission, and an asynchronous
-cohort compiler under the same quality and GPU-time contract.  It becomes a
-paper direction only if the compiler improves time-to-quality or end-to-end
-cost without hiding the first-touch work.  ViDoRe has no natural query
-timestamps, so temporal or workload-drift claims still require an additional
-public trace.
+The first design comparison is now complete.  Synchronous no-reuse, batch-1
+resident, batch-8 resident, and full visual prebuild are charged under the same
+official evaluator.  Resident cohort compilation improves cold-stream
+time-to-quality, but batching alone misses its mechanism gate and synchronous
+P95 remains about nine seconds.  ViDoRe has no natural query timestamps, so
+temporal or workload-drift claims still require an additional public trace.
 
 ## Reproducibility
 

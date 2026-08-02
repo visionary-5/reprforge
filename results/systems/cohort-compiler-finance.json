@@ -1,0 +1,78 @@
+{
+  "comparisons": {
+    "b8-resident": {
+      "end_to_end_speedup_vs_full_visual": 1.684111389835942,
+      "progress_when_full_visual_index_becomes_ready": {
+        "deadline_ms": 308390.96450805664,
+        "elapsed_ms_after_last_completed_batch": 190497.05903045833,
+        "queries_completed": 309,
+        "resident_items": 1855
+      },
+      "relative_ndcg_gain_vs_full_visual": 0.18945813434756875
+    }
+  },
+  "corpus_count": 2942,
+  "dataset": "vidore/vidore_v3_finance_en",
+  "full_visual": {
+    "batch_completion_ms": null,
+    "batch_count": 0,
+    "cache_hit_fraction": null,
+    "cache_policy": null,
+    "end_to_end_ms": 320825.3538608551,
+    "first_batch_completion_ms": null,
+    "index_ms": 308390.96450805664,
+    "mode": "visual",
+    "ndcg@10": 0.47315695965468707,
+    "recall@100": 0.8255440255854307,
+    "request_batch_size": null,
+    "resident_items": null,
+    "resident_vector_bytes": null,
+    "search_ms": 12434.389352798462,
+    "search_ms_per_query": 40.24074224206622,
+    "source_sha256": "574f25628f7a13385c11a075c3135d7937427bd688659fef98ac7d217a9451bb",
+    "visual_encoder_calls": null,
+    "visual_padding_pages_encoded": 0,
+    "visual_pages_encoded": 2942,
+    "within_batch_dedup_fraction": null
+  },
+  "gate": {
+    "b8_incremental_search_speedup_vs_b1_resident_at_least_1.10x": null,
+    "b8_resident_end_to_end_below_full_visual": true,
+    "b8_resident_search_speedup_vs_sync_at_least_1.25x": null,
+    "online_quality_span_at_most_0.002_ndcg": null
+  },
+  "hardware": "1x NVIDIA A100-SXM4-80GB",
+  "latency_scope_note": "batch_completion_ms measures synchronous request-batch completion, not independently arriving per-query P95",
+  "online": {
+    "b8-resident": {
+      "batch_completion_ms": {
+        "max": 15980.044346302748,
+        "mean": 4868.912713220104,
+        "p50": 3825.469758361578,
+        "p95": 9126.959636248654
+      },
+      "batch_count": 39,
+      "cache_hit_fraction": 0.6902912621359223,
+      "cache_policy": "resident",
+      "end_to_end_ms": 190501.26719474792,
+      "first_batch_completion_ms": 15980.044346302748,
+      "index_ms": 609.4632148742676,
+      "mode": "bm25-fusion-batched",
+      "ndcg@10": 0.562800394484432,
+      "recall@100": 0.880451523379851,
+      "request_batch_size": 8,
+      "resident_items": 1855,
+      "resident_vector_bytes": 978252800,
+      "search_ms": 189891.80397987366,
+      "search_ms_per_query": 614.536582459138,
+      "source_sha256": "acb799f8867d3fdb45e3f6c8daf83ae57b3ff8bafbb5c443cb206b56745c960c",
+      "visual_encoder_calls": 39,
+      "visual_padding_pages_encoded": 0,
+      "visual_pages_encoded": 1855,
+      "within_batch_dedup_fraction": 0.06488673139158574
+    }
+  },
+  "online_ndcg_span": 0.0,
+  "query_count": 309,
+  "schema_version": 1
+}

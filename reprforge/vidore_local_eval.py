@@ -293,6 +293,8 @@ def main() -> None:
             "visual-pool",
             "two-stage",
             "tiered-selective",
+            "bm25-fusion-sync",
+            "bm25-fusion-batched",
         ],
         default="tiered-selective",
     )
@@ -303,6 +305,12 @@ def main() -> None:
     parser.add_argument("--top-k", type=int, default=100)
     parser.add_argument("--image-pool-factor", type=int, default=25)
     parser.add_argument("--cache-capacity-items", type=int, default=0)
+    parser.add_argument("--request-batch-size", type=int, default=8)
+    parser.add_argument(
+        "--cohort-cache-policy",
+        choices=["none", "resident"],
+        default="resident",
+    )
     parser.add_argument("--smoke-queries", type=int, default=0)
     parser.add_argument("--smoke-corpus", type=int, default=0)
     parser.add_argument(
@@ -348,6 +356,8 @@ def main() -> None:
         top_k=args.top_k,
         image_pool_factor=args.image_pool_factor,
         cache_capacity_items=args.cache_capacity_items,
+        request_batch_size=args.request_batch_size,
+        cohort_cache_policy=args.cohort_cache_policy,
         capture_score_trace=args.score_trace_dir is not None,
     )
     per_query = evaluate_retrieval(
@@ -387,6 +397,8 @@ def main() -> None:
             "top_k": args.top_k,
             "image_pool_factor": args.image_pool_factor,
             "cache_capacity_items": args.cache_capacity_items,
+            "request_batch_size": args.request_batch_size,
+            "cohort_cache_policy": args.cohort_cache_policy,
         },
         "official_upstream_commit": (
             "a70f23af8bb3b33efe8a4a6c6c15a6e2d978035e"

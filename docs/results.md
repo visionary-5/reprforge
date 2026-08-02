@@ -94,4 +94,25 @@ This is a physical-state and score-correctness milestone. It is not yet a GPU
 latency result: the smoke used the NumPy reference runtime and copied existing
 route embeddings rather than running the visual model.
 
+## Online candidate-relative cohort compiler
+
+The fixed online policy is BM25 Top-20 followed by candidate-local normalized
+BM25/ColPali fusion.  A resident compiler constructs each touched visual page
+once and activates it only for queries whose BM25 cohort contains that page.
+
+| Dataset | Full visual nDCG@10 | ReprForge nDCG@10 | Full visual end-to-end | ReprForge end-to-end | Visual pages built |
+|---|---:|---:|---:|---:|---:|
+| ViDoRe v3 HR | 0.5178 | **0.5373** | 108.74 s | **98.03 s** | 895 / 1,110 |
+| ViDoRe v3 Finance-EN | 0.4732 | **0.5628** | 320.83 s | **190.50 s** | 1,855 / 2,942 |
+
+On HR, synchronous no-reuse takes 590.86 seconds and batch-1 resident takes
+104.78 seconds.  Thus reuse explains most of the final 6.04x search speedup;
+batch-8 adds only 1.07x over batch-1 resident and misses its 1.10x standalone
+gate.  Batch-8 P95 completion remains 9.04 seconds, so the result is a
+cold-stream time-to-quality improvement, not a low-latency serving claim.
+
+Frozen-score replay produces zero Top-100 mismatches on all 318 HR and 309
+Finance queries.  Real bf16 execution has a 0.00148 nDCG@10 span across HR
+batching policies, so request batch size is part of the execution contract.
+
 Machine-readable summaries are indexed in `results/README.md`.

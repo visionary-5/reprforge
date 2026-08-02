@@ -40,6 +40,7 @@ The repository currently provides:
 - a compact physical heterogeneous index;
 - a versioned compressed-base + full-visual-delta index;
 - an official ViDoRe v3 complex-pipeline adapter for full-corpus transfer;
+- an online BM25-to-visual cohort compiler with atomic resident generations;
 - NumPy and PyTorch MaxSim runtimes;
 - a token-work scheduler that turns fewer vectors into fewer GPU batches.
 
@@ -74,21 +75,22 @@ The current results are promising, but not yet a finished paper claim.
   visualizes 84% of pages, is 22.5% slower end-to-end than full visual, and
   reaches only **0.501**. An oracle-only 13.5% visual witness reaches
   **0.544**, establishing allocation headroom but not a deployable policy.
-- A fixed candidate-relative fusion path now transfers across two official
-  ViDoRe v3 datasets. BM25 Top-20 plus cohort-normalized visual evidence
-  reaches **0.537** nDCG@10 on HR (full visual: 0.518) and **0.563** on
-  Finance-EN (best single representation: BM25 at 0.529). Through the complete
-  query streams it touches 80.6% and 63.1% of pages, for measured
-  build-equivalent costs of 79.7% and 61.7% of full visual. The remaining
-  bottleneck is P95 cold visual work of 1.18--1.70 seconds, so asynchronous
-  construction is not yet solved.
+- Candidate-relative fusion now runs through a real online compiler on two
+  official ViDoRe v3 datasets. BM25 Top-20 plus cohort-normalized visual
+  evidence reaches **0.537** nDCG@10 on HR and **0.563** on Finance-EN. With
+  resident visual state, complete cold streams finish in **98.03 s** and
+  **190.50 s**, versus **108.74 s** and **320.83 s** for full visual prebuild.
+  The system constructs 80.6% and 63.1% of pages. HR ablation shows that
+  persistence supplies most of the gain: batch-8 adds only 1.07x over batch-1
+  resident and misses its 1.10x mechanism gate. Synchronous batch P95 remains
+  9.0--9.1 seconds, so low-latency asynchronous construction is not claimed.
 
 These findings establish a working end-to-end system and a real
 quality–resource trade-off. The independent per-page utility abstraction has
 been rejected: rank interactions make representation value cohort-dependent.
-The next research step is an asynchronous cohort compiler that preserves the
-fusion gain while removing cold-query stalls; lifecycle adaptation remains
-conditional on a real temporal workload.
+The next research step is bounded admission or serve-then-refine execution
+that preserves the fusion gain without making cold queries wait. Lifecycle
+adaptation remains conditional on a real temporal workload.
 
 ## Repository
 
@@ -137,6 +139,7 @@ environment.
 - [Progressive visual-index contract](docs/progressive-visual-index-contract.md)
 - [Progressive visual oracle result](docs/progressive-visual-oracle-result.md)
 - [Candidate-relative fusion result](docs/candidate-relative-fusion-result.md)
+- [Online cohort compiler result](docs/cohort-compiler-result.md)
 - [Evaluation protocol](docs/evaluation.md)
 - [Current results](docs/results.md)
 - [Research roadmap](docs/roadmap.md)

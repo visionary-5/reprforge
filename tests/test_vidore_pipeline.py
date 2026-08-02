@@ -234,3 +234,34 @@ def test_tiered_selective_lru_capacity_forces_rematerialization() -> None:
     assert info["cache_hits"] == 0
     assert info["cache_misses"] == 3
     assert info["peak_cached_items"] == 1
+
+
+def test_bm25_fusion_batched_matches_sync_and_deduplicates_visual_work() -> None:
+    sync_backend = FakeBackend()
+    sync = _pipeline("bm25-fusion-sync", sync_backend, top_k=3)
+    _index(sync)
+    sync_results, sync_info = sync.search(["q1", "q2"], ["q-a", "q-b"])
+
+    batch_backend = FakeBackend()
+    batched = _pipeline(
+        "bm25-fusion-batched",
+        batch_backend,
+        top_k=3,
+        request_batch_size=2,
+        cohort_cache_policy="none",
+    )
+    _index(batched)
+    batch_results, batch_info = batched.search(
+        ["q1", "q2"],
+        ["q-a", "q-b"],
+    )
+
+    assert batch_results == sync_results
+    assert sync_backend.image_calls == [
+        ("image-a", "image-b"),
+        ("image-b", "image-a"),
+    ]
+    assert batch_backend.image_calls == [("image-a", "image-b")]
+    assert sync_info["index_kind"] == "bm25-locator"
+    assert batch_info["within_batch_deduplicated_events"] == 2
+    assert batch_info["logical_visual_activation_is_query_scoped"] is True

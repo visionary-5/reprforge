@@ -32,22 +32,30 @@ fixed BM25 Top-20 cohort it reaches 0.5373 nDCG@10 on HR and 0.5628 on
 Finance-EN, above both single-representation baselines. The complete streams
 use 79.7% and 61.7% of full-visual build-equivalent work, respectively.
 
-## Candidate mechanism
+## Implemented mechanism
 
-The next minimal system is an asynchronous cohort compiler:
+The minimal synchronous cohort compiler now:
 
 1. BM25 immediately produces a Top-20 cohort;
 2. resident visual candidates are fused with candidate-relative calibration;
-3. missing candidates enter a GPU batch queue rather than twenty small
-   synchronous calls;
-4. compiled visual state becomes visible through the existing versioned delta
-   index;
+3. missing candidates from a request batch are deduplicated and encoded in one
+   compiler call;
+4. compiled visual state becomes visible only after the request batch
+   succeeds;
 5. every experiment reports time-to-quality, cold-query P95, total GPU work,
    and final resident coverage.
 
-Synchronous refine-and-wait, full visual prebuild, and unconditional
-admit-on-first-touch are required baselines. LFU/two-hit admission is added
-only when a defensible repeated or temporal workload is available.
+Synchronous no-reuse, batch-1 resident, and full visual prebuild have been
+measured on HR.  Resident reuse accounts for most of the 6.04x improvement
+over synchronous no-reuse; batch-8 adds only 1.07x over batch-1 resident and
+increases P95 completion from 1.39 to 9.04 seconds.  On Finance-EN the final
+system is 1.68x faster end-to-end than full visual and improves both nDCG@10
+and Recall@100.
+
+The next mechanism is not a larger batch queue. LFU/two-hit or another bounded
+admission rule is added only when a defensible repeated or temporal workload
+is available. Otherwise the constructive path is serve-then-refine with
+explicit result revision and time-to-quality metrics.
 
 The required first-stage baselines now include a LightSTAR-style transient
 selection/refinement cascade and a fixed compact visual representation such as
@@ -70,10 +78,10 @@ The next complete evaluation needs:
 
 ## Decision boundary
 
-The asynchronous compiler is motivated only if it produces a stable Pareto
-improvement over full prebuild and synchronous refinement. A dynamic
-lifecycle system is motivated only if workload episodes produce a meaningful
-plan boundary:
+The current compiler provides a cold-stream Pareto improvement over full
+prebuild on two datasets, but it does not provide low request latency. A
+dynamic lifecycle or asynchronous serving system is motivated only if
+workload episodes produce a meaningful plan boundary:
 
 - a static deployable plan has material regret;
 - the regret is not removed by a single robust fixed plan;

@@ -6,21 +6,20 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import math
-import re
 import time
-from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any, Sequence
 
 import numpy as np
 
+from reprforge.bm25 import (
+    build_index,
+    score_queries,
+    scores as compute_scores,
+    tokenize,
+)
 from reprforge.progressive_oracle import FrozenTrace, load_trace
 from reprforge.vidore_local_eval import _component_paths, _read_rows
-
-
-def tokenize(value: str) -> list[str]:
-    return re.findall(r"[a-z0-9]+", value.lower())
 
 
 def bm25_scores(
@@ -32,71 +31,7 @@ def bm25_scores(
 ) -> tuple[np.ndarray, np.ndarray, int]:
     """Return query-document BM25 scores and a logical posting-byte count."""
 
-    state, posting_bytes, vocabulary_bytes = _build_index(documents)
-    return (
-        _score_queries(state, queries, k1=k1, b=b),
-        posting_bytes,
-        vocabulary_bytes,
-    )
-
-
-def _build_index(
-    documents: Sequence[str],
-) -> tuple[
-    tuple[dict[str, list[tuple[int, int]]], np.ndarray, float, int],
-    np.ndarray,
-    int,
-]:
-    tokenized = [tokenize(value) for value in documents]
-    lengths = np.asarray([len(value) for value in tokenized], dtype=np.float64)
-    average_length = max(float(lengths.mean()), 1.0)
-    postings: dict[str, list[tuple[int, int]]] = defaultdict(list)
-    posting_bytes = np.zeros(len(documents), dtype=np.int64)
-    for position, tokens in enumerate(tokenized):
-        for term, frequency in Counter(tokens).items():
-            postings[term].append((position, frequency))
-            # Logical accounting: uint32 doc id + uint32 term frequency.
-            posting_bytes[position] += 8
-    vocabulary_bytes = sum(len(term.encode("utf-8")) for term in postings)
-    return (
-        (dict(postings), lengths, average_length, len(documents)),
-        posting_bytes,
-        vocabulary_bytes,
-    )
-
-
-def _score_queries(
-    state: tuple[dict[str, list[tuple[int, int]]], np.ndarray, float, int],
-    queries: Sequence[str],
-    *,
-    k1: float,
-    b: float,
-) -> np.ndarray:
-    postings, lengths, average_length, document_count = state
-    scores = np.zeros((len(queries), document_count), dtype=np.float32)
-    for query_position, query in enumerate(queries):
-        for term, query_frequency in Counter(tokenize(query)).items():
-            values = postings.get(term)
-            if not values:
-                continue
-            document_frequency = len(values)
-            inverse_document_frequency = math.log(
-                1.0
-                + (document_count - document_frequency + 0.5)
-                / (document_frequency + 0.5)
-            )
-            for document_position, frequency in values:
-                denominator = frequency + k1 * (
-                    1.0 - b + b * lengths[document_position] / average_length
-                )
-                scores[query_position, document_position] += float(
-                    query_frequency
-                    * inverse_document_frequency
-                    * frequency
-                    * (k1 + 1.0)
-                    / denominator
-                )
-    return scores
+    return compute_scores(documents, queries, k1=k1, b=b)
 
 
 def _sha256(path: Path) -> str:
@@ -144,10 +79,10 @@ def build_bm25_trace(
     queries = [query_lookup[str(value)] for value in visual.query_ids]
     documents = [corpus_lookup[str(value)] for value in visual.corpus_ids]
     began = time.perf_counter()
-    state, posting_bytes, vocabulary_bytes = _build_index(documents)
+    state, posting_bytes, vocabulary_bytes = build_index(documents)
     build_ms = (time.perf_counter() - began) * 1000.0
     began = time.perf_counter()
-    scores = _score_queries(state, queries, k1=1.2, b=0.75)
+    scores = score_queries(state, queries, k1=1.2, b=0.75)
     query_score_ms = (time.perf_counter() - began) * 1000.0
 
     output.mkdir(parents=True, exist_ok=True)
