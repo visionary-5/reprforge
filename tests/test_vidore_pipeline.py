@@ -285,3 +285,24 @@ def test_bm25_pipeline_executes_a_published_representation_plan() -> None:
     assert info["representation_admission_enabled"] is True
     assert info["admitted_plan_items"] == 1
     assert info["visual_pages_encoded"] == 1
+
+
+def test_bm25_pipeline_can_prebuild_a_published_representation_plan() -> None:
+    backend = FakeBackend()
+    pipeline = _pipeline(
+        "bm25-fusion-batched",
+        backend,
+        top_k=3,
+        request_batch_size=2,
+        admitted_item_ids=["b"],
+        visual_prior_by_rank=[0.0, 0.0],
+        prebuild_admitted_items=True,
+    )
+    _index(pipeline)
+
+    _, info = pipeline.search(["q1", "q2"], ["q-a", "q-b"])
+
+    assert backend.image_calls == [("image-b",)]
+    assert info["visual_materializations_during_index"] == 1
+    assert info["admitted_prebuild"]["visual_encoder_calls"] == 1
+    assert info["visual_pages_encoded"] == 0

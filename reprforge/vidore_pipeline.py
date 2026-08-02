@@ -154,6 +154,7 @@ class ReprForgeViDoRePipeline(BasePipeline):
         cohort_cache_policy: str = "resident",
         admitted_item_ids: Sequence[str] | None = None,
         visual_prior_by_rank: Sequence[float] | None = None,
+        prebuild_admitted_items: bool = False,
         capture_score_trace: bool = False,
         backend_factory: Callable[[], RepresentationBackend] | None = None,
     ) -> None:
@@ -177,6 +178,8 @@ class ReprForgeViDoRePipeline(BasePipeline):
             "bm25-fusion-batched",
         }:
             raise ValueError("representation admission requires a BM25 fusion mode")
+        if prebuild_admitted_items and admitted_item_ids is None:
+            raise ValueError("admitted prebuild requires an admission plan")
         if image_pool_factor < 2:
             raise ValueError("image_pool_factor must be at least 2")
         if cache_capacity_items < 0:
@@ -212,6 +215,7 @@ class ReprForgeViDoRePipeline(BasePipeline):
             if visual_prior_by_rank is None
             else tuple(float(value) for value in visual_prior_by_rank)
         )
+        self.prebuild_admitted_items = prebuild_admitted_items
         # Zero means an unbounded cache for tiered-selective, not no cache.
         self.cache_capacity_items = cache_capacity_items
 
@@ -283,6 +287,7 @@ class ReprForgeViDoRePipeline(BasePipeline):
 
         began = time.perf_counter()
         visual_materializations = 0
+        admitted_prebuild: Mapping[str, int | float] | None = None
         if self.mode in {"text", "two-stage", "tiered-selective"}:
             self._base = self.backend.encode_texts(self.corpus_texts)
         elif self.mode in {"bm25-fusion-sync", "bm25-fusion-batched"}:
@@ -306,6 +311,11 @@ class ReprForgeViDoRePipeline(BasePipeline):
                 admitted_item_ids=self.admitted_item_ids,
                 visual_prior_by_rank=self.visual_prior_by_rank,
             )
+            if self.prebuild_admitted_items:
+                admitted_prebuild = self._cohort_compiler.materialize_admitted()
+                visual_materializations = int(
+                    admitted_prebuild["visual_pages_encoded"]
+                )
         elif self.mode == "visual":
             self._visual = self._encode_images(range(len(self.corpus_ids)))
             visual_materializations = len(self.corpus_ids)
@@ -346,6 +356,9 @@ class ReprForgeViDoRePipeline(BasePipeline):
                 else "late-interaction"
             ),
             "visual_materializations_during_index": visual_materializations,
+            "admitted_prebuild": (
+                None if admitted_prebuild is None else dict(admitted_prebuild)
+            ),
             "visual_encoding_avoided_during_index": (
                 len(self.corpus_ids) - visual_materializations
             ),

@@ -19,6 +19,7 @@ from reprforge.irpapers_benchmark import (
     candidate_fusion_replay,
     full_fusion_results,
     load_irpapers,
+    load_irpapers_rendered,
     recall_at_k,
     score_rows_to_results,
 )
@@ -59,7 +60,9 @@ def _record(
 
 def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--docs", type=Path, required=True)
+    parser.add_argument("--docs", type=Path)
+    parser.add_argument("--rendered-pages", type=Path)
+    parser.add_argument("--rendered-texts", type=Path)
     parser.add_argument("--queries", type=Path, required=True)
     parser.add_argument("--base-model", type=Path, required=True)
     parser.add_argument("--adapter", type=Path, required=True)
@@ -75,7 +78,17 @@ def _parse_args() -> argparse.Namespace:
         action="store_true",
         help="Run only BM25, full visual, static fusion and score replay.",
     )
-    return parser.parse_args()
+    args = parser.parse_args()
+    rendered = args.rendered_pages is not None or args.rendered_texts is not None
+    if args.docs is None and not rendered:
+        parser.error("provide --docs or both --rendered-pages/--rendered-texts")
+    if args.docs is not None and rendered:
+        parser.error("--docs and rendered-page inputs are mutually exclusive")
+    if rendered and (
+        args.rendered_pages is None or args.rendered_texts is None
+    ):
+        parser.error("rendered input requires both pages and texts")
+    return args
 
 
 def _write_snapshot(
@@ -113,7 +126,15 @@ def main() -> None:
     if args.batch_size <= 0 or args.scoring_batch_size <= 0:
         raise ValueError("GPU batch sizes must be positive")
     began = time.perf_counter()
-    data = load_irpapers(args.docs, args.queries)
+    data = (
+        load_irpapers(args.docs, args.queries)
+        if args.docs is not None
+        else load_irpapers_rendered(
+            args.rendered_pages,
+            args.rendered_texts,
+            args.queries,
+        )
+    )
     load_seconds = time.perf_counter() - began
 
     began = time.perf_counter()

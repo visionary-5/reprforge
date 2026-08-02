@@ -204,6 +204,28 @@ def test_admission_plan_encodes_only_published_representation_views() -> None:
     assert execution.metrics["batch_trace"][0]["unique_admitted_candidates"] == 2
 
 
+def test_admission_plan_can_be_materialized_atomically_before_queries() -> None:
+    backend = FakeCohortBackend()
+    compiler = _compiler(
+        backend,
+        request_batch_size=2,
+        cache_policy="resident",
+        admitted_item_ids={"b", "c"},
+        visual_prior_by_rank=[0.0, 0.0, 0.0],
+    )
+
+    prebuild = compiler.materialize_admitted()
+    execution = compiler.execute_batch(["q1", "q2"], ["revenue", "policy"])
+
+    assert backend.image_calls == [("image-b", "image-c")]
+    assert prebuild["visual_pages_encoded"] == 2
+    assert prebuild["visual_encoder_calls"] == 1
+    assert compiler.generation == 1
+    assert execution.metrics["initial_resident_items"] == 2
+    assert execution.metrics["visual_pages_encoded"] == 0
+    assert execution.metrics["cache_hit_events"] == 3
+
+
 def test_empty_admission_plan_uses_priors_without_loading_visual_backend() -> None:
     backend = FakeCohortBackend()
     compiler = _compiler(

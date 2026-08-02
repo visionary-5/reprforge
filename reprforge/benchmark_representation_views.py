@@ -28,6 +28,12 @@ from reprforge.representation_views import (
     ViewState,
     apply_materialization_plan,
 )
+from reprforge.pairwise_view_admission import (
+    build_boundary_pairs,
+    select_frequency_pages,
+    select_independent_pages,
+    select_pairwise_pages,
+)
 
 
 ROUTES = {
@@ -113,6 +119,29 @@ def run_control_plane_benchmark(
         skew=skew,
     )
     reuse = Counter(int(value) for value in candidates.flat)
+    workload_generation_seconds = time.perf_counter() - began
+
+    began = time.perf_counter()
+    pair_rng = np.random.default_rng(seed + 1)
+    locator_scores = (
+        -0.22 * np.arange(candidate_k, dtype=np.float64)[None, :]
+        + pair_rng.normal(0.0, 0.035, size=(queries, candidate_k))
+    )
+    cutoff = min(5, candidate_k - 1)
+    rank_risk = np.zeros(candidate_k, dtype=np.float64)
+    rank_risk[cutoff:] = np.exp(
+        -0.22 * np.arange(candidate_k - cutoff, dtype=np.float64)
+    )
+    boundary_pairs = build_boundary_pairs(
+        candidates,
+        locator_scores,
+        cutoff=cutoff,
+        rank_risk=rank_risk,
+        temperature=1.0,
+    )
+    pair_graph_seconds = time.perf_counter() - began
+
+    began = time.perf_counter()
     latent = rng.beta(1.5, 5.0, size=items)
     catalog = RepresentationViewCatalog()
     for item in sorted(reuse):
@@ -136,7 +165,7 @@ def run_control_plane_benchmark(
                     maintenance_cost_ms=float(profile["build_cost_ms"] * 0.05),
                 )
             )
-    generation_seconds = time.perf_counter() - began
+    catalog_generation_seconds = time.perf_counter() - began
 
     total_probe_cost = sum(view.probe_cost_ms for view in catalog.views())
     began = time.perf_counter()
@@ -179,6 +208,23 @@ def run_control_plane_benchmark(
         },
     )
     planning_seconds = time.perf_counter() - began
+
+    pair_page_budget = max(2, int(0.2 * candidate_pages))
+    began = time.perf_counter()
+    pairwise = select_pairwise_pages(
+        boundary_pairs,
+        page_budget=pair_page_budget,
+    )
+    pair_planning_seconds = time.perf_counter() - began
+    independent = select_independent_pages(
+        boundary_pairs,
+        page_budget=pair_page_budget,
+    )
+    frequency = select_frequency_pages(
+        candidates,
+        boundary_pairs,
+        page_budget=pair_page_budget,
+    )
 
     catalog.save(snapshot)
     reloaded = RepresentationViewCatalog.load(snapshot)
@@ -243,15 +289,30 @@ def run_control_plane_benchmark(
                 else 0.0
             ),
         },
+        "pairwise_probe": {
+            "synthetic_objective_only": True,
+            "cutoff": cutoff,
+            "boundary_pairs": len(boundary_pairs),
+            "page_budget": pair_page_budget,
+            "pairwise_covered_weight_fraction": pairwise.covered_weight_fraction,
+            "independent_covered_weight_fraction": (
+                independent.covered_weight_fraction
+            ),
+            "frequency_covered_weight_fraction": frequency.covered_weight_fraction,
+            "pairwise_planning_seconds": pair_planning_seconds,
+        },
         "catalog": {
             **summary,
             "snapshot_bytes": snapshot.stat().st_size,
             "sha256": fingerprint,
         },
         "control_plane": {
-            "generation_seconds": generation_seconds,
+            "workload_generation_seconds": workload_generation_seconds,
+            "pair_graph_seconds": pair_graph_seconds,
+            "catalog_generation_seconds": catalog_generation_seconds,
             "probe_seconds": probe_seconds,
             "materialization_planning_seconds": planning_seconds,
+            "pairwise_planning_seconds": pair_planning_seconds,
             "peak_python_bytes": peak_bytes,
         },
         "interpretation": (

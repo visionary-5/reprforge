@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import base64
 import csv
+import json
 from pathlib import Path
 
 import numpy as np
@@ -10,6 +11,7 @@ from reprforge.irpapers_benchmark import (
     candidate_fusion_replay,
     full_fusion_results,
     load_irpapers,
+    load_irpapers_rendered,
     minimum_action_oracle,
     recall_at_k,
     score_rows_to_results,
@@ -67,6 +69,76 @@ def test_load_irpapers_preserves_supplied_modalities_and_single_gold(tmp_path: P
     assert data.metadata["papers"] == 1
     assert data.metadata["query_source_papers"] == 1
     assert data.metadata["query_metadata_mismatches"] == []
+
+
+def test_rendered_mirror_preserves_the_public_page_and_query_contract(
+    tmp_path: Path,
+) -> None:
+    images = tmp_path / "images"
+    images.mkdir()
+    (images / "7-1.png").write_bytes(b"image-a")
+    (images / "7-2.png").write_bytes(b"image-b")
+    pages = tmp_path / "pages.jsonl"
+    pages.write_text(
+        "\n".join(
+            json.dumps(row)
+            for row in [
+                {
+                    "pdf_id": 7,
+                    "page_number": 1,
+                    "image_path": "images/7-1.png",
+                    "image_bytes": 7,
+                },
+                {
+                    "pdf_id": 7,
+                    "page_number": 2,
+                    "image_path": "images/7-2.png",
+                    "image_bytes": 7,
+                },
+            ]
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    texts = tmp_path / "texts.jsonl"
+    texts.write_text(
+        "\n".join(
+            json.dumps(row)
+            for row in [
+                {"pdf_id": 7, "page_number": 1, "text": "a chart", "error": None},
+                {"pdf_id": 7, "page_number": 2, "text": "a table", "error": None},
+            ]
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    queries = tmp_path / "queries.csv"
+    _write_csv(
+        queries,
+        ["dataset_id", "pdf_id", "page_number", "question"],
+        [
+            {
+                "dataset_id": "7_2",
+                "pdf_id": "7",
+                "page_number": "2",
+                "question": "Which page has the table?",
+            }
+        ],
+    )
+
+    data = load_irpapers_rendered(
+        pages,
+        texts,
+        queries,
+        expected_docs=2,
+        expected_queries=1,
+    )
+
+    assert data.corpus_ids == ("7_1", "7_2")
+    assert data.corpus_texts == ("a chart", "a table")
+    assert data.corpus_images == (b"image-a", b"image-b")
+    assert data.qrels == {"q-0000": frozenset({"7_2"})}
+    assert data.metadata["source_form"] == "lossless-rendered-page-mirror"
 
 
 def test_load_irpapers_retains_official_qrel_when_query_metadata_disagrees(

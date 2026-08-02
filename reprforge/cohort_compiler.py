@@ -147,6 +147,56 @@ class CohortCompiler:
     def generation(self) -> int:
         return self._generation
 
+    def materialize_admitted(self) -> dict[str, int | float]:
+        """Build a frozen admission plan in one atomic encoder submission.
+
+        Workload-level admission is known before query execution.  Publishing
+        it eagerly avoids fragmenting physical construction across request
+        batches while preserving the same query-scoped activation semantics.
+        """
+
+        if self._admitted_item_ids is None:
+            raise RuntimeError("eager materialization requires an admission plan")
+        if self.cache_policy != "resident":
+            raise RuntimeError("eager materialization requires a resident cache")
+        positions = [
+            position
+            for position, item_id in enumerate(self.corpus_ids)
+            if item_id in self._admitted_item_ids
+        ]
+        began = time.perf_counter()
+        staged: dict[str, Any] = {}
+        encoder_calls = 0
+        if positions:
+            encoded = self.backend.encode_images(
+                [self.corpus_images[position] for position in positions]
+            )
+            encoder_calls = 1
+            if len(encoded.embeddings) != len(positions):
+                raise RuntimeError("visual backend returned an incomplete admission")
+            staged = {
+                self.corpus_ids[position]: embedding
+                for position, embedding in zip(
+                    positions,
+                    encoded.embeddings,
+                    strict=True,
+                )
+            }
+        elapsed_ms = (time.perf_counter() - began) * 1000.0
+        # Publish only after the entire plan has been encoded successfully.
+        self._resident = staged
+        if staged:
+            self._generation += 1
+        return {
+            "visual_pages_encoded": len(staged),
+            "visual_encoder_calls": encoder_calls,
+            "visual_encode_ms": elapsed_ms,
+            "resident_vector_bytes": sum(
+                _embedding_bytes(value) for value in staged.values()
+            ),
+            "atomic_publish": True,
+        }
+
     def _candidate_positions(self, scores: np.ndarray) -> list[int]:
         return sorted(
             range(len(self.corpus_ids)),

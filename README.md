@@ -101,7 +101,15 @@ The current results are promising, but not yet a finished paper claim.
   reuse. Across five source-paper-disjoint workload folds it retains **57.2%**
   of eligible visual pages and reaches **83.3% Recall@5**, versus 69.7% and
   81.7% for frequency-only admission under the same train-only risk target.
-  This passes the offline mechanism gate; physical A100 timing remains open.
+  This passes its offline mechanism gate.
+- Pairwise admission exposes a complementary-view effect at the Top-5
+  boundary. At the preregistered 20% page budget it improves exact teacher
+  agreement from **50.6% to 56.1%** over independent boundary weighting with
+  identical Recall@5. Train-only calibration builds **125 rather than 135
+  pages**, reaches **82.2% rather than 81.7% Recall@5**, and removes 21.2% of
+  score pairs. Two eager, interleaved A100 repetitions reach only **1.121x**
+  and **1.032x**, missing the frozen 1.15x speed gate. The mechanism is kept;
+  the current performance claim is rejected.
 - The candidate-view control plane scales to 30,594 hypothetical views at a
   ViDoRe-v3-like workload size in 1.17 seconds of candidate generation and
   0.10 seconds of materialization planning, using 80 MB peak Python memory.
@@ -110,11 +118,13 @@ The current results are promising, but not yet a finished paper claim.
 These findings establish a working end-to-end system and a real
 quality–resource trade-off. The independent per-page utility abstraction has
 been rejected: rank interactions make representation value cohort-dependent.
-The next research step is cutoff-aware active evidence acquisition: choose the
-unbuilt candidate most likely to cross the requested rank boundary, then stop
-only when the remaining candidates are safely separated from that boundary.
-Persistence remains a separate action, and lifecycle adaptation remains
-conditional on a real temporal workload.
+The current mechanism compiles incumbent--challenger comparisons into a
+weighted boundary graph and admits complete, reusable comparisons under a
+physical-build budget. The next research step is a train-only sparse what-if
+estimator that chooses this budget without a complete visual index, followed
+by transfer to a graded public workload. Persistence remains a separate
+action, and lifecycle adaptation remains conditional on a real temporal
+workload.
 
 ## Repository
 
@@ -171,6 +181,8 @@ environment.
 - [Boundary-weighted admission gate](docs/boundary-admission-gate.md)
 - [Candidate representation view contract](docs/representation-view-contract.md)
 - [Candidate view scale result](docs/representation-view-scale-result.md)
+- [Pairwise what-if contract](docs/pairwise-what-if-contract.md)
+- [Pairwise representation admission result](docs/pairwise-view-admission-result.md)
 - [Evaluation protocol](docs/evaluation.md)
 - [Current results](docs/results.md)
 - [Research roadmap](docs/roadmap.md)

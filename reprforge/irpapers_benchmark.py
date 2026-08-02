@@ -14,6 +14,7 @@ import base64
 import csv
 import hashlib
 import io
+import json
 import sys
 from dataclasses import dataclass
 from pathlib import Path
@@ -234,6 +235,132 @@ def load_irpapers(
             "query_metadata_mismatches": query_metadata_mismatches,
             "supplied_transcription_is_dataset_input": True,
             "images_decoded": decode_images,
+        },
+    )
+
+
+def load_irpapers_rendered(
+    pages_path: Path,
+    texts_path: Path,
+    queries_path: Path,
+    *,
+    expected_docs: int | None = 3230,
+    expected_queries: int | None = 180,
+) -> IRPapersData:
+    """Load a lossless rendered-page mirror of the public IRPAPERS corpus.
+
+    The mirror is useful when the original multi-gigabyte base64 CSV was not
+    retained after page rendering.  Every page image and extracted text row is
+    joined by the public `(pdf_id, page_number)` key; query and qrel semantics
+    remain identical to :func:`load_irpapers`.
+    """
+
+    text_by_page: dict[tuple[str, str], str] = {}
+    with texts_path.open("r", encoding="utf-8") as handle:
+        for line_number, line in enumerate(handle, start=1):
+            row = json.loads(line)
+            key = (str(row["pdf_id"]), str(row["page_number"]))
+            if key in text_by_page:
+                raise ValueError(f"duplicate native text at line {line_number}")
+            if row.get("error") is not None:
+                raise ValueError(f"native text error at line {line_number}")
+            text_by_page[key] = str(row.get("text") or "")
+
+    corpus_ids: list[str] = []
+    corpus_texts: list[str] = []
+    corpus_images: list[bytes] = []
+    document_pdf_ids: set[str] = set()
+    image_root = pages_path.parent
+    with pages_path.open("r", encoding="utf-8") as handle:
+        for line_number, line in enumerate(handle, start=1):
+            row = json.loads(line)
+            pdf_id = str(row["pdf_id"])
+            page_number = str(row["page_number"])
+            key = (pdf_id, page_number)
+            if key not in text_by_page:
+                raise ValueError(f"missing native text for page {key}")
+            image_path = image_root / str(row["image_path"])
+            image_bytes = image_path.read_bytes()
+            expected_bytes = int(row.get("image_bytes", len(image_bytes)))
+            if len(image_bytes) != expected_bytes:
+                raise ValueError(f"rendered image size mismatch at line {line_number}")
+            corpus_ids.append(f"{pdf_id}_{page_number}")
+            corpus_texts.append(text_by_page[key])
+            corpus_images.append(image_bytes)
+            document_pdf_ids.add(pdf_id)
+
+    if len(set(corpus_ids)) != len(corpus_ids):
+        raise ValueError("rendered IRPAPERS identifiers are not unique")
+    if expected_docs is not None and len(corpus_ids) != expected_docs:
+        raise ValueError(
+            f"expected {expected_docs} IRPAPERS pages, found {len(corpus_ids)}"
+        )
+    unused_text = set(text_by_page) - {
+        tuple(item_id.split("_", maxsplit=1)) for item_id in corpus_ids
+    }
+    if unused_text:
+        raise ValueError(f"native text contains {len(unused_text)} unmatched pages")
+
+    corpus_id_set = set(corpus_ids)
+    query_ids: list[str] = []
+    queries: list[str] = []
+    qrels: dict[str, frozenset[str]] = {}
+    query_pdf_ids: set[str] = set()
+    query_metadata_mismatches: list[dict[str, str | int]] = []
+    with queries_path.open("r", encoding="utf-8", newline="") as handle:
+        reader = csv.DictReader(handle)
+        _require_columns(
+            queries_path,
+            reader.fieldnames,
+            {"dataset_id", "pdf_id", "page_number", "question"},
+        )
+        for offset, row in enumerate(reader):
+            gold_id = str(row["dataset_id"]).strip()
+            pdf_id = str(row["pdf_id"]).strip()
+            page_number = str(row["page_number"]).strip()
+            if gold_id != f"{pdf_id}_{page_number}":
+                query_metadata_mismatches.append(
+                    {
+                        "csv_row": offset + 2,
+                        "dataset_id": gold_id,
+                        "declared_pdf_page": f"{pdf_id}_{page_number}",
+                    }
+                )
+            if gold_id not in corpus_id_set:
+                raise ValueError(f"query target {gold_id!r} is absent from the corpus")
+            query_id = f"q-{offset:04d}"
+            query_ids.append(query_id)
+            queries.append(str(row["question"]))
+            qrels[query_id] = frozenset({gold_id})
+            query_pdf_ids.add(pdf_id)
+
+    if expected_queries is not None and len(query_ids) != expected_queries:
+        raise ValueError(
+            f"expected {expected_queries} IRPAPERS queries, found {len(query_ids)}"
+        )
+    return IRPapersData(
+        query_ids=tuple(query_ids),
+        queries=tuple(queries),
+        corpus_ids=tuple(corpus_ids),
+        corpus_texts=tuple(corpus_texts),
+        corpus_images=tuple(corpus_images),
+        qrels=qrels,
+        metadata={
+            "pages_path": str(pages_path.resolve()),
+            "texts_path": str(texts_path.resolve()),
+            "queries_path": str(queries_path.resolve()),
+            "pages_sha256": sha256(pages_path),
+            "texts_sha256": sha256(texts_path),
+            "queries_sha256": sha256(queries_path),
+            "pages": len(corpus_ids),
+            "papers": len(document_pdf_ids),
+            "queries": len(query_ids),
+            "query_source_papers": len(query_pdf_ids),
+            "single_gold_page_per_query": True,
+            "query_metadata_mismatches": query_metadata_mismatches,
+            "supplied_transcription_is_dataset_input": True,
+            "images_decoded": True,
+            "source_form": "lossless-rendered-page-mirror",
         },
     )
 
