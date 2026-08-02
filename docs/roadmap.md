@@ -64,6 +64,15 @@ objective is a cutoff-aware active acquisition policy that chooses the next
 candidate by boundary-crossing value and stops from calibrated bounds on all
 unobserved candidates.
 
+The first cutoff-aware offline gate now passes. Boundary-weighted admission
+learns rank-conditioned Top-5 transition risk without qrels and aggregates it
+over page occurrences in a held-out workload. At an adaptive 80% historical
+agreement target it retains 57.2% of eligible episode pages and reaches 83.3%
+Recall@5; frequency-only admission retains 69.7% and reaches 81.7%. The next
+step is no longer another score replay. It is a cold A100 executor that tests
+whether fewer admitted pages become proportionally fewer physical encodes and
+at least 1.15x lower construction-plus-retrieval time.
+
 The required first-stage baselines now include a LightSTAR-style transient
 selection/refinement cascade and a fixed compact visual representation such as
 MURE when reproducible artifacts are available. These are stronger than the

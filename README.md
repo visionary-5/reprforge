@@ -95,6 +95,11 @@ The current results are promising, but not yet a finished paper claim.
   **1,800 to 992** and unique candidate pages from **511 to 309**, while
   matching K=10's **48.9% Recall@1**. It does not preserve Recall@5 (78.3%
   versus 82.2%), so it is a mechanism signal rather than the final algorithm.
+- Boundary-weighted admission then combines Top-5 transition risk with page
+  reuse. Across five source-paper-disjoint workload folds it retains **57.2%**
+  of eligible visual pages and reaches **83.3% Recall@5**, versus 69.7% and
+  81.7% for frequency-only admission under the same train-only risk target.
+  This passes the offline mechanism gate; physical A100 timing remains open.
 
 These findings establish a working end-to-end system and a real
 quality–resource trade-off. The independent per-page utility abstraction has
@@ -157,6 +162,7 @@ environment.
 - [Benchmark transfer contract](docs/benchmark-transfer-contract.md)
 - [IRPAPERS transfer result](docs/irpapers-transfer-result.md)
 - [Progressive evidence mechanism probe](docs/progressive-evidence-probe.md)
+- [Boundary-weighted admission gate](docs/boundary-admission-gate.md)
 - [Evaluation protocol](docs/evaluation.md)
 - [Current results](docs/results.md)
 - [Research roadmap](docs/roadmap.md)

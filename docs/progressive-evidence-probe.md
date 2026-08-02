@@ -138,6 +138,11 @@ fixed K, naive stability, the BM25-margin router and a certified-pruning-style
 score threshold.  If it cannot, IRPAPERS does not support a useful listwise
 acquisition algorithm with the available signals.
 
+That offline gate has now been run. Boundary-weighted admission passes on five
+source-paper-disjoint folds, retaining 57.2% of eligible episode pages and
+reaching 83.33% Recall@5. The complete result and its remaining systems debts
+are recorded in `boundary-admission-gate.md`.
+
 ## Reproduction
 
 ```bash
