@@ -134,13 +134,13 @@ The current results are promising, but not yet a finished paper claim.
   deployable gain is only two of 180 queries, so graded ViDoRe transfer is
   required before it becomes an algorithm claim.
 - V4 reframes already-computed visual embeddings as elastic physical index
-  state. On complete ViDoRe HR and Finance traces, a measured break-even TTL
-  with reuse-verified admission preserves identical Top-20 fusion quality and,
-  near the memory/recompute crossover, reduces charged representation cost by
-  **6.59%** and **9.49%** versus the better of transient recomputation and
-  permanent residency. Ten deterministic order permutations retain the
-  effect. The policy remains 1.49x/1.42x above a clairvoyant lower bound, so
-  V4 establishes a real lifecycle gap rather than a finished algorithm.
+  state, then audits that idea against strong database baselines. Its initial
+  **6.59%/9.49%** gains over transient and unbounded-resident extremes do not
+  survive capacity-aware GDSF: ReprForge loses by 0.79% on HR and 0.36% on
+  Finance at the claimed points, and wins only one of eighteen full-sweep
+  points. Binary retention is therefore retained as infrastructure, not a
+  contribution. The remaining research node is multi-state, quality-aware
+  physical design across text, compact visual, and full visual states.
 - The candidate-view control plane scales to 30,594 hypothetical views at a
   ViDoRe-v3-like workload size in 1.17 seconds of candidate generation and
   0.10 seconds of materialization planning, using 80 MB peak Python memory.
@@ -223,6 +223,7 @@ environment.
 - [Complementary-view V3 result](docs/complementary-view-v3-result.md)
 - [Elastic representation V4 contract](docs/elastic-representation-v4-contract.md)
 - [Elastic representation V4 result](docs/elastic-representation-v4-result.md)
+- [Elastic representation strong-baseline result](docs/elastic-representation-strong-baseline-result.md)
 - [Evaluation protocol](docs/evaluation.md)
 - [Current results](docs/results.md)
 - [Research roadmap](docs/roadmap.md)

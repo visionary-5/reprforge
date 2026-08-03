@@ -13,6 +13,7 @@ import numpy as np
 from reprforge.candidate_fusion import _candidate_ndcg
 from reprforge.elastic_representation_cache import (
     offline_oracle,
+    replay_capacity_cache,
     replay_elastic_cache,
 )
 from reprforge.progressive_oracle import load_trace, rank_order, validate_pair
@@ -20,6 +21,8 @@ from reprforge.progressive_oracle import load_trace, rank_order, validate_pair
 
 DEFAULT_PRICES = (0.1, 0.25, 0.5, 1.0, 2.0, 4.0, 8.0, 16.0, 32.0)
 DEFAULT_SHUFFLE_SEEDS = tuple(range(10))
+DEFAULT_CAPACITY_FRACTIONS = (0.05, 0.10, 0.20, 0.40, 0.60, 0.80, 1.00)
+DEFAULT_RANDOMIZED_SEEDS = tuple(range(5))
 
 
 def _requests(order: np.ndarray, candidate_k: int) -> list[list[int]]:
@@ -78,6 +81,222 @@ def _price_result(
     }
 
 
+def _aggregate_capacity_runs(results: Sequence[Any]) -> dict[str, Any]:
+    dictionaries = [result.to_dict() for result in results]
+    numeric_fields = (
+        "build_cost",
+        "holding_cost",
+        "total_cost",
+        "cache_hits",
+        "cache_misses",
+        "hit_fraction",
+        "peak_resident_items",
+        "peak_resident_bytes",
+        "resident_byte_intervals",
+        "final_resident_items",
+        "final_resident_bytes",
+    )
+    return {
+        "runs": len(dictionaries),
+        **{
+            field: {
+                "mean": float(np.mean([row[field] for row in dictionaries])),
+                "min": float(np.min([row[field] for row in dictionaries])),
+                "max": float(np.max([row[field] for row in dictionaries])),
+            }
+            for field in numeric_fields
+        },
+    }
+
+
+def _capacity_sweep(
+    requests: Sequence[Sequence[int]],
+    encode_ms: np.ndarray,
+    vector_bytes: np.ndarray,
+    *,
+    prices: Sequence[float],
+    capacity_fractions: Sequence[float],
+    randomized_seeds: Sequence[int],
+    include_curves: bool,
+) -> list[dict[str, Any]]:
+    full_bytes = int(vector_bytes.sum())
+    families = {
+        "lru_fixed": ("lru", "none"),
+        "gdsf_fixed": ("gdsf", "none"),
+        "gdsf_breakeven": ("gdsf", "breakeven"),
+        "gdsf_randomized": ("gdsf", "randomized"),
+        "gdsf_verified_breakeven": ("gdsf", "verified_breakeven"),
+    }
+    price_rows: list[dict[str, Any]] = []
+    for price in prices:
+        holding = (
+            vector_bytes.astype(np.float64)
+            / (1024.0 * 1024.0)
+            * float(price)
+        )
+        curves: dict[str, list[dict[str, Any]]] = {
+            family: [] for family in families
+        }
+        for fraction in capacity_fractions:
+            capacity = max(1, int(round(full_bytes * float(fraction))))
+            for family, (eviction, ttl) in families.items():
+                seeds = (
+                    tuple(randomized_seeds)
+                    if ttl == "randomized"
+                    else (0,)
+                )
+                runs = [
+                    replay_capacity_cache(
+                        requests,
+                        encode_ms,
+                        holding,
+                        vector_bytes,
+                        capacity_bytes=capacity,
+                        eviction_policy=eviction,
+                        ttl_policy=ttl,
+                        random_seed=seed,
+                    )
+                    for seed in seeds
+                ]
+                curves[family].append(
+                    {
+                        "capacity_fraction_of_full_visual": float(fraction),
+                        "capacity_bytes": capacity,
+                        **_aggregate_capacity_runs(runs),
+                    }
+                )
+
+        best = {
+            family: min(
+                rows,
+                key=lambda row: (
+                    row["total_cost"]["mean"],
+                    row["capacity_bytes"],
+                ),
+            )
+            for family, rows in curves.items()
+        }
+        published_names = (
+            "lru_fixed",
+            "gdsf_fixed",
+            "gdsf_breakeven",
+            "gdsf_randomized",
+        )
+        published_name = min(
+            published_names,
+            key=lambda name: best[name]["total_cost"]["mean"],
+        )
+        proposed_name = "gdsf_verified_breakeven"
+        published_cost = best[published_name]["total_cost"]["mean"]
+        proposed_cost = best[proposed_name]["total_cost"]["mean"]
+        no_cache_cost = float(
+            sum(float(encode_ms[item]) for batch in requests for item in batch)
+        )
+        strongest_name, strongest_cost = min(
+            (
+                (published_name, published_cost),
+                ("no_cache", no_cache_cost),
+            ),
+            key=lambda value: value[1],
+        )
+        price_row = {
+            "memory_price_ms_per_mib_query_interval": float(price),
+            "capacity_tuning_warning": (
+                "best points are post-hoc lower envelopes over the frozen "
+                "trace, not deployable capacity choices"
+            ),
+            "best_by_family": best,
+            "strongest_published_family": published_name,
+            "strongest_published_total_cost": published_cost,
+            "no_cache_total_cost": no_cache_cost,
+            "strongest_deployment_baseline": strongest_name,
+            "strongest_deployment_baseline_total_cost": strongest_cost,
+            "reprforge_family": proposed_name,
+            "reprforge_total_cost": proposed_cost,
+            "reprforge_gain_over_strongest_published": (
+                (published_cost - proposed_cost) / published_cost
+                if published_cost
+                else 0.0
+            ),
+            "reprforge_gain_over_strongest_deployment_baseline": (
+                (strongest_cost - proposed_cost) / strongest_cost
+                if strongest_cost
+                else 0.0
+            ),
+        }
+        if include_curves:
+            price_row["curves"] = curves
+        price_rows.append(price_row)
+    return price_rows
+
+
+def _strong_baseline_shuffle_summary(
+    requests: Sequence[Sequence[int]],
+    encode_ms: np.ndarray,
+    vector_bytes: np.ndarray,
+    *,
+    prices: Sequence[float],
+    capacity_fractions: Sequence[float],
+    randomized_seeds: Sequence[int],
+    shuffle_seeds: Sequence[int],
+) -> list[dict[str, Any]]:
+    by_price: list[list[dict[str, Any]]] = [[] for _ in prices]
+    for seed in shuffle_seeds:
+        rng = np.random.default_rng(seed)
+        permutation = rng.permutation(len(requests))
+        rows = _capacity_sweep(
+            [requests[int(index)] for index in permutation],
+            encode_ms,
+            vector_bytes,
+            prices=prices,
+            capacity_fractions=capacity_fractions,
+            randomized_seeds=randomized_seeds,
+            include_curves=False,
+        )
+        for index, row in enumerate(rows):
+            by_price[index].append(
+                {
+                    "shuffle_seed": int(seed),
+                    "strongest_deployment_baseline": row[
+                        "strongest_deployment_baseline"
+                    ],
+                    "strongest_deployment_baseline_total_cost": row[
+                        "strongest_deployment_baseline_total_cost"
+                    ],
+                    "reprforge_total_cost": row["reprforge_total_cost"],
+                    "reprforge_gain": row[
+                        "reprforge_gain_over_strongest_deployment_baseline"
+                    ],
+                }
+            )
+    summaries: list[dict[str, Any]] = []
+    for price, rows in zip(prices, by_price):
+        gains = np.asarray(
+            [row["reprforge_gain"] for row in rows], dtype=np.float64
+        )
+        baseline_counts: dict[str, int] = {}
+        for row in rows:
+            name = str(row["strongest_deployment_baseline"])
+            baseline_counts[name] = baseline_counts.get(name, 0) + 1
+        summaries.append(
+            {
+                "memory_price_ms_per_mib_query_interval": float(price),
+                "shuffle_count": len(rows),
+                "strongest_baseline_counts": baseline_counts,
+                "reprforge_positive_count": int(np.sum(gains > 0)),
+                "reprforge_gain": {
+                    "mean": float(gains.mean()),
+                    "min": float(gains.min()),
+                    "max": float(gains.max()),
+                }
+                if len(gains)
+                else None,
+                "per_seed": rows,
+            }
+        )
+    return summaries
+
+
 def analyze_dataset(
     name: str,
     text_root: Path,
@@ -87,6 +306,10 @@ def analyze_dataset(
     cutoff: int,
     prices: Sequence[float],
     shuffle_seeds: Sequence[int],
+    capacity_fractions: Sequence[float],
+    randomized_seeds: Sequence[int],
+    include_capacity_curves: bool,
+    strong_shuffle_seeds: Sequence[int],
 ) -> dict[str, Any]:
     text = load_trace(text_root)
     visual = load_trace(visual_root)
@@ -201,6 +424,28 @@ def analyze_dataset(
             "visual_vector_bytes_mean_page": float(visual.vector_bytes.mean()),
         },
         "original_query_order": original,
+        "capacity_constrained_strong_baselines": _capacity_sweep(
+            requests,
+            visual.encode_ms,
+            visual.vector_bytes,
+            prices=prices,
+            capacity_fractions=capacity_fractions,
+            randomized_seeds=randomized_seeds,
+            include_curves=include_capacity_curves,
+        ),
+        "capacity_constrained_strong_baseline_order_sensitivity": (
+            _strong_baseline_shuffle_summary(
+                requests,
+                visual.encode_ms,
+                visual.vector_bytes,
+                prices=prices,
+                capacity_fractions=capacity_fractions,
+                randomized_seeds=randomized_seeds,
+                shuffle_seeds=strong_shuffle_seeds,
+            )
+            if strong_shuffle_seeds
+            else []
+        ),
         "deterministic_query_order_shuffle_summary": shuffle_summary,
         "limitations": [
             "ViDoRe query order is a benchmark batch, not a production arrival trace.",
@@ -234,6 +479,30 @@ def parse_args() -> argparse.Namespace:
         nargs="*",
         default=list(DEFAULT_SHUFFLE_SEEDS),
     )
+    parser.add_argument(
+        "--capacity-fractions",
+        type=float,
+        nargs="+",
+        default=list(DEFAULT_CAPACITY_FRACTIONS),
+    )
+    parser.add_argument(
+        "--randomized-seeds",
+        type=int,
+        nargs="+",
+        default=list(DEFAULT_RANDOMIZED_SEEDS),
+    )
+    parser.add_argument(
+        "--include-capacity-curves",
+        action="store_true",
+        help="Store every capacity point instead of only family envelopes.",
+    )
+    parser.add_argument(
+        "--strong-shuffle-seeds",
+        type=int,
+        nargs="*",
+        default=[],
+        help="Also rerun capacity-aware baselines on these query permutations.",
+    )
     parser.add_argument("--output", type=Path, required=True)
     return parser.parse_args()
 
@@ -244,8 +513,10 @@ def main() -> None:
         raise ValueError("candidate-k must be at least cutoff")
     if any(price < 0 for price in args.prices):
         raise ValueError("memory prices must be non-negative")
+    if any(value <= 0 or value > 1 for value in args.capacity_fractions):
+        raise ValueError("capacity fractions must lie in (0, 1]")
     result = {
-        "schema_version": 1,
+        "schema_version": 2,
         "mechanism": "two-slope elastic representation retention",
         "datasets": [
             analyze_dataset(
@@ -256,6 +527,10 @@ def main() -> None:
                 cutoff=args.cutoff,
                 prices=args.prices,
                 shuffle_seeds=args.shuffle_seeds,
+                capacity_fractions=args.capacity_fractions,
+                randomized_seeds=args.randomized_seeds,
+                include_capacity_curves=args.include_capacity_curves,
+                strong_shuffle_seeds=args.strong_shuffle_seeds,
             )
             for name, text_root, visual_root in args.dataset
         ],

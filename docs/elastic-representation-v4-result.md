@@ -1,5 +1,11 @@
 # Elastic Representation V4: Result
 
+> **Superseded (2026-08-03).** The 6.59%/9.49% numbers below are valid only
+> against the two fixed extremes named in the original contract. A later
+> capacity-constrained comparison shows that GDSF closes both gains. They must
+> not be cited as ReprForge improvements over a strong cache baseline. See
+> `elastic-representation-strong-baseline-result.md`.
+
 ## Result
 
 The bounded two-state mechanism passes its feasibility gate, but leaves a

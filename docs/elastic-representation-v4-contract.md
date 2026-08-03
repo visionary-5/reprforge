@@ -1,5 +1,11 @@
 # Elastic Representation V4: Experimental Contract
 
+> **Status update (2026-08-03).** This initial contract compared against
+> transient and unbounded-resident extremes. The subsequent capacity-aware
+> audit adds LRU, GDSF, GDSF+Breakeven and GDSF+Randomized. Those baselines
+> close the claimed gain, so the V4 performance claim is superseded. See
+> `elastic-representation-strong-baseline-result.md`.
+
 ## The deeper system insight
 
 An expensive multimodal representation is not only an embedding. Once it has
@@ -116,4 +122,3 @@ datasets in some nontrivial cost regime. It is not sufficient for a paper
 claim: ViDoRe ordering is not a production arrival trace, only two corpora are
 tested, and the binary controller must still be compared with strong caching
 algorithms.
-

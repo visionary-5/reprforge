@@ -5,6 +5,7 @@ import pytest
 
 from reprforge.elastic_representation_cache import (
     offline_oracle,
+    replay_capacity_cache,
     replay_elastic_cache,
 )
 
@@ -102,3 +103,79 @@ def test_invalid_cost_or_request_is_rejected() -> None:
         replay_elastic_cache([[1]], [1.0], [1.0], policy="no_cache")
     with pytest.raises(ValueError):
         offline_oracle([[0]], [-1.0], [1.0])
+
+
+def test_capacity_lru_evicts_least_recent_item() -> None:
+    result = replay_capacity_cache(
+        [[0], [1], [0], [2], [1]],
+        [1.0, 10.0, 1.0],
+        [0.0, 0.0, 0.0],
+        [1, 1, 1],
+        capacity_bytes=2,
+        eviction_policy="lru",
+        ttl_policy="none",
+    )
+    assert result.cache_hits == 1
+    assert result.cache_misses == 4
+    assert result.build_cost == 22.0
+    assert result.peak_resident_bytes == 2
+
+
+def test_gdsf_retains_high_refault_cost_item() -> None:
+    result = replay_capacity_cache(
+        [[0], [1], [0], [2], [1]],
+        [1.0, 10.0, 1.0],
+        [0.0, 0.0, 0.0],
+        [1, 1, 1],
+        capacity_bytes=2,
+        eviction_policy="gdsf",
+        ttl_policy="none",
+    )
+    assert result.cache_hits == 2
+    assert result.cache_misses == 3
+    assert result.build_cost == 12.0
+
+
+def test_capacity_breakeven_matches_unbounded_ski_when_capacity_is_large() -> None:
+    requests = [[0], [], [0], [1]]
+    build = [10.0, 4.0]
+    holding = [2.0, 1.0]
+    unbounded = replay_elastic_cache(
+        requests, build, holding, policy="ski_ttl"
+    )
+    bounded = replay_capacity_cache(
+        requests,
+        build,
+        holding,
+        [1, 1],
+        capacity_bytes=2,
+        eviction_policy="gdsf",
+        ttl_policy="breakeven",
+    )
+    assert bounded.cache_hits == unbounded.cache_hits
+    assert bounded.cache_misses == unbounded.cache_misses
+    assert bounded.total_cost == unbounded.total_cost
+
+
+def test_randomized_ttl_is_reproducible_for_a_seed() -> None:
+    arguments = (
+        [[0], [], [0], [], [0]],
+        [3.0],
+        [1.0],
+        [1],
+    )
+    left = replay_capacity_cache(
+        *arguments,
+        capacity_bytes=1,
+        eviction_policy="gdsf",
+        ttl_policy="randomized",
+        random_seed=7,
+    )
+    right = replay_capacity_cache(
+        *arguments,
+        capacity_bytes=1,
+        eviction_policy="gdsf",
+        ttl_policy="randomized",
+        random_seed=7,
+    )
+    assert left == right

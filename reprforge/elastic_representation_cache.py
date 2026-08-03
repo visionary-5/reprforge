@@ -27,6 +27,13 @@ import numpy as np
 
 
 Policy = Literal["no_cache", "resident", "ski_ttl", "verified_ski_ttl"]
+EvictionPolicy = Literal["lru", "gdsf"]
+TtlPolicy = Literal[
+    "none",
+    "breakeven",
+    "randomized",
+    "verified_breakeven",
+]
 
 
 @dataclass(frozen=True)
@@ -42,6 +49,35 @@ class ElasticCacheResult:
     total_cost: float
     peak_resident_items: int
     final_resident_items: int
+
+    @property
+    def hit_fraction(self) -> float:
+        return self.cache_hits / self.request_count if self.request_count else 0.0
+
+    def to_dict(self) -> dict[str, float | int | str]:
+        result = asdict(self)
+        result["hit_fraction"] = self.hit_fraction
+        return result
+
+
+@dataclass(frozen=True)
+class CapacityCacheResult:
+    eviction_policy: str
+    ttl_policy: str
+    capacity_bytes: int
+    query_count: int
+    request_count: int
+    unique_items: int
+    cache_hits: int
+    cache_misses: int
+    build_cost: float
+    holding_cost: float
+    total_cost: float
+    peak_resident_items: int
+    peak_resident_bytes: int
+    resident_byte_intervals: float
+    final_resident_items: int
+    final_resident_bytes: int
 
     @property
     def hit_fraction(self) -> float:
@@ -234,4 +270,162 @@ def offline_oracle(
         total_cost=total,
         peak_resident_items=peak_upper_bound,
         final_resident_items=0,
+    )
+
+
+def replay_capacity_cache(
+    request_batches: Sequence[Iterable[int]],
+    build_cost: Sequence[float],
+    holding_cost: Sequence[float],
+    size_bytes: Sequence[int],
+    *,
+    capacity_bytes: int,
+    eviction_policy: EvictionPolicy,
+    ttl_policy: TtlPolicy,
+    random_seed: int = 0,
+) -> CapacityCacheResult:
+    """Replay a capacity-constrained cache with an optional elastic TTL.
+
+    ``breakeven`` and ``randomized`` follow the two online ski-rental
+    algorithms evaluated by Kumar et al. (CIDR 2025). Capacity pressure is
+    handled independently by LRU or Greedy-Dual-Size-Frequency (GDSF), as in
+    their practical composition. ``verified_breakeven`` is ReprForge's
+    explicit two-access admission variant and is never labelled as published
+    prior art.
+    """
+
+    builds, holdings = _validate_costs(build_cost, holding_cost)
+    sizes = np.asarray(size_bytes, dtype=np.int64)
+    if sizes.ndim != 1 or sizes.shape != builds.shape or np.any(sizes <= 0):
+        raise ValueError("size_bytes must be a positive vector aligned with costs")
+    if capacity_bytes < 0:
+        raise ValueError("capacity_bytes must be non-negative")
+    if eviction_policy not in ("lru", "gdsf"):
+        raise ValueError(f"unknown eviction policy: {eviction_policy}")
+    if ttl_policy not in (
+        "none",
+        "breakeven",
+        "randomized",
+        "verified_breakeven",
+    ):
+        raise ValueError(f"unknown TTL policy: {ttl_policy}")
+    batches = _normalise_requests(request_batches, len(builds))
+    rng = np.random.default_rng(random_seed)
+
+    active: dict[int, float] = {}
+    last_access: dict[int, int] = {}
+    frequency: dict[int, int] = {}
+    priority: dict[int, float] = {}
+    observed_accesses = np.zeros(len(builds), dtype=np.int64)
+    inflation = 0.0
+    resident_bytes = 0
+    peak_items = 0
+    peak_bytes = 0
+    byte_intervals = 0.0
+    hits = 0
+    misses = 0
+    build_total = 0.0
+    holding_total = 0.0
+    touched: set[int] = set()
+
+    def remove(item: int) -> None:
+        nonlocal resident_bytes
+        resident_bytes -= int(sizes[item])
+        active.pop(item, None)
+        last_access.pop(item, None)
+        frequency.pop(item, None)
+        priority.pop(item, None)
+
+    def ttl_duration(item: int) -> float:
+        rate = float(holdings[item])
+        if ttl_policy == "none" or rate == 0.0:
+            return float("inf")
+        breakeven = float(builds[item]) / rate
+        if ttl_policy in ("breakeven", "verified_breakeven"):
+            return breakeven
+        # Optimal randomized ski-rental buy time: CDF
+        # F(t)=(exp(t/b)-1)/(e-1), t in [0,b].
+        return breakeven * float(np.log1p((np.e - 1.0) * rng.random()))
+
+    for query, batch in enumerate(batches):
+        expired = [
+            item for item, expiry in active.items() if expiry <= float(query)
+        ]
+        for item in expired:
+            remove(item)
+
+        for item in batch:
+            touched.add(item)
+            observed_accesses[item] += 1
+            if item in active:
+                hits += 1
+                frequency[item] += 1
+            else:
+                misses += 1
+                build_total += float(builds[item])
+                should_admit = (
+                    ttl_policy != "verified_breakeven"
+                    or observed_accesses[item] >= 2
+                )
+                if should_admit and int(sizes[item]) <= capacity_bytes:
+                    active[item] = float("inf")
+                    resident_bytes += int(sizes[item])
+                    frequency[item] = 1
+
+            if item in active:
+                last_access[item] = query
+                duration = ttl_duration(item)
+                if duration <= 0.0:
+                    remove(item)
+                else:
+                    active[item] = float(query) + duration
+                    priority[item] = inflation + (
+                        frequency[item] * float(builds[item]) / int(sizes[item])
+                    )
+
+            while resident_bytes > capacity_bytes:
+                if eviction_policy == "lru":
+                    victim = min(
+                        active,
+                        key=lambda value: (last_access[value], value),
+                    )
+                else:
+                    victim = min(
+                        active,
+                        key=lambda value: (
+                            priority[value],
+                            last_access[value],
+                            value,
+                        ),
+                    )
+                    inflation = max(inflation, priority[victim])
+                remove(victim)
+
+        peak_items = max(peak_items, len(active))
+        peak_bytes = max(peak_bytes, resident_bytes)
+        if query == len(batches) - 1:
+            continue
+        for item, expiry in active.items():
+            fraction = min(1.0, max(0.0, expiry - float(query)))
+            holding_total += float(holdings[item]) * fraction
+            byte_intervals += int(sizes[item]) * fraction
+
+    request_count = sum(len(batch) for batch in batches)
+    return CapacityCacheResult(
+        eviction_policy=eviction_policy,
+        ttl_policy=ttl_policy,
+        capacity_bytes=capacity_bytes,
+        query_count=len(batches),
+        request_count=request_count,
+        unique_items=len(touched),
+        cache_hits=hits,
+        cache_misses=misses,
+        build_cost=build_total,
+        holding_cost=holding_total,
+        total_cost=build_total + holding_total,
+        peak_resident_items=peak_items,
+        peak_resident_bytes=peak_bytes,
+        resident_byte_intervals=byte_intervals,
+        final_resident_items=len(active),
+        final_resident_bytes=resident_bytes,
     )
