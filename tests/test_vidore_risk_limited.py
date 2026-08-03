@@ -1,6 +1,11 @@
 import numpy as np
 
-from tools.analyze_vidore_risk_limited import _complete_rankings, _metrics, _work
+from tools.analyze_vidore_risk_limited import (
+    _alignment,
+    _complete_rankings,
+    _metrics,
+    _work,
+)
 
 
 def test_complete_rankings_preserves_topk_and_candidate_tail() -> None:
@@ -27,3 +32,12 @@ def test_work_charges_unique_builds_but_all_candidate_events() -> None:
     assert result["unique_pages"] == 3
     assert result["unique_visual_build_ms"] == 6.0
     assert result["unique_visual_bytes"] == 60
+
+
+def test_alignment_distinguishes_harmless_teacher_set_changes() -> None:
+    teacher = np.asarray([[0, 1, 2], [0, 1, 2]], dtype=np.int32)
+    ranking = np.asarray([[0, 1, 3], [0, 2, 1]], dtype=np.int32)
+    result = _alignment(ranking, teacher, [{0: 2}, {0: 2}])
+    assert result["teacher_set_disagreements"] == 1
+    assert result["harmless_for_ndcg"] == 1
+    assert result["harmful_for_ndcg"] == 0

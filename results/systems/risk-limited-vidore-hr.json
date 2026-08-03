@@ -28,6 +28,13 @@
         "recall@100": 0.8444250694894844
       },
       "teacher_exact_topk_set_agreement": 0.11006289308176101,
+      "teacher_fidelity_alignment": {
+        "beneficial_for_ndcg": 28,
+        "harmful_for_ndcg": 58,
+        "harmless_for_ndcg": 197,
+        "mean_ndcg_regret": 0.012651471833062216,
+        "teacher_set_disagreements": 283
+      },
       "work": {
         "candidate_events": 3180,
         "mean_acquired_pages": 10.0,
@@ -42,6 +49,13 @@
         "recall@100": 0.8444250694894844
       },
       "teacher_exact_topk_set_agreement": 1.0,
+      "teacher_fidelity_alignment": {
+        "beneficial_for_ndcg": 0,
+        "harmful_for_ndcg": 0,
+        "harmless_for_ndcg": 0,
+        "mean_ndcg_regret": 0.0,
+        "teacher_set_disagreements": 0
+      },
       "work": {
         "candidate_events": 31800,
         "mean_acquired_pages": 100.0,
@@ -56,6 +70,13 @@
         "recall@100": 0.8444250694894844
       },
       "teacher_exact_topk_set_agreement": 0.9119496855345912,
+      "teacher_fidelity_alignment": {
+        "beneficial_for_ndcg": 4,
+        "harmful_for_ndcg": 5,
+        "harmless_for_ndcg": 19,
+        "mean_ndcg_regret": 0.000786244084732919,
+        "teacher_set_disagreements": 28
+      },
       "work": {
         "candidate_events": 6360,
         "mean_acquired_pages": 20.0,
@@ -70,6 +91,13 @@
         "recall@100": 0.8444250694894844
       },
       "teacher_exact_topk_set_agreement": 0.9968553459119497,
+      "teacher_fidelity_alignment": {
+        "beneficial_for_ndcg": 0,
+        "harmful_for_ndcg": 0,
+        "harmless_for_ndcg": 1,
+        "mean_ndcg_regret": 0.0,
+        "teacher_set_disagreements": 1
+      },
       "work": {
         "candidate_events": 15900,
         "mean_acquired_pages": 50.0,
@@ -482,6 +510,13 @@
         "topk_set_coverage": 0.9622641509433962
       },
       "teacher_exact_topk_set_agreement": 0.9622641509433962,
+      "teacher_fidelity_alignment": {
+        "beneficial_for_ndcg": 0,
+        "harmful_for_ndcg": 1,
+        "harmless_for_ndcg": 11,
+        "mean_ndcg_regret": 0.0003210609909525524,
+        "teacher_set_disagreements": 12
+      },
       "work": {
         "candidate_events": 7429,
         "mean_acquired_pages": 23.361635220125788,
@@ -890,6 +925,13 @@
         "simultaneous_upper_coverage": 0.9465408805031447
       },
       "teacher_exact_topk_set_agreement": 0.9968553459119497,
+      "teacher_fidelity_alignment": {
+        "beneficial_for_ndcg": 0,
+        "harmful_for_ndcg": 0,
+        "harmless_for_ndcg": 1,
+        "mean_ndcg_regret": 0.0,
+        "teacher_set_disagreements": 1
+      },
       "work": {
         "candidate_events": 16066,
         "mean_acquired_pages": 50.522012578616355,

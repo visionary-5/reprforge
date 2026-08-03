@@ -44,6 +44,14 @@ size concentrates around a robust fixed depth.  The current cheap features
 identify a safe cohort, not a cohort whose variable size provides material
 systems value.
 
+More importantly, exact teacher fidelity is misaligned with retrieval value.
+Fixed K=20 differs from the full teacher on 28 queries, but 19 differences
+leave per-query nDCG unchanged and 4 actually improve it; only 5 are harmful.
+The conformal candidate set removes 16 of those set differences by building
+more pages, yet 11 of its remaining 12 differences are also nDCG-neutral.
+Protecting every teacher Top-10 transition therefore overprices changes that
+do not affect relevant evidence.
+
 No live progressive executor is timed because the offline unique-build gate
 fails.  A scheduler cannot create a speedup when the proposed policy requests
 more unique visual pages than fixed K=20.

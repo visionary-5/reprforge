@@ -100,6 +100,49 @@ def _metrics(
     return {"ndcg@10": float(np.mean(ndcg)), "recall@100": float(np.mean(recall))}
 
 
+def _per_query_ndcg(
+    rankings: np.ndarray,
+    qrels: Sequence[dict[int, int]],
+) -> np.ndarray:
+    values: list[float] = []
+    for ranking, relevance in zip(rankings, qrels, strict=True):
+        dcg = sum(
+            (2 ** relevance.get(int(page), 0) - 1) / np.log2(rank + 2)
+            for rank, page in enumerate(ranking[:10])
+        )
+        ideal = sorted(relevance.values(), reverse=True)[:10]
+        idcg = sum(
+            (2**value - 1) / np.log2(rank + 2)
+            for rank, value in enumerate(ideal)
+        )
+        values.append(float(dcg / idcg) if idcg else 0.0)
+    return np.asarray(values, dtype=np.float64)
+
+
+def _alignment(
+    rankings: np.ndarray,
+    teacher: np.ndarray,
+    qrels: Sequence[dict[int, int]],
+) -> dict[str, float | int]:
+    mismatch = np.asarray(
+        [
+            set(row[:10]) != set(reference[:10])
+            for row, reference in zip(rankings, teacher, strict=True)
+        ]
+    )
+    regret = _per_query_ndcg(teacher, qrels) - _per_query_ndcg(rankings, qrels)
+    harmful = mismatch & (regret > 1e-12)
+    beneficial = mismatch & (regret < -1e-12)
+    harmless = mismatch & ~(harmful | beneficial)
+    return {
+        "teacher_set_disagreements": int(mismatch.sum()),
+        "harmful_for_ndcg": int(harmful.sum()),
+        "harmless_for_ndcg": int(harmless.sum()),
+        "beneficial_for_ndcg": int(beneficial.sum()),
+        "mean_ndcg_regret": float(regret.mean()),
+    }
+
+
 def _work(
     acquired_pages: Sequence[Sequence[int]],
     encode_ms: np.ndarray,
@@ -222,6 +265,11 @@ def main() -> None:
                 coverage_name: float(coverage.mean()),
             },
             "work": _work(result.acquired_pages, encode_ms, vector_bytes),
+            "teacher_fidelity_alignment": _alignment(
+                complete,
+                _complete_rankings(result.teacher_rankings, surface.candidate_indices),
+                labels,
+            ),
             "folds": list(result.folds),
         }
 
@@ -247,6 +295,11 @@ def main() -> None:
                 )
             ),
             "work": _work(acquired, encode_ms, vector_bytes),
+            "teacher_fidelity_alignment": _alignment(
+                _complete_rankings(topk, surface.candidate_indices),
+                _complete_rankings(score.teacher_rankings, surface.candidate_indices),
+                labels,
+            ),
         }
 
     teacher_complete = _complete_rankings(score.teacher_rankings, surface.candidate_indices)
