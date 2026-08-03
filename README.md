@@ -153,6 +153,14 @@ The current results are promising, but not yet a finished paper claim.
   reaches 0.5262 while using 1.7% less measured visual build time.  The
   decision-level risk model therefore preserves quality but still has no
   material action value over a robust fixed depth on this second workload.
+- On frozen ViDoRe v3 Finance-EN, query-dependent depth has measurable but
+  insufficient value.  The conformal set uses 34.50 visual pages/query,
+  reaches 0.4627 nDCG@10 versus 0.4654 for the full Top-100 teacher, and saves
+  10.13% summed measured visual-build work versus quality-matched fixed K=50.
+  It misses the preregistered 20% gate and contradicts HR's fixed-depth win.
+  Across both transfers, exact teacher-rank fidelity overprices many changes
+  that do not alter relevant evidence; the current mechanism is closed rather
+  than repaired with dataset-specific thresholds.
 - The candidate-view control plane scales to 30,594 hypothetical views at a
   ViDoRe-v3-like workload size in 1.17 seconds of candidate generation and
   0.10 seconds of materialization planning, using 80 MB peak Python memory.
@@ -239,6 +247,7 @@ environment.
 - [Risk-limited progressive-index contract](docs/risk-limited-progressive-index-contract.md)
 - [Risk-limited IRPAPERS result](docs/risk-limited-irpapers-result.md)
 - [Risk-limited ViDoRe HR result](docs/risk-limited-vidore-hr-result.md)
+- [Risk-limited ViDoRe Finance result](docs/risk-limited-vidore-finance-result.md)
 - [Evaluation protocol](docs/evaluation.md)
 - [Current results](docs/results.md)
 - [Research roadmap](docs/roadmap.md)

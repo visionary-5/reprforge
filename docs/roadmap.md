@@ -100,6 +100,26 @@ MURE when reproducible artifacts are available. These are stronger than the
 current ColPali-only comparison and determine whether persistence has any
 incremental value.
 
+The first risk-limited acquisition mechanism is now closed.  Direct conformal
+Top-k sets preserve teacher quality on IRPAPERS, ViDoRe HR and Finance-EN, but
+do not deliver the frozen systems margin.  They use 2.7% more candidate events
+than fixed K=10 on IRPAPERS, 1.7% more visual construction work than fixed K=20
+on HR, and 10.1% less work than fixed K=50 on Finance—short of the required
+20% and inconsistent across workloads.  Score-level intervals are still more
+conservative.
+
+The retained insight is that teacher-rank fidelity and retrieval value are
+not the same event.  Many set disagreements have zero nDCG consequence, so a
+system that certifies every teacher transition spends visual work on evidence
+that does not affect the answer boundary.  The next bounded research node is
+an **evidence-risk allocator**: train-only relevance or downstream evidence
+supervision estimates the expected retrieval loss of leaving a candidate
+unbuilt, and the runtime maximizes protected evidence per measured visual
+construction cost.  Runtime qrels, page identifiers, dataset-specific
+thresholds, cache state and lifecycle context remain forbidden.  This node
+must beat quality-matched fixed K by 20% on both HR and Finance before any
+live scheduler or temporal system is added.
+
 ## Evaluation expansion
 
 The public benchmark audit is recorded in `benchmark-landscape.md`, and the
