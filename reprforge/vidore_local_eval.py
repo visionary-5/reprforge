@@ -240,6 +240,8 @@ def write_score_trace(
         corpus_ids=trace["corpus_ids"],
         scores=trace["scores"],
         vector_bytes=trace["vector_bytes"],
+        vector_counts=trace["vector_counts"],
+        query_vector_counts=trace["query_vector_counts"],
         encode_ms=trace["encode_ms"],
         index_total_ms=trace["index_total_ms"],
         model_load_ms=trace["model_load_ms"],

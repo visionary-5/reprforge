@@ -248,6 +248,7 @@ class ReprForgeViDoRePipeline(BasePipeline):
         self._search_info: dict[str, Any] = {}
         self._last_query_ids: tuple[str, ...] = ()
         self._last_score_matrix: tuple[tuple[float, ...], ...] = ()
+        self._last_query_vector_counts: tuple[int, ...] = ()
 
     def _encode_images(self, positions: Sequence[int]) -> EncodedBatch:
         # Official ViDoRe already supplies decoded PIL pages. Pass them through
@@ -284,6 +285,7 @@ class ReprForgeViDoRePipeline(BasePipeline):
         self._visual_cache.clear()
         self._last_query_ids = ()
         self._last_score_matrix = ()
+        self._last_query_vector_counts = ()
 
         began = time.perf_counter()
         visual_materializations = 0
@@ -536,6 +538,9 @@ class ReprForgeViDoRePipeline(BasePipeline):
             self._last_score_matrix = tuple(
                 tuple(float(value) for value in row) for row in base_scores
             )
+            self._last_query_vector_counts = tuple(
+                int(value.shape[0]) for value in encoded_queries.embeddings
+            )
         selective_counters: dict[str, int] = {
             "candidate_events": 0,
             "cache_hits": 0,
@@ -619,6 +624,14 @@ class ReprForgeViDoRePipeline(BasePipeline):
             "vector_bytes": np.asarray(
                 [_embedding_bytes(value) for value in index.embeddings],
                 dtype=np.int64,
+            ),
+            "vector_counts": np.asarray(
+                [int(value.shape[0]) for value in index.embeddings],
+                dtype=np.int32,
+            ),
+            "query_vector_counts": np.asarray(
+                self._last_query_vector_counts,
+                dtype=np.int32,
             ),
             "encode_ms": np.asarray(index.encode_ms, dtype=np.float32),
             "index_total_ms": np.asarray(

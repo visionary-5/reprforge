@@ -148,6 +148,11 @@ The current results are promising, but not yet a finished paper claim.
   pages and 96.67% held-out teacher coverage, but fixed K=10 reaches the same
   83.33% Recall@5 with 2.7% fewer events.  IRPAPERS therefore rejects the
   performance claim and motivates frozen ViDoRe transfer, not threshold repair.
+- Frozen ViDoRe v3 HR transfer reaches 96.23% exact Top-10 teacher agreement
+  and 0.5266 nDCG@10 with a variable 23.36-page candidate set.  Fixed K=20
+  reaches 0.5262 while using 1.7% less measured visual build time.  The
+  decision-level risk model therefore preserves quality but still has no
+  material action value over a robust fixed depth on this second workload.
 - The candidate-view control plane scales to 30,594 hypothetical views at a
   ViDoRe-v3-like workload size in 1.17 seconds of candidate generation and
   0.10 seconds of materialization planning, using 80 MB peak Python memory.
@@ -233,6 +238,7 @@ environment.
 - [Elastic representation strong-baseline result](docs/elastic-representation-strong-baseline-result.md)
 - [Risk-limited progressive-index contract](docs/risk-limited-progressive-index-contract.md)
 - [Risk-limited IRPAPERS result](docs/risk-limited-irpapers-result.md)
+- [Risk-limited ViDoRe HR result](docs/risk-limited-vidore-hr-result.md)
 - [Evaluation protocol](docs/evaluation.md)
 - [Current results](docs/results.md)
 - [Research roadmap](docs/roadmap.md)

@@ -19,6 +19,8 @@ class TracePipeline:
                 [[0.9, 0.3, 0.1], [0.2, 0.4, 0.8]], dtype=np.float32
             ),
             "vector_bytes": np.asarray([8, 12, 16], dtype=np.int64),
+            "vector_counts": np.asarray([2, 3, 4], dtype=np.int32),
+            "query_vector_counts": np.asarray([5, 6], dtype=np.int32),
             "encode_ms": np.asarray([1.0, 2.0, 3.0], dtype=np.float32),
             "index_total_ms": np.asarray(7.0, dtype=np.float64),
             "model_load_ms": np.asarray(5.0, dtype=np.float64),
@@ -98,6 +100,8 @@ def test_write_score_trace_separates_runtime_and_oracle_labels(tmp_path) -> None
     with np.load(root / "runtime.npz", allow_pickle=False) as runtime:
         assert runtime["scores"].shape == (2, 3)
         assert float(runtime["index_total_ms"]) == 7.0
+        assert runtime["vector_counts"].tolist() == [2, 3, 4]
+        assert runtime["query_vector_counts"].tolist() == [5, 6]
         assert "relevance" not in runtime.files
     with np.load(root / "oracle-labels.npz", allow_pickle=False) as labels:
         assert labels["query_positions"].tolist() == [0, 1]
