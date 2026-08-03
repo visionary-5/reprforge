@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import hashlib
 import json
 from pathlib import Path
@@ -115,7 +116,7 @@ def _run_record(
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--score-surface", type=Path, required=True)
-    parser.add_argument("--documents", type=Path, required=True)
+    parser.add_argument("--documents", type=Path)
     parser.add_argument("--queries", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--candidate-pool", type=int, default=100)
@@ -124,25 +125,41 @@ def main() -> None:
     parser.add_argument("--batch-size", type=int, default=4)
     args = parser.parse_args()
 
-    data = load_irpapers(args.documents, args.queries, decode_images=False)
     frozen = np.load(args.score_surface, allow_pickle=False)
     corpus_ids = [str(value) for value in frozen["corpus_ids"]]
     query_ids = [str(value) for value in frozen["query_ids"]]
-    if corpus_ids != list(data.corpus_ids) or query_ids != list(data.query_ids):
-        raise ValueError("IRPAPERS data order differs from the frozen score surface")
+    if args.documents is not None:
+        data = load_irpapers(args.documents, args.queries, decode_images=False)
+        if corpus_ids != list(data.corpus_ids) or query_ids != list(data.query_ids):
+            raise ValueError("IRPAPERS data order differs from the frozen score surface")
+        queries = list(data.queries)
+        gold_ids = [next(iter(data.qrels[query])) for query in data.query_ids]
+        source_groups = [value.split("_", 1)[0] for value in gold_ids]
+        page_token_counts = [_token_count(value) for value in data.corpus_texts]
+        page_text_feature = "IRPAPERS transcription whitespace-token count"
+    else:
+        with args.queries.open("r", encoding="utf-8", newline="") as handle:
+            rows = list(csv.DictReader(handle))
+        required = {"dataset_id", "pdf_id", "question"}
+        if not rows or not required.issubset(rows[0]):
+            raise ValueError("query CSV lacks dataset_id, pdf_id, or question")
+        if len(rows) != len(query_ids):
+            raise ValueError("query CSV differs from the frozen score surface")
+        queries = [str(row["question"]) for row in rows]
+        gold_ids = [str(row["dataset_id"]) for row in rows]
+        source_groups = [str(row["pdf_id"]) for row in rows]
+        page_token_counts = [1] * len(corpus_ids)
+        page_text_feature = "unavailable; constant neutral feature"
     locator = np.asarray(frozen["bm25_scores"], dtype=np.float64)
     visual = np.asarray(frozen["visual_scores"], dtype=np.float64)
     surface = build_candidate_surface(
         corpus_ids,
         locator,
         visual,
-        query_token_counts=[_token_count(value) for value in data.queries],
-        page_text_token_counts=[_token_count(value) for value in data.corpus_texts],
+        query_token_counts=[_token_count(value) for value in queries],
+        page_text_token_counts=page_token_counts,
         candidate_pool=args.candidate_pool,
     )
-    source_groups = [query_id.split("_", 1)[0] for query_id in (
-        next(iter(data.qrels[query])) for query in data.query_ids
-    )]
     result = crossfit_boundary_acquisition(
         surface,
         corpus_ids,
@@ -151,7 +168,6 @@ def main() -> None:
         alpha=args.alpha,
         batch_size=args.batch_size,
     )
-    gold_ids = [next(iter(data.qrels[query])) for query in data.query_ids]
 
     runs: dict[str, Any] = {}
     proposed = _run_record(
@@ -246,6 +262,7 @@ def main() -> None:
             "visual": "ColPali MaxSim divided by whitespace query-token count",
             "fusion": "base plus train-only standardized visual score",
             "qrels_used_by_policy": False,
+            "page_text_feature": page_text_feature,
         },
         "runs": runs,
         "comparison": {
@@ -255,7 +272,9 @@ def main() -> None:
         "gate": {**gate, "passed": all(gate.values())},
         "artifacts": {
             "score_surface_sha256": _sha256(args.score_surface),
-            "documents_sha256": _sha256(args.documents),
+            "documents_sha256": (
+                None if args.documents is None else _sha256(args.documents)
+            ),
             "queries_sha256": _sha256(args.queries),
         },
     }
