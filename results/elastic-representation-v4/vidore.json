@@ -1,0 +1,2080 @@
+{
+  "datasets": [
+    {
+      "candidate_coverage_fraction": 0.8063063063063063,
+      "candidate_events": 6360,
+      "candidate_k": 20,
+      "corpus_pages": 1110,
+      "dataset": "vidore_hr",
+      "deterministic_query_order_shuffle_summary": [
+        {
+          "memory_price_ms_per_mib_query_interval": 0.1,
+          "policy_total_cost": {
+            "no_cache": {
+              "max": 571398.3486785889,
+              "mean": 571398.3486785889,
+              "min": 571398.3486785889
+            },
+            "resident": {
+              "max": 91909.35180664062,
+              "mean": 91813.52861328125,
+              "min": 91680.51879882812
+            },
+            "ski_ttl": {
+              "max": 91909.35180664062,
+              "mean": 91813.52861328125,
+              "min": 91680.51879882812
+            },
+            "verified_ski_ttl": {
+              "max": 163403.8702392578,
+              "mean": 163311.0143310547,
+              "min": 163209.7393798828
+            }
+          },
+          "shuffle_count": 10,
+          "verified_gain_over_better_fixed": {
+            "max": -0.7763803542258149,
+            "mean": -0.7787257153127408,
+            "min": -0.7806441132477482
+          }
+        },
+        {
+          "memory_price_ms_per_mib_query_interval": 0.25,
+          "policy_total_cost": {
+            "no_cache": {
+              "max": 571398.3486785889,
+              "mean": 571398.3486785889,
+              "min": 571398.3486785889
+            },
+            "resident": {
+              "max": 109573.19799804688,
+              "mean": 109333.64001464844,
+              "min": 109001.11547851562
+            },
+            "ski_ttl": {
+              "max": 109573.19799804688,
+              "mean": 109333.64001464844,
+              "min": 109001.11547851562
+            },
+            "verified_ski_ttl": {
+              "max": 177230.79040527344,
+              "mean": 176998.65063476562,
+              "min": 176745.46325683594
+            }
+          },
+          "shuffle_count": 10,
+          "verified_gain_over_better_fixed": {
+            "max": -0.6143184221714981,
+            "mean": -0.6188884840604374,
+            "min": -0.622433442789564
+          }
+        },
+        {
+          "memory_price_ms_per_mib_query_interval": 0.5,
+          "policy_total_cost": {
+            "no_cache": {
+              "max": 571398.3486785889,
+              "mean": 571398.3486785889,
+              "min": 571398.3486785889
+            },
+            "resident": {
+              "max": 139012.94165039062,
+              "mean": 138533.82568359375,
+              "min": 137868.77661132812
+            },
+            "ski_ttl": {
+              "max": 139012.94165039062,
+              "mean": 138533.75247192383,
+              "min": 137868.77661132812
+            },
+            "verified_ski_ttl": {
+              "max": 200275.6573486328,
+              "mean": 199811.3778076172,
+              "min": 199305.0030517578
+            }
+          },
+          "shuffle_count": 10,
+          "verified_gain_over_better_fixed": {
+            "max": -0.435737841222134,
+            "mean": -0.4423352695018757,
+            "min": -0.44708752445051453
+          }
+        },
+        {
+          "memory_price_ms_per_mib_query_interval": 1.0,
+          "policy_total_cost": {
+            "no_cache": {
+              "max": 571398.3486785889,
+              "mean": 571398.3486785889,
+              "min": 571398.3486785889
+            },
+            "resident": {
+              "max": 197892.42895507812,
+              "mean": 196934.19702148438,
+              "min": 195604.09887695312
+            },
+            "ski_ttl": {
+              "max": 200811.38104248047,
+              "mean": 198763.3199066162,
+              "min": 197386.68769073486
+            },
+            "verified_ski_ttl": {
+              "max": 247621.9108581543,
+              "mean": 246311.67894897462,
+              "min": 245221.30186462402
+            }
+          },
+          "shuffle_count": 10,
+          "verified_gain_over_better_fixed": {
+            "max": -0.2457197070569539,
+            "mean": -0.2507384982951061,
+            "min": -0.25366136636473624
+          }
+        },
+        {
+          "memory_price_ms_per_mib_query_interval": 2.0,
+          "policy_total_cost": {
+            "no_cache": {
+              "max": 571398.3486785889,
+              "mean": 571398.3486785889,
+              "min": 571398.3486785889
+            },
+            "resident": {
+              "max": 315651.4035644531,
+              "mean": 313734.9396972656,
+              "min": 311074.7434082031
+            },
+            "ski_ttl": {
+              "max": 322704.1703720093,
+              "mean": 320152.5502677917,
+              "min": 318656.2325515747
+            },
+            "verified_ski_ttl": {
+              "max": 345909.77199554443,
+              "mean": 343524.6545043945,
+              "min": 341565.13076782227
+            }
+          },
+          "shuffle_count": 10,
+          "verified_gain_over_better_fixed": {
+            "max": -0.08209603033834695,
+            "mean": -0.09497388636698254,
+            "min": -0.10490222374652412
+          }
+        },
+        {
+          "memory_price_ms_per_mib_query_interval": 4.0,
+          "policy_total_cost": {
+            "no_cache": {
+              "max": 571398.3486785889,
+              "mean": 571398.3486785889,
+              "min": 571398.3486785889
+            },
+            "resident": {
+              "max": 551169.3527832031,
+              "mean": 547336.4250488281,
+              "min": 542016.0324707031
+            },
+            "ski_ttl": {
+              "max": 518791.477394104,
+              "mean": 513683.1696479797,
+              "min": 508981.0151824951
+            },
+            "verified_ski_ttl": {
+              "max": 511179.9224395752,
+              "mean": 506650.022530365,
+              "min": 500142.42736053467
+            }
+          },
+          "shuffle_count": 10,
+          "verified_gain_over_better_fixed": {
+            "max": 0.08887142085762331,
+            "mean": 0.07431631718530107,
+            "min": 0.06432676641251545
+          }
+        },
+        {
+          "memory_price_ms_per_mib_query_interval": 8.0,
+          "policy_total_cost": {
+            "no_cache": {
+              "max": 571398.3486785889,
+              "mean": 571398.3486785889,
+              "min": 571398.3486785889
+            },
+            "resident": {
+              "max": 1022205.2512207031,
+              "mean": 1014539.3957519531,
+              "min": 1003898.6105957031
+            },
+            "ski_ttl": {
+              "max": 734585.5685882568,
+              "mean": 726873.8717811585,
+              "min": 719403.09375
+            },
+            "verified_ski_ttl": {
+              "max": 699467.411026001,
+              "mean": 692242.5403015136,
+              "min": 688018.5109405518
+            }
+          },
+          "shuffle_count": 10,
+          "verified_gain_over_better_fixed": {
+            "max": -0.20409607856175593,
+            "mean": -0.21148852092832976,
+            "min": -0.2241327134451536
+          }
+        },
+        {
+          "memory_price_ms_per_mib_query_interval": 16.0,
+          "policy_total_cost": {
+            "no_cache": {
+              "max": 571398.3486785889,
+              "mean": 571398.3486785889,
+              "min": 571398.3486785889
+            },
+            "resident": {
+              "max": 1964277.0480957031,
+              "mean": 1948945.3371582031,
+              "min": 1927663.7668457031
+            },
+            "ski_ttl": {
+              "max": 908985.380607605,
+              "mean": 902336.0963012695,
+              "min": 898313.8308563232
+            },
+            "verified_ski_ttl": {
+              "max": 854609.4434127808,
+              "mean": 847284.251802826,
+              "min": 842273.5838851929
+            }
+          },
+          "shuffle_count": 10,
+          "verified_gain_over_better_fixed": {
+            "max": -0.47405673438333845,
+            "mean": -0.48282586703697783,
+            "min": -0.49564563038927845
+          }
+        },
+        {
+          "memory_price_ms_per_mib_query_interval": 32.0,
+          "policy_total_cost": {
+            "no_cache": {
+              "max": 571398.3486785889,
+              "mean": 571398.3486785889,
+              "min": 571398.3486785889
+            },
+            "resident": {
+              "max": 3848420.641845703,
+              "mean": 3817757.219970703,
+              "min": 3775194.079345703
+            },
+            "ski_ttl": {
+              "max": 1025798.1631164551,
+              "mean": 1017633.1976387023,
+              "min": 1012718.0090255737
+            },
+            "verified_ski_ttl": {
+              "max": 955364.1793136597,
+              "mean": 950089.8968292236,
+              "min": 944455.9339065552
+            }
+          },
+          "shuffle_count": 10,
+          "verified_gain_over_better_fixed": {
+            "max": -0.6528853051302934,
+            "mean": -0.6627452617362191,
+            "min": -0.6719757442824731
+          }
+        }
+      ],
+      "limitations": [
+        "ViDoRe query order is a benchmark batch, not a production arrival trace.",
+        "Per-page encode_ms is an additive batched-equivalent work estimate; it does not model every batching or overlap effect.",
+        "The memory price is a sensitivity parameter, not a measured cloud billing rate.",
+        "This experiment isolates representation retention after candidate activation; it does not solve candidate selection."
+      ],
+      "measured_physical_inputs": {
+        "visual_encode_ms_mean_page": 89.65775079125757,
+        "visual_encode_ms_sum_all_pages": 99520.1033782959,
+        "visual_vector_bytes_mean_page": 527360.0,
+        "visual_vector_bytes_sum_all_pages": 585369600
+      },
+      "original_query_order": [
+        {
+          "median_break_even_intervals": 1777.401395631068,
+          "memory_price_ms_per_mib_query_interval": 0.1,
+          "offline_oracle": {
+            "build_cost": 80133.45434570312,
+            "cache_hits": 5465,
+            "cache_misses": 895,
+            "final_resident_items": 0,
+            "hit_fraction": 0.8592767295597484,
+            "holding_cost": 8804.3876953125,
+            "peak_resident_items": 723,
+            "policy": "offline_oracle",
+            "query_count": 318,
+            "request_count": 6360,
+            "total_cost": 88937.84204101562,
+            "unique_items": 895
+          },
+          "policies": {
+            "no_cache": {
+              "build_cost": 571398.3486785889,
+              "cache_hits": 0,
+              "cache_misses": 6360,
+              "cost_over_oracle": 6.424693196570657,
+              "final_resident_items": 0,
+              "hit_fraction": 0.0,
+              "holding_cost": 0.0,
+              "peak_resident_items": 0,
+              "policy": "no_cache",
+              "query_count": 318,
+              "request_count": 6360,
+              "total_cost": 571398.3486785889,
+              "unique_items": 895
+            },
+            "resident": {
+              "build_cost": 80133.45434570312,
+              "cache_hits": 5465,
+              "cache_misses": 895,
+              "cost_over_oracle": 1.028067256340516,
+              "final_resident_items": 895,
+              "hit_fraction": 0.8592767295597484,
+              "holding_cost": 11300.62890625,
+              "peak_resident_items": 895,
+              "policy": "resident",
+              "query_count": 318,
+              "request_count": 6360,
+              "total_cost": 91434.08325195312,
+              "unique_items": 895
+            },
+            "ski_ttl": {
+              "build_cost": 80133.45434570312,
+              "cache_hits": 5465,
+              "cache_misses": 895,
+              "cost_over_oracle": 1.028067256340516,
+              "final_resident_items": 895,
+              "hit_fraction": 0.8592767295597484,
+              "holding_cost": 11300.62890625,
+              "peak_resident_items": 895,
+              "policy": "ski_ttl",
+              "query_count": 318,
+              "request_count": 6360,
+              "total_cost": 91434.08325195312,
+              "unique_items": 895
+            },
+            "verified_ski_ttl": {
+              "build_cost": 154185.92346191406,
+              "cache_hits": 4638,
+              "cache_misses": 1722,
+              "cost_over_oracle": 1.832403272419117,
+              "final_resident_items": 827,
+              "hit_fraction": 0.7292452830188679,
+              "holding_cost": 8784.0693359375,
+              "peak_resident_items": 827,
+              "policy": "verified_ski_ttl",
+              "query_count": 318,
+              "request_count": 6360,
+              "total_cost": 162969.99279785156,
+              "unique_items": 895
+            }
+          }
+        },
+        {
+          "median_break_even_intervals": 710.9605582524272,
+          "memory_price_ms_per_mib_query_interval": 0.25,
+          "offline_oracle": {
+            "build_cost": 80133.45434570312,
+            "cache_hits": 5465,
+            "cache_misses": 895,
+            "final_resident_items": 0,
+            "hit_fraction": 0.8592767295597484,
+            "holding_cost": 22010.96923828125,
+            "peak_resident_items": 723,
+            "policy": "offline_oracle",
+            "query_count": 318,
+            "request_count": 6360,
+            "total_cost": 102144.42358398438,
+            "unique_items": 895
+          },
+          "policies": {
+            "no_cache": {
+              "build_cost": 571398.3486785889,
+              "cache_hits": 0,
+              "cache_misses": 6360,
+              "cost_over_oracle": 5.594023918582088,
+              "final_resident_items": 0,
+              "hit_fraction": 0.0,
+              "holding_cost": 0.0,
+              "peak_resident_items": 0,
+              "policy": "no_cache",
+              "query_count": 318,
+              "request_count": 6360,
+              "total_cost": 571398.3486785889,
+              "unique_items": 895
+            },
+            "resident": {
+              "build_cost": 80133.45434570312,
+              "cache_hits": 5465,
+              "cache_misses": 895,
+              "cost_over_oracle": 1.0610958759017584,
+              "final_resident_items": 895,
+              "hit_fraction": 0.8592767295597484,
+              "holding_cost": 28251.572265625,
+              "peak_resident_items": 895,
+              "policy": "resident",
+              "query_count": 318,
+              "request_count": 6360,
+              "total_cost": 108385.02661132812,
+              "unique_items": 895
+            },
+            "ski_ttl": {
+              "build_cost": 80133.45434570312,
+              "cache_hits": 5465,
+              "cache_misses": 895,
+              "cost_over_oracle": 1.0610958759017584,
+              "final_resident_items": 895,
+              "hit_fraction": 0.8592767295597484,
+              "holding_cost": 28251.572265625,
+              "peak_resident_items": 895,
+              "policy": "ski_ttl",
+              "query_count": 318,
+              "request_count": 6360,
+              "total_cost": 108385.02661132812,
+              "unique_items": 895
+            },
+            "verified_ski_ttl": {
+              "build_cost": 154185.92346191406,
+              "cache_hits": 4638,
+              "cache_misses": 1722,
+              "cost_over_oracle": 1.724480795145203,
+              "final_resident_items": 827,
+              "hit_fraction": 0.7292452830188679,
+              "holding_cost": 21960.17333984375,
+              "peak_resident_items": 827,
+              "policy": "verified_ski_ttl",
+              "query_count": 318,
+              "request_count": 6360,
+              "total_cost": 176146.0968017578,
+              "unique_items": 895
+            }
+          }
+        },
+        {
+          "median_break_even_intervals": 355.4802791262136,
+          "memory_price_ms_per_mib_query_interval": 0.5,
+          "offline_oracle": {
+            "build_cost": 80133.45434570312,
+            "cache_hits": 5465,
+            "cache_misses": 895,
+            "final_resident_items": 0,
+            "hit_fraction": 0.8592767295597484,
+            "holding_cost": 44021.9384765625,
+            "peak_resident_items": 723,
+            "policy": "offline_oracle",
+            "query_count": 318,
+            "request_count": 6360,
+            "total_cost": 124155.39282226562,
+            "unique_items": 895
+          },
+          "policies": {
+            "no_cache": {
+              "build_cost": 571398.3486785889,
+              "cache_hits": 0,
+              "cache_misses": 6360,
+              "cost_over_oracle": 4.602283764641403,
+              "final_resident_items": 0,
+              "hit_fraction": 0.0,
+              "holding_cost": 0.0,
+              "peak_resident_items": 0,
+              "policy": "no_cache",
+              "query_count": 318,
+              "request_count": 6360,
+              "total_cost": 571398.3486785889,
+              "unique_items": 895
+            },
+            "resident": {
+              "build_cost": 80133.45434570312,
+              "cache_hits": 5465,
+              "cache_misses": 895,
+              "cost_over_oracle": 1.100528907935195,
+              "final_resident_items": 895,
+              "hit_fraction": 0.8592767295597484,
+              "holding_cost": 56503.14453125,
+              "peak_resident_items": 895,
+              "policy": "resident",
+              "query_count": 318,
+              "request_count": 6360,
+              "total_cost": 136636.59887695312,
+              "unique_items": 895
+            },
+            "ski_ttl": {
+              "build_cost": 80133.45434570312,
+              "cache_hits": 5465,
+              "cache_misses": 895,
+              "cost_over_oracle": 1.100528907935195,
+              "final_resident_items": 895,
+              "hit_fraction": 0.8592767295597484,
+              "holding_cost": 56503.14453125,
+              "peak_resident_items": 895,
+              "policy": "ski_ttl",
+              "query_count": 318,
+              "request_count": 6360,
+              "total_cost": 136636.59887695312,
+              "unique_items": 895
+            },
+            "verified_ski_ttl": {
+              "build_cost": 154185.92346191406,
+              "cache_hits": 4638,
+              "cache_misses": 1722,
+              "cost_over_oracle": 1.5956316164630895,
+              "final_resident_items": 827,
+              "hit_fraction": 0.7292452830188679,
+              "holding_cost": 43920.3466796875,
+              "peak_resident_items": 827,
+              "policy": "verified_ski_ttl",
+              "query_count": 318,
+              "request_count": 6360,
+              "total_cost": 198106.27014160156,
+              "unique_items": 895
+            }
+          }
+        },
+        {
+          "median_break_even_intervals": 177.7401395631068,
+          "memory_price_ms_per_mib_query_interval": 1.0,
+          "offline_oracle": {
+            "build_cost": 83716.97090148926,
+            "cache_hits": 5424,
+            "cache_misses": 936,
+            "final_resident_items": 0,
+            "hit_fraction": 0.8528301886792453,
+            "holding_cost": 83739.8046875,
+            "peak_resident_items": 682,
+            "policy": "offline_oracle",
+            "query_count": 318,
+            "request_count": 6360,
+            "total_cost": 167456.77558898926,
+            "unique_items": 895
+          },
+          "policies": {
+            "no_cache": {
+              "build_cost": 571398.3486785889,
+              "cache_hits": 0,
+              "cache_misses": 6360,
+              "cost_over_oracle": 3.412213967866224,
+              "final_resident_items": 0,
+              "hit_fraction": 0.0,
+              "holding_cost": 0.0,
+              "peak_resident_items": 0,
+              "policy": "no_cache",
+              "query_count": 318,
+              "request_count": 6360,
+              "total_cost": 571398.3486785889,
+              "unique_items": 895
+            },
+            "resident": {
+              "build_cost": 80133.45434570312,
+              "cache_hits": 5465,
+              "cache_misses": 895,
+              "cost_over_oracle": 1.153370729424833,
+              "final_resident_items": 895,
+              "hit_fraction": 0.8592767295597484,
+              "holding_cost": 113006.2890625,
+              "peak_resident_items": 895,
+              "policy": "resident",
+              "query_count": 318,
+              "request_count": 6360,
+              "total_cost": 193139.74340820312,
+              "unique_items": 895
+            },
+            "ski_ttl": {
+              "build_cost": 83716.97090148926,
+              "cache_hits": 5424,
+              "cache_misses": 936,
+              "cost_over_oracle": 1.16435925885213,
+              "final_resident_items": 854,
+              "hit_fraction": 0.8528301886792453,
+              "holding_cost": 111262.87621307373,
+              "peak_resident_items": 856,
+              "policy": "ski_ttl",
+              "query_count": 318,
+              "request_count": 6360,
+              "total_cost": 194979.847114563,
+              "unique_items": 895
+            },
+            "verified_ski_ttl": {
+              "build_cost": 155403.715385437,
+              "cache_hits": 4624,
+              "cache_misses": 1736,
+              "cost_over_oracle": 1.4494712030938375,
+              "final_resident_items": 806,
+              "hit_fraction": 0.7270440251572327,
+              "holding_cost": 87320.05859375,
+              "peak_resident_items": 806,
+              "policy": "verified_ski_ttl",
+              "query_count": 318,
+              "request_count": 6360,
+              "total_cost": 242723.773979187,
+              "unique_items": 895
+            }
+          }
+        },
+        {
+          "median_break_even_intervals": 88.8700697815534,
+          "memory_price_ms_per_mib_query_interval": 2.0,
+          "offline_oracle": {
+            "build_cost": 115295.98000335693,
+            "cache_hits": 5069,
+            "cache_misses": 1291,
+            "final_resident_items": 0,
+            "hit_fraction": 0.7970125786163522,
+            "holding_cost": 125350.1953125,
+            "peak_resident_items": 490,
+            "policy": "offline_oracle",
+            "query_count": 318,
+            "request_count": 6360,
+            "total_cost": 240646.17531585693,
+            "unique_items": 895
+          },
+          "policies": {
+            "no_cache": {
+              "build_cost": 571398.3486785889,
+              "cache_hits": 0,
+              "cache_misses": 6360,
+              "cost_over_oracle": 2.3744335347470518,
+              "final_resident_items": 0,
+              "hit_fraction": 0.0,
+              "holding_cost": 0.0,
+              "peak_resident_items": 0,
+              "policy": "no_cache",
+              "query_count": 318,
+              "request_count": 6360,
+              "total_cost": 571398.3486785889,
+              "unique_items": 895
+            },
+            "resident": {
+              "build_cost": 80133.45434570312,
+              "cache_hits": 5465,
+              "cache_misses": 895,
+              "cost_over_oracle": 1.2721832460826574,
+              "final_resident_items": 895,
+              "hit_fraction": 0.8592767295597484,
+              "holding_cost": 226012.578125,
+              "peak_resident_items": 895,
+              "policy": "resident",
+              "query_count": 318,
+              "request_count": 6360,
+              "total_cost": 306146.0324707031,
+              "unique_items": 895
+            },
+            "ski_ttl": {
+              "build_cost": 115295.98000335693,
+              "cache_hits": 5069,
+              "cache_misses": 1291,
+              "cost_over_oracle": 1.3081133328117962,
+              "final_resident_items": 700,
+              "hit_fraction": 0.7970125786163522,
+              "holding_cost": 199496.49041748047,
+              "peak_resident_items": 744,
+              "policy": "ski_ttl",
+              "query_count": 318,
+              "request_count": 6360,
+              "total_cost": 314792.4704208374,
+              "unique_items": 895
+            },
+            "verified_ski_ttl": {
+              "build_cost": 177288.02276611328,
+              "cache_hits": 4378,
+              "cache_misses": 1982,
+              "cost_over_oracle": 1.404781019268848,
+              "final_resident_items": 678,
+              "hit_fraction": 0.6883647798742139,
+              "holding_cost": 160767.1566772461,
+              "peak_resident_items": 703,
+              "policy": "verified_ski_ttl",
+              "query_count": 318,
+              "request_count": 6360,
+              "total_cost": 338055.1794433594,
+              "unique_items": 895
+            }
+          }
+        },
+        {
+          "median_break_even_intervals": 44.4350348907767,
+          "memory_price_ms_per_mib_query_interval": 4.0,
+          "offline_oracle": {
+            "build_cost": 197944.22660064697,
+            "cache_hits": 4146,
+            "cache_misses": 2214,
+            "final_resident_items": 0,
+            "hit_fraction": 0.6518867924528302,
+            "holding_cost": 136042.48046875,
+            "peak_resident_items": 268,
+            "policy": "offline_oracle",
+            "query_count": 318,
+            "request_count": 6360,
+            "total_cost": 333986.707069397,
+            "unique_items": 895
+          },
+          "policies": {
+            "no_cache": {
+              "build_cost": 571398.3486785889,
+              "cache_hits": 0,
+              "cache_misses": 6360,
+              "cost_over_oracle": 1.7108415891530127,
+              "final_resident_items": 0,
+              "hit_fraction": 0.0,
+              "holding_cost": 0.0,
+              "peak_resident_items": 0,
+              "policy": "no_cache",
+              "query_count": 318,
+              "request_count": 6360,
+              "total_cost": 571398.3486785889,
+              "unique_items": 895
+            },
+            "resident": {
+              "build_cost": 80133.45434570312,
+              "cache_hits": 5465,
+              "cache_misses": 895,
+              "cost_over_oracle": 1.5933526674315492,
+              "final_resident_items": 895,
+              "hit_fraction": 0.8592767295597484,
+              "holding_cost": 452025.15625,
+              "peak_resident_items": 895,
+              "policy": "resident",
+              "query_count": 318,
+              "request_count": 6360,
+              "total_cost": 532158.6105957031,
+              "unique_items": 895
+            },
+            "ski_ttl": {
+              "build_cost": 197944.22660064697,
+              "cache_hits": 4146,
+              "cache_misses": 2214,
+              "cost_over_oracle": 1.514469120288251,
+              "final_resident_items": 509,
+              "hit_fraction": 0.6518867924528302,
+              "holding_cost": 307868.3278427124,
+              "peak_resident_items": 568,
+              "policy": "ski_ttl",
+              "query_count": 318,
+              "request_count": 6360,
+              "total_cost": 505812.5544433594,
+              "unique_items": 895
+            },
+            "verified_ski_ttl": {
+              "build_cost": 243263.44145202637,
+              "cache_hits": 3642,
+              "cache_misses": 2718,
+              "cost_over_oracle": 1.4884031602315062,
+              "final_resident_items": 498,
+              "hit_fraction": 0.5726415094339623,
+              "holding_cost": 253843.42882537842,
+              "peak_resident_items": 545,
+              "policy": "verified_ski_ttl",
+              "query_count": 318,
+              "request_count": 6360,
+              "total_cost": 497106.8702774048,
+              "unique_items": 895
+            }
+          }
+        },
+        {
+          "median_break_even_intervals": 22.21751744538835,
+          "memory_price_ms_per_mib_query_interval": 8.0,
+          "offline_oracle": {
+            "build_cost": 309800.0905532837,
+            "cache_hits": 2898,
+            "cache_misses": 3462,
+            "final_resident_items": 0,
+            "hit_fraction": 0.4556603773584906,
+            "holding_cost": 111594.0625,
+            "peak_resident_items": 113,
+            "policy": "offline_oracle",
+            "query_count": 318,
+            "request_count": 6360,
+            "total_cost": 421394.1530532837,
+            "unique_items": 895
+          },
+          "policies": {
+            "no_cache": {
+              "build_cost": 571398.3486785889,
+              "cache_hits": 0,
+              "cache_misses": 6360,
+              "cost_over_oracle": 1.3559712315380363,
+              "final_resident_items": 0,
+              "hit_fraction": 0.0,
+              "holding_cost": 0.0,
+              "peak_resident_items": 0,
+              "policy": "no_cache",
+              "query_count": 318,
+              "request_count": 6360,
+              "total_cost": 571398.3486785889,
+              "unique_items": 895
+            },
+            "resident": {
+              "build_cost": 80133.45434570312,
+              "cache_hits": 5465,
+              "cache_misses": 895,
+              "cost_over_oracle": 2.335542056563032,
+              "final_resident_items": 895,
+              "hit_fraction": 0.8592767295597484,
+              "holding_cost": 904050.3125,
+              "peak_resident_items": 895,
+              "policy": "resident",
+              "query_count": 318,
+              "request_count": 6360,
+              "total_cost": 984183.7668457031,
+              "unique_items": 895
+            },
+            "ski_ttl": {
+              "build_cost": 309800.0905532837,
+              "cache_hits": 2898,
+              "cache_misses": 3462,
+              "cost_over_oracle": 1.6996191570430985,
+              "final_resident_items": 301,
+              "hit_fraction": 0.4556603773584906,
+              "holding_cost": 406409.4846420288,
+              "peak_resident_items": 372,
+              "policy": "ski_ttl",
+              "query_count": 318,
+              "request_count": 6360,
+              "total_cost": 716209.5751953125,
+              "unique_items": 895
+            },
+            "verified_ski_ttl": {
+              "build_cost": 336645.60551452637,
+              "cache_hits": 2600,
+              "cache_misses": 3760,
+              "cost_over_oracle": 1.60810921796681,
+              "final_resident_items": 295,
+              "hit_fraction": 0.4088050314465409,
+              "holding_cost": 341002.2164077759,
+              "peak_resident_items": 363,
+              "policy": "verified_ski_ttl",
+              "query_count": 318,
+              "request_count": 6360,
+              "total_cost": 677647.8219223022,
+              "unique_items": 895
+            }
+          }
+        },
+        {
+          "median_break_even_intervals": 11.108758722694175,
+          "memory_price_ms_per_mib_query_interval": 16.0,
+          "offline_oracle": {
+            "build_cost": 409923.88164520264,
+            "cache_hits": 1787,
+            "cache_misses": 4573,
+            "final_resident_items": 0,
+            "hit_fraction": 0.2809748427672956,
+            "holding_cost": 75672.8125,
+            "peak_resident_items": 56,
+            "policy": "offline_oracle",
+            "query_count": 318,
+            "request_count": 6360,
+            "total_cost": 485596.69414520264,
+            "unique_items": 895
+          },
+          "policies": {
+            "no_cache": {
+              "build_cost": 571398.3486785889,
+              "cache_hits": 0,
+              "cache_misses": 6360,
+              "cost_over_oracle": 1.1766932427009684,
+              "final_resident_items": 0,
+              "hit_fraction": 0.0,
+              "holding_cost": 0.0,
+              "peak_resident_items": 0,
+              "policy": "no_cache",
+              "query_count": 318,
+              "request_count": 6360,
+              "total_cost": 571398.3486785889,
+              "unique_items": 895
+            },
+            "resident": {
+              "build_cost": 80133.45434570312,
+              "cache_hits": 5465,
+              "cache_misses": 895,
+              "cost_over_oracle": 3.888482154248532,
+              "final_resident_items": 895,
+              "hit_fraction": 0.8592767295597484,
+              "holding_cost": 1808100.625,
+              "peak_resident_items": 895,
+              "policy": "resident",
+              "query_count": 318,
+              "request_count": 6360,
+              "total_cost": 1888234.0793457031,
+              "unique_items": 895
+            },
+            "ski_ttl": {
+              "build_cost": 409923.88164520264,
+              "cache_hits": 1787,
+              "cache_misses": 4573,
+              "cost_over_oracle": 1.8264780526903177,
+              "final_resident_items": 161,
+              "hit_fraction": 0.2809748427672956,
+              "holding_cost": 477007.8226699829,
+              "peak_resident_items": 225,
+              "policy": "ski_ttl",
+              "query_count": 318,
+              "request_count": 6360,
+              "total_cost": 886931.7043151855,
+              "unique_items": 895
+            },
+            "verified_ski_ttl": {
+              "build_cost": 425144.53088378906,
+              "cache_hits": 1619,
+              "cache_misses": 4741,
+              "cost_over_oracle": 1.7091350112007875,
+              "final_resident_items": 158,
+              "hit_fraction": 0.254559748427673,
+              "holding_cost": 404805.7804031372,
+              "peak_resident_items": 223,
+              "policy": "verified_ski_ttl",
+              "query_count": 318,
+              "request_count": 6360,
+              "total_cost": 829950.3112869263,
+              "unique_items": 895
+            }
+          }
+        },
+        {
+          "median_break_even_intervals": 5.554379361347087,
+          "memory_price_ms_per_mib_query_interval": 32.0,
+          "offline_oracle": {
+            "build_cost": 483122.088470459,
+            "cache_hits": 976,
+            "cache_misses": 5384,
+            "final_resident_items": 0,
+            "hit_fraction": 0.15345911949685534,
+            "holding_cost": 44756.71875,
+            "peak_resident_items": 26,
+            "policy": "offline_oracle",
+            "query_count": 318,
+            "request_count": 6360,
+            "total_cost": 527878.807220459,
+            "unique_items": 895
+          },
+          "policies": {
+            "no_cache": {
+              "build_cost": 571398.3486785889,
+              "cache_hits": 0,
+              "cache_misses": 6360,
+              "cost_over_oracle": 1.082442297100885,
+              "final_resident_items": 0,
+              "hit_fraction": 0.0,
+              "holding_cost": 0.0,
+              "peak_resident_items": 0,
+              "policy": "no_cache",
+              "query_count": 318,
+              "request_count": 6360,
+              "total_cost": 571398.3486785889,
+              "unique_items": 895
+            },
+            "resident": {
+              "build_cost": 80133.45434570312,
+              "cache_hits": 5465,
+              "cache_misses": 895,
+              "cost_over_oracle": 7.002241146616057,
+              "final_resident_items": 895,
+              "hit_fraction": 0.8592767295597484,
+              "holding_cost": 3616201.25,
+              "peak_resident_items": 895,
+              "policy": "resident",
+              "query_count": 318,
+              "request_count": 6360,
+              "total_cost": 3696334.704345703,
+              "unique_items": 895
+            },
+            "ski_ttl": {
+              "build_cost": 483122.088470459,
+              "cache_hits": 976,
+              "cache_misses": 5384,
+              "cost_over_oracle": 1.9044297225410862,
+              "final_resident_items": 106,
+              "hit_fraction": 0.15345911949685534,
+              "holding_cost": 522186.00189971924,
+              "peak_resident_items": 128,
+              "policy": "ski_ttl",
+              "query_count": 318,
+              "request_count": 6360,
+              "total_cost": 1005308.0903701782,
+              "unique_items": 895
+            },
+            "verified_ski_ttl": {
+              "build_cost": 491282.68463134766,
+              "cache_hits": 887,
+              "cache_misses": 5473,
+              "cost_over_oracle": 1.7756206247172388,
+              "final_resident_items": 104,
+              "hit_fraction": 0.13946540880503144,
+              "holding_cost": 446029.81282043457,
+              "peak_resident_items": 126,
+              "policy": "verified_ski_ttl",
+              "query_count": 318,
+              "request_count": 6360,
+              "total_cost": 937312.4974517822,
+              "unique_items": 895
+            }
+          }
+        }
+      ],
+      "quality_contract": {
+        "definition": "BM25 Top-K candidate-relative z-score fusion; retention policy cannot change scores because every requested candidate is visually refined before ranking",
+        "mean_ndcg@10": 0.5372924271280891
+      },
+      "query_count": 318,
+      "trace_identity": {
+        "source_sha256": {
+          "corpus": "79ae6980099204c7bc670317ef0ef31a0c9929c3e73476db64868a32f0594834",
+          "qrels": "cebab8cba5e9c283de546a88ed1a99df2e4aa7fdfd6ea14e6332f94fda80040a",
+          "queries": "bbf0bfa70498e036e93b4b4567e37ce23ad3a658f2b7dd3567bbd70285c03606"
+        },
+        "text_runtime_sha256": "f057d766ab4d50e2cab00f3ecb63d15de0bf0b2b4840ec29330a38d045a1bc84",
+        "visual_runtime_sha256": "8a6e8ec222a446c2499c89b3fc92294ab641f1b338b4c789c90e4917025c7eef"
+      },
+      "unique_candidate_pages": 895
+    },
+    {
+      "candidate_coverage_fraction": 0.6305234534330387,
+      "candidate_events": 6180,
+      "candidate_k": 20,
+      "corpus_pages": 2942,
+      "dataset": "vidore_finance",
+      "deterministic_query_order_shuffle_summary": [
+        {
+          "memory_price_ms_per_mib_query_interval": 0.1,
+          "policy_total_cost": {
+            "no_cache": {
+              "max": 635942.2292327881,
+              "mean": 635942.2292327881,
+              "min": 635942.2292327881
+            },
+            "resident": {
+              "max": 209548.31700134277,
+              "mean": 209038.70840759279,
+              "min": 208760.62852478027
+            },
+            "ski_ttl": {
+              "max": 209548.31700134277,
+              "mean": 209038.70840759279,
+              "min": 208760.62852478027
+            },
+            "verified_ski_ttl": {
+              "max": 322230.35272979736,
+              "mean": 322061.53935089114,
+              "min": 321914.3620071411
+            }
+          },
+          "shuffle_count": 10,
+          "verified_gain_over_better_fixed": {
+            "max": -0.5377377272265687,
+            "mean": -0.5406804085412913,
+            "min": -0.5425612816283976
+          }
+        },
+        {
+          "memory_price_ms_per_mib_query_interval": 0.25,
+          "policy_total_cost": {
+            "no_cache": {
+              "max": 635942.2292327881,
+              "mean": 635942.2292327881,
+              "min": 635942.2292327881
+            },
+            "resident": {
+              "max": 239488.12364196777,
+              "mean": 238214.10215759277,
+              "min": 237518.90245056152
+            },
+            "ski_ttl": {
+              "max": 239488.12364196777,
+              "mean": 238214.10215759277,
+              "min": 237518.90245056152
+            },
+            "verified_ski_ttl": {
+              "max": 337786.948677063,
+              "mean": 337364.91522979736,
+              "min": 336996.97187042236
+            }
+          },
+          "shuffle_count": 10,
+          "verified_gain_over_better_fixed": {
+            "max": -0.4104538610943853,
+            "mean": -0.4162318756328509,
+            "min": -0.4199973985211945
+          }
+        },
+        {
+          "memory_price_ms_per_mib_query_interval": 0.5,
+          "policy_total_cost": {
+            "no_cache": {
+              "max": 635942.2292327881,
+              "mean": 635942.2292327881,
+              "min": 635942.2292327881
+            },
+            "resident": {
+              "max": 289387.8013763428,
+              "mean": 286839.7584075928,
+              "min": 285449.3589935303
+            },
+            "ski_ttl": {
+              "max": 289387.8013763428,
+              "mean": 286839.7584075928,
+              "min": 285449.3589935303
+            },
+            "verified_ski_ttl": {
+              "max": 363714.60858917236,
+              "mean": 362870.5416946411,
+              "min": 362134.6549758911
+            }
+          },
+          "shuffle_count": 10,
+          "verified_gain_over_better_fixed": {
+            "max": -0.256841535335379,
+            "mean": -0.26507842202813825,
+            "min": -0.27060421390569783
+          }
+        },
+        {
+          "memory_price_ms_per_mib_query_interval": 1.0,
+          "policy_total_cost": {
+            "no_cache": {
+              "max": 635942.2292327881,
+              "mean": 635942.2292327881,
+              "min": 635942.2292327881
+            },
+            "resident": {
+              "max": 389187.1568450928,
+              "mean": 384091.0709075928,
+              "min": 381310.2720794678
+            },
+            "ski_ttl": {
+              "max": 387174.6196975708,
+              "mean": 383512.9703353882,
+              "min": 379257.8377914429
+            },
+            "verified_ski_ttl": {
+              "max": 418061.93745422363,
+              "mean": 415021.73298187257,
+              "min": 412900.7770462036
+            }
+          },
+          "shuffle_count": 10,
+          "verified_gain_over_better_fixed": {
+            "max": -0.0726730110691464,
+            "mean": -0.08055048524531781,
+            "min": -0.08909824657163422
+          }
+        },
+        {
+          "memory_price_ms_per_mib_query_interval": 2.0,
+          "policy_total_cost": {
+            "no_cache": {
+              "max": 635942.2292327881,
+              "mean": 635942.2292327881,
+              "min": 635942.2292327881
+            },
+            "resident": {
+              "max": 588785.8677825928,
+              "mean": 578593.6959075928,
+              "min": 573032.0982513428
+            },
+            "ski_ttl": {
+              "max": 545774.0283660889,
+              "mean": 537749.5179710388,
+              "min": 527567.4999771118
+            },
+            "verified_ski_ttl": {
+              "max": 515639.4677429199,
+              "mean": 512238.88998031616,
+              "min": 506111.9943008423
+            }
+          },
+          "shuffle_count": 10,
+          "verified_gain_over_better_fixed": {
+            "max": 0.12958575823545765,
+            "mean": 0.11464436229625707,
+            "min": 0.10486386490680069
+          }
+        },
+        {
+          "memory_price_ms_per_mib_query_interval": 4.0,
+          "policy_total_cost": {
+            "no_cache": {
+              "max": 635942.2292327881,
+              "mean": 635942.2292327881,
+              "min": 635942.2292327881
+            },
+            "resident": {
+              "max": 987983.2896575928,
+              "mean": 967598.9459075928,
+              "min": 956475.7505950928
+            },
+            "ski_ttl": {
+              "max": 735716.4842605591,
+              "mean": 727830.8230873108,
+              "min": 715636.4875335693
+            },
+            "verified_ski_ttl": {
+              "max": 651970.0752716064,
+              "mean": 646976.5013092041,
+              "min": 640042.734992981
+            }
+          },
+          "shuffle_count": 10,
+          "verified_gain_over_better_fixed": {
+            "max": -0.006447921794940074,
+            "mean": -0.017351060472470835,
+            "min": -0.025203305114923153
+          }
+        },
+        {
+          "memory_price_ms_per_mib_query_interval": 8.0,
+          "policy_total_cost": {
+            "no_cache": {
+              "max": 635942.2292327881,
+              "mean": 635942.2292327881,
+              "min": 635942.2292327881
+            },
+            "resident": {
+              "max": 1786378.1334075928,
+              "mean": 1745609.4459075928,
+              "min": 1723363.0552825928
+            },
+            "ski_ttl": {
+              "max": 926033.3506240845,
+              "mean": 911795.7139709473,
+              "min": 901935.2300109863
+            },
+            "verified_ski_ttl": {
+              "max": 798792.1872711182,
+              "mean": 787431.5072052001,
+              "min": 781050.4881744385
+            }
+          },
+          "shuffle_count": 10,
+          "verified_gain_over_better_fixed": {
+            "max": -0.22817836632222324,
+            "mean": -0.23821232654288654,
+            "min": -0.25607665374698446
+          }
+        },
+        {
+          "memory_price_ms_per_mib_query_interval": 16.0,
+          "policy_total_cost": {
+            "no_cache": {
+              "max": 635942.2292327881,
+              "mean": 635942.2292327881,
+              "min": 635942.2292327881
+            },
+            "resident": {
+              "max": 3383167.820907593,
+              "mean": 3301630.445907593,
+              "min": 3257137.664657593
+            },
+            "ski_ttl": {
+              "max": 1066529.007949829,
+              "mean": 1055535.1956985474,
+              "min": 1043928.8521194458
+            },
+            "verified_ski_ttl": {
+              "max": 910268.0125198364,
+              "mean": 902213.8208908081,
+              "min": 894917.0140304565
+            }
+          },
+          "shuffle_count": 10,
+          "verified_gain_over_better_fixed": {
+            "max": -0.4072300484119449,
+            "mean": -0.41870405740982913,
+            "min": -0.43136903114297004
+          }
+        },
+        {
+          "memory_price_ms_per_mib_query_interval": 32.0,
+          "policy_total_cost": {
+            "no_cache": {
+              "max": 635942.2292327881,
+              "mean": 635942.2292327881,
+              "min": 635942.2292327881
+            },
+            "resident": {
+              "max": 6576747.195907593,
+              "mean": 6413672.445907593,
+              "min": 6324686.883407593
+            },
+            "ski_ttl": {
+              "max": 1162677.6678695679,
+              "mean": 1154204.959565735,
+              "min": 1147029.86819458
+            },
+            "verified_ski_ttl": {
+              "max": 990089.4193191528,
+              "mean": 984069.7767906189,
+              "min": 977262.4736404419
+            }
+          },
+          "shuffle_count": 10,
+          "verified_gain_over_better_fixed": {
+            "max": -0.5367158032883405,
+            "mean": -0.547420082446511,
+            "min": -0.5568857890025862
+          }
+        }
+      ],
+      "limitations": [
+        "ViDoRe query order is a benchmark batch, not a production arrival trace.",
+        "Per-page encode_ms is an additive batched-equivalent work estimate; it does not model every batching or overlap effect.",
+        "The memory price is a sensitivity parameter, not a measured cloud billing rate.",
+        "This experiment isolates representation retention after candidate activation; it does not solve candidate selection."
+      ],
+      "measured_physical_inputs": {
+        "visual_encode_ms_mean_page": 103.44320756508978,
+        "visual_encode_ms_sum_all_pages": 304329.91665649414,
+        "visual_vector_bytes_mean_page": 527360.0,
+        "visual_vector_bytes_sum_all_pages": 1551493120
+      },
+      "original_query_order": [
+        {
+          "median_break_even_intervals": 1864.5682645631068,
+          "memory_price_ms_per_mib_query_interval": 0.1,
+          "offline_oracle": {
+            "build_cost": 189588.44590759277,
+            "cache_hits": 4325,
+            "cache_misses": 1855,
+            "final_resident_items": 0,
+            "hit_fraction": 0.6998381877022654,
+            "holding_cost": 9634.87548828125,
+            "peak_resident_items": 877,
+            "policy": "offline_oracle",
+            "query_count": 309,
+            "request_count": 6180,
+            "total_cost": 199223.32139587402,
+            "unique_items": 1855
+          },
+          "policies": {
+            "no_cache": {
+              "build_cost": 635942.2292327881,
+              "cache_hits": 0,
+              "cache_misses": 6180,
+              "cost_over_oracle": 3.192107353581942,
+              "final_resident_items": 0,
+              "hit_fraction": 0.0,
+              "holding_cost": 0.0,
+              "peak_resident_items": 0,
+              "policy": "no_cache",
+              "query_count": 309,
+              "request_count": 6180,
+              "total_cost": 635942.2292327881,
+              "unique_items": 1855
+            },
+            "resident": {
+              "build_cost": 189588.44590759277,
+              "cache_hits": 4325,
+              "cache_misses": 1855,
+              "cost_over_oracle": 1.0438893629857424,
+              "final_resident_items": 1855,
+              "hit_fraction": 0.6998381877022654,
+              "holding_cost": 18378.66015625,
+              "peak_resident_items": 1855,
+              "policy": "resident",
+              "query_count": 309,
+              "request_count": 6180,
+              "total_cost": 207967.10606384277,
+              "unique_items": 1855
+            },
+            "ski_ttl": {
+              "build_cost": 189588.44590759277,
+              "cache_hits": 4325,
+              "cache_misses": 1855,
+              "cost_over_oracle": 1.0438893629857424,
+              "final_resident_items": 1855,
+              "hit_fraction": 0.6998381877022654,
+              "holding_cost": 18378.66015625,
+              "peak_resident_items": 1855,
+              "policy": "ski_ttl",
+              "query_count": 309,
+              "request_count": 6180,
+              "total_cost": 207967.10606384277,
+              "unique_items": 1855
+            },
+            "verified_ski_ttl": {
+              "build_cost": 311859.2887649536,
+              "cache_hits": 3125,
+              "cache_misses": 3055,
+              "cost_over_oracle": 1.6146557417410903,
+              "final_resident_items": 1200,
+              "hit_fraction": 0.5056634304207119,
+              "holding_cost": 9817.791015625,
+              "peak_resident_items": 1200,
+              "policy": "verified_ski_ttl",
+              "query_count": 309,
+              "request_count": 6180,
+              "total_cost": 321677.0797805786,
+              "unique_items": 1855
+            }
+          }
+        },
+        {
+          "median_break_even_intervals": 745.8273058252428,
+          "memory_price_ms_per_mib_query_interval": 0.25,
+          "offline_oracle": {
+            "build_cost": 189588.44590759277,
+            "cache_hits": 4325,
+            "cache_misses": 1855,
+            "final_resident_items": 0,
+            "hit_fraction": 0.6998381877022654,
+            "holding_cost": 24087.188720703125,
+            "peak_resident_items": 877,
+            "policy": "offline_oracle",
+            "query_count": 309,
+            "request_count": 6180,
+            "total_cost": 213675.6346282959,
+            "unique_items": 1855
+          },
+          "policies": {
+            "no_cache": {
+              "build_cost": 635942.2292327881,
+              "cache_hits": 0,
+              "cache_misses": 6180,
+              "cost_over_oracle": 2.976203769508186,
+              "final_resident_items": 0,
+              "hit_fraction": 0.0,
+              "holding_cost": 0.0,
+              "peak_resident_items": 0,
+              "policy": "no_cache",
+              "query_count": 309,
+              "request_count": 6180,
+              "total_cost": 635942.2292327881,
+              "unique_items": 1855
+            },
+            "resident": {
+              "build_cost": 189588.44590759277,
+              "cache_hits": 4325,
+              "cache_misses": 1855,
+              "cost_over_oracle": 1.102302079073957,
+              "final_resident_items": 1855,
+              "hit_fraction": 0.6998381877022654,
+              "holding_cost": 45946.650390625,
+              "peak_resident_items": 1855,
+              "policy": "resident",
+              "query_count": 309,
+              "request_count": 6180,
+              "total_cost": 235535.09629821777,
+              "unique_items": 1855
+            },
+            "ski_ttl": {
+              "build_cost": 189588.44590759277,
+              "cache_hits": 4325,
+              "cache_misses": 1855,
+              "cost_over_oracle": 1.102302079073957,
+              "final_resident_items": 1855,
+              "hit_fraction": 0.6998381877022654,
+              "holding_cost": 45946.650390625,
+              "peak_resident_items": 1855,
+              "policy": "ski_ttl",
+              "query_count": 309,
+              "request_count": 6180,
+              "total_cost": 235535.09629821777,
+              "unique_items": 1855
+            },
+            "verified_ski_ttl": {
+              "build_cost": 311859.2887649536,
+              "cache_hits": 3125,
+              "cache_misses": 3055,
+              "cost_over_oracle": 1.574366524705611,
+              "final_resident_items": 1200,
+              "hit_fraction": 0.5056634304207119,
+              "holding_cost": 24544.4775390625,
+              "peak_resident_items": 1200,
+              "policy": "verified_ski_ttl",
+              "query_count": 309,
+              "request_count": 6180,
+              "total_cost": 336403.7663040161,
+              "unique_items": 1855
+            }
+          }
+        },
+        {
+          "median_break_even_intervals": 372.9136529126214,
+          "memory_price_ms_per_mib_query_interval": 0.5,
+          "offline_oracle": {
+            "build_cost": 189588.44590759277,
+            "cache_hits": 4325,
+            "cache_misses": 1855,
+            "final_resident_items": 0,
+            "hit_fraction": 0.6998381877022654,
+            "holding_cost": 48174.37744140625,
+            "peak_resident_items": 877,
+            "policy": "offline_oracle",
+            "query_count": 309,
+            "request_count": 6180,
+            "total_cost": 237762.82334899902,
+            "unique_items": 1855
+          },
+          "policies": {
+            "no_cache": {
+              "build_cost": 635942.2292327881,
+              "cache_hits": 0,
+              "cache_misses": 6180,
+              "cost_over_oracle": 2.6746916118981447,
+              "final_resident_items": 0,
+              "hit_fraction": 0.0,
+              "holding_cost": 0.0,
+              "peak_resident_items": 0,
+              "policy": "no_cache",
+              "query_count": 309,
+              "request_count": 6180,
+              "total_cost": 635942.2292327881,
+              "unique_items": 1855
+            },
+            "resident": {
+              "build_cost": 189588.44590759277,
+              "cache_hits": 4325,
+              "cache_misses": 1855,
+              "cost_over_oracle": 1.183876195294296,
+              "final_resident_items": 1855,
+              "hit_fraction": 0.6998381877022654,
+              "holding_cost": 91893.30078125,
+              "peak_resident_items": 1855,
+              "policy": "resident",
+              "query_count": 309,
+              "request_count": 6180,
+              "total_cost": 281481.7466888428,
+              "unique_items": 1855
+            },
+            "ski_ttl": {
+              "build_cost": 189588.44590759277,
+              "cache_hits": 4325,
+              "cache_misses": 1855,
+              "cost_over_oracle": 1.183876195294296,
+              "final_resident_items": 1855,
+              "hit_fraction": 0.6998381877022654,
+              "holding_cost": 91893.30078125,
+              "peak_resident_items": 1855,
+              "policy": "ski_ttl",
+              "query_count": 309,
+              "request_count": 6180,
+              "total_cost": 281481.7466888428,
+              "unique_items": 1855
+            },
+            "verified_ski_ttl": {
+              "build_cost": 311859.2887649536,
+              "cache_hits": 3125,
+              "cache_misses": 3055,
+              "cost_over_oracle": 1.5181021101573247,
+              "final_resident_items": 1200,
+              "hit_fraction": 0.5056634304207119,
+              "holding_cost": 49088.955078125,
+              "peak_resident_items": 1200,
+              "policy": "verified_ski_ttl",
+              "query_count": 309,
+              "request_count": 6180,
+              "total_cost": 360948.2438430786,
+              "unique_items": 1855
+            }
+          }
+        },
+        {
+          "median_break_even_intervals": 186.4568264563107,
+          "memory_price_ms_per_mib_query_interval": 1.0,
+          "offline_oracle": {
+            "build_cost": 197573.82940673828,
+            "cache_hits": 4237,
+            "cache_misses": 1943,
+            "final_resident_items": 0,
+            "hit_fraction": 0.6855987055016182,
+            "holding_cost": 86698.5400390625,
+            "peak_resident_items": 789,
+            "policy": "offline_oracle",
+            "query_count": 309,
+            "request_count": 6180,
+            "total_cost": 284272.3694458008,
+            "unique_items": 1855
+          },
+          "policies": {
+            "no_cache": {
+              "build_cost": 635942.2292327881,
+              "cache_hits": 0,
+              "cache_misses": 6180,
+              "cost_over_oracle": 2.237087728478784,
+              "final_resident_items": 0,
+              "hit_fraction": 0.0,
+              "holding_cost": 0.0,
+              "peak_resident_items": 0,
+              "policy": "no_cache",
+              "query_count": 309,
+              "request_count": 6180,
+              "total_cost": 635942.2292327881,
+              "unique_items": 1855
+            },
+            "resident": {
+              "build_cost": 189588.44590759277,
+              "cache_hits": 4325,
+              "cache_misses": 1855,
+              "cost_over_oracle": 1.3134412190604414,
+              "final_resident_items": 1855,
+              "hit_fraction": 0.6998381877022654,
+              "holding_cost": 183786.6015625,
+              "peak_resident_items": 1855,
+              "policy": "resident",
+              "query_count": 309,
+              "request_count": 6180,
+              "total_cost": 373375.0474700928,
+              "unique_items": 1855
+            },
+            "ski_ttl": {
+              "build_cost": 197573.82940673828,
+              "cache_hits": 4237,
+              "cache_misses": 1943,
+              "cost_over_oracle": 1.313786480329861,
+              "final_resident_items": 1596,
+              "hit_fraction": 0.6855987055016182,
+              "holding_cost": 175899.36630249023,
+              "peak_resident_items": 1607,
+              "policy": "ski_ttl",
+              "query_count": 309,
+              "request_count": 6180,
+              "total_cost": 373473.1957092285,
+              "unique_items": 1855
+            },
+            "verified_ski_ttl": {
+              "build_cost": 313935.39277648926,
+              "cache_hits": 3102,
+              "cache_misses": 3078,
+              "cost_over_oracle": 1.444231938086938,
+              "final_resident_items": 1129,
+              "hit_fraction": 0.5019417475728155,
+              "holding_cost": 96619.84229278564,
+              "peak_resident_items": 1129,
+              "policy": "verified_ski_ttl",
+              "query_count": 309,
+              "request_count": 6180,
+              "total_cost": 410555.2350692749,
+              "unique_items": 1855
+            }
+          }
+        },
+        {
+          "median_break_even_intervals": 93.22841322815535,
+          "memory_price_ms_per_mib_query_interval": 2.0,
+          "offline_oracle": {
+            "build_cost": 243922.12757873535,
+            "cache_hits": 3737,
+            "cache_misses": 2443,
+            "final_resident_items": 0,
+            "hit_fraction": 0.6046925566343042,
+            "holding_cost": 110793.3984375,
+            "peak_resident_items": 464,
+            "policy": "offline_oracle",
+            "query_count": 309,
+            "request_count": 6180,
+            "total_cost": 354715.52601623535,
+            "unique_items": 1855
+          },
+          "policies": {
+            "no_cache": {
+              "build_cost": 635942.2292327881,
+              "cache_hits": 0,
+              "cache_misses": 6180,
+              "cost_over_oracle": 1.7928232135056896,
+              "final_resident_items": 0,
+              "hit_fraction": 0.0,
+              "holding_cost": 0.0,
+              "peak_resident_items": 0,
+              "policy": "no_cache",
+              "query_count": 309,
+              "request_count": 6180,
+              "total_cost": 635942.2292327881,
+              "unique_items": 1855
+            },
+            "resident": {
+              "build_cost": 189588.44590759277,
+              "cache_hits": 4325,
+              "cache_misses": 1855,
+              "cost_over_oracle": 1.5707281135675224,
+              "final_resident_items": 1855,
+              "hit_fraction": 0.6998381877022654,
+              "holding_cost": 367573.203125,
+              "peak_resident_items": 1855,
+              "policy": "resident",
+              "query_count": 309,
+              "request_count": 6180,
+              "total_cost": 557161.6490325928,
+              "unique_items": 1855
+            },
+            "ski_ttl": {
+              "build_cost": 243922.12757873535,
+              "cache_hits": 3737,
+              "cache_misses": 2443,
+              "cost_over_oracle": 1.4827901948166002,
+              "final_resident_items": 1094,
+              "hit_fraction": 0.6046925566343042,
+              "holding_cost": 282046.5763473511,
+              "peak_resident_items": 1148,
+              "policy": "ski_ttl",
+              "query_count": 309,
+              "request_count": 6180,
+              "total_cost": 525968.7039260864,
+              "unique_items": 1855
+            },
+            "verified_ski_ttl": {
+              "build_cost": 335911.40211486816,
+              "cache_hits": 2865,
+              "cache_misses": 3315,
+              "cost_over_oracle": 1.421664944633404,
+              "final_resident_items": 875,
+              "hit_fraction": 0.46359223300970875,
+              "holding_cost": 168375.22653961182,
+              "peak_resident_items": 890,
+              "policy": "verified_ski_ttl",
+              "query_count": 309,
+              "request_count": 6180,
+              "total_cost": 504286.62865448,
+              "unique_items": 1855
+            }
+          }
+        },
+        {
+          "median_break_even_intervals": 46.61420661407767,
+          "memory_price_ms_per_mib_query_interval": 4.0,
+          "offline_oracle": {
+            "build_cost": 323563.8047866821,
+            "cache_hits": 2902,
+            "cache_misses": 3278,
+            "final_resident_items": 0,
+            "hit_fraction": 0.46957928802588994,
+            "holding_cost": 108572.4609375,
+            "peak_resident_items": 221,
+            "policy": "offline_oracle",
+            "query_count": 309,
+            "request_count": 6180,
+            "total_cost": 432136.2657241821,
+            "unique_items": 1855
+          },
+          "policies": {
+            "no_cache": {
+              "build_cost": 635942.2292327881,
+              "cache_hits": 0,
+              "cache_misses": 6180,
+              "cost_over_oracle": 1.471624299263715,
+              "final_resident_items": 0,
+              "hit_fraction": 0.0,
+              "holding_cost": 0.0,
+              "peak_resident_items": 0,
+              "policy": "no_cache",
+              "query_count": 309,
+              "request_count": 6180,
+              "total_cost": 635942.2292327881,
+              "unique_items": 1855
+            },
+            "resident": {
+              "build_cost": 189588.44590759277,
+              "cache_hits": 4325,
+              "cache_misses": 1855,
+              "cost_over_oracle": 2.1399149423571395,
+              "final_resident_items": 1855,
+              "hit_fraction": 0.6998381877022654,
+              "holding_cost": 735146.40625,
+              "peak_resident_items": 1855,
+              "policy": "resident",
+              "query_count": 309,
+              "request_count": 6180,
+              "total_cost": 924734.8521575928,
+              "unique_items": 1855
+            },
+            "ski_ttl": {
+              "build_cost": 323563.8047866821,
+              "cache_hits": 2902,
+              "cache_misses": 3278,
+              "cost_over_oracle": 1.6459115550167707,
+              "final_resident_items": 697,
+              "hit_fraction": 0.46957928802588994,
+              "holding_cost": 387694.2683105469,
+              "peak_resident_items": 767,
+              "policy": "ski_ttl",
+              "query_count": 309,
+              "request_count": 6180,
+              "total_cost": 711258.073097229,
+              "unique_items": 1855
+            },
+            "verified_ski_ttl": {
+              "build_cost": 390805.215385437,
+              "cache_hits": 2281,
+              "cache_misses": 3899,
+              "cost_over_oracle": 1.4758654708893646,
+              "final_resident_items": 575,
+              "hit_fraction": 0.36909385113268606,
+              "holding_cost": 246969.7779159546,
+              "peak_resident_items": 586,
+              "policy": "verified_ski_ttl",
+              "query_count": 309,
+              "request_count": 6180,
+              "total_cost": 637774.9933013916,
+              "unique_items": 1855
+            }
+          }
+        },
+        {
+          "median_break_even_intervals": 23.307103307038837,
+          "memory_price_ms_per_mib_query_interval": 8.0,
+          "offline_oracle": {
+            "build_cost": 409862.1182785034,
+            "cache_hits": 2020,
+            "cache_misses": 4160,
+            "final_resident_items": 0,
+            "hit_fraction": 0.3268608414239482,
+            "holding_cost": 92225.234375,
+            "peak_resident_items": 115,
+            "policy": "offline_oracle",
+            "query_count": 309,
+            "request_count": 6180,
+            "total_cost": 502087.3526535034,
+            "unique_items": 1855
+          },
+          "policies": {
+            "no_cache": {
+              "build_cost": 635942.2292327881,
+              "cache_hits": 0,
+              "cache_misses": 6180,
+              "cost_over_oracle": 1.2665967901240076,
+              "final_resident_items": 0,
+              "hit_fraction": 0.0,
+              "holding_cost": 0.0,
+              "peak_resident_items": 0,
+              "policy": "no_cache",
+              "query_count": 309,
+              "request_count": 6180,
+              "total_cost": 635942.2292327881,
+              "unique_items": 1855
+            },
+            "resident": {
+              "build_cost": 189588.44590759277,
+              "cache_hits": 4325,
+              "cache_misses": 1855,
+              "cost_over_oracle": 3.305961103451847,
+              "final_resident_items": 1855,
+              "hit_fraction": 0.6998381877022654,
+              "holding_cost": 1470292.8125,
+              "peak_resident_items": 1855,
+              "policy": "resident",
+              "query_count": 309,
+              "request_count": 6180,
+              "total_cost": 1659881.2584075928,
+              "unique_items": 1855
+            },
+            "ski_ttl": {
+              "build_cost": 409862.1182785034,
+              "cache_hits": 2020,
+              "cache_misses": 4160,
+              "cost_over_oracle": 1.7646576313518871,
+              "final_resident_items": 410,
+              "hit_fraction": 0.3268608414239482,
+              "holding_cost": 476150.1601867676,
+              "peak_resident_items": 463,
+              "policy": "ski_ttl",
+              "query_count": 309,
+              "request_count": 6180,
+              "total_cost": 886012.278465271,
+              "unique_items": 1855
+            },
+            "verified_ski_ttl": {
+              "build_cost": 454469.4561691284,
+              "cache_hits": 1623,
+              "cache_misses": 4557,
+              "cost_over_oracle": 1.5330500431814649,
+              "final_resident_items": 341,
+              "hit_fraction": 0.262621359223301,
+              "holding_cost": 315255.5814971924,
+              "peak_resident_items": 365,
+              "policy": "verified_ski_ttl",
+              "query_count": 309,
+              "request_count": 6180,
+              "total_cost": 769725.0376663208,
+              "unique_items": 1855
+            }
+          }
+        },
+        {
+          "median_break_even_intervals": 11.653551653519418,
+          "memory_price_ms_per_mib_query_interval": 16.0,
+          "offline_oracle": {
+            "build_cost": 486419.9575805664,
+            "cache_hits": 1277,
+            "cache_misses": 4903,
+            "final_resident_items": 0,
+            "hit_fraction": 0.20663430420711973,
+            "holding_cost": 71206.796875,
+            "peak_resident_items": 58,
+            "policy": "offline_oracle",
+            "query_count": 309,
+            "request_count": 6180,
+            "total_cost": 557626.7544555664,
+            "unique_items": 1855
+          },
+          "policies": {
+            "no_cache": {
+              "build_cost": 635942.2292327881,
+              "cache_hits": 0,
+              "cache_misses": 6180,
+              "cost_over_oracle": 1.1404442562188113,
+              "final_resident_items": 0,
+              "hit_fraction": 0.0,
+              "holding_cost": 0.0,
+              "peak_resident_items": 0,
+              "policy": "no_cache",
+              "query_count": 309,
+              "request_count": 6180,
+              "total_cost": 635942.2292327881,
+              "unique_items": 1855
+            },
+            "resident": {
+              "build_cost": 189588.44590759277,
+              "cache_hits": 4325,
+              "cache_misses": 1855,
+              "cost_over_oracle": 5.613385738572943,
+              "final_resident_items": 1855,
+              "hit_fraction": 0.6998381877022654,
+              "holding_cost": 2940585.625,
+              "peak_resident_items": 1855,
+              "policy": "resident",
+              "query_count": 309,
+              "request_count": 6180,
+              "total_cost": 3130174.070907593,
+              "unique_items": 1855
+            },
+            "ski_ttl": {
+              "build_cost": 486419.9575805664,
+              "cache_hits": 1277,
+              "cache_misses": 4903,
+              "cost_over_oracle": 1.8460025673382863,
+              "final_resident_items": 213,
+              "hit_fraction": 0.20663430420711973,
+              "holding_cost": 542960.4627609253,
+              "peak_resident_items": 265,
+              "policy": "ski_ttl",
+              "query_count": 309,
+              "request_count": 6180,
+              "total_cost": 1029380.4203414917,
+              "unique_items": 1855
+            },
+            "verified_ski_ttl": {
+              "build_cost": 514742.2469177246,
+              "cache_hits": 1028,
+              "cache_misses": 5152,
+              "cost_over_oracle": 1.5833870450413337,
+              "final_resident_items": 185,
+              "hit_fraction": 0.1663430420711974,
+              "holding_cost": 368196.73205566406,
+              "peak_resident_items": 215,
+              "policy": "verified_ski_ttl",
+              "query_count": 309,
+              "request_count": 6180,
+              "total_cost": 882938.9789733887,
+              "unique_items": 1855
+            }
+          }
+        },
+        {
+          "median_break_even_intervals": 5.826775826759709,
+          "memory_price_ms_per_mib_query_interval": 32.0,
+          "offline_oracle": {
+            "build_cost": 554152.2087097168,
+            "cache_hits": 648,
+            "cache_misses": 5532,
+            "final_resident_items": 0,
+            "hit_fraction": 0.10485436893203884,
+            "holding_cost": 42262.1875,
+            "peak_resident_items": 26,
+            "policy": "offline_oracle",
+            "query_count": 309,
+            "request_count": 6180,
+            "total_cost": 596414.3962097168,
+            "unique_items": 1855
+          },
+          "policies": {
+            "no_cache": {
+              "build_cost": 635942.2292327881,
+              "cache_hits": 0,
+              "cache_misses": 6180,
+              "cost_over_oracle": 1.0662757862222563,
+              "final_resident_items": 0,
+              "hit_fraction": 0.0,
+              "holding_cost": 0.0,
+              "peak_resident_items": 0,
+              "policy": "no_cache",
+              "query_count": 309,
+              "request_count": 6180,
+              "total_cost": 635942.2292327881,
+              "unique_items": 1855
+            },
+            "resident": {
+              "build_cost": 189588.44590759277,
+              "cache_hits": 4325,
+              "cache_misses": 1855,
+              "cost_over_oracle": 10.178761167550583,
+              "final_resident_items": 1855,
+              "hit_fraction": 0.6998381877022654,
+              "holding_cost": 5881171.25,
+              "peak_resident_items": 1855,
+              "policy": "resident",
+              "query_count": 309,
+              "request_count": 6180,
+              "total_cost": 6070759.695907593,
+              "unique_items": 1855
+            },
+            "ski_ttl": {
+              "build_cost": 554152.2087097168,
+              "cache_hits": 648,
+              "cache_misses": 5532,
+              "cost_over_oracle": 1.9147022500442554,
+              "final_resident_items": 122,
+              "hit_fraction": 0.10485436893203884,
+              "holding_cost": 587803.777671814,
+              "peak_resident_items": 150,
+              "policy": "ski_ttl",
+              "query_count": 309,
+              "request_count": 6180,
+              "total_cost": 1141955.9863815308,
+              "unique_items": 1855
+            },
+            "verified_ski_ttl": {
+              "build_cost": 566484.0269699097,
+              "cache_hits": 542,
+              "cache_misses": 5638,
+              "cost_over_oracle": 1.6294799388949985,
+              "final_resident_items": 107,
+              "hit_fraction": 0.08770226537216828,
+              "holding_cost": 405361.26692199707,
+              "peak_resident_items": 123,
+              "policy": "verified_ski_ttl",
+              "query_count": 309,
+              "request_count": 6180,
+              "total_cost": 971845.2938919067,
+              "unique_items": 1855
+            }
+          }
+        }
+      ],
+      "quality_contract": {
+        "definition": "BM25 Top-K candidate-relative z-score fusion; retention policy cannot change scores because every requested candidate is visually refined before ranking",
+        "mean_ndcg@10": 0.5628003944844325
+      },
+      "query_count": 309,
+      "trace_identity": {
+        "source_sha256": {
+          "corpus": "63283779b0b8a364685bef7e74d7368c15bf80b09d4a2ac087258c13a22c9601",
+          "qrels": "fedeef5802d0bcea2661601345222d40c98b7a09b09f142e63339aa0d671342d",
+          "queries": "3ab1f931bf8522750be06b300d5e8efe3b7cb68cb749705b19416b4032b7ad8b"
+        },
+        "text_runtime_sha256": "55bf5d9921a5df5151d346db394fbf4e0069b1751ec787117853fc4f1b67fa65",
+        "visual_runtime_sha256": "a6bbbf5bb26dadd4d060df40b225d9511b05a8470b574b71463ca4eadb635944"
+      },
+      "unique_candidate_pages": 1855
+    }
+  ],
+  "mechanism": "two-slope elastic representation retention",
+  "schema_version": 1
+}
