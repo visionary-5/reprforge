@@ -30,6 +30,8 @@ not committed.
   full-visual, static-fusion, resident K=10/K=20 and oracle-headroom result.
 - `systems/representation-view-control-plane.json`: deterministic IRPAPERS- and
   ViDoRe-v3-scale metadata lifecycle measurements; no quality claim.
+- `systems/complementary-view-v3.json`: source-paper-disjoint V3 objective,
+  exact-oracle, solver and predictive-validity audit on IRPAPERS.
 
 - `systems/candidate-scaling-summary.json`: 1×/4×/16× physical candidate
   scaling summary.

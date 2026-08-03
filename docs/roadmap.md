@@ -83,12 +83,16 @@ of candidate generation, 0.10 seconds of materialization planning and 80 MB
 peak Python allocation. This closes the control-plane scalability question,
 not the utility-estimation question.
 
-The immediate research gate is now sparse what-if estimation: determine
-whether a bounded set of real visual probes predicts future rank-boundary or
-answer utility well enough to outperform frequency under physical A100
-accounting. At least two observed candidates are currently required for stable
-candidate-relative visual normalization; pairwise probe construction or a
-cross-query calibrated score model must be compared explicitly.
+The complementary-view V3 gate is now complete on IRPAPERS. Exact auditing
+shows that the natural additive boundary-graph objective can be optimized well
+but predicts Recall@5 poorly (0.213 Spearman correlation). Query-level
+saturation is the only retained objective extension: the sparse greedy path
+reaches 82.78% Recall@5 at 20% page budget versus 81.67% for conditional pair
+admission, with no extra pages and no fold-level regression. An expensive
+local-search diagnostic reaches 83.33%. The deployable result is two queries
+on a small single-gold benchmark, not a paper claim. The immediate gate is
+frozen transfer to graded ViDoRe HR and Finance-EN score traces; threshold
+repair on either transfer is forbidden.
 
 The required first-stage baselines now include a LightSTAR-style transient
 selection/refinement cascade and a fixed compact visual representation such as

@@ -124,6 +124,15 @@ The current results are promising, but not yet a finished paper claim.
   complementary-pair admission is the constructive result: it builds **25.9%
   fewer pages**, improves Recall@5 from **80.56% to 81.67%**, and is
   **1.228x/1.240x faster** than independent-risk 20% in the two repetitions.
+- V3 formalizes complementary-view admission as weighted densest
+  `k`-subgraph, adds an exact oracle and a sparse published Frank--Wolfe
+  baseline, and exposes an objective mismatch: additive edge coverage has
+  only **0.213** Spearman correlation with held-out Recall@5. A sparse
+  query-saturated greedy planner reaches **82.78%** Recall@5 at the 20% budget
+  versus **81.67%** for conditional admission, with no extra pages and no loss
+  in any fold. An expensive local-search diagnostic reaches 83.33%. The
+  deployable gain is only two of 180 queries, so graded ViDoRe transfer is
+  required before it becomes an algorithm claim.
 - The candidate-view control plane scales to 30,594 hypothetical views at a
   ViDoRe-v3-like workload size in 1.17 seconds of candidate generation and
   0.10 seconds of materialization planning, using 80 MB peak Python memory.
@@ -134,12 +143,12 @@ quality–resource trade-off. The independent per-page utility abstraction has
 been rejected: rank interactions make representation value cohort-dependent.
 The current mechanism compiles incumbent--challenger comparisons into a
 weighted boundary graph and admits complete, reusable comparisons under a
-physical-build budget. The next research step is to formalize this as a
-budgeted complementary-view optimization problem, compare scalable planners
-against an exact small-cohort oracle, and transfer one frozen planner to a
-graded public workload. Online pair-delta adaptation is no longer on the main
-path. Persistence remains a separate action, and lifecycle adaptation remains
-conditional on a real temporal workload.
+physical-build budget. V3 shows that stronger optimization of raw edge mass
+does not reliably improve retrieval; query-level saturation is the frozen
+transfer candidate. The next research step is graded HR and Finance-EN
+transfer without threshold repair. Online pair-delta adaptation is no longer
+on the main path. Persistence remains a separate action, and lifecycle
+adaptation remains conditional on a real temporal workload.
 
 ## Repository
 
@@ -202,6 +211,8 @@ environment.
 - [Sparse cost--risk admission result](docs/sparse-risk-admission-result.md)
 - [Reusable pair-probe contract](docs/reusable-pair-probe-contract.md)
 - [Reusable pair-probe A100 result](docs/reusable-pair-probe-result.md)
+- [Complementary-view V3 contract](docs/complementary-view-v3-contract.md)
+- [Complementary-view V3 result](docs/complementary-view-v3-result.md)
 - [Evaluation protocol](docs/evaluation.md)
 - [Current results](docs/results.md)
 - [Research roadmap](docs/roadmap.md)
