@@ -167,6 +167,25 @@ def _ridge(
     return np.linalg.solve(design.T @ design + regularizer, design.T @ target)
 
 
+def _weighted_ridge(
+    features: np.ndarray,
+    target: np.ndarray,
+    weights: np.ndarray,
+    *,
+    penalty: float,
+) -> np.ndarray:
+    design = np.column_stack([np.ones(len(features)), features])
+    root = np.sqrt(np.asarray(weights, dtype=np.float64))
+    weighted_design = design * root[:, None]
+    weighted_target = target * root
+    regularizer = np.eye(design.shape[1], dtype=np.float64) * penalty
+    regularizer[0, 0] = 0.0
+    return np.linalg.solve(
+        weighted_design.T @ weighted_design + regularizer,
+        weighted_design.T @ weighted_target,
+    )
+
+
 def _predict(coefficients: np.ndarray, features: np.ndarray) -> np.ndarray:
     return coefficients[0] + features @ coefficients[1:]
 
@@ -202,7 +221,8 @@ class ConformalEnvelopeModel:
     target_scale: float
     mean_coefficients: np.ndarray
     scale_coefficients: np.ndarray
-    conformal_multiplier: float
+    upper_multiplier: float
+    lower_multiplier: float
     alpha: float
     ridge_penalty: float
 
@@ -260,11 +280,16 @@ class ConformalEnvelopeModel:
         cal_log_scale = _predict(scale_coefficients, cal_normalized_x)
         cal_scale = np.exp(np.clip(cal_log_scale, -20.0, 20.0)) + 1e-6
         cal_normalized_y = (cal_y - target_mean) / target_scale
-        query_scores = np.max(
-            np.abs(cal_normalized_y - cal_mean) / cal_scale,
+        upper_scores = np.max(
+            (cal_normalized_y - cal_mean) / cal_scale,
             axis=1,
         )
-        multiplier = conformal_quantile(query_scores, alpha=alpha)
+        lower_scores = np.max(
+            (cal_mean - cal_normalized_y) / cal_scale,
+            axis=1,
+        )
+        upper_multiplier = max(0.0, conformal_quantile(upper_scores, alpha=alpha))
+        lower_multiplier = max(0.0, conformal_quantile(lower_scores, alpha=alpha))
         return cls(
             feature_mean=feature_mean,
             feature_scale=feature_scale,
@@ -272,7 +297,8 @@ class ConformalEnvelopeModel:
             target_scale=target_scale,
             mean_coefficients=mean_coefficients,
             scale_coefficients=scale_coefficients,
-            conformal_multiplier=multiplier,
+            upper_multiplier=upper_multiplier,
+            lower_multiplier=lower_multiplier,
             alpha=alpha,
             ridge_penalty=ridge_penalty,
         )
@@ -288,13 +314,113 @@ class ConformalEnvelopeModel:
         mean = _predict(self.mean_coefficients, normalized)
         log_scale = _predict(self.scale_coefficients, normalized)
         scale = np.exp(np.clip(log_scale, -20.0, 20.0)) + 1e-6
-        radius = self.conformal_multiplier * scale
         return ScoreIntervals(
             mean=mean,
-            lower=mean - radius,
-            upper=mean + radius,
+            lower=mean - self.lower_multiplier * scale,
+            upper=mean + self.upper_multiplier * scale,
             scale=scale,
         )
+
+    @property
+    def conformal_multiplier(self) -> float:
+        """Backward-compatible name for the decision-relevant upper bound."""
+
+        return self.upper_multiplier
+
+
+@dataclass(frozen=True)
+class ConformalCandidateSetModel:
+    """Query-level conformal set containing the full-score Top-k members."""
+
+    feature_mean: np.ndarray
+    feature_scale: np.ndarray
+    coefficients: np.ndarray
+    inclusion_threshold: float
+    cutoff: int
+    alpha: float
+    ridge_penalty: float
+
+    @classmethod
+    def fit(
+        cls,
+        fit_features: np.ndarray,
+        fit_membership: np.ndarray,
+        calibration_features: np.ndarray,
+        calibration_membership: np.ndarray,
+        *,
+        cutoff: int,
+        alpha: float = 0.05,
+        ridge_penalty: float = 1.0,
+    ) -> "ConformalCandidateSetModel":
+        fit_x = np.asarray(fit_features, dtype=np.float64)
+        fit_y = np.asarray(fit_membership, dtype=bool)
+        cal_x = np.asarray(calibration_features, dtype=np.float64)
+        cal_y = np.asarray(calibration_membership, dtype=bool)
+        if fit_x.ndim != 3 or cal_x.ndim != 3:
+            raise ValueError("candidate-set features must be Q x C x F")
+        if fit_y.shape != fit_x.shape[:2] or cal_y.shape != cal_x.shape[:2]:
+            raise ValueError("membership labels must align with candidate features")
+        if fit_x.shape[2] != cal_x.shape[2]:
+            raise ValueError("fit and calibration feature widths differ")
+        if cutoff <= 0 or cutoff > fit_x.shape[1]:
+            raise ValueError("cutoff must lie inside the candidate pool")
+        if not np.all(fit_y.sum(axis=1) == cutoff):
+            raise ValueError("every fit query must label exactly cutoff members")
+        if not np.all(cal_y.sum(axis=1) == cutoff):
+            raise ValueError("every calibration query must label exactly cutoff members")
+
+        flat_x = fit_x.reshape(-1, fit_x.shape[2])
+        flat_y = fit_y.reshape(-1).astype(np.float64)
+        feature_mean = flat_x.mean(axis=0)
+        feature_scale = np.maximum(flat_x.std(axis=0), 1e-12)
+        normalized = (flat_x - feature_mean) / feature_scale
+        positive_weight = (fit_x.shape[1] - cutoff) / cutoff
+        weights = np.where(flat_y > 0.5, positive_weight, 1.0)
+        coefficients = _weighted_ridge(
+            normalized,
+            flat_y,
+            weights,
+            penalty=ridge_penalty,
+        )
+        cal_scores = _predict(
+            coefficients,
+            (cal_x - feature_mean) / feature_scale,
+        )
+        minimum_member_score = np.asarray(
+            [float(scores[members].min()) for scores, members in zip(cal_scores, cal_y, strict=True)]
+        )
+        nonconformity = -minimum_member_score
+        threshold = -conformal_quantile(nonconformity, alpha=alpha)
+        return cls(
+            feature_mean=feature_mean,
+            feature_scale=feature_scale,
+            coefficients=coefficients,
+            inclusion_threshold=threshold,
+            cutoff=cutoff,
+            alpha=alpha,
+            ridge_penalty=ridge_penalty,
+        )
+
+    def scores(self, features: np.ndarray) -> np.ndarray:
+        values = np.asarray(features, dtype=np.float64)
+        if values.ndim not in {2, 3} or values.shape[-1] != len(self.feature_mean):
+            raise ValueError("features have an incompatible shape")
+        return _predict(
+            self.coefficients,
+            (values - self.feature_mean) / self.feature_scale,
+        )
+
+    def predict_sets(self, features: np.ndarray) -> np.ndarray:
+        scores = self.scores(features)
+        if scores.ndim != 2:
+            raise ValueError("batched query features are required")
+        selected = scores >= self.inclusion_threshold
+        for query in range(len(scores)):
+            if int(selected[query].sum()) >= self.cutoff:
+                continue
+            order = np.argsort(-scores[query], kind="stable")[: self.cutoff]
+            selected[query, order] = True
+        return selected
 
 
 @dataclass(frozen=True)
@@ -440,6 +566,18 @@ def simultaneous_coverage(
     )
 
 
+def simultaneous_upper_coverage(
+    exact_visual_scores: np.ndarray,
+    intervals: ScoreIntervals,
+) -> np.ndarray:
+    """Coverage needed by Top-k stopping: no hidden score exceeds its UCB."""
+
+    targets = np.asarray(exact_visual_scores, dtype=np.float64)
+    if targets.shape != intervals.upper.shape or targets.ndim != 2:
+        raise ValueError("targets and intervals must be aligned query matrices")
+    return np.all(targets <= intervals.upper, axis=1)
+
+
 def balanced_group_folds(
     groups: Sequence[str],
     *,
@@ -475,6 +613,16 @@ class CrossFitAcquisitionResult:
     coverage: np.ndarray
     certified: np.ndarray
     exhausted: np.ndarray
+    folds: tuple[dict[str, Any], ...]
+
+
+@dataclass(frozen=True)
+class CrossFitCandidateSetResult:
+    rankings: np.ndarray
+    teacher_rankings: np.ndarray
+    acquired_counts: np.ndarray
+    acquired_pages: tuple[tuple[int, ...], ...]
+    topk_covered: np.ndarray
     folds: tuple[dict[str, Any], ...]
 
 
@@ -540,7 +688,7 @@ def crossfit_boundary_acquisition(
         intervals = model.predict_intervals(surface.features[test])
         exact_normalized = model.normalize_targets(surface.visual_scores[test])
         teacher_scores[test] = surface.base_scores[test] + exact_normalized
-        fold_coverage = simultaneous_coverage(exact_normalized, intervals)
+        fold_coverage = simultaneous_upper_coverage(exact_normalized, intervals)
         coverage[test] = fold_coverage
         fold_acquired: list[int] = []
         fold_exhausted = 0
@@ -584,8 +732,9 @@ def crossfit_boundary_acquisition(
                 "fit_queries": int(len(fit)),
                 "calibration_queries": int(len(calibration)),
                 "test_queries": int(len(test)),
-                "conformal_multiplier": model.conformal_multiplier,
-                "simultaneous_coverage": float(fold_coverage.mean()),
+                "upper_conformal_multiplier": model.upper_multiplier,
+                "lower_diagnostic_multiplier": model.lower_multiplier,
+                "simultaneous_upper_coverage": float(fold_coverage.mean()),
                 "mean_acquired_pages": float(np.mean(fold_acquired)),
                 "exhausted_queries": fold_exhausted,
                 "test_source_groups": sorted(
@@ -604,5 +753,132 @@ def crossfit_boundary_acquisition(
         coverage=coverage,
         certified=certified,
         exhausted=exhausted,
+        folds=tuple(fold_records),
+    )
+
+
+def crossfit_candidate_set_acquisition(
+    surface: CandidateSurface,
+    corpus_ids: Sequence[str],
+    groups: Sequence[str],
+    *,
+    cutoff: int,
+    alpha: float = 0.05,
+    fold_count: int = 5,
+    ridge_penalty: float = 1.0,
+) -> CrossFitCandidateSetResult:
+    """Acquire a conformal set calibrated to contain the full-score Top-k."""
+
+    query_count, candidate_count = surface.candidate_indices.shape
+    if len(groups) != query_count:
+        raise ValueError("source groups do not match the query count")
+    if len(corpus_ids) <= int(np.max(surface.candidate_indices)):
+        raise ValueError("candidate indices exceed the corpus identifiers")
+    if cutoff <= 0 or cutoff > candidate_count:
+        raise ValueError("cutoff must lie inside the candidate pool")
+    query_folds, assignment = balanced_group_folds(groups, fold_count=fold_count)
+    rankings = np.empty((query_count, cutoff), dtype=np.int32)
+    teacher = np.empty_like(rankings)
+    acquired_counts = np.empty(query_count, dtype=np.int32)
+    acquired_pages: list[tuple[int, ...] | None] = [None] * query_count
+    topk_covered = np.empty(query_count, dtype=bool)
+    fold_records: list[dict[str, Any]] = []
+
+    for test_fold in range(fold_count):
+        calibration_fold = (test_fold + 1) % fold_count
+        test = np.flatnonzero(query_folds == test_fold)
+        calibration = np.flatnonzero(query_folds == calibration_fold)
+        fit = np.flatnonzero(
+            (query_folds != test_fold) & (query_folds != calibration_fold)
+        )
+        # The location model supplies the same train-only visual affine scale
+        # as the score-envelope path.  Membership calibration remains separate.
+        score_model = ConformalEnvelopeModel.fit(
+            surface.features[fit],
+            surface.visual_scores[fit],
+            surface.features[calibration],
+            surface.visual_scores[calibration],
+            alpha=alpha,
+            ridge_penalty=ridge_penalty,
+        )
+        fit_final = surface.base_scores[fit] + score_model.normalize_targets(
+            surface.visual_scores[fit]
+        )
+        calibration_final = surface.base_scores[calibration] + score_model.normalize_targets(
+            surface.visual_scores[calibration]
+        )
+        test_final = surface.base_scores[test] + score_model.normalize_targets(
+            surface.visual_scores[test]
+        )
+
+        def membership(values: np.ndarray, query_indices: np.ndarray) -> np.ndarray:
+            labels = np.zeros_like(values, dtype=bool)
+            for local, query in enumerate(query_indices):
+                candidate_ids = [
+                    corpus_ids[int(page)] for page in surface.candidate_indices[query]
+                ]
+                chosen = _stable_top_indices(values[local], candidate_ids, cutoff)
+                labels[local, chosen] = True
+            return labels
+
+        fit_membership = membership(fit_final, fit)
+        calibration_membership = membership(calibration_final, calibration)
+        test_membership = membership(test_final, test)
+        set_model = ConformalCandidateSetModel.fit(
+            surface.features[fit],
+            fit_membership,
+            surface.features[calibration],
+            calibration_membership,
+            cutoff=cutoff,
+            alpha=alpha,
+            ridge_penalty=ridge_penalty,
+        )
+        selected = set_model.predict_sets(surface.features[test])
+        fold_coverage = np.all(selected | ~test_membership, axis=1)
+        topk_covered[test] = fold_coverage
+        fold_sizes: list[int] = []
+        for local, query in enumerate(test):
+            selected_offsets = np.flatnonzero(selected[local])
+            pages = surface.candidate_indices[query]
+            candidate_ids = [corpus_ids[int(page)] for page in pages]
+            selected_order = sorted(
+                selected_offsets,
+                key=lambda offset: (
+                    -float(test_final[local, offset]),
+                    candidate_ids[offset],
+                ),
+            )[:cutoff]
+            rankings[query] = pages[np.asarray(selected_order, dtype=np.int32)]
+            teacher_offsets = _stable_top_indices(
+                test_final[local], candidate_ids, cutoff
+            )
+            teacher[query] = pages[teacher_offsets]
+            selected_pages = tuple(int(pages[offset]) for offset in selected_offsets)
+            acquired_pages[query] = selected_pages
+            acquired_counts[query] = len(selected_pages)
+            fold_sizes.append(len(selected_pages))
+        fold_records.append(
+            {
+                "test_fold": test_fold,
+                "calibration_fold": calibration_fold,
+                "fit_queries": int(len(fit)),
+                "calibration_queries": int(len(calibration)),
+                "test_queries": int(len(test)),
+                "inclusion_threshold": set_model.inclusion_threshold,
+                "topk_set_coverage": float(fold_coverage.mean()),
+                "mean_acquired_pages": float(np.mean(fold_sizes)),
+                "test_source_groups": sorted(
+                    group for group, fold in assignment.items() if fold == test_fold
+                ),
+            }
+        )
+    if any(value is None for value in acquired_pages):
+        raise AssertionError("candidate-set acquisition left a query unassigned")
+    return CrossFitCandidateSetResult(
+        rankings=rankings,
+        teacher_rankings=teacher,
+        acquired_counts=acquired_counts,
+        acquired_pages=tuple(value for value in acquired_pages if value is not None),
+        topk_covered=topk_covered,
         folds=tuple(fold_records),
     )

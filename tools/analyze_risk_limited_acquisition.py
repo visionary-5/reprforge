@@ -16,6 +16,7 @@ from reprforge.irpapers_benchmark import load_irpapers
 from reprforge.risk_limited_acquisition import (
     build_candidate_surface,
     crossfit_boundary_acquisition,
+    crossfit_candidate_set_acquisition,
 )
 
 
@@ -160,7 +161,7 @@ def main() -> None:
         page_text_token_counts=page_token_counts,
         candidate_pool=args.candidate_pool,
     )
-    result = crossfit_boundary_acquisition(
+    score_result = crossfit_boundary_acquisition(
         surface,
         corpus_ids,
         source_groups,
@@ -168,32 +169,57 @@ def main() -> None:
         alpha=args.alpha,
         batch_size=args.batch_size,
     )
+    set_result = crossfit_candidate_set_acquisition(
+        surface,
+        corpus_ids,
+        source_groups,
+        cutoff=args.cutoff,
+        alpha=args.alpha,
+    )
 
     runs: dict[str, Any] = {}
-    proposed = _run_record(
-        result.rankings,
-        teacher=result.teacher_rankings,
+    score_envelope = _run_record(
+        score_result.rankings,
+        teacher=score_result.teacher_rankings,
         corpus_ids=corpus_ids,
         gold_ids=gold_ids,
-        acquired_counts=result.acquired_counts,
-        acquired_pages=result.acquired_pages,
+        acquired_counts=score_result.acquired_counts,
+        acquired_pages=score_result.acquired_pages,
+    )
+    score_envelope["risk"] = {
+        "target_alpha": args.alpha,
+        "query_level_simultaneous_upper_coverage": float(
+            score_result.coverage.mean()
+        ),
+        "uncovered_queries": int((~score_result.coverage).sum()),
+        "certified_queries": int(score_result.certified.sum()),
+        "pool_exhausted_queries": int(score_result.exhausted.sum()),
+    }
+    score_envelope["folds"] = list(score_result.folds)
+    runs["risk_limited_score_envelope"] = score_envelope
+
+    proposed = _run_record(
+        set_result.rankings,
+        teacher=set_result.teacher_rankings,
+        corpus_ids=corpus_ids,
+        gold_ids=gold_ids,
+        acquired_counts=set_result.acquired_counts,
+        acquired_pages=set_result.acquired_pages,
     )
     proposed["risk"] = {
         "target_alpha": args.alpha,
-        "query_level_simultaneous_coverage": float(result.coverage.mean()),
-        "uncovered_queries": int((~result.coverage).sum()),
-        "certified_queries": int(result.certified.sum()),
-        "pool_exhausted_queries": int(result.exhausted.sum()),
+        "query_level_topk_set_coverage": float(set_result.topk_covered.mean()),
+        "uncovered_queries": int((~set_result.topk_covered).sum()),
     }
-    proposed["folds"] = list(result.folds)
-    runs["risk_limited_boundary_acquisition"] = proposed
+    proposed["folds"] = list(set_result.folds)
+    runs["risk_limited_candidate_set"] = proposed
 
     for fixed_k in (5, 10, 20, 50, 100):
         if fixed_k > args.candidate_pool or fixed_k < args.cutoff:
             continue
         rankings = _fixed_k_rankings(
             surface.candidate_indices,
-            result.teacher_scores,
+            score_result.teacher_scores,
             corpus_ids,
             fixed_k=fixed_k,
             cutoff=args.cutoff,
@@ -201,7 +227,7 @@ def main() -> None:
         acquired = surface.candidate_indices[:, :fixed_k]
         runs[f"fixed_k{fixed_k}"] = _run_record(
             rankings,
-            teacher=result.teacher_rankings,
+            teacher=score_result.teacher_rankings,
             corpus_ids=corpus_ids,
             gold_ids=gold_ids,
             acquired_counts=np.full(len(query_ids), fixed_k, dtype=np.int32),
@@ -210,8 +236,8 @@ def main() -> None:
 
     teacher_work = np.full(len(query_ids), args.candidate_pool, dtype=np.int32)
     runs["full_candidate_teacher"] = _run_record(
-        result.teacher_rankings,
-        teacher=result.teacher_rankings,
+        score_result.teacher_rankings,
+        teacher=score_result.teacher_rankings,
         corpus_ids=corpus_ids,
         gold_ids=gold_ids,
         acquired_counts=teacher_work,
@@ -233,7 +259,7 @@ def main() -> None:
     ]
     gate = {
         "coverage_at_least_0_93": proposed["risk"][
-            "query_level_simultaneous_coverage"
+            "query_level_topk_set_coverage"
         ]
         >= 0.93,
         "teacher_disagreement_at_most_0_05": 1.0

@@ -56,11 +56,22 @@ are forbidden.
 ## Risk model and acquisition
 
 Two fixed-penalty ridge models estimate normalized visual score and log
-absolute residual.  A split-conformal multiplier is calibrated from the
-maximum standardized residual across all Top-100 candidates of each
-calibration query.  The default risk is `alpha=0.05`.  The resulting statement
-is query-level marginal simultaneous coverage under exchangeability; it is
-not conditional, temporal or adversarial coverage.
+absolute residual.  The decision certificate calibrates a one-sided
+split-conformal multiplier from the maximum positive standardized residual
+across all Top-100 candidates of each calibration query.  This is the exact
+event needed by stopping: no hidden challenger exceeds its upper bound.
+A lower multiplier is retained only for diagnostics.  The default risk is
+`alpha=0.05`.  The resulting statement is query-level marginal simultaneous
+upper coverage under exchangeability; it is not conditional, temporal or
+adversarial coverage.
+
+The score-envelope path is followed by a decision-level alternative.  A
+weighted ridge model predicts full-score Top-k membership from the same cheap
+features; split-conformal calibration sets the inclusion score that covers
+every Top-k member of each calibration query.  The runtime builds that
+variable-size candidate set and scores every returned page exactly.  Because
+candidate-set coverage is adjacent to certified pruning, it is compared
+directly rather than silently relabelled as a novel score certificate.
 
 The runtime first observes the predicted Top-k.  It then repeatedly acquires
 unobserved candidates whose intervals overlap the current exact kth score,
@@ -85,7 +96,7 @@ membership.
 
 The offline gate requires:
 
-- at least 93% held-out query-level simultaneous interval coverage;
+- at least 93% held-out query-level simultaneous upper coverage;
 - at most 5% exact Top-k-set disagreement;
 - Recall@5 within one IRPAPERS query (0.56 point) of the full-pool teacher;
 - at least 20% fewer candidate events and unique builds than the cheapest

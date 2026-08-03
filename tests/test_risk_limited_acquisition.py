@@ -3,13 +3,16 @@ import pytest
 
 from reprforge.risk_limited_acquisition import (
     ConformalEnvelopeModel,
+    ConformalCandidateSetModel,
     ScoreIntervals,
     acquire_until_certified,
     balanced_group_folds,
     build_candidate_surface,
     conformal_quantile,
     crossfit_boundary_acquisition,
+    crossfit_candidate_set_acquisition,
     simultaneous_coverage,
+    simultaneous_upper_coverage,
 )
 
 
@@ -54,6 +57,7 @@ def test_envelope_model_calibrates_query_level_maximum() -> None:
     intervals = model.predict_intervals(cal_x)
     normalized = model.normalize_targets(cal_y)
     assert simultaneous_coverage(normalized, intervals).all()
+    assert simultaneous_upper_coverage(normalized, intervals).all()
     assert model.conformal_multiplier >= 0.0
     assert np.all(intervals.lower <= intervals.mean)
     assert np.all(intervals.mean <= intervals.upper)
@@ -163,3 +167,57 @@ def test_crossfit_acquisition_keeps_test_groups_out_of_fit_and_calibration() -> 
     assert np.all(result.acquired_counts >= 2)
     assert len(result.folds) == 5
     assert all(record["fit_queries"] > 0 for record in result.folds)
+
+
+def test_conformal_candidate_set_contains_calibration_topk() -> None:
+    rng = np.random.default_rng(9)
+    fit_x = rng.normal(size=(20, 8, 2))
+    fit_score = fit_x[:, :, 0] - 0.2 * fit_x[:, :, 1]
+    fit_membership = np.zeros((20, 8), dtype=bool)
+    fit_membership[
+        np.arange(20)[:, None], np.argsort(-fit_score, axis=1)[:, :2]
+    ] = True
+    cal_x = rng.normal(size=(8, 8, 2))
+    cal_score = cal_x[:, :, 0] - 0.2 * cal_x[:, :, 1]
+    cal_membership = np.zeros((8, 8), dtype=bool)
+    cal_membership[
+        np.arange(8)[:, None], np.argsort(-cal_score, axis=1)[:, :2]
+    ] = True
+    model = ConformalCandidateSetModel.fit(
+        fit_x,
+        fit_membership,
+        cal_x,
+        cal_membership,
+        cutoff=2,
+        alpha=0.2,
+    )
+    selected = model.predict_sets(cal_x)
+    assert np.all(selected | ~cal_membership)
+    assert np.all(selected.sum(axis=1) >= 2)
+
+
+def test_crossfit_candidate_set_returns_exact_scores_for_selected_pages() -> None:
+    rng = np.random.default_rng(13)
+    queries = 15
+    pages = 12
+    locator = rng.normal(size=(queries, pages))
+    visual = locator + rng.normal(scale=0.05, size=(queries, pages))
+    corpus_ids = [f"d{i}" for i in range(pages)]
+    surface = build_candidate_surface(
+        corpus_ids,
+        locator,
+        visual,
+        query_token_counts=np.full(queries, 3),
+        page_text_token_counts=np.arange(1, pages + 1),
+        candidate_pool=8,
+    )
+    result = crossfit_candidate_set_acquisition(
+        surface,
+        corpus_ids,
+        [f"g{i // 3}" for i in range(queries)],
+        cutoff=2,
+        alpha=0.2,
+    )
+    assert result.rankings.shape == (queries, 2)
+    assert np.all(result.acquired_counts >= 2)
+    assert len(result.folds) == 5

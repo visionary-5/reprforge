@@ -141,6 +141,13 @@ The current results are promising, but not yet a finished paper claim.
   points. Binary retention is therefore retained as infrastructure, not a
   contribution. The remaining research node is multi-state, quality-aware
   physical design across text, compact visual, and full visual states.
+- Risk-limited progressive acquisition replaces page-oracle prediction with
+  qrel-free, source-paper-cross-fitted uncertainty.  On IRPAPERS,
+  simultaneous score envelopes are safe but require 48.73 visual pages/query.
+  A decision-level conformal Top-5 candidate set is much tighter at 10.27
+  pages and 96.67% held-out teacher coverage, but fixed K=10 reaches the same
+  83.33% Recall@5 with 2.7% fewer events.  IRPAPERS therefore rejects the
+  performance claim and motivates frozen ViDoRe transfer, not threshold repair.
 - The candidate-view control plane scales to 30,594 hypothetical views at a
   ViDoRe-v3-like workload size in 1.17 seconds of candidate generation and
   0.10 seconds of materialization planning, using 80 MB peak Python memory.
@@ -224,6 +231,8 @@ environment.
 - [Elastic representation V4 contract](docs/elastic-representation-v4-contract.md)
 - [Elastic representation V4 result](docs/elastic-representation-v4-result.md)
 - [Elastic representation strong-baseline result](docs/elastic-representation-strong-baseline-result.md)
+- [Risk-limited progressive-index contract](docs/risk-limited-progressive-index-contract.md)
+- [Risk-limited IRPAPERS result](docs/risk-limited-irpapers-result.md)
 - [Evaluation protocol](docs/evaluation.md)
 - [Current results](docs/results.md)
 - [Research roadmap](docs/roadmap.md)
