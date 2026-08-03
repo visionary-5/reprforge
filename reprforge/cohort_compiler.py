@@ -159,10 +159,40 @@ class CohortCompiler:
             raise RuntimeError("eager materialization requires an admission plan")
         if self.cache_policy != "resident":
             raise RuntimeError("eager materialization requires a resident cache")
+        if self._resident:
+            raise RuntimeError("eager admission requires an empty resident cache")
+        return self.materialize_items(self._admitted_item_ids)
+
+    def materialize_items(
+        self,
+        item_ids: Iterable[str],
+    ) -> dict[str, int | float]:
+        """Atomically append explicitly requested visual views to residency.
+
+        This is the physical primitive used by progressive pair probes.  A
+        round may propose several pages, encode them in one backend call, and
+        publish the whole round only after every embedding is available.
+        Existing resident pages are reused and never re-encoded.
+        """
+
+        if self.cache_policy != "resident":
+            raise RuntimeError("incremental materialization requires a resident cache")
+        requested = frozenset(str(value) for value in item_ids)
+        unknown = requested - set(self.corpus_ids)
+        if unknown:
+            raise ValueError(
+                f"materialization contains unknown items: {sorted(unknown)[:5]}"
+            )
+        if self._admitted_item_ids is not None:
+            outside = requested - self._admitted_item_ids
+            if outside:
+                raise ValueError(
+                    "materialization contains items outside the frozen admission plan"
+                )
         positions = [
             position
             for position, item_id in enumerate(self.corpus_ids)
-            if item_id in self._admitted_item_ids
+            if item_id in requested and item_id not in self._resident
         ]
         began = time.perf_counter()
         staged: dict[str, Any] = {}
@@ -184,7 +214,7 @@ class CohortCompiler:
             }
         elapsed_ms = (time.perf_counter() - began) * 1000.0
         # Publish only after the entire plan has been encoded successfully.
-        self._resident = staged
+        self._resident.update(staged)
         if staged:
             self._generation += 1
         return {
@@ -196,6 +226,15 @@ class CohortCompiler:
             ),
             "atomic_publish": True,
         }
+
+    def resident_embeddings(self, item_ids: Sequence[str]) -> tuple[Any, ...]:
+        """Return resident embeddings in caller order without copying them."""
+
+        normalized = tuple(str(value) for value in item_ids)
+        missing = [item_id for item_id in normalized if item_id not in self._resident]
+        if missing:
+            raise KeyError(f"items are not resident: {missing[:5]}")
+        return tuple(self._resident[item_id] for item_id in normalized)
 
     def _candidate_positions(self, scores: np.ndarray) -> list[int]:
         return sorted(

@@ -226,6 +226,28 @@ def test_admission_plan_can_be_materialized_atomically_before_queries() -> None:
     assert execution.metrics["cache_hit_events"] == 3
 
 
+def test_progressive_rounds_append_resident_views_without_reencoding() -> None:
+    backend = FakeCohortBackend()
+    compiler = _compiler(
+        backend,
+        request_batch_size=2,
+        cache_policy="resident",
+    )
+
+    first = compiler.materialize_items({"b", "c"})
+    second = compiler.materialize_items({"a", "b"})
+
+    assert backend.image_calls == [("image-b", "image-c"), ("image-a",)]
+    assert first["visual_pages_encoded"] == 2
+    assert second["visual_pages_encoded"] == 1
+    assert compiler.generation == 2
+    assert compiler.resident_item_ids == frozenset({"a", "b", "c"})
+    embeddings = compiler.resident_embeddings(["c", "a"])
+    assert len(embeddings) == 2
+    with pytest.raises(KeyError, match="not resident"):
+        compiler.resident_embeddings(["d"])
+
+
 def test_empty_admission_plan_uses_priors_without_loading_visual_backend() -> None:
     backend = FakeCohortBackend()
     compiler = _compiler(
