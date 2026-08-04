@@ -29,6 +29,7 @@ ReprForge 只有同时满足下面五点，才能从“有效系统机制”提�
 | RQ9 是否只是 EdgeRAG 缓存或 CaGR 分组 | HR、Finance，W64 burst/Poisson | EdgeRAG-faithful 成本缓存、CaGR-faithful/strong/bounded 分组预取、frontier | mean/P95 sojourn、charged work、命中、预取 | EdgeRAG **CONTINUE**；bounded CaGR **STOP/DOWNGRADE** | Frontier 不能再作为全面更优的主算法 |
 | RQ10 是否存在同时保质量与局部性的简单调度 | HR 选择、Finance 冻结 | cost-first、completion-constrained、deadline override、60 点 clairvoyant greedy oracle | 三轴 regret、P95、starvation、constraint violation | 三个启发式和注册 oracle 家族均 **NO-GO**；oracle 的 24 个 primary/P95 合格点与 4 个 starvation 合格点无交集 | 停止启发式微调；新方法必须引入显式服务保证或约束求解 |
 | RQ11 starvation 指标是否代表用户等待公平 | HR、Finance；burst/Poisson | frontier、bounded CaGR、oracle_15、deadline-only | bypass 阈值、absolute sojourn、per-demand slowdown、tail-label overlap | **bypass-only NO-GO**；16 cells 均未同时强匹配两个 extreme tail，F1 0.013--0.450 | 论文不得把 starvation=0 等同用户公平；采用 joint sojourn+slowdown |
+| RQ12 硬顺序预算能否保留多目标余量 | HR 选择、Finance 冻结；burst/Poisson | B=8/16/32/64、bounded CaGR、frontier | mean/P95 sojourn、work/query、elapsed regret、forced slots、budget violation | **GO**；HR 唯一 B32，Finance sojourn -7.8%--8.1%、work -5.1%--5.8%，elapsed regret 不劣，违规 0 | 当前主方法候选；仍需 causal、joint-tail、跨域与 GPU 验证 |
 
 ## 数据集分工
 
@@ -64,6 +65,7 @@ ReprForge 只有同时满足下面五点，才能从“有效系统机制”提�
 ## 统计与泄漏纪律
 
 - 方法与阈值只在明确开发域选择；Finance、IRPapers 或新域作为冻结迁移；
+- “冻结迁移”表示选择代码不读取该域且配置不再改变，不自动等同于研究者从未见过历史 endpoint；已有结果必须在 provenance 中披露；
 - 调度时禁止 qrel、visual score、真实质量增益和答案正确性；
 - 查询级质量用配对 bootstrap；到达模型至少五个固定排列；GPU 墙钟至少三次，报告中位数和范围；
 - 所有顺序必须验证最终候选并集和冻结分数语义一致；

@@ -172,3 +172,16 @@ Result: no.  Across 16 domain-by-arrival-by-method cells, bypass64 is never a
 strong detector for both user-facing tails.  Absolute sojourn and slowdown also
 select different queries.  Future constrained schedulers must therefore report
 both tails and treat bypass only as an ordering diagnostic.
+
+### `exp/hard-fair-oracle`
+
+Question: can a fixed completion/deadline utility retain the relaxed oracle
+headroom when each pending query has a hard younger-bypass budget?
+
+Result: yes within the registered four-point family.  HR uniquely selects
+`B=32`; after freezing, Finance burst and Poisson both reduce mean sojourn by
+about 8% and charged work by 5%--6% versus bounded CaGR, keep elapsed quality
+regret no worse than frontier, and incur zero budget violations.  Roughly 30%
+of slots are forcibly changed by the constraint.  The selected rule is causal
+under the replay state interface, but remains pending joint user-tail,
+cross-domain, and real-cost validation.

@@ -1,10 +1,10 @@
 # ReprForge P0 反事实后的论文决策
 
-日期：2026-08-04。状态：**停止调度启发式微调；保留系统/测量主线，算法论文需新方法。**
+日期：2026-08-04。状态：**停止软启发式微调；hard-budget frontier 成为主方法候选，等待联合尾部、跨域与真实系统验证。**
 
 ## 一句话判断
 
-ReprForge 已经证明“视觉多向量索引构建过程值得被单独研究”，但没有证明当前 frontier 是足够突破性的最终算法。
+ReprForge 已经证明“视觉多向量索引构建过程值得被单独研究”。原始 frontier 不是足够突破性的最终算法，但预注册 hard-budget 约束在软权重失败后形成了新的非平凡可行点，并在 Finance 冻结迁移；它现在是最值得继续验证的方法候选。
 
 现有最强证据是跨五域、跨两种检索器、真实 A100 和 30K-query 控制面规模；最强反证是 HR 无标签选择的 bounded CaGR adaptation 在 Finance 的平均到达—发布时延和计费工作量上同时优于 frontier。统一时间轴又表明方法排名会随负载和质量预算交叉。因此正确的新问题是**异构索引构建中的系统效率—证据质量—尾部公平多目标编译**，而不是继续声称某个单一排序器全面更优。
 
@@ -22,6 +22,7 @@ ReprForge 已经证明“视觉多向量索引构建过程值得被单独研究�
 | Deadline/oldest override | `exp/deadline-constrained-locality` `b3b4662` | **NO-GO；停止微调** | 两规则 starvation 仍约 21%--23%，P95/pages/sojourn/work 同时失败 | 下一步需要有保证的 deadline 机制，不是再换 tie-break |
 | Multi-objective oracle headroom | `exp/multiobjective-oracle-headroom` `ad11bbd` | **注册家族内无安全点** | 60 个 qrel/cost/future-aware 配置中，24 个通过主要目标与 P95、4 个通过 starvation，但交集为 0；最强非安全点的六轴最坏比率为 0.828，starvation 仍为 12.26% | 简单权重扫描存在结构性效率--公平冲突；该结论仅限注册的 greedy oracle 家族 |
 | Fairness metric validity | `exp/fairness-metric-audit` `28ac077` | **bypass-only 无效** | 16 个 domain×arrival×method cell 没有一个让 bypass64 同时强匹配 extreme sojourn 与 slowdown；tail-label F1 仅 0.013--0.450 | bypass 只能作重排诊断；用户公平需联合 absolute sojourn 与 per-demand slowdown |
+| Hard-budget frontier | `exp/hard-fair-oracle` `461d03c` | **HEADROOM GO** | HR 唯一选择 B=32；Finance burst/Poisson 相对 bounded CaGR mean sojourn -8.06%/-7.76%、work/query -5.79%/-5.11%，elapsed regret 不劣于 frontier；max bypass=32、违规=0 | 硬约束而非软权重产生可行区；冻结策略事后可观测性审计表明可因果在线实现，但尚未证明用户尾部公平与真实 GPU 收益 |
 
 ## 经独立复核的 Finance 反例
 
@@ -48,8 +49,9 @@ Frontier 在第 1 轴明显更强；bounded CaGR 在系统 mean/P95 和第 2 轴
 2. **系统：** ReprForge 实现可恢复、可版本化的异构表示构建和精确增量控制面；30K 查询低于 4.1 秒和 300 MiB。
 3. **实证：** 五个 ViDoRe 域、IRPapers、ColPali/ColModernVBERT 和真实 A100 表明构建顺序会显著改变查询完成和质量轨迹。
 4. **发现：** EdgeRAG 风格缓存不能消除共享 completion 价值，但强 CaGR locality 能在部分负载反超系统成本；方法排名随计量轴和负载反转。
+5. **方法候选：** 固定 completion/deadline 效用并施加每查询 younger-bypass 硬预算；B=32 在 HR 唯一合格并冻结迁移到 Finance，两种到达模型均在 mean/P95、charged work 和 elapsed evidence quality 上通过门槛。
 
-这些足以支撑系统 measurement、benchmark 或经验型 IR 论文的核心。它们不足以支撑“frontier 是统一最优的新算法”或 ICLR 式方法突破。
+前四点足以支撑系统 measurement、benchmark 或经验型 IR 论文的核心。第五点让方法论文重新出现可能，但当前仍不能声称“统一最优”或“用户公平已解决”；必须先通过 causal implementation、joint sojourn+slowdown tail、跨域/跨表示和真实 GPU 门。
 
 ## 如果继续冲方法论文，唯一值得做的新方向
 
@@ -66,15 +68,19 @@ Frontier 在第 1 轴明显更强；bounded CaGR 在系统 mean/P95 和第 2 轴
 
 最快的验证顺序：先在现有完整 trace 上做离线 oracle，测量同时满足系统成本、time-aligned quality 和 deadline 的可达空间。如果 oracle 都不能明显支配 bounded CaGR/frontier，两目标存在真实不可消除冲突，应停止算法路线；只有 oracle headroom 足够，才值得训练代理或设计近似算法。
 
-该验证现已完成：预注册的 60 点 clairvoyant greedy 家族在 HR 上没有安全候选，因此 Finance 按合同保持封存。最强非安全候选在 burst/Poisson 上把 mean sojourn、charged work 和 elapsed quality regret 全部压到对应端点的 0.72--0.83 倍，P95 也更好，但 starvation 为 12.26%；仅有的 4 个 starvation-safe 候选不使用 completion 信号，最坏主要比率约 1.38。这个结果否定的是“用现有三个信号做简单加权即可得到全面更优策略”，不是对所有调度算法的不可行性证明。
+该软权重验证现已完成：预注册的 60 点 clairvoyant greedy 家族在 HR 上没有安全候选，因此 Finance 按合同保持封存。最强非安全候选在 burst/Poisson 上把 mean sojourn、charged work 和 elapsed quality regret 全部压到对应端点的 0.72--0.83 倍，P95 也更好，但 starvation 为 12.26%；仅有的 4 个 starvation-safe 候选不使用 completion 信号，最坏主要比率约 1.38。这个结果否定的是“用现有三个信号做简单加权即可得到全面更优策略”，不是对所有调度算法的不可行性证明。
 
-因此下一项方法工作不能再是权重、tie-break 或窗口微调。只有在引入可证明的 per-query service guarantee、显式约束求解，或新的可观测 utility/cost predictor 后，才值得重新开启算法分支；否则应直接固化 measurement/system 论文。并且 service guarantee 不能只定义成 bypass：审计中 deadline-only 的 bypass 恒为 0，但绝对等待尾部仍接近最差；bounded CaGR 的 max bypass 低于 64，slowdown P95 仍可达约 1848--2381。新的约束至少要联合 absolute sojourn 与按自身 demand 归一化的 slowdown，bypass 仅保留为排序诊断。
+后续预注册 hard-budget probe 固定最强松弛效用，只扫描 `B∈{8,16,32,64}`。`B=8/16` 约束过紧并退化，`B=64` 仍触发冻结 starvation，只有 `B=32` 同时通过 HR 全部门；冻结到 Finance 后，两种到达模型都得到约 8% mean sojourn 和 5%--6% charged-work 改善，且 elapsed regret 不劣于 frontier。约三成 batch slot 被硬约束实际改选，说明这不是未触发的装饰性约束。
+
+“冻结到 Finance”只表示配置由 HR-only 选择函数机械确定、没有用 Finance 反选；不能写成实验者首次盲测，因为仓库历史中已经存在 Finance endpoint 结果。各轴还使用不同的最强 reference：mean/work 对 bounded CaGR，elapsed regret 对 frontier，P95 对二者较优者。这符合预注册的 envelope gate，但不是相对一个单一方法在所有轴上 Pareto 支配。
+
+因此下一项方法工作不再是权重、tie-break 或窗口微调，而是把 B32 固化成不接收 qrel/未来数组的事件驱动在线 policy，并验证联合 tail-SLO。service guarantee 不能只定义成 bypass：审计中 deadline-only 的 bypass 恒为 0，但绝对等待尾部仍接近最差；bounded CaGR 的 max bypass 低于 64，slowdown P95 仍可达约 1848--2381。新的约束至少要联合 absolute sojourn 与按自身 demand 归一化的 slowdown，bypass 仅保留为排序诊断。
 
 ## 投稿建议
 
-- **若目标仍是 9 月 ICLR：** 现在不要直接写 frontier 方法论文。注册 oracle 家族已经没有安全 headroom，应换投稿定位，除非能提出带服务保证的新 formulation，而非继续调参。
+- **若目标仍是 9 月 ICLR：** 不写原始 frontier 方法论文；以 hard-budget frontier 为唯一方法候选。只有它通过 causal、joint-tail、跨域/跨表示和真实 GPU 四个门，才升级成方法主线，否则回到 measurement/system 定位。
 - **若接受系统/IR measurement 论文：** 当前资产已经很强，主线可转为“何时先建哪些视觉表示：异构 RAG 索引构建的三轴 benchmark 与系统研究”，frontier、EdgeRAG、CaGR 作为互补政策而非单一 winner。
-- **若目标是项目落地：** 默认用 bounded CaGR/locality 获得成本和尾部；需要最早的新页面质量时用 frontier；根据 workload arrival 与 quality budget 选择策略，不声称一个 policy 通吃。
+- **若目标是项目落地：** 先把 B32 作为实验性默认候选；在联合尾部和真实成本未通过前，bounded CaGR 仍是保守成本基线，frontier 仍负责 unique-page 早期质量，不声称一个 policy 通吃。
 
 建议保留 ReprForge 名称，但标题改成不预设 winner：
 
