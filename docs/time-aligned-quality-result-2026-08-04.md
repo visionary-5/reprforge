@@ -1,9 +1,13 @@
 # Time-aligned anytime quality 结果
 
-日期：2026-08-04  
-分支：`exp/time-aligned-quality`  
-预注册：`a39e7ca`  
-机器：CPU only，未使用 GPU  
+日期：2026-08-04
+
+分支：`exp/time-aligned-quality`
+
+预注册：`a39e7ca`
+
+机器：CPU only，未使用 GPU
+
 机器可读结果：`results/systems/time-aligned-quality-v1.json`
 
 ## 一句话结论

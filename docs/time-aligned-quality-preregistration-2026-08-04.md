@@ -1,7 +1,9 @@
 # Time-aligned anytime quality 预注册
 
-日期：2026-08-04  
-分支：`exp/time-aligned-quality`  
+日期：2026-08-04
+
+分支：`exp/time-aligned-quality`
+
 状态：在修改 replay、加载 qrel 或生成结果前冻结。
 
 ## 研究问题
