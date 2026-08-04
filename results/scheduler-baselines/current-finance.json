@@ -1,0 +1,1439 @@
+{
+  "configurations": [
+    {
+      "base_mean_ndcg_at_10": 0.5285173146681087,
+      "batch_size": 1,
+      "candidate_k": 10,
+      "candidate_union_pages": 1316,
+      "corpus_pages": 2942,
+      "queries": 309,
+      "random": {
+        "mean_completion_pages": {
+          "max": 834.4271844660194,
+          "mean": 825.6987055016182,
+          "min": 809.6084142394822
+        },
+        "quality_work_auc": {
+          "max": 0.5448003801884038,
+          "mean": 0.5439461450474086,
+          "min": 0.5425556080194439
+        },
+        "seeds": 10
+      },
+      "refined_mean_ndcg_at_10": 0.5497577650501682,
+      "schedules": {
+        "fifo": {
+          "completion_pages": {
+            "max": 1316.0,
+            "mean": 787.3042071197411,
+            "p50": 845.0,
+            "p95": 1277.6
+          },
+          "final_unique_pages": 1316,
+          "mean_completed_fraction_over_full_build_work": 0.7323914999592994,
+          "mean_quality_over_full_build_work": 0.5430121885236316,
+          "order_sha256": "d24b73b67824687a0b0721c9e7e83e8f0876a0cf89e3d07b57417720446d5ced",
+          "points_sha256": "ed37f88d2d84bd79c5a5226c9e7c80e6bc226dd57085c6f873f233f3970ff1c6"
+        },
+        "frontier_reuse": {
+          "completion_pages": {
+            "max": 1316.0,
+            "mean": 591.7152103559871,
+            "p50": 535.0,
+            "p95": 1194.1999999999998
+          },
+          "final_unique_pages": 1316,
+          "mean_completed_fraction_over_full_build_work": 0.7988731439986446,
+          "mean_quality_over_full_build_work": 0.5459373707756296,
+          "order_sha256": "43ec35416cbf88eb4436074c4d13907fbbbf73ad31de968e19ed67335738f4e1",
+          "points_sha256": "dac812fc883c3c17ad0a492bdc587a5573293fb3e51768813c5d8a6d4828befc"
+        },
+        "offline_work_greedy": {
+          "completion_pages": {
+            "max": 1316.0,
+            "mean": 591.6245954692556,
+            "p50": 547.0,
+            "p95": 1196.6
+          },
+          "final_unique_pages": 1316,
+          "mean_completed_fraction_over_full_build_work": 0.798903944436011,
+          "mean_quality_over_full_build_work": 0.5459579056903524,
+          "order_sha256": "c7c49861fddf01fc10d503fb61db4ae33a3e356f679b8a2aac1670a781dd7ea0",
+          "points_sha256": "3bb83b33e5898a4614a3eeeed6fd13752c777f5baf572c63035111b6b325c97a"
+        },
+        "overlap_only": {
+          "completion_pages": {
+            "max": 1316.0,
+            "mean": 601.1812297734627,
+            "p50": 570.0,
+            "p95": 1201.1999999999998
+          },
+          "final_unique_pages": 1316,
+          "mean_completed_fraction_over_full_build_work": 0.7956555983094961,
+          "mean_quality_over_full_build_work": 0.5454764423215396,
+          "order_sha256": "d6bfa4e6d92bd1897d9628ee805567e107da0a315d76e69f11a65ebf5d1e7831",
+          "points_sha256": "0987a2beef123e019888885ede3447f2b51017cd16597470a433b670214cdf9a"
+        },
+        "reuse_only": {
+          "completion_pages": {
+            "max": 1316.0,
+            "mean": 684.9741100323624,
+            "p50": 671.0,
+            "p95": 1261.6
+          },
+          "final_unique_pages": 1316,
+          "mean_completed_fraction_over_full_build_work": 0.767173993870713,
+          "mean_quality_over_full_build_work": 0.5448645817537656,
+          "order_sha256": "baf3f41208d94189927f62ce402f83e189f12d605cda42e6e2bf1853acdbfd54",
+          "points_sha256": "b2be7e7c50c25ea3fa4c4b0cab3ffa32c0c7d7f60f8e7474ab7f07f97214aa12"
+        },
+        "shortest_missing": {
+          "completion_pages": {
+            "max": 1316.0,
+            "mean": 591.6245954692556,
+            "p50": 547.0,
+            "p95": 1196.6
+          },
+          "final_unique_pages": 1316,
+          "mean_completed_fraction_over_full_build_work": 0.798903944436011,
+          "mean_quality_over_full_build_work": 0.5459579056903524,
+          "order_sha256": "c7c49861fddf01fc10d503fb61db4ae33a3e356f679b8a2aac1670a781dd7ea0",
+          "points_sha256": "3bb83b33e5898a4614a3eeeed6fd13752c777f5baf572c63035111b6b325c97a"
+        },
+        "static_popularity": {
+          "completion_pages": {
+            "max": 1316.0,
+            "mean": 601.1812297734627,
+            "p50": 570.0,
+            "p95": 1201.1999999999998
+          },
+          "final_unique_pages": 1316,
+          "mean_completed_fraction_over_full_build_work": 0.7956555983094961,
+          "mean_quality_over_full_build_work": 0.5454764423215396,
+          "order_sha256": "d6bfa4e6d92bd1897d9628ee805567e107da0a315d76e69f11a65ebf5d1e7831",
+          "points_sha256": "0987a2beef123e019888885ede3447f2b51017cd16597470a433b670214cdf9a"
+        }
+      }
+    },
+    {
+      "base_mean_ndcg_at_10": 0.5285173146681087,
+      "batch_size": 4,
+      "candidate_k": 10,
+      "candidate_union_pages": 1316,
+      "corpus_pages": 2942,
+      "queries": 309,
+      "random": {
+        "mean_completion_pages": {
+          "max": 840.8932038834952,
+          "mean": 832.0608414239483,
+          "min": 816.0776699029126
+        },
+        "quality_work_auc": {
+          "max": 0.5447376490029906,
+          "mean": 0.5438960709295916,
+          "min": 0.5425174930279434
+        },
+        "seeds": 10
+      },
+      "refined_mean_ndcg_at_10": 0.5497577650501682,
+      "schedules": {
+        "fifo": {
+          "completion_pages": {
+            "max": 1316.0,
+            "mean": 793.6699029126214,
+            "p50": 852.0,
+            "p95": 1282.0
+          },
+          "final_unique_pages": 1316,
+          "mean_completed_fraction_over_full_build_work": 0.7302277692343231,
+          "mean_quality_over_full_build_work": 0.5429753741034576,
+          "order_sha256": "d24b73b67824687a0b0721c9e7e83e8f0876a0cf89e3d07b57417720446d5ced",
+          "points_sha256": "931731e6797ac5dfe6a5f6c30cef8c96bc2ccd12b0c2edf3c6b0fd416369c6bb"
+        },
+        "frontier_reuse": {
+          "completion_pages": {
+            "max": 1316.0,
+            "mean": 598.537216828479,
+            "p50": 539.0,
+            "p95": 1211.0
+          },
+          "final_unique_pages": 1316,
+          "mean_completed_fraction_over_full_build_work": 0.7965543110712172,
+          "mean_quality_over_full_build_work": 0.5459143260436554,
+          "order_sha256": "e900fc59584caaf94e3b167de2a9c850f977683632a273575a698c089869b5c9",
+          "points_sha256": "cd170a6f6ceb63f2c95b482b1c73e530940b8d6400d4bf16925f8b25c26bc570"
+        },
+        "offline_work_greedy": {
+          "completion_pages": {
+            "max": 1316.0,
+            "mean": 589.2168284789644,
+            "p50": 537.0,
+            "p95": 1212.0
+          },
+          "final_unique_pages": 1316,
+          "mean_completed_fraction_over_full_build_work": 0.7997223560574561,
+          "mean_quality_over_full_build_work": 0.5456776719003926,
+          "order_sha256": "a42fd572b88b0b10e905d0c691277149b68b8e440ea106a0566c2a0ec0a90b59",
+          "points_sha256": "79e3241bebe17bfc8bb0f0436c10a58c4c5a2654f8c16f153557ee3d645e9bd7"
+        },
+        "overlap_only": {
+          "completion_pages": {
+            "max": 1316.0,
+            "mean": 601.7605177993528,
+            "p50": 561.0,
+            "p95": 1219.0
+          },
+          "final_unique_pages": 1316,
+          "mean_completed_fraction_over_full_build_work": 0.7954586955134763,
+          "mean_quality_over_full_build_work": 0.5452425600528816,
+          "order_sha256": "d164a9baff714fc033a2b0b3092e6034b82f9d8d4432f3a8dc3fc923f0a7e416",
+          "points_sha256": "36bf17eab3df9a84d2b257f60496d6f98a0a3d494623c1f2d8db97827c6b51f7"
+        },
+        "reuse_only": {
+          "completion_pages": {
+            "max": 1316.0,
+            "mean": 687.546925566343,
+            "p50": 687.0,
+            "p95": 1275.0
+          },
+          "final_unique_pages": 1316,
+          "mean_completed_fraction_over_full_build_work": 0.7662994814526367,
+          "mean_quality_over_full_build_work": 0.5448509728363474,
+          "order_sha256": "e1f158a05090da4ea53241366b7f7244501827226972dcc6fa97076075e2bb2d",
+          "points_sha256": "e48fc578f5da87e0dd2015aa45df9ada07e55010b50bf4c154fd2e2634312e77"
+        },
+        "shortest_missing": {
+          "completion_pages": {
+            "max": 1316.0,
+            "mean": 597.9805825242719,
+            "p50": 548.0,
+            "p95": 1213.0
+          },
+          "final_unique_pages": 1316,
+          "mean_completed_fraction_over_full_build_work": 0.7967435137578953,
+          "mean_quality_over_full_build_work": 0.5459122306337396,
+          "order_sha256": "c7c49861fddf01fc10d503fb61db4ae33a3e356f679b8a2aac1670a781dd7ea0",
+          "points_sha256": "a322fceca707ef6347d8e5bb3079146adb486c4f2606895475ed64985b66c372"
+        },
+        "static_popularity": {
+          "completion_pages": {
+            "max": 1316.0,
+            "mean": 607.4045307443366,
+            "p50": 572.0,
+            "p95": 1221.0
+          },
+          "final_unique_pages": 1316,
+          "mean_completed_fraction_over_full_build_work": 0.7935402682718095,
+          "mean_quality_over_full_build_work": 0.5454136166550366,
+          "order_sha256": "d6bfa4e6d92bd1897d9628ee805567e107da0a315d76e69f11a65ebf5d1e7831",
+          "points_sha256": "095184300578ad0dd6602f212a96b6fc9bb638affd76c35e8dc0a2dfc6c1568e"
+        }
+      }
+    },
+    {
+      "base_mean_ndcg_at_10": 0.5285173146681087,
+      "batch_size": 8,
+      "candidate_k": 10,
+      "candidate_union_pages": 1316,
+      "corpus_pages": 2942,
+      "queries": 309,
+      "random": {
+        "mean_completion_pages": {
+          "max": 849.2297734627832,
+          "mean": 840.4194174757282,
+          "min": 824.453074433657
+        },
+        "quality_work_auc": {
+          "max": 0.5446688028748048,
+          "mean": 0.5438413357791764,
+          "min": 0.5425011150172518
+        },
+        "seeds": 10
+      },
+      "refined_mean_ndcg_at_10": 0.5497577650501682,
+      "schedules": {
+        "fifo": {
+          "completion_pages": {
+            "max": 1316.0,
+            "mean": 801.747572815534,
+            "p50": 867.0,
+            "p95": 1282.0
+          },
+          "final_unique_pages": 1316,
+          "mean_completed_fraction_over_full_build_work": 0.7274821302462494,
+          "mean_quality_over_full_build_work": 0.5429301219503958,
+          "order_sha256": "d24b73b67824687a0b0721c9e7e83e8f0876a0cf89e3d07b57417720446d5ced",
+          "points_sha256": "f2ce65e599969229c6d81a9c632fddbfa0c5c67917ed9cf76a436e78efbb2559"
+        },
+        "frontier_reuse": {
+          "completion_pages": {
+            "max": 1316.0,
+            "mean": 607.4174757281553,
+            "p50": 554.0,
+            "p95": 1211.0
+          },
+          "final_unique_pages": 1316,
+          "mean_completed_fraction_over_full_build_work": 0.7935358682093285,
+          "mean_quality_over_full_build_work": 0.5459746637143976,
+          "order_sha256": "413d54df513ee03fef67b2003c7c0122bf76ccc41de512d317d1ec9df6a6d07d",
+          "points_sha256": "2e222c2a4cbd96603591cb005db246a42628cd5256ea5705f3cbea71abceb965"
+        },
+        "offline_work_greedy": {
+          "completion_pages": {
+            "max": 1316.0,
+            "mean": 594.5501618122977,
+            "p50": 552.0,
+            "p95": 1211.0
+          },
+          "final_unique_pages": 1316,
+          "mean_completed_fraction_over_full_build_work": 0.7979095303153305,
+          "mean_quality_over_full_build_work": 0.5455081207391392,
+          "order_sha256": "9bf80e7320a633d555850874ff124406a86c9d978a6c5b806318dd753a45bcdd",
+          "points_sha256": "e20225e4545e51e8a31f779110569e3f225f5a742808c5f8893253a79da1fcd4"
+        },
+        "overlap_only": {
+          "completion_pages": {
+            "max": 1316.0,
+            "mean": 612.5954692556634,
+            "p50": 594.0,
+            "p95": 1217.0
+          },
+          "final_unique_pages": 1316,
+          "mean_completed_fraction_over_full_build_work": 0.7917758432169737,
+          "mean_quality_over_full_build_work": 0.5451395227222512,
+          "order_sha256": "4490f3778702af8b7b3ed7056a294402248c86498f89af41d3a6b2599429856e",
+          "points_sha256": "57bb6ce52077970f3ff5a0a481d460c1a2e88f096c5473ea5d93d0cedb98c264"
+        },
+        "reuse_only": {
+          "completion_pages": {
+            "max": 1316.0,
+            "mean": 684.1812297734627,
+            "p50": 684.0,
+            "p95": 1260.0
+          },
+          "final_unique_pages": 1316,
+          "mean_completed_fraction_over_full_build_work": 0.7674434976976673,
+          "mean_quality_over_full_build_work": 0.5443688707271164,
+          "order_sha256": "92c1e85e9be1e080c33238463d732e20af6146e6e4815bb48a4a1ebb0c056b4e",
+          "points_sha256": "73ea0825095fc20bfa05d0b99a5b46126f0aa3f340ccb5ec24eec7a5c6b849f7"
+        },
+        "shortest_missing": {
+          "completion_pages": {
+            "max": 1316.0,
+            "mean": 606.1229773462783,
+            "p50": 557.0,
+            "p95": 1213.0
+          },
+          "final_unique_pages": 1316,
+          "mean_completed_fraction_over_full_build_work": 0.7939758744574174,
+          "mean_quality_over_full_build_work": 0.5458289401479343,
+          "order_sha256": "c7c49861fddf01fc10d503fb61db4ae33a3e356f679b8a2aac1670a781dd7ea0",
+          "points_sha256": "129ea751fbea514e11305b4ef6e066de39f9b1ee54f2ed8835eccb19db319bad"
+        },
+        "static_popularity": {
+          "completion_pages": {
+            "max": 1316.0,
+            "mean": 615.7799352750809,
+            "p50": 587.0,
+            "p95": 1221.0
+          },
+          "final_unique_pages": 1316,
+          "mean_completed_fraction_over_full_build_work": 0.7906934278466755,
+          "mean_quality_over_full_build_work": 0.5453570848430772,
+          "order_sha256": "d6bfa4e6d92bd1897d9628ee805567e107da0a315d76e69f11a65ebf5d1e7831",
+          "points_sha256": "981bf6ad39c2aacc187ddf7e1dfbe13bf3a2e1fbdc917d5cd482b9773cf0604d"
+        }
+      }
+    },
+    {
+      "base_mean_ndcg_at_10": 0.5285173146681087,
+      "batch_size": 16,
+      "candidate_k": 10,
+      "candidate_union_pages": 1316,
+      "corpus_pages": 2942,
+      "queries": 309,
+      "random": {
+        "mean_completion_pages": {
+          "max": 866.4466019417475,
+          "mean": 856.8258899676375,
+          "min": 840.453074433657
+        },
+        "quality_work_auc": {
+          "max": 0.5445076321297104,
+          "mean": 0.5437225280068161,
+          "min": 0.54238508151819
+        },
+        "seeds": 10
+      },
+      "refined_mean_ndcg_at_10": 0.5497577650501682,
+      "schedules": {
+        "fifo": {
+          "completion_pages": {
+            "max": 1316.0,
+            "mean": 817.9288025889967,
+            "p50": 867.0,
+            "p95": 1303.0
+          },
+          "final_unique_pages": 1316,
+          "mean_completed_fraction_over_full_build_work": 0.7219820521451404,
+          "mean_quality_over_full_build_work": 0.5427905943712495,
+          "order_sha256": "d24b73b67824687a0b0721c9e7e83e8f0876a0cf89e3d07b57417720446d5ced",
+          "points_sha256": "8e4e879558280924996a345da4c427c535b4357783348882f696585d700165e4"
+        },
+        "frontier_reuse": {
+          "completion_pages": {
+            "max": 1316.0,
+            "mean": 624.8932038834952,
+            "p50": 554.0,
+            "p95": 1274.0
+          },
+          "final_unique_pages": 1316,
+          "mean_completed_fraction_over_full_build_work": 0.7875957838601308,
+          "mean_quality_over_full_build_work": 0.545948079340844,
+          "order_sha256": "e822689a5202e5d48d676dc424afa2b12c89134434f3724cdc1c87b597291cc1",
+          "points_sha256": "fc4f1e0e2cd40da3041b35b1d444a723c483e048b232a8789984ee7c1ff4f4ba"
+        },
+        "offline_work_greedy": {
+          "completion_pages": {
+            "max": 1316.0,
+            "mean": 606.3559870550162,
+            "p50": 547.0,
+            "p95": 1274.0
+          },
+          "final_unique_pages": 1316,
+          "mean_completed_fraction_over_full_build_work": 0.7938966733327614,
+          "mean_quality_over_full_build_work": 0.545219138130802,
+          "order_sha256": "ada4543e1230d92c7a1cd038768e8e41d924a46a1c6eb7e11ba6043c9643054b",
+          "points_sha256": "b6c489ce99bac6aad42d05a5b69cb6e37e7f7cce72904ef3c113128b88166d5b"
+        },
+        "overlap_only": {
+          "completion_pages": {
+            "max": 1316.0,
+            "mean": 625.8252427184466,
+            "p50": 574.0,
+            "p95": 1277.0
+          },
+          "final_unique_pages": 1316,
+          "mean_completed_fraction_over_full_build_work": 0.7872789793615069,
+          "mean_quality_over_full_build_work": 0.5451391936096318,
+          "order_sha256": "b6d961e9ef81c8d01dc3573a8464aad12526832ba34656607e4a93a3a38a5705",
+          "points_sha256": "01fb044f150f01b191163f1ff3037f9e23ee07485940c552df57e46d30d8a2fa"
+        },
+        "reuse_only": {
+          "completion_pages": {
+            "max": 1316.0,
+            "mean": 696.6601941747573,
+            "p50": 687.0,
+            "p95": 1301.0
+          },
+          "final_unique_pages": 1316,
+          "mean_completed_fraction_over_full_build_work": 0.763201837466092,
+          "mean_quality_over_full_build_work": 0.544241289041702,
+          "order_sha256": "edfbd6faa71352e24ef7b68eca7c65f4c1fccb5f2ec04f8112654d7f7ef01350",
+          "points_sha256": "2dac6f8ab7b59843f8f55a457db68cc28976f955f0970f58ddacec791e374394"
+        },
+        "shortest_missing": {
+          "completion_pages": {
+            "max": 1316.0,
+            "mean": 622.6148867313916,
+            "p50": 557.0,
+            "p95": 1274.0
+          },
+          "final_unique_pages": 1316,
+          "mean_completed_fraction_over_full_build_work": 0.7883701948567671,
+          "mean_quality_over_full_build_work": 0.5457756260989176,
+          "order_sha256": "c7c49861fddf01fc10d503fb61db4ae33a3e356f679b8a2aac1670a781dd7ea0",
+          "points_sha256": "e423514b41e2ab5666fb756d988f642d49eb0881f8a1b0ff7db2de4a5bfe5c0c"
+        },
+        "static_popularity": {
+          "completion_pages": {
+            "max": 1316.0,
+            "mean": 632.6084142394822,
+            "p50": 587.0,
+            "p95": 1275.0
+          },
+          "final_unique_pages": 1316,
+          "mean_completed_fraction_over_full_build_work": 0.7849733466215221,
+          "mean_quality_over_full_build_work": 0.5451627383173164,
+          "order_sha256": "d6bfa4e6d92bd1897d9628ee805567e107da0a315d76e69f11a65ebf5d1e7831",
+          "points_sha256": "e2b1d3b1fe08e963a8463ee50a38037111a9e8efabfa82186f045e81e94a59a8"
+        }
+      }
+    },
+    {
+      "base_mean_ndcg_at_10": 0.5285173146681087,
+      "batch_size": 1,
+      "candidate_k": 20,
+      "candidate_union_pages": 1855,
+      "corpus_pages": 2942,
+      "queries": 309,
+      "random": {
+        "mean_completion_pages": {
+          "max": 1263.812297734628,
+          "mean": 1250.3799352750807,
+          "min": 1231.2394822006472
+        },
+        "quality_work_auc": {
+          "max": 0.550208917416464,
+          "mean": 0.5486479214371014,
+          "min": 0.5458290891410312
+        },
+        "seeds": 10
+      },
+      "refined_mean_ndcg_at_10": 0.5628003944844325,
+      "schedules": {
+        "fifo": {
+          "completion_pages": {
+            "max": 1855.0,
+            "mean": 1188.631067961165,
+            "p50": 1314.0,
+            "p95": 1805.6
+          },
+          "final_unique_pages": 1855,
+          "mean_completed_fraction_over_full_build_work": 0.595978562895593,
+          "mean_quality_over_full_build_work": 0.5482276553181871,
+          "order_sha256": "d24b73b67824687a0b0721c9e7e83e8f0876a0cf89e3d07b57417720446d5ced",
+          "points_sha256": "97a97c1dc9fc9eb593d618e49d70f5de184f7a8440e4cf6fe4a25cd6fcfe130d"
+        },
+        "frontier_reuse": {
+          "completion_pages": {
+            "max": 1855.0,
+            "mean": 839.799352750809,
+            "p50": 798.0,
+            "p95": 1671.6
+          },
+          "final_unique_pages": 1855,
+          "mean_completed_fraction_over_full_build_work": 0.7145481465836814,
+          "mean_quality_over_full_build_work": 0.5536160658542658,
+          "order_sha256": "e3ffc5dbb36ba6ab009ccf4807ce048d20e57a5e36ba3cdfd89066b60300ad28",
+          "points_sha256": "4c64146e200c17e53154856a403f6b7b75743d5b25e42719855adcd665d6c58a"
+        },
+        "offline_work_greedy": {
+          "completion_pages": {
+            "max": 1855.0,
+            "mean": 839.5436893203884,
+            "p50": 798.0,
+            "p95": 1671.6
+          },
+          "final_unique_pages": 1855,
+          "mean_completed_fraction_over_full_build_work": 0.7146350478176791,
+          "mean_quality_over_full_build_work": 0.5536129147850505,
+          "order_sha256": "1b71166b9b2e08cd3d9d601d75cb9c71770134df627f3ea03ef0fca14fe2c44f",
+          "points_sha256": "b0dce32fe807a928d716022dc63bb2566af56ac0a830b8be8892ab677ec31bb9"
+        },
+        "overlap_only": {
+          "completion_pages": {
+            "max": 1855.0,
+            "mean": 872.8673139158576,
+            "p50": 834.0,
+            "p95": 1661.5999999999997
+          },
+          "final_unique_pages": 1855,
+          "mean_completed_fraction_over_full_build_work": 0.7033081869762549,
+          "mean_quality_over_full_build_work": 0.5531762476860974,
+          "order_sha256": "6203c1f2680c705084fc6afe6b7975ed86b3c029c5c394a84063f9b1da9805da",
+          "points_sha256": "4221174767e322fef12b7beea1670c08a04acb3b5c9c20e4373c1e3a0d7c73e1"
+        },
+        "reuse_only": {
+          "completion_pages": {
+            "max": 1855.0,
+            "mean": 999.5922330097087,
+            "p50": 1027.0,
+            "p95": 1779.1999999999998
+          },
+          "final_unique_pages": 1855,
+          "mean_completed_fraction_over_full_build_work": 0.6602337753196097,
+          "mean_quality_over_full_build_work": 0.5515588380439439,
+          "order_sha256": "c3a9ac4c541863268173c5eef5a2b5fbf68e8c1142d23fecff4b61d53805c055",
+          "points_sha256": "b6d284205d9c07d6d13dda62430149c723fc2942abfd97def44834b4e5e783e4"
+        },
+        "shortest_missing": {
+          "completion_pages": {
+            "max": 1855.0,
+            "mean": 880.2330097087379,
+            "p50": 823.0,
+            "p95": 1671.6
+          },
+          "final_unique_pages": 1855,
+          "mean_completed_fraction_over_full_build_work": 0.7008045514246303,
+          "mean_quality_over_full_build_work": 0.5529647501206167,
+          "order_sha256": "77b5f20be851ab8324cda6153d6b3f87f88921c7bd36e1a038fc8296a95af4a9",
+          "points_sha256": "82186cdaad52c3cbbe6380fb7b8fa31f6cf3788aec45b98643886a138c9859eb"
+        },
+        "static_popularity": {
+          "completion_pages": {
+            "max": 1855.0,
+            "mean": 872.8673139158576,
+            "p50": 834.0,
+            "p95": 1661.5999999999997
+          },
+          "final_unique_pages": 1855,
+          "mean_completed_fraction_over_full_build_work": 0.7033081869762549,
+          "mean_quality_over_full_build_work": 0.5531762476860974,
+          "order_sha256": "6203c1f2680c705084fc6afe6b7975ed86b3c029c5c394a84063f9b1da9805da",
+          "points_sha256": "4221174767e322fef12b7beea1670c08a04acb3b5c9c20e4373c1e3a0d7c73e1"
+        }
+      }
+    },
+    {
+      "base_mean_ndcg_at_10": 0.5285173146681087,
+      "batch_size": 4,
+      "candidate_k": 20,
+      "candidate_union_pages": 1855,
+      "corpus_pages": 2942,
+      "queries": 309,
+      "random": {
+        "mean_completion_pages": {
+          "max": 1272.5016181229773,
+          "mean": 1259.4025889967638,
+          "min": 1240.514563106796
+        },
+        "quality_work_auc": {
+          "max": 0.5500550949924127,
+          "mean": 0.5485289524459848,
+          "min": 0.5457563187285309
+        },
+        "seeds": 10
+      },
+      "refined_mean_ndcg_at_10": 0.5628003944844325,
+      "schedules": {
+        "fifo": {
+          "completion_pages": {
+            "max": 1855.0,
+            "mean": 1197.31715210356,
+            "p50": 1323.0,
+            "p95": 1811.0
+          },
+          "final_unique_pages": 1855,
+          "mean_completed_fraction_over_full_build_work": 0.5930261209709179,
+          "mean_quality_over_full_build_work": 0.5481499364617111,
+          "order_sha256": "d24b73b67824687a0b0721c9e7e83e8f0876a0cf89e3d07b57417720446d5ced",
+          "points_sha256": "59d470759d35a6fc227fd9b5bfabd2961cc6baf51f73f78f0f78fb3404647ff8"
+        },
+        "frontier_reuse": {
+          "completion_pages": {
+            "max": 1855.0,
+            "mean": 849.2265372168284,
+            "p50": 803.0,
+            "p95": 1690.0
+          },
+          "final_unique_pages": 1855,
+          "mean_completed_fraction_over_full_build_work": 0.7113438010819754,
+          "mean_quality_over_full_build_work": 0.5536108078689835,
+          "order_sha256": "46cd1250ce7a00ea22f5cd4f73cd0940d761208ab60d4418652c97e5662dd0db",
+          "points_sha256": "582889a5389314a447ab84ada1dc89799a8989197bf4c83f33df8ceed02fa66d"
+        },
+        "offline_work_greedy": {
+          "completion_pages": {
+            "max": 1855.0,
+            "mean": 842.3915857605178,
+            "p50": 800.0,
+            "p95": 1682.0
+          },
+          "final_unique_pages": 1855,
+          "mean_completed_fraction_over_full_build_work": 0.7136670340718838,
+          "mean_quality_over_full_build_work": 0.5532300549784701,
+          "order_sha256": "001e21be3a02a1bcb73cde51080e1fa94681c57fc719172616005fac148d88d6",
+          "points_sha256": "f9baedfedd776ef6f7db2e6eb817fbde51ad2afac5c8d80bf2175ef0605d5ec9"
+        },
+        "overlap_only": {
+          "completion_pages": {
+            "max": 1855.0,
+            "mean": 896.5792880258899,
+            "p50": 873.0,
+            "p95": 1698.0
+          },
+          "final_unique_pages": 1855,
+          "mean_completed_fraction_over_full_build_work": 0.6952483725268899,
+          "mean_quality_over_full_build_work": 0.5537900332639096,
+          "order_sha256": "1324de602a70fa7dfabe02a15be76ea65762917d41e6e40577a01c1bca37054c",
+          "points_sha256": "5260733f966feef6810630b553f0341b6b7b5fcb9ccfcd4c9b1413ff51b03ec1"
+        },
+        "reuse_only": {
+          "completion_pages": {
+            "max": 1855.0,
+            "mean": 995.6343042071197,
+            "p50": 1011.0,
+            "p95": 1773.0
+          },
+          "final_unique_pages": 1855,
+          "mean_completed_fraction_over_full_build_work": 0.6615790944231409,
+          "mean_quality_over_full_build_work": 0.55116942430933,
+          "order_sha256": "137d15c13b7e6cad8c149f7b87fef98347d3d24089442841fdbab6cad799ce11",
+          "points_sha256": "dd1a86b398ee9ce15b605ff3713c4800a5c1917e895ce536317cf5b79bcd6c98"
+        },
+        "shortest_missing": {
+          "completion_pages": {
+            "max": 1855.0,
+            "mean": 889.2783171521036,
+            "p50": 826.0,
+            "p95": 1698.0
+          },
+          "final_unique_pages": 1855,
+          "mean_completed_fraction_over_full_build_work": 0.6977300077661103,
+          "mean_quality_over_full_build_work": 0.5528388481931888,
+          "order_sha256": "77b5f20be851ab8324cda6153d6b3f87f88921c7bd36e1a038fc8296a95af4a9",
+          "points_sha256": "cfc69debfc30f843df58278dd2f4f34a24a3ef1f97a49850c1cc23370f177a3c"
+        },
+        "static_popularity": {
+          "completion_pages": {
+            "max": 1855.0,
+            "mean": 882.0679611650486,
+            "p50": 844.0,
+            "p95": 1684.0
+          },
+          "final_unique_pages": 1855,
+          "mean_completed_fraction_over_full_build_work": 0.7001808425679645,
+          "mean_quality_over_full_build_work": 0.553089677496726,
+          "order_sha256": "6203c1f2680c705084fc6afe6b7975ed86b3c029c5c394a84063f9b1da9805da",
+          "points_sha256": "deda0fa6028cb0691290206b368ed63ce13c2cdd73523869dfef52ae828796cf"
+        }
+      }
+    },
+    {
+      "base_mean_ndcg_at_10": 0.5285173146681087,
+      "batch_size": 8,
+      "candidate_k": 20,
+      "candidate_union_pages": 1855,
+      "corpus_pages": 2942,
+      "queries": 309,
+      "random": {
+        "mean_completion_pages": {
+          "max": 1283.9967637540453,
+          "mean": 1271.0699029126213,
+          "min": 1252.4886731391587
+        },
+        "quality_work_auc": {
+          "max": 0.5499206156514167,
+          "mean": 0.5484071005264125,
+          "min": 0.5456804530921708
+        },
+        "seeds": 10
+      },
+      "refined_mean_ndcg_at_10": 0.5628003944844325,
+      "schedules": {
+        "fifo": {
+          "completion_pages": {
+            "max": 1855.0,
+            "mean": 1208.7346278317152,
+            "p50": 1341.0,
+            "p95": 1811.0
+          },
+          "final_unique_pages": 1855,
+          "mean_completed_fraction_over_full_build_work": 0.5891452658627753,
+          "mean_quality_over_full_build_work": 0.5480591826885882,
+          "order_sha256": "d24b73b67824687a0b0721c9e7e83e8f0876a0cf89e3d07b57417720446d5ced",
+          "points_sha256": "cd63cc11d24de9f7c891fa5e3dca2807238d6319f099bbc22289352e33c769af"
+        },
+        "frontier_reuse": {
+          "completion_pages": {
+            "max": 1855.0,
+            "mean": 861.3689320388349,
+            "p50": 824.0,
+            "p95": 1698.0
+          },
+          "final_unique_pages": 1855,
+          "mean_completed_fraction_over_full_build_work": 0.7072165424749032,
+          "mean_quality_over_full_build_work": 0.5535508274102636,
+          "order_sha256": "30dea127604692eab9721063d69016ce9a06d654d18908341eae396acfe6a15b",
+          "points_sha256": "8b5f15935749ddf1b9f73a04b34cab76ffe4faa711db1837ce226d4632f2fe9e"
+        },
+        "offline_work_greedy": {
+          "completion_pages": {
+            "max": 1855.0,
+            "mean": 850.9093851132686,
+            "p50": 821.0,
+            "p95": 1682.0
+          },
+          "final_unique_pages": 1855,
+          "mean_completed_fraction_over_full_build_work": 0.7107717929594601,
+          "mean_quality_over_full_build_work": 0.5529498907396264,
+          "order_sha256": "49b21bf64e76fc40a50c1c91b81b4981748f9b56184fd671d60a0a45aef02cfd",
+          "points_sha256": "543579b795bee41e067767e7c3c05408c6dd4a91295183828a90f30e7a051fb1"
+        },
+        "overlap_only": {
+          "completion_pages": {
+            "max": 1855.0,
+            "mean": 893.705501618123,
+            "p50": 867.0,
+            "p95": 1698.0
+          },
+          "final_unique_pages": 1855,
+          "mean_completed_fraction_over_full_build_work": 0.6962251863976469,
+          "mean_quality_over_full_build_work": 0.5523525532650402,
+          "order_sha256": "fcd773497da83863b5ec755c4cc104b038f9b136db0cf8fef7a67857c3ff3c3b",
+          "points_sha256": "243af20d886f762af56c077aac8cd694cd2d7e607856303082e0ffd1addbf921"
+        },
+        "reuse_only": {
+          "completion_pages": {
+            "max": 1855.0,
+            "mean": 1004.1262135922331,
+            "p50": 1033.0,
+            "p95": 1750.0
+          },
+          "final_unique_pages": 1855,
+          "mean_completed_fraction_over_full_build_work": 0.6586926534356787,
+          "mean_quality_over_full_build_work": 0.5510536982659884,
+          "order_sha256": "caa6e27acdd2db3bd8069630e0ca055181afc04abb5b28a5adcc640faced5647",
+          "points_sha256": "46ef4d8d158b27349db5962ca1d54ec860ecb88e57ef106a1b220908b7e0d3c4"
+        },
+        "shortest_missing": {
+          "completion_pages": {
+            "max": 1855.0,
+            "mean": 901.1618122977346,
+            "p50": 837.0,
+            "p95": 1698.0
+          },
+          "final_unique_pages": 1855,
+          "mean_completed_fraction_over_full_build_work": 0.6936907504086558,
+          "mean_quality_over_full_build_work": 0.5526976052377061,
+          "order_sha256": "77b5f20be851ab8324cda6153d6b3f87f88921c7bd36e1a038fc8296a95af4a9",
+          "points_sha256": "89fb50e12c7b7e7d233fcbe917174968a63c92ed9f2f3534aba325b76acf6827"
+        },
+        "static_popularity": {
+          "completion_pages": {
+            "max": 1855.0,
+            "mean": 893.7831715210356,
+            "p50": 891.0,
+            "p95": 1684.0
+          },
+          "final_unique_pages": 1855,
+          "mean_completed_fraction_over_full_build_work": 0.6961987860227615,
+          "mean_quality_over_full_build_work": 0.5530089326163135,
+          "order_sha256": "6203c1f2680c705084fc6afe6b7975ed86b3c029c5c394a84063f9b1da9805da",
+          "points_sha256": "b8fc6a9090166ed796b3d6b3138ba6ad23eac0d265733b4834d2a72a02dfa43c"
+        }
+      }
+    },
+    {
+      "base_mean_ndcg_at_10": 0.5285173146681087,
+      "batch_size": 16,
+      "candidate_k": 20,
+      "candidate_union_pages": 1855,
+      "corpus_pages": 2942,
+      "queries": 309,
+      "random": {
+        "mean_completion_pages": {
+          "max": 1307.2718446601941,
+          "mean": 1293.5915857605175,
+          "min": 1274.3398058252428
+        },
+        "quality_work_auc": {
+          "max": 0.5497013998587611,
+          "mean": 0.54816284827939,
+          "min": 0.545532150387014
+        },
+        "seeds": 10
+      },
+      "refined_mean_ndcg_at_10": 0.5628003944844325,
+      "schedules": {
+        "fifo": {
+          "completion_pages": {
+            "max": 1855.0,
+            "mean": 1231.4142394822006,
+            "p50": 1341.0,
+            "p95": 1838.0
+          },
+          "final_unique_pages": 1855,
+          "mean_completed_fraction_over_full_build_work": 0.5814363563962608,
+          "mean_quality_over_full_build_work": 0.5478119001469821,
+          "order_sha256": "d24b73b67824687a0b0721c9e7e83e8f0876a0cf89e3d07b57417720446d5ced",
+          "points_sha256": "3d634e6d17b7ee48042f261b65b0769454da7fe64539e17619cd45c78a9c99dd"
+        },
+        "frontier_reuse": {
+          "completion_pages": {
+            "max": 1855.0,
+            "mean": 886.5080906148868,
+            "p50": 823.0,
+            "p95": 1784.0
+          },
+          "final_unique_pages": 1855,
+          "mean_completed_fraction_over_full_build_work": 0.6986716211370201,
+          "mean_quality_over_full_build_work": 0.5532089695162427,
+          "order_sha256": "023b1a39d8ab89957b284c7d591437f67aa58d3a70b14bebf15e9102a993048d",
+          "points_sha256": "6c31a73eea560b7973677c5cdd3a84cec0585d9ecb80c2dd3c982eff47fcbbb7"
+        },
+        "offline_work_greedy": {
+          "completion_pages": {
+            "max": 1855.0,
+            "mean": 872.7864077669902,
+            "p50": 821.0,
+            "p95": 1782.0
+          },
+          "final_unique_pages": 1855,
+          "mean_completed_fraction_over_full_build_work": 0.7033356873667607,
+          "mean_quality_over_full_build_work": 0.5529041137414529,
+          "order_sha256": "9a11ff2f32d016155a634c25758fa53e4b8f1409dcec872b012933b3bfd8aacc",
+          "points_sha256": "a08d038cf45d54c65c628a380778d434c2dcedbfa32bcd0e4225cf18920bc709"
+        },
+        "overlap_only": {
+          "completion_pages": {
+            "max": 1855.0,
+            "mean": 923.9449838187702,
+            "p50": 885.0,
+            "p95": 1793.0
+          },
+          "final_unique_pages": 1855,
+          "mean_completed_fraction_over_full_build_work": 0.6859466404422943,
+          "mean_quality_over_full_build_work": 0.5526085829262694,
+          "order_sha256": "308ee40f7b28b41a16882dd213e3e23069498d743782d334a610cabd6cc1d680",
+          "points_sha256": "171a8c1c7d47e165c4c74ebddcdc6032eda6c55f68b121152a59b8512f7baa41"
+        },
+        "reuse_only": {
+          "completion_pages": {
+            "max": 1855.0,
+            "mean": 1012.3333333333334,
+            "p50": 994.0,
+            "p95": 1836.0
+          },
+          "final_unique_pages": 1855,
+          "mean_completed_fraction_over_full_build_work": 0.6559030138227963,
+          "mean_quality_over_full_build_work": 0.5508027723557042,
+          "order_sha256": "52aa474c9232567f9a06cf30ab945ad9ad2b494b37d80cbd64cbcc5c552df53c",
+          "points_sha256": "a780e94eeaa5d7e49032866978a4c88bb776b298ddd5372ce9a72a453982b509"
+        },
+        "shortest_missing": {
+          "completion_pages": {
+            "max": 1855.0,
+            "mean": 924.9805825242719,
+            "p50": 837.0,
+            "p95": 1783.0
+          },
+          "final_unique_pages": 1855,
+          "mean_completed_fraction_over_full_build_work": 0.6855946354438234,
+          "mean_quality_over_full_build_work": 0.5524228862258729,
+          "order_sha256": "77b5f20be851ab8324cda6153d6b3f87f88921c7bd36e1a038fc8296a95af4a9",
+          "points_sha256": "3020a00875a04264bda05633a3c70a74e0bcf2f9c7478637a8840fc70b587fad"
+        },
+        "static_popularity": {
+          "completion_pages": {
+            "max": 1855.0,
+            "mean": 916.3851132686084,
+            "p50": 891.0,
+            "p95": 1786.0
+          },
+          "final_unique_pages": 1855,
+          "mean_completed_fraction_over_full_build_work": 0.6885162769311324,
+          "mean_quality_over_full_build_work": 0.5527053831183595,
+          "order_sha256": "6203c1f2680c705084fc6afe6b7975ed86b3c029c5c394a84063f9b1da9805da",
+          "points_sha256": "5ee2ce91c65d5bd8e449f3696379c713a0fd9bac96510b4f2a9eaa2b2c464b7e"
+        }
+      }
+    },
+    {
+      "base_mean_ndcg_at_10": 0.5285173146681087,
+      "batch_size": 1,
+      "candidate_k": 50,
+      "candidate_union_pages": 2514,
+      "corpus_pages": 2942,
+      "queries": 309,
+      "random": {
+        "mean_completion_pages": {
+          "max": 1943.2038834951456,
+          "mean": 1912.8252427184466,
+          "min": 1860.2912621359224
+        },
+        "quality_work_auc": {
+          "max": 0.5445263702008296,
+          "mean": 0.5423595793744066,
+          "min": 0.5382375035607216
+        },
+        "seeds": 10
+      },
+      "refined_mean_ndcg_at_10": 0.5666317967241412,
+      "schedules": {
+        "fifo": {
+          "completion_pages": {
+            "max": 2514.0,
+            "mean": 1819.2297734627832,
+            "p50": 2048.0,
+            "p95": 2479.0
+          },
+          "final_unique_pages": 2514,
+          "mean_completed_fraction_over_full_build_work": 0.38163501921727294,
+          "mean_quality_over_full_build_work": 0.5415588897284767,
+          "order_sha256": "d24b73b67824687a0b0721c9e7e83e8f0876a0cf89e3d07b57417720446d5ced",
+          "points_sha256": "84b9e8a72802a5f6b4c36f637bc4a1602004ad4c5d64a690e1738cf7115f6e12"
+        },
+        "frontier_reuse": {
+          "completion_pages": {
+            "max": 2514.0,
+            "mean": 1248.9935275080907,
+            "p50": 1253.0,
+            "p95": 2302.2
+          },
+          "final_unique_pages": 2514,
+          "mean_completed_fraction_over_full_build_work": 0.5754610715472158,
+          "mean_quality_over_full_build_work": 0.5516390993984405,
+          "order_sha256": "569d4d366afa663b6a4d5aaabaaad93bca4ae35d5c50ff42df7e5c86f68f388b",
+          "points_sha256": "dfba0e9ee6a24dc54a6c33dd1c777e8d5cf0e96fce437bb8a42acc2a3963299f"
+        },
+        "offline_work_greedy": {
+          "completion_pages": {
+            "max": 2514.0,
+            "mean": 1248.8155339805826,
+            "p50": 1253.0,
+            "p95": 2302.2
+          },
+          "final_unique_pages": 2514,
+          "mean_completed_fraction_over_full_build_work": 0.5755215724063281,
+          "mean_quality_over_full_build_work": 0.5516447050064879,
+          "order_sha256": "98d5adf55ee0f6cbf6481bf6b33ea81c3172f2fa9142e1debac8480571d3545a",
+          "points_sha256": "b303fb1bd71339b64bdf7bbcace30d389854d0806638c3b309a35b986091e076"
+        },
+        "overlap_only": {
+          "completion_pages": {
+            "max": 2514.0,
+            "mean": 1322.8155339805826,
+            "p50": 1331.0,
+            "p95": 2290.2
+          },
+          "final_unique_pages": 2514,
+          "mean_completed_fraction_over_full_build_work": 0.5503686152343363,
+          "mean_quality_over_full_build_work": 0.5499879725448914,
+          "order_sha256": "3efa58aac0e889b03a2e3661facf04d1b8be55b4581c893b8ac3e6ca44b8fe54",
+          "points_sha256": "58fbd6e4512cc29113497beda694f24d27c742dfe1f44020fd0606718799ec24"
+        },
+        "reuse_only": {
+          "completion_pages": {
+            "max": 2514.0,
+            "mean": 1480.7508090614888,
+            "p50": 1594.0,
+            "p95": 2394.2
+          },
+          "final_unique_pages": 2514,
+          "mean_completed_fraction_over_full_build_work": 0.49668565293627165,
+          "mean_quality_over_full_build_work": 0.5470161182975947,
+          "order_sha256": "9a179e4e342642aea598ef43c8f3cd328c1c929af96a1d7b56c2b3aeee648891",
+          "points_sha256": "07d14f30fe2b9e8484bf02e7f4a2359faef484b4df2a4aabc665567f8d204151"
+        },
+        "shortest_missing": {
+          "completion_pages": {
+            "max": 2514.0,
+            "mean": 1287.925566343042,
+            "p50": 1253.0,
+            "p95": 2328.3999999999996
+          },
+          "final_unique_pages": 2514,
+          "mean_completed_fraction_over_full_build_work": 0.5622278836359476,
+          "mean_quality_over_full_build_work": 0.5516105610099696,
+          "order_sha256": "39450975c2182fe7be0cfeea773fb7090ab845a6f9e65aaf5a5a6cd8de0ec7fc",
+          "points_sha256": "bfb164924beca432f5b963528ba525c2c544b905b7dddd5c5b1ad63a9e5a86e5"
+        },
+        "static_popularity": {
+          "completion_pages": {
+            "max": 2514.0,
+            "mean": 1322.8155339805826,
+            "p50": 1331.0,
+            "p95": 2290.2
+          },
+          "final_unique_pages": 2514,
+          "mean_completed_fraction_over_full_build_work": 0.5503686152343363,
+          "mean_quality_over_full_build_work": 0.5499879725448914,
+          "order_sha256": "3efa58aac0e889b03a2e3661facf04d1b8be55b4581c893b8ac3e6ca44b8fe54",
+          "points_sha256": "58fbd6e4512cc29113497beda694f24d27c742dfe1f44020fd0606718799ec24"
+        }
+      }
+    },
+    {
+      "base_mean_ndcg_at_10": 0.5285173146681087,
+      "batch_size": 4,
+      "candidate_k": 50,
+      "candidate_union_pages": 2514,
+      "corpus_pages": 2942,
+      "queries": 309,
+      "random": {
+        "mean_completion_pages": {
+          "max": 1954.957928802589,
+          "mean": 1924.9799352750808,
+          "min": 1872.4336569579289
+        },
+        "quality_work_auc": {
+          "max": 0.5442887697823175,
+          "mean": 0.5421655066692047,
+          "min": 0.5381051131255602
+        },
+        "seeds": 10
+      },
+      "refined_mean_ndcg_at_10": 0.5666317967241412,
+      "schedules": {
+        "fifo": {
+          "completion_pages": {
+            "max": 2514.0,
+            "mean": 1831.3074433656957,
+            "p50": 2056.0,
+            "p95": 2483.0
+          },
+          "final_unique_pages": 2514,
+          "mean_completed_fraction_over_full_build_work": 0.37752976092260515,
+          "mean_quality_over_full_build_work": 0.5414973042657496,
+          "order_sha256": "d24b73b67824687a0b0721c9e7e83e8f0876a0cf89e3d07b57417720446d5ced",
+          "points_sha256": "6ba5e66146ebac2d0aca9308ba0bb718c32589df48193ffef14b31f516060e79"
+        },
+        "frontier_reuse": {
+          "completion_pages": {
+            "max": 2514.0,
+            "mean": 1262.1423948220065,
+            "p50": 1259.0,
+            "p95": 2309.0
+          },
+          "final_unique_pages": 2514,
+          "mean_completed_fraction_over_full_build_work": 0.5709917080822549,
+          "mean_quality_over_full_build_work": 0.5512526342186278,
+          "order_sha256": "b8256c0e5617072dc76f048f35ab4fecd34adac2e94fe108b93ecbe7d958466a",
+          "points_sha256": "fd9d16d667dcd87ea1d6f9ae0841e0d2287a4ab7181bfc7ccc2628b08b7f32a8"
+        },
+        "offline_work_greedy": {
+          "completion_pages": {
+            "max": 2514.0,
+            "mean": 1254.8284789644013,
+            "p50": 1252.0,
+            "p95": 2309.0
+          },
+          "final_unique_pages": 2514,
+          "mean_completed_fraction_over_full_build_work": 0.5734777433839561,
+          "mean_quality_over_full_build_work": 0.5513645500307527,
+          "order_sha256": "4bf2d18933ebdd4ae58c552e54d80030ffca4b788f539ed5a5bd908857dcb481",
+          "points_sha256": "4ac68809d376e5bc51a91eb808972f6a71822e4848e536bc77fe3bdbc002586d"
+        },
+        "overlap_only": {
+          "completion_pages": {
+            "max": 2514.0,
+            "mean": 1359.3980582524273,
+            "p50": 1373.0,
+            "p95": 2364.0
+          },
+          "final_unique_pages": 2514,
+          "mean_completed_fraction_over_full_build_work": 0.5379340386633491,
+          "mean_quality_over_full_build_work": 0.5490120239315197,
+          "order_sha256": "162c63aed8c3c3002d33461896c0e988a43a4e159bec30b124cb876b38557ab9",
+          "points_sha256": "5c22ae655473778557166cf7a89ce1cc508b851aed4dba6599697d70472aef6e"
+        },
+        "reuse_only": {
+          "completion_pages": {
+            "max": 2514.0,
+            "mean": 1481.495145631068,
+            "p50": 1587.0,
+            "p95": 2443.0
+          },
+          "final_unique_pages": 2514,
+          "mean_completed_fraction_over_full_build_work": 0.49643264934362075,
+          "mean_quality_over_full_build_work": 0.5470154459310429,
+          "order_sha256": "a6e888225981a1f7ba25d6ad4ab0f1ca591302c4aabb862d091b7b914e439b8a",
+          "points_sha256": "5a9d6c35e175fd2df2cdebc3540ac6de8ae337310a16da0dff0ec330eff99121"
+        },
+        "shortest_missing": {
+          "completion_pages": {
+            "max": 2514.0,
+            "mean": 1299.8381877022653,
+            "p50": 1259.0,
+            "p95": 2331.0
+          },
+          "final_unique_pages": 2514,
+          "mean_completed_fraction_over_full_build_work": 0.5581787261379112,
+          "mean_quality_over_full_build_work": 0.551452537822653,
+          "order_sha256": "39450975c2182fe7be0cfeea773fb7090ab845a6f9e65aaf5a5a6cd8de0ec7fc",
+          "points_sha256": "6ed00c1a954dc09a900a770a09b1fc0e0bad08a381395f071797ac88c3c96b9f"
+        },
+        "static_popularity": {
+          "completion_pages": {
+            "max": 2514.0,
+            "mean": 1334.5436893203882,
+            "p50": 1340.0,
+            "p95": 2318.0
+          },
+          "final_unique_pages": 2514,
+          "mean_completed_fraction_over_full_build_work": 0.5463821586266525,
+          "mean_quality_over_full_build_work": 0.5498266355145851,
+          "order_sha256": "3efa58aac0e889b03a2e3661facf04d1b8be55b4581c893b8ac3e6ca44b8fe54",
+          "points_sha256": "4b64bae12420469e9bc64557cebd76efb25f1300c0a56267c2497f29e5a4e749"
+        }
+      }
+    },
+    {
+      "base_mean_ndcg_at_10": 0.5285173146681087,
+      "batch_size": 8,
+      "candidate_k": 50,
+      "candidate_union_pages": 2514,
+      "corpus_pages": 2942,
+      "queries": 309,
+      "random": {
+        "mean_completion_pages": {
+          "max": 1970.2588996763754,
+          "mean": 1940.2783171521037,
+          "min": 1889.0679611650485
+        },
+        "quality_work_auc": {
+          "max": 0.5441306668854982,
+          "mean": 0.5419816968584942,
+          "min": 0.5379765090545687
+        },
+        "seeds": 10
+      },
+      "refined_mean_ndcg_at_10": 0.5666317967241412,
+      "schedules": {
+        "fifo": {
+          "completion_pages": {
+            "max": 2514.0,
+            "mean": 1847.9805825242718,
+            "p50": 2078.0,
+            "p95": 2483.0
+          },
+          "final_unique_pages": 2514,
+          "mean_completed_fraction_over_full_build_work": 0.3718624804472223,
+          "mean_quality_over_full_build_work": 0.5414224257324437,
+          "order_sha256": "d24b73b67824687a0b0721c9e7e83e8f0876a0cf89e3d07b57417720446d5ced",
+          "points_sha256": "6c45013c3e595bef134029a4b94acdd074cb98af97295ed01884e1e1200b1564"
+        },
+        "frontier_reuse": {
+          "completion_pages": {
+            "max": 2514.0,
+            "mean": 1277.9611650485438,
+            "p50": 1279.0,
+            "p95": 2309.0
+          },
+          "final_unique_pages": 2514,
+          "mean_completed_fraction_over_full_build_work": 0.5656148317306107,
+          "mean_quality_over_full_build_work": 0.5509772657872389,
+          "order_sha256": "c6e1fb50469406edd5c0c8f9ba090a59d23da88f6a58a768f5d1ff716c0aaaec",
+          "points_sha256": "201ccf79738b538bdeaf3abfe3c82031f699a941ac13660717ab6c7c96a02f40"
+        },
+        "offline_work_greedy": {
+          "completion_pages": {
+            "max": 2514.0,
+            "mean": 1264.0582524271845,
+            "p50": 1273.0,
+            "p95": 2309.0
+          },
+          "final_unique_pages": 2514,
+          "mean_completed_fraction_over_full_build_work": 0.5703404988350835,
+          "mean_quality_over_full_build_work": 0.5511098533706724,
+          "order_sha256": "5ee338b593de40b114c0803d77bd3fa8544b39483aea7f4a1550772fd3b002f8",
+          "points_sha256": "97355977600a9ffb8781f5942dbfdba6a6d12fb2e9aed35923003049031ab394"
+        },
+        "overlap_only": {
+          "completion_pages": {
+            "max": 2514.0,
+            "mean": 1377.663430420712,
+            "p50": 1390.0,
+            "p95": 2353.0
+          },
+          "final_unique_pages": 2514,
+          "mean_completed_fraction_over_full_build_work": 0.5317255505028171,
+          "mean_quality_over_full_build_work": 0.5485038136369161,
+          "order_sha256": "bb15656f38ef611401c135727d90036ed4f1bb49ded2dcb5b009f5246b18bed7",
+          "points_sha256": "8115ad3e4dec5f53becc9f6d68a980cc9f0d864f5c71de6544fb105022ce1a14"
+        },
+        "reuse_only": {
+          "completion_pages": {
+            "max": 2514.0,
+            "mean": 1489.6375404530745,
+            "p50": 1618.0,
+            "p95": 2414.0
+          },
+          "final_unique_pages": 2514,
+          "mean_completed_fraction_over_full_build_work": 0.4936650100431425,
+          "mean_quality_over_full_build_work": 0.5471424356377639,
+          "order_sha256": "22ee8f3907060184cbc054d2372e565743638f6fde71734437d03577d7222006",
+          "points_sha256": "fca232c0430e7f922145ad16036e1f18fd8fe248fca63cff7ca028ad79b1d17a"
+        },
+        "shortest_missing": {
+          "completion_pages": {
+            "max": 2514.0,
+            "mean": 1315.1391585760518,
+            "p50": 1281.0,
+            "p95": 2331.0
+          },
+          "final_unique_pages": 2514,
+          "mean_completed_fraction_over_full_build_work": 0.5529778522855026,
+          "mean_quality_over_full_build_work": 0.5512027624114371,
+          "order_sha256": "39450975c2182fe7be0cfeea773fb7090ab845a6f9e65aaf5a5a6cd8de0ec7fc",
+          "points_sha256": "c755487788c3b62eca64cb8510bfc3fd3273c27889572001fad1614388737a7f"
+        },
+        "static_popularity": {
+          "completion_pages": {
+            "max": 2514.0,
+            "mean": 1350.7119741100323,
+            "p50": 1365.0,
+            "p95": 2318.0
+          },
+          "final_unique_pages": 2514,
+          "mean_completed_fraction_over_full_build_work": 0.5408864805880244,
+          "mean_quality_over_full_build_work": 0.5495665353451904,
+          "order_sha256": "3efa58aac0e889b03a2e3661facf04d1b8be55b4581c893b8ac3e6ca44b8fe54",
+          "points_sha256": "68a2a0d05d14673967bfc4f1c1a4f53f6d561822c38239acd77e7f266ad371da"
+        }
+      }
+    },
+    {
+      "base_mean_ndcg_at_10": 0.5285173146681087,
+      "batch_size": 16,
+      "candidate_k": 50,
+      "candidate_union_pages": 2514,
+      "corpus_pages": 2942,
+      "queries": 309,
+      "random": {
+        "mean_completion_pages": {
+          "max": 1997.1844660194174,
+          "mean": 1969.2750809061486,
+          "min": 1916.6666666666667
+        },
+        "quality_work_auc": {
+          "max": 0.5438093093836197,
+          "mean": 0.5416399256000971,
+          "min": 0.5378331514568346
+        },
+        "seeds": 10
+      },
+      "refined_mean_ndcg_at_10": 0.5666317967241412,
+      "schedules": {
+        "fifo": {
+          "completion_pages": {
+            "max": 2514.0,
+            "mean": 1877.6245954692556,
+            "p50": 2078.0,
+            "p95": 2506.0
+          },
+          "final_unique_pages": 2514,
+          "mean_completed_fraction_over_full_build_work": 0.36178633736599053,
+          "mean_quality_over_full_build_work": 0.541156049905085,
+          "order_sha256": "d24b73b67824687a0b0721c9e7e83e8f0876a0cf89e3d07b57417720446d5ced",
+          "points_sha256": "12bd492b670f15d7a97e8bd1316a70a0e12c24372af4dc04e08bb939b9a03c5d"
+        },
+        "frontier_reuse": {
+          "completion_pages": {
+            "max": 2514.0,
+            "mean": 1310.6860841423947,
+            "p50": 1279.0,
+            "p95": 2426.0
+          },
+          "final_unique_pages": 2514,
+          "mean_completed_fraction_over_full_build_work": 0.5544914737789277,
+          "mean_quality_over_full_build_work": 0.5506662481041076,
+          "order_sha256": "1adaff8010391b28bfde2d2bf9f1c24164b406f973e4be4e034386b81f3b5b8a",
+          "points_sha256": "48d4d71a166e7e71579b84859588192a7574fbdbf5b2216c2f6b79ca78c0119e"
+        },
+        "offline_work_greedy": {
+          "completion_pages": {
+            "max": 2514.0,
+            "mean": 1296.4466019417475,
+            "p50": 1273.0,
+            "p95": 2421.0
+          },
+          "final_unique_pages": 2514,
+          "mean_completed_fraction_over_full_build_work": 0.5593315425079036,
+          "mean_quality_over_full_build_work": 0.5506364723201993,
+          "order_sha256": "55a0606865b90d3d606b88f76ecf4f8154adab076c4e021034849eab05f971de",
+          "points_sha256": "22bac93bae48237ec0c6aef43a1a321a14c57dce6721402a59a78fa13cc708a4"
+        },
+        "overlap_only": {
+          "completion_pages": {
+            "max": 2514.0,
+            "mean": 1379.967637540453,
+            "p50": 1398.0,
+            "p95": 2470.0
+          },
+          "final_unique_pages": 2514,
+          "mean_completed_fraction_over_full_build_work": 0.5309423393812192,
+          "mean_quality_over_full_build_work": 0.5492844489562354,
+          "order_sha256": "b8bbd2fda1fb379b8519b31357ac0a8b0eeff152541ee584bd344075f68f296d",
+          "points_sha256": "44bc192c40feeab362a972286ee4c60950d1884e40add104a956261307488f8b"
+        },
+        "reuse_only": {
+          "completion_pages": {
+            "max": 2514.0,
+            "mean": 1503.8252427184466,
+            "p50": 1558.0,
+            "p95": 2470.0
+          },
+          "final_unique_pages": 2514,
+          "mean_completed_fraction_over_full_build_work": 0.48884254156409024,
+          "mean_quality_over_full_build_work": 0.5462566051835551,
+          "order_sha256": "633bfe660d8e8613569c4de22aa1e8f5b7ba47e75e4d0369d92017b148c8831c",
+          "points_sha256": "f6a3b58a098502b88f29ff86de28e02d972a3ee8d5fa35eb9e01807c3bd98e34"
+        },
+        "shortest_missing": {
+          "completion_pages": {
+            "max": 2514.0,
+            "mean": 1346.7766990291261,
+            "p50": 1281.0,
+            "p95": 2426.0
+          },
+          "final_unique_pages": 2514,
+          "mean_completed_fraction_over_full_build_work": 0.5422240995822141,
+          "mean_quality_over_full_build_work": 0.5508946871931838,
+          "order_sha256": "39450975c2182fe7be0cfeea773fb7090ab845a6f9e65aaf5a5a6cd8de0ec7fc",
+          "points_sha256": "e71f234c0718337c10f9d746584528ca20ef7aec92f6fa45fd22aa561cbb3da1"
+        },
+        "static_popularity": {
+          "completion_pages": {
+            "max": 2514.0,
+            "mean": 1382.5566343042071,
+            "p50": 1365.0,
+            "p95": 2426.0
+          },
+          "final_unique_pages": 2514,
+          "mean_completed_fraction_over_full_build_work": 0.5300623268850418,
+          "mean_quality_over_full_build_work": 0.5492095010842125,
+          "order_sha256": "3efa58aac0e889b03a2e3661facf04d1b8be55b4581c893b8ac3e6ca44b8fe54",
+          "points_sha256": "b3e51282093db73d138323e7d00ddf97711bd44f1af5b19e93f8688f5ba3f850"
+        }
+      }
+    }
+  ],
+  "dataset": "vidore_v3_finance_bm25_colpali",
+  "policy_descriptions": {
+    "fifo": "official frozen query order",
+    "frontier_reuse": "fewest absent pages with staged/resident and reuse ties",
+    "offline_work_greedy": "full-stream multi-start adjacent-batch work refinement (offline)",
+    "overlap_only": "static CaGR-style cohort overlap grouping",
+    "random": "deterministic random permutation; aggregate separately",
+    "reuse_only": "dynamic future candidate frequency, without distance",
+    "shortest_missing": "fewest absent pages, without reuse tie-break",
+    "static_popularity": "full-stream page frequency, fixed once (offline)"
+  },
+  "provenance": {
+    "labels": {
+      "path": "/Users/aura/gpu-systems-incubator/reprforge/data/current-anytime/finance/bm25/oracle-labels.npz",
+      "sha256": "8fa8613e7244c60332584b4a64186da31d979b4fb0c0d4cc6be10ad86d6b0336"
+    },
+    "text": {
+      "path": "/Users/aura/gpu-systems-incubator/reprforge/data/current-anytime/finance/bm25/runtime.npz",
+      "sha256": "55bf5d9921a5df5151d346db394fbf4e0069b1751ec787117853fc4f1b67fa65"
+    },
+    "visual": {
+      "path": "/Users/aura/gpu-systems-incubator/reprforge/data/current-anytime/finance/visual/runtime.npz",
+      "sha256": "a6bbbf5bb26dadd4d060df40b225d9511b05a8470b574b71463ca4eadb635944"
+    }
+  },
+  "qrels_used_for_post_hoc_quality_metrics_only": true,
+  "scheduler_forbidden": [
+    "qrels",
+    "visual scores",
+    "answer outcomes"
+  ],
+  "scheduler_observes": [
+    "BM25 candidate membership",
+    "resident and current staged page membership",
+    "queued-query candidate frequency for explicitly offline policies"
+  ],
+  "schema_version": 1,
+  "stage": "strong-qrel-free-scheduler-frozen-replay",
+  "summary": {
+    "grid": {
+      "configurations": 12,
+      "frontier_beats_all_simple_by_work": 12,
+      "frontier_not_dominated_by_non_oracle": 11,
+      "frontier_not_dominated_including_offline_greedy": 8
+    },
+    "primary_k20_batch8": {
+      "frontier_beats_all_popularity_or_overlap_explanations": true,
+      "frontier_beats_shortest_missing": true,
+      "frontier_mean_completion_pages": 861.3689320388349,
+      "frontier_quality_work_auc": 0.5535508274102636,
+      "offline_greedy_gap_fraction": 0.012292198333403004,
+      "strongest_simple_by_work": "overlap_only",
+      "strongest_simple_mean_completion_pages": 893.705501618123
+    }
+  }
+}
