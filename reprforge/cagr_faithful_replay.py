@@ -22,6 +22,7 @@ POLICIES = (
     "static_popularity",
     "cagr_faithful",
     "frontier",
+    "multiobjective_oracle",
 )
 
 
@@ -164,6 +165,7 @@ class ReplayResult:
     total_unit_work: float
     bounded_group_wait: dict[str, Any]
     quality_publication_trace: tuple[dict[str, Any], ...]
+    oracle_future_wait: dict[str, Any]
 
     def as_dict(self, *, starvation_window: int) -> dict[str, Any]:
         completion = np.asarray(self.completion_pages, dtype=np.float64)
@@ -195,6 +197,7 @@ class ReplayResult:
             "total_unit_work": self.total_unit_work,
             "unit_work_per_query": self.total_unit_work / len(completion),
             "bounded_group_wait": self.bounded_group_wait,
+            "oracle_future_wait": self.oracle_future_wait,
             "quality_work_auc": self.quality_work_auc,
             "normalized_quality_regret_auc": self.normalized_quality_regret_auc,
             "starvation": {
@@ -288,6 +291,11 @@ def replay_cagr_comparison(
     cagr_wait_budget: float = 0.0,
     cagr_min_pending: int = 1,
     cagr_cross_group_fill: bool = False,
+    oracle_lambda_quality: float = 0.0,
+    oracle_lambda_completion: float = 0.0,
+    oracle_lambda_deadline: float = 0.0,
+    oracle_deadline_scale: float = 64.0,
+    oracle_future_wait_budget: float = 0.0,
 ) -> ReplayResult:
     """Replay one policy with persistent compilation and equal active LRU."""
 
@@ -318,6 +326,29 @@ def replay_cagr_comparison(
         raise ValueError("cagr_min_pending must be positive")
     if corpus_pages <= 0:
         raise ValueError("corpus_pages must be positive")
+    oracle_weights = np.asarray(
+        [
+            oracle_lambda_quality,
+            oracle_lambda_completion,
+            oracle_lambda_deadline,
+        ],
+        dtype=np.float64,
+    )
+    if (
+        not np.isfinite(oracle_weights).all()
+        or np.any(oracle_weights < 0)
+        or (
+            policy == "multiobjective_oracle"
+            and not np.isclose(float(oracle_weights.sum()), 1.0)
+        )
+    ):
+        raise ValueError("oracle weights must be non-negative and sum to one")
+    if oracle_deadline_scale <= 0 or not np.isfinite(oracle_deadline_scale):
+        raise ValueError("oracle deadline scale must be finite and positive")
+    if oracle_future_wait_budget < 0 or not np.isfinite(
+        oracle_future_wait_budget
+    ):
+        raise ValueError("oracle future wait must be finite and non-negative")
 
     arrival_rank = np.empty(query_count, dtype=np.int64)
     arrival_rank[order] = np.arange(query_count)
@@ -376,6 +407,7 @@ def replay_cagr_comparison(
     cross_group_batches = 0
     logical_group_counter = 0
     bounded_group_wait_durations: list[float] = []
+    oracle_future_wait_durations: list[float] = []
 
     def current_arrival_clock() -> float:
         return unit_cost_clock if arrival_clock == "unit" else page_clock
@@ -525,9 +557,50 @@ def replay_cagr_comparison(
         if duration > 1e-12:
             bounded_group_wait_durations.append(duration)
 
+    def wait_for_oracle_trigger() -> None:
+        if (
+            policy != "multiobjective_oracle"
+            or not pending
+            or oracle_future_wait_budget <= 0.0
+        ):
+            return
+        wait_start = current_arrival_clock()
+        oldest_arrival = min(query_arrival[query] for query in pending)
+        deadline = oldest_arrival + oracle_future_wait_budget
+        while (
+            len(pending) < request_batch_size
+            and next_arrival < query_count
+            and current_arrival_clock() < deadline - 1e-12
+        ):
+            target = min(float(times[next_arrival]), deadline)
+            advance_idle(target - current_arrival_clock())
+            release_arrivals()
+        duration = current_arrival_clock() - wait_start
+        if duration > 1e-12:
+            oracle_future_wait_durations.append(duration)
+
     def select_regular_batch() -> tuple[int, ...]:
         batch: list[int] = []
         staged: set[int] = set()
+        virtual_compiled = set(compiled)
+        virtual_cache = OrderedDict(cache.pages)
+
+        def simulate_oracle_query(
+            query: int, *, mutate: bool
+        ) -> tuple[float, set[int], OrderedDict[int, None]]:
+            candidate_compiled = virtual_compiled if mutate else set(virtual_compiled)
+            candidate_cache = virtual_cache if mutate else OrderedDict(virtual_cache)
+            cost = 0.0
+            for page in sorted(normalized[query]):
+                if page not in candidate_cache:
+                    cost += 1.0
+                    candidate_compiled.add(page)
+                candidate_cache[page] = None
+                candidate_cache.move_to_end(page)
+                if len(candidate_cache) > cache_capacity:
+                    candidate_cache.popitem(last=False)
+            return cost, candidate_compiled, candidate_cache
+
         while pending and len(batch) < request_batch_size:
             # Match the frozen windowed-arrival implementation exactly: after
             # selecting one request, the next-oldest pending request may enter
@@ -589,11 +662,56 @@ def replay_cagr_comparison(
                         int(arrival_rank[query]),
                     ),
                 )
+            elif policy == "multiobjective_oracle":
+                components = {}
+                quality_density = {}
+                completion_density = {}
+                for query in visible:
+                    marginal_cost, _, _ = simulate_oracle_query(
+                        query, mutate=False
+                    )
+                    denominator = max(marginal_cost, 1.0)
+                    quality_density[query] = float(gains[query] / denominator)
+                    completion_density[query] = 1.0 / denominator
+                quality_scale = max(
+                    (abs(value) for value in quality_density.values()),
+                    default=0.0,
+                )
+                completion_scale = max(completion_density.values(), default=1.0)
+                for query in visible:
+                    quality_term = (
+                        quality_density[query] / quality_scale
+                        if quality_scale > 1e-15
+                        else 0.0
+                    )
+                    completion_term = completion_density[query] / completion_scale
+                    age = max(
+                        0.0, current_arrival_clock() - query_arrival[query]
+                    )
+                    deadline_term = min(age / oracle_deadline_scale, 1.0)
+                    components[query] = (
+                        oracle_lambda_quality * quality_term
+                        + oracle_lambda_completion * completion_term
+                        + oracle_lambda_deadline * deadline_term
+                    )
+                selected = min(
+                    visible,
+                    key=lambda query: (
+                        -components[query],
+                        int(arrival_rank[query]),
+                        int(query),
+                    ),
+                )
             else:
                 raise AssertionError("regular selection called for CaGR")
             pending.remove(selected)
             batch.append(selected)
-            staged.update(normalized[selected] - compiled)
+            if policy == "multiobjective_oracle":
+                _, virtual_compiled, virtual_cache = simulate_oracle_query(
+                    selected, mutate=True
+                )
+            else:
+                staged.update(normalized[selected] - compiled)
         return tuple(batch)
 
     while len(dispatch) < query_count:
@@ -601,6 +719,8 @@ def replay_cagr_comparison(
         if policy == "cagr_faithful" and not plan and pending:
             wait_for_group_trigger()
             build_cagr_plan()
+        if policy == "multiobjective_oracle" and pending:
+            wait_for_oracle_trigger()
         if policy == "cagr_faithful" and plan:
             batch, after_prefetch, group_ids = plan.popleft()
         elif pending:
@@ -767,4 +887,23 @@ def replay_cagr_comparison(
             ),
         },
         quality_publication_trace=tuple(quality_publication_trace),
+        oracle_future_wait={
+            "budget": (
+                oracle_future_wait_budget
+                if policy == "multiobjective_oracle"
+                else None
+            ),
+            "events": len(oracle_future_wait_durations),
+            "total_unit_time": float(sum(oracle_future_wait_durations)),
+            "mean_unit_time": (
+                float(np.mean(oracle_future_wait_durations))
+                if oracle_future_wait_durations
+                else 0.0
+            ),
+            "max_unit_time": (
+                float(max(oracle_future_wait_durations))
+                if oracle_future_wait_durations
+                else 0.0
+            ),
+        },
     )

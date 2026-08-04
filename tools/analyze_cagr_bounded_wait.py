@@ -76,6 +76,11 @@ def _replay(
         cagr_wait_budget=float(config.get("wait_budget", 0.0)),
         cagr_min_pending=int(config.get("min_pending", 1)),
         cagr_cross_group_fill=bool(config.get("cross_group_fill", False)),
+        oracle_lambda_quality=float(config.get("lambda_quality", 0.0)),
+        oracle_lambda_completion=float(config.get("lambda_completion", 0.0)),
+        oracle_lambda_deadline=float(config.get("lambda_deadline", 0.0)),
+        oracle_deadline_scale=float(config.get("deadline_scale", 64.0)),
+        oracle_future_wait_budget=float(config.get("future_wait_budget", 0.0)),
     )
 
 
