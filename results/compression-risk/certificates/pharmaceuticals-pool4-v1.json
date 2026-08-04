@@ -1,0 +1,86 @@
+{
+  "artifacts": {
+    "candidate_runtime_sha256": "2cd1d62b60c7ad6164ddb191f1f53960c2935af304c31ee69ee3a084eb1d0121",
+    "reference_runtime_sha256": "d3c223709e67d96672be4db14783cc550aa1213b3b9f6e6320abfe6a7342dfcd"
+  },
+  "bootstrap": {
+    "resamples": 4000,
+    "seed": 20260804
+  },
+  "candidate": "semantic-hierarchical-pool4",
+  "corpus_count": 2313,
+  "dataset": "vidore/vidore_v3_pharmaceuticals",
+  "protocol": "qrel-free-compression-risk-2026-08-04",
+  "qrel_free_ranking_certificate": {
+    "observed": {
+      "full_top10_at_candidate100_one_sided_95_lower": 1.0,
+      "top10_mean": 0.9137362637362638,
+      "top10_one_sided_95_lower": 0.9065934065934066
+    },
+    "passes": true,
+    "status": "development_candidate_not_distribution_free_guarantee",
+    "thresholds": {
+      "minimum_full_top10_at_candidate100_one_sided_95_lower": 0.995,
+      "minimum_top10_mean": 0.9,
+      "minimum_top10_one_sided_95_lower": 0.88
+    },
+    "uses_qrels": false
+  },
+  "qrel_path_argument_available": false,
+  "qrels_loaded": false,
+  "query_count": 364,
+  "ranking_fidelity": {
+    "full_top10_escape_candidate_top100": {
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "mean": 0.0,
+      "one_sided_95_lower": 0.0,
+      "one_sided_95_upper": 0.0,
+      "queries": 364,
+      "resamples": 4000,
+      "seed": 20260804
+    },
+    "full_top10_retained_at_candidate_top100": {
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "mean": 1.0,
+      "one_sided_95_lower": 1.0,
+      "one_sided_95_upper": 1.0,
+      "queries": 364,
+      "resamples": 4000,
+      "seed": 20260804
+    },
+    "rbo_ext_at_100_p0.95": {
+      "ci95_lower": 0.9037918636022682,
+      "ci95_upper": 0.9120675234690202,
+      "mean": 0.9080023320419045,
+      "one_sided_95_lower": 0.9045260090370355,
+      "one_sided_95_upper": 0.9114852676472981,
+      "queries": 364,
+      "resamples": 4000,
+      "seed": 20260804
+    },
+    "top_100_overlap": {
+      "ci95_lower": 0.9174175824175824,
+      "ci95_upper": 0.9248358516483516,
+      "mean": 0.9211538461538462,
+      "one_sided_95_lower": 0.9180494505494506,
+      "one_sided_95_upper": 0.9242582417582418,
+      "queries": 364,
+      "resamples": 4000,
+      "seed": 20260804
+    },
+    "top_10_overlap": {
+      "ci95_lower": 0.9052197802197802,
+      "ci95_upper": 0.9222527472527474,
+      "mean": 0.9137362637362638,
+      "one_sided_95_lower": 0.9065934065934066,
+      "one_sided_95_upper": 0.920879120879121,
+      "queries": 364,
+      "resamples": 4000,
+      "seed": 20260804
+    }
+  },
+  "schema_version": 1,
+  "stage": "pre-qrel-ranking-certification"
+}

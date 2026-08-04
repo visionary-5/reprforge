@@ -1,0 +1,58 @@
+{
+  "artifacts": {
+    "candidate_runtime_sha256": "e9a888698f0bdb77110771fe4bccf8f0e1f1541fbf5ff1e52373ec46ddfb552e",
+    "materialization_sha256": "c7889b665cde42bbda1df480b9557bc950df03dc5dd5067a664e917560443f70",
+    "plan_sha256": "32e15563bac2247b492396a4f9c711f3ff30c069bb10051a989ace5811a41f98",
+    "reference_runtime_sha256": "d3813daa0e1c0b4c49a6d704322dc00521bb9d69e156d303df5c18f0861ab8da"
+  },
+  "dataset": "vidore/vidore_v3_industrial",
+  "evaluation_queries": 96,
+  "protocol": "qrel-free-physical-compression-crossfit-v1",
+  "qrels_loaded": false,
+  "qrels_used": false,
+  "ranking_certificate": {
+    "observed": {
+      "full_top10_at_candidate100_one_sided_95_lower": 1.0,
+      "top10_mean": 0.9718749999999999,
+      "top10_one_sided_95_lower": 0.9614583333333334
+    },
+    "passes": true,
+    "status": "development_candidate_not_distribution_free_guarantee",
+    "thresholds": {
+      "minimum_full_top10_at_candidate100_one_sided_95_lower": 0.995,
+      "minimum_top10_mean": 0.9,
+      "minimum_top10_one_sided_95_lower": 0.88
+    },
+    "uses_qrels": false
+  },
+  "ranking_fidelity": {
+    "full_top10_escape_candidate_top100": {
+      "mean": 0.0,
+      "median": 0.0,
+      "p05": 0.0
+    },
+    "full_top10_retained_at_candidate_top100": {
+      "mean": 1.0,
+      "median": 1.0,
+      "p05": 1.0
+    },
+    "rbo_ext_at_100_p0.95": {
+      "mean": 0.9708080897614013,
+      "median": 0.9889963453619114,
+      "p05": 0.8867501045174409
+    },
+    "top_100_overlap": {
+      "mean": 0.9651041666666668,
+      "median": 0.97,
+      "p05": 0.9275
+    },
+    "top_10_overlap": {
+      "mean": 0.9718749999999999,
+      "median": 1.0,
+      "p05": 0.9
+    }
+  },
+  "schema_version": 1,
+  "selected_state": "dual_view",
+  "stage": "pre-qrel-physical-runtime-certificate"
+}

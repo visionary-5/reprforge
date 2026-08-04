@@ -1,0 +1,539 @@
+{
+  "baselines": {
+    "full": {
+      "ndcg_at_10": 0.4731569596546872,
+      "ndcg_at_5": 0.4491820020654834,
+      "recall_at_100": 0.8273220668329332
+    },
+    "pool9": {
+      "ndcg_at_10": 0.4503131073632272,
+      "ndcg_at_5": 0.41893674010367643,
+      "recall_at_100": 0.822947854494001
+    }
+  },
+  "protocol": "paired query bootstrap; 4000 resamples",
+  "reports": {
+    "finance-probe-residual-exploratory-v1:p16-eps0.05": {
+      "configuration": "p16-eps0.05",
+      "metrics": {
+        "ndcg_at_10": {
+          "mean": 0.45682640393793206,
+          "vs_full": {
+            "ci95_lower": -0.02936067986767661,
+            "ci95_upper": -0.003667696715292805,
+            "mean_difference": -0.016330555716755145,
+            "queries": 309,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.005030018357832572,
+            "ci95_upper": 0.018123840238938028,
+            "mean_difference": 0.006513296574704731,
+            "queries": 309,
+            "resamples": 4000
+          }
+        },
+        "ndcg_at_5": {
+          "mean": 0.43492450063503935,
+          "vs_full": {
+            "ci95_lower": -0.029045468134789254,
+            "ci95_upper": 0.00011825717496476153,
+            "mean_difference": -0.014257501430444066,
+            "queries": 309,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": 0.000321962190274941,
+            "ci95_upper": 0.03212452074773316,
+            "mean_difference": 0.015987760531362947,
+            "queries": 309,
+            "resamples": 4000
+          }
+        },
+        "recall_at_100": {
+          "mean": 0.8245926440171458,
+          "vs_full": {
+            "ci95_lower": -0.017586184580496104,
+            "ci95_upper": 0.012081961162144342,
+            "mean_difference": -0.002729422815787327,
+            "queries": 309,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.012501438360590277,
+            "ci95_upper": 0.015895216687621033,
+            "mean_difference": 0.001644789523144748,
+            "queries": 309,
+            "resamples": 4000
+          }
+        }
+      },
+      "source": "results/finance-probe-residual-exploratory-v1.json",
+      "token_fraction": 0.11503996356748267
+    },
+    "finance-probe-residual-exploratory-v1:p16-eps0.1": {
+      "configuration": "p16-eps0.1",
+      "metrics": {
+        "ndcg_at_10": {
+          "mean": 0.4531283616687778,
+          "vs_full": {
+            "ci95_lower": -0.032666295876573895,
+            "ci95_upper": -0.007945033867212422,
+            "mean_difference": -0.0200285979859094,
+            "queries": 309,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.006700043964631451,
+            "ci95_upper": 0.012312848412989845,
+            "mean_difference": 0.002815254305550479,
+            "queries": 309,
+            "resamples": 4000
+          }
+        },
+        "ndcg_at_5": {
+          "mean": 0.42880611330218577,
+          "vs_full": {
+            "ci95_lower": -0.03478068201966136,
+            "ci95_upper": -0.006634863758431356,
+            "mean_difference": -0.020375888763297614,
+            "queries": 309,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.0022709905044925502,
+            "ci95_upper": 0.02211291936931002,
+            "mean_difference": 0.009869373198509395,
+            "queries": 309,
+            "resamples": 4000
+          }
+        },
+        "recall_at_100": {
+          "mean": 0.8179920041037683,
+          "vs_full": {
+            "ci95_lower": -0.02396945539746169,
+            "ci95_upper": 0.004730126474936083,
+            "mean_difference": -0.009330062729164791,
+            "queries": 309,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.018975903860612597,
+            "ci95_upper": 0.007203377379975975,
+            "mean_difference": -0.004955850390232713,
+            "queries": 309,
+            "resamples": 4000
+          }
+        }
+      },
+      "source": "results/finance-probe-residual-exploratory-v1.json",
+      "token_fraction": 0.11188967283335423
+    },
+    "finance-probe-residual-exploratory-v1:p16-eps0.15": {
+      "configuration": "p16-eps0.15",
+      "metrics": {
+        "ndcg_at_10": {
+          "mean": 0.45271019251092687,
+          "vs_full": {
+            "ci95_lower": -0.03357556206111516,
+            "ci95_upper": -0.007961099114135096,
+            "mean_difference": -0.020446767143760324,
+            "queries": 309,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.007014675908809834,
+            "ci95_upper": 0.011655548458219983,
+            "mean_difference": 0.00239708514769955,
+            "queries": 309,
+            "resamples": 4000
+          }
+        },
+        "ndcg_at_5": {
+          "mean": 0.4258144984536122,
+          "vs_full": {
+            "ci95_lower": -0.03901855736080155,
+            "ci95_upper": -0.009075003593411754,
+            "mean_difference": -0.02336750361187126,
+            "queries": 309,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.004779886200066832,
+            "ci95_upper": 0.01842150961061695,
+            "mean_difference": 0.006877758349935751,
+            "queries": 309,
+            "resamples": 4000
+          }
+        },
+        "recall_at_100": {
+          "mean": 0.8228965161684745,
+          "vs_full": {
+            "ci95_lower": -0.01875542083616748,
+            "ci95_upper": 0.009963184835771539,
+            "mean_difference": -0.00442555066445855,
+            "queries": 309,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.012497270767274115,
+            "ci95_upper": 0.012610901990296037,
+            "mean_difference": -5.133832552647419e-05,
+            "queries": 309,
+            "resamples": 4000
+          }
+        }
+      },
+      "source": "results/finance-probe-residual-exploratory-v1.json",
+      "token_fraction": 0.11144146046873867
+    },
+    "finance-probe-residual-exploratory-v1:p32-eps0.05": {
+      "configuration": "p32-eps0.05",
+      "metrics": {
+        "ndcg_at_10": {
+          "mean": 0.46223940009661013,
+          "vs_full": {
+            "ci95_lower": -0.023303279428887127,
+            "ci95_upper": 0.0008561192681312874,
+            "mean_difference": -0.010917559558077073,
+            "queries": 309,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": 0.00042230901006276263,
+            "ci95_upper": 0.02382997849214952,
+            "mean_difference": 0.011926292733382802,
+            "queries": 309,
+            "resamples": 4000
+          }
+        },
+        "ndcg_at_5": {
+          "mean": 0.44141026992639537,
+          "vs_full": {
+            "ci95_lower": -0.022307037155178403,
+            "ci95_upper": 0.006587062944704223,
+            "mean_difference": -0.007771732139087964,
+            "queries": 309,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": 0.006658749662798206,
+            "ci95_upper": 0.03883007643513804,
+            "mean_difference": 0.02247352982271905,
+            "queries": 309,
+            "resamples": 4000
+          }
+        },
+        "recall_at_100": {
+          "mean": 0.8276031327389051,
+          "vs_full": {
+            "ci95_lower": -0.01645083196897574,
+            "ci95_upper": 0.01767677990135459,
+            "mean_difference": 0.00028106590597197094,
+            "queries": 309,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.00773801870381775,
+            "ci95_upper": 0.017281067720894036,
+            "mean_difference": 0.004655278244904049,
+            "queries": 309,
+            "resamples": 4000
+          }
+        }
+      },
+      "source": "results/finance-probe-residual-exploratory-v1.json",
+      "token_fraction": 0.11977447479754214
+    },
+    "finance-probe-residual-exploratory-v1:p32-eps0.1": {
+      "configuration": "p32-eps0.1",
+      "metrics": {
+        "ndcg_at_10": {
+          "mean": 0.4541586759650722,
+          "vs_full": {
+            "ci95_lower": -0.03179331893496943,
+            "ci95_upper": -0.007085473255265199,
+            "mean_difference": -0.01899828368961499,
+            "queries": 309,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.005469180261132327,
+            "ci95_upper": 0.013272782056372733,
+            "mean_difference": 0.003845568601844888,
+            "queries": 309,
+            "resamples": 4000
+          }
+        },
+        "ndcg_at_5": {
+          "mean": 0.4289556146825713,
+          "vs_full": {
+            "ci95_lower": -0.03498123179118298,
+            "ci95_upper": -0.006007054444619298,
+            "mean_difference": -0.02022638738291206,
+            "queries": 309,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.002706730553904183,
+            "ci95_upper": 0.02262257523557847,
+            "mean_difference": 0.01001887457889495,
+            "queries": 309,
+            "resamples": 4000
+          }
+        },
+        "recall_at_100": {
+          "mean": 0.8241086490553647,
+          "vs_full": {
+            "ci95_lower": -0.019411494563082034,
+            "ci95_upper": 0.01447163830425293,
+            "mean_difference": -0.0032134177775683804,
+            "queries": 309,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.009422683592523731,
+            "ci95_upper": 0.010232003265460749,
+            "mean_difference": 0.0011607945613636953,
+            "queries": 309,
+            "resamples": 4000
+          }
+        }
+      },
+      "source": "results/finance-probe-residual-exploratory-v1.json",
+      "token_fraction": 0.11258862275844317
+    },
+    "finance-probe-residual-exploratory-v1:p32-eps0.15": {
+      "configuration": "p32-eps0.15",
+      "metrics": {
+        "ndcg_at_10": {
+          "mean": 0.45243035666032405,
+          "vs_full": {
+            "ci95_lower": -0.03380603913144677,
+            "ci95_upper": -0.008315704813404877,
+            "mean_difference": -0.02072660299436312,
+            "queries": 309,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.007467318014654752,
+            "ci95_upper": 0.011652239975456826,
+            "mean_difference": 0.002117249297096759,
+            "queries": 309,
+            "resamples": 4000
+          }
+        },
+        "ndcg_at_5": {
+          "mean": 0.42486815299192876,
+          "vs_full": {
+            "ci95_lower": -0.03989105699748644,
+            "ci95_upper": -0.00961907931714591,
+            "mean_difference": -0.024313849073554633,
+            "queries": 309,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.006142563584061972,
+            "ci95_upper": 0.017798860102945825,
+            "mean_difference": 0.005931412888252379,
+            "queries": 309,
+            "resamples": 4000
+          }
+        },
+        "recall_at_100": {
+          "mean": 0.8225234489264753,
+          "vs_full": {
+            "ci95_lower": -0.019268438432667637,
+            "ci95_upper": 0.009589596692917559,
+            "mean_difference": -0.0047986179064578305,
+            "queries": 309,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.013011596496907845,
+            "ci95_upper": 0.012348872740360858,
+            "mean_difference": -0.0004244055675257544,
+            "queries": 309,
+            "resamples": 4000
+          }
+        }
+      },
+      "source": "results/finance-probe-residual-exploratory-v1.json",
+      "token_fraction": 0.11154805198233815
+    },
+    "finance-probe-residual-exploratory-v1:p64-eps0.05": {
+      "configuration": "p64-eps0.05",
+      "metrics": {
+        "ndcg_at_10": {
+          "mean": 0.46129549516232676,
+          "vs_full": {
+            "ci95_lower": -0.023876006229372918,
+            "ci95_upper": -0.0005284081789208037,
+            "mean_difference": -0.011861464492360457,
+            "queries": 309,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.002516681486952788,
+            "ci95_upper": 0.024295775554721087,
+            "mean_difference": 0.010982387799099422,
+            "queries": 309,
+            "resamples": 4000
+          }
+        },
+        "ndcg_at_5": {
+          "mean": 0.4439242485942114,
+          "vs_full": {
+            "ci95_lower": -0.01929400791305235,
+            "ci95_upper": 0.008657796938932365,
+            "mean_difference": -0.00525775347127195,
+            "queries": 309,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": 0.00841523285895963,
+            "ci95_upper": 0.042208791771481596,
+            "mean_difference": 0.024987508490535063,
+            "queries": 309,
+            "resamples": 4000
+          }
+        },
+        "recall_at_100": {
+          "mean": 0.8300435640179389,
+          "vs_full": {
+            "ci95_lower": -0.012515550753540376,
+            "ci95_upper": 0.018513080940683886,
+            "mean_difference": 0.0027214971850057215,
+            "queries": 309,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.010129165538467547,
+            "ci95_upper": 0.024500685059579818,
+            "mean_difference": 0.0070957095239377955,
+            "queries": 309,
+            "resamples": 4000
+          }
+        }
+      },
+      "source": "results/finance-probe-residual-exploratory-v1.json",
+      "token_fraction": 0.12869608548441386
+    },
+    "finance-probe-residual-exploratory-v1:p64-eps0.1": {
+      "configuration": "p64-eps0.1",
+      "metrics": {
+        "ndcg_at_10": {
+          "mean": 0.4528823289026579,
+          "vs_full": {
+            "ci95_lower": -0.0319629796584831,
+            "ci95_upper": -0.008930902533174228,
+            "mean_difference": -0.02027463075202934,
+            "queries": 309,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.008928568399124514,
+            "ci95_upper": 0.01436082956152619,
+            "mean_difference": 0.002569221539430541,
+            "queries": 309,
+            "resamples": 4000
+          }
+        },
+        "ndcg_at_5": {
+          "mean": 0.4289669437993702,
+          "vs_full": {
+            "ci95_lower": -0.03470126278353866,
+            "ci95_upper": -0.005819235697615393,
+            "mean_difference": -0.02021505826611317,
+            "queries": 309,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.005204443878907,
+            "ci95_upper": 0.025792753354129547,
+            "mean_difference": 0.010030203695693837,
+            "queries": 309,
+            "resamples": 4000
+          }
+        },
+        "recall_at_100": {
+          "mean": 0.8189612756287814,
+          "vs_full": {
+            "ci95_lower": -0.02381988243169399,
+            "ci95_upper": 0.00761460536945974,
+            "mean_difference": -0.008360791204151717,
+            "queries": 309,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.016283488625721636,
+            "ci95_upper": 0.006577057426571992,
+            "mean_difference": -0.003986578865219642,
+            "queries": 309,
+            "resamples": 4000
+          }
+        }
+      },
+      "source": "results/finance-probe-residual-exploratory-v1.json",
+      "token_fraction": 0.1141624151062945
+    },
+    "finance-probe-residual-exploratory-v1:p64-eps0.15": {
+      "configuration": "p64-eps0.15",
+      "metrics": {
+        "ndcg_at_10": {
+          "mean": 0.45254566578567024,
+          "vs_full": {
+            "ci95_lower": -0.03280932007520616,
+            "ci95_upper": -0.008716920759623485,
+            "mean_difference": -0.02061129386901696,
+            "queries": 309,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.007945325878541618,
+            "ci95_upper": 0.012091964193854835,
+            "mean_difference": 0.002232558422442921,
+            "queries": 309,
+            "resamples": 4000
+          }
+        },
+        "ndcg_at_5": {
+          "mean": 0.42535247033716417,
+          "vs_full": {
+            "ci95_lower": -0.03928917607771891,
+            "ci95_upper": -0.009088303832340494,
+            "mean_difference": -0.02382953172831916,
+            "queries": 309,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.006218487886965982,
+            "ci95_upper": 0.018736672849984343,
+            "mean_difference": 0.006415730233487853,
+            "queries": 309,
+            "resamples": 4000
+          }
+        },
+        "recall_at_100": {
+          "mean": 0.8210577722641129,
+          "vs_full": {
+            "ci95_lower": -0.019426996485285022,
+            "ci95_upper": 0.006913121917870759,
+            "mean_difference": -0.006264294568820132,
+            "queries": 309,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.016783597784811373,
+            "ci95_upper": 0.012594202812649417,
+            "mean_difference": -0.001890082229888054,
+            "queries": 309,
+            "resamples": 4000
+          }
+        }
+      },
+      "source": "results/finance-probe-residual-exploratory-v1.json",
+      "token_fraction": 0.11183119600298323
+    }
+  }
+}

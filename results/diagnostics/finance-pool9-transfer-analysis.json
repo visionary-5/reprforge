@@ -1,0 +1,63 @@
+{
+  "corpus": 2942,
+  "metrics": {
+    "full": {
+      "ndcg_at_10": 0.4731569596546872,
+      "ndcg_at_100": 0.561046235579464,
+      "ndcg_at_5": 0.4491820020654834,
+      "recall_at_10": 0.5428189703095706,
+      "recall_at_100": 0.8273220668329332,
+      "recall_at_5": 0.4397550717955077
+    },
+    "pooled": {
+      "ndcg_at_10": 0.4503131073632272,
+      "ndcg_at_100": 0.5388556908841107,
+      "ndcg_at_5": 0.41893674010367643,
+      "recall_at_10": 0.5280571415594456,
+      "recall_at_100": 0.822947854494001,
+      "recall_at_5": 0.4082781871021379
+    },
+    "text": {
+      "ndcg_at_10": 0.4183773575267509,
+      "ndcg_at_100": 0.4946171260552641,
+      "ndcg_at_5": 0.39580151049105217,
+      "recall_at_10": 0.47063735935095324,
+      "recall_at_100": 0.7250828341551128,
+      "recall_at_5": 0.3877050970196028
+    }
+  },
+  "physical": {
+    "full_index_ms": 281619.9872214347,
+    "full_vector_bytes": 1551493120,
+    "full_vectors": 3030260,
+    "pooled_byte_fraction": 0.11067961165048544,
+    "pooled_index_ms": 805493.6112631112,
+    "pooled_vector_bytes": 171718656,
+    "pooled_vectors": 335388
+  },
+  "pooled_vs_full": {
+    "ndcg_at_10": {
+      "ci95_lower": -0.03786823463322493,
+      "ci95_upper": -0.008274356459953192,
+      "mean_difference": -0.02284385229145988,
+      "queries": 309,
+      "resamples": 4000
+    },
+    "ndcg_at_5": {
+      "ci95_lower": -0.048939077578240536,
+      "ci95_upper": -0.012639013609378096,
+      "mean_difference": -0.030245261961807008,
+      "queries": 309,
+      "resamples": 4000
+    },
+    "top_10": {
+      "mean_exact_position_agreement": 0.22750809061488672,
+      "mean_set_overlap": 0.7682847896440129
+    },
+    "top_5": {
+      "mean_exact_position_agreement": 0.34627831715210355,
+      "mean_set_overlap": 0.7288025889967638
+    }
+  },
+  "queries": 309
+}

@@ -1,0 +1,283 @@
+{
+  "datasets": {
+    "finance": {
+      "base": 0.4183773575267509,
+      "base_route": "text",
+      "candidate_k": 20,
+      "corpus": 2942,
+      "expensive_route": "visual",
+      "full_candidate_fusion": 0.461873606913987,
+      "queries": 309,
+      "rows": [
+        {
+          "budget": 2,
+          "candidate_k": 20,
+          "full_fusion_gain_recovery": -0.3452282107640873,
+          "gain_over_base": -0.015016132350904,
+          "ndcg_at_10": 0.40336122517584694,
+          "policy": "coverage",
+          "probe_fraction": 0.1
+        },
+        {
+          "budget": 4,
+          "candidate_k": 20,
+          "full_fusion_gain_recovery": -0.48351588826472663,
+          "gain_over_base": -0.02103112765865347,
+          "ndcg_at_10": 0.3973462298680975,
+          "policy": "coverage",
+          "probe_fraction": 0.2
+        },
+        {
+          "budget": 6,
+          "candidate_k": 20,
+          "full_fusion_gain_recovery": -0.25091612659509716,
+          "gain_over_base": -0.010913910417659616,
+          "ndcg_at_10": 0.4074634471090914,
+          "policy": "coverage",
+          "probe_fraction": 0.3
+        },
+        {
+          "budget": 8,
+          "candidate_k": 20,
+          "full_fusion_gain_recovery": -0.1517676835233287,
+          "gain_over_base": -0.006601325011453808,
+          "ndcg_at_10": 0.41177603251529715,
+          "policy": "coverage",
+          "probe_fraction": 0.4
+        },
+        {
+          "budget": 12,
+          "candidate_k": 20,
+          "full_fusion_gain_recovery": 0.6305590737002733,
+          "gain_over_base": 0.02742695472305159,
+          "ndcg_at_10": 0.4458043122498026,
+          "policy": "coverage",
+          "probe_fraction": 0.6
+        },
+        {
+          "budget": 16,
+          "candidate_k": 20,
+          "full_fusion_gain_recovery": 0.8479056690674331,
+          "gain_over_base": 0.03688071643860824,
+          "ndcg_at_10": 0.45525807396535917,
+          "policy": "coverage",
+          "probe_fraction": 0.8
+        },
+        {
+          "budget": 20,
+          "candidate_k": 20,
+          "full_fusion_gain_recovery": 1.0,
+          "gain_over_base": 0.043496249387235966,
+          "ndcg_at_10": 0.461873606913987,
+          "policy": "coverage",
+          "probe_fraction": 1.0
+        },
+        {
+          "budget": 2,
+          "candidate_k": 20,
+          "full_fusion_gain_recovery": -0.3452282107640873,
+          "gain_over_base": -0.015016132350904,
+          "ndcg_at_10": 0.40336122517584694,
+          "policy": "boundary",
+          "probe_fraction": 0.1
+        },
+        {
+          "budget": 4,
+          "candidate_k": 20,
+          "full_fusion_gain_recovery": -0.31177742486103827,
+          "gain_over_base": -0.013561148625065944,
+          "ndcg_at_10": 0.404816208901685,
+          "policy": "boundary",
+          "probe_fraction": 0.2
+        },
+        {
+          "budget": 6,
+          "candidate_k": 20,
+          "full_fusion_gain_recovery": -0.1335070717971868,
+          "gain_over_base": -0.005807056889850054,
+          "ndcg_at_10": 0.4125703006369009,
+          "policy": "boundary",
+          "probe_fraction": 0.3
+        },
+        {
+          "budget": 8,
+          "candidate_k": 20,
+          "full_fusion_gain_recovery": -0.1241320871932496,
+          "gain_over_base": -0.0053992802215157044,
+          "ndcg_at_10": 0.41297807730523534,
+          "policy": "boundary",
+          "probe_fraction": 0.4
+        },
+        {
+          "budget": 12,
+          "candidate_k": 20,
+          "full_fusion_gain_recovery": 0.3741350838437298,
+          "gain_over_base": 0.016273472911381308,
+          "ndcg_at_10": 0.43465083043813224,
+          "policy": "boundary",
+          "probe_fraction": 0.6
+        },
+        {
+          "budget": 16,
+          "candidate_k": 20,
+          "full_fusion_gain_recovery": 0.7677346490883511,
+          "gain_over_base": 0.03339357775996901,
+          "ndcg_at_10": 0.45177093528672,
+          "policy": "boundary",
+          "probe_fraction": 0.8
+        },
+        {
+          "budget": 20,
+          "candidate_k": 20,
+          "full_fusion_gain_recovery": 1.0,
+          "gain_over_base": 0.043496249387235966,
+          "ndcg_at_10": 0.461873606913987,
+          "policy": "boundary",
+          "probe_fraction": 1.0
+        }
+      ],
+      "schema_version": 1,
+      "target_metric": "ndcg_at_10"
+    },
+    "hr": {
+      "base": 0.49465096173584927,
+      "base_route": "text",
+      "candidate_k": 20,
+      "corpus": 1110,
+      "expensive_route": "visual",
+      "full_candidate_fusion": 0.5266622462055548,
+      "queries": 318,
+      "rows": [
+        {
+          "budget": 2,
+          "candidate_k": 20,
+          "full_fusion_gain_recovery": -0.02357451752981025,
+          "gain_over_base": -0.000754650586882818,
+          "ndcg_at_10": 0.4938963111489664,
+          "policy": "coverage",
+          "probe_fraction": 0.1
+        },
+        {
+          "budget": 4,
+          "candidate_k": 20,
+          "full_fusion_gain_recovery": -0.32949763678859084,
+          "gain_over_base": -0.010547642583335324,
+          "ndcg_at_10": 0.4841033191525139,
+          "policy": "coverage",
+          "probe_fraction": 0.2
+        },
+        {
+          "budget": 6,
+          "candidate_k": 20,
+          "full_fusion_gain_recovery": 0.09704377095102308,
+          "gain_over_base": 0.0031064957579261553,
+          "ndcg_at_10": 0.4977574574937753,
+          "policy": "coverage",
+          "probe_fraction": 0.3
+        },
+        {
+          "budget": 8,
+          "candidate_k": 20,
+          "full_fusion_gain_recovery": 0.2629051304808358,
+          "gain_over_base": 0.008415930920367111,
+          "ndcg_at_10": 0.5030668926562163,
+          "policy": "coverage",
+          "probe_fraction": 0.4
+        },
+        {
+          "budget": 12,
+          "candidate_k": 20,
+          "full_fusion_gain_recovery": 0.6998006882492347,
+          "gain_over_base": 0.02240151890364204,
+          "ndcg_at_10": 0.5170524806394913,
+          "policy": "coverage",
+          "probe_fraction": 0.6
+        },
+        {
+          "budget": 16,
+          "candidate_k": 20,
+          "full_fusion_gain_recovery": 0.9078443434663851,
+          "gain_over_base": 0.029061263532915597,
+          "ndcg_at_10": 0.5237122252687648,
+          "policy": "coverage",
+          "probe_fraction": 0.8
+        },
+        {
+          "budget": 20,
+          "candidate_k": 20,
+          "full_fusion_gain_recovery": 1.0,
+          "gain_over_base": 0.03201128446970563,
+          "ndcg_at_10": 0.5266622462055548,
+          "policy": "coverage",
+          "probe_fraction": 1.0
+        },
+        {
+          "budget": 2,
+          "candidate_k": 20,
+          "full_fusion_gain_recovery": -0.02357451752981025,
+          "gain_over_base": -0.000754650586882818,
+          "ndcg_at_10": 0.4938963111489664,
+          "policy": "boundary",
+          "probe_fraction": 0.1
+        },
+        {
+          "budget": 4,
+          "candidate_k": 20,
+          "full_fusion_gain_recovery": -0.3797223142311109,
+          "gain_over_base": -0.012155399020347043,
+          "ndcg_at_10": 0.48249556271550215,
+          "policy": "boundary",
+          "probe_fraction": 0.2
+        },
+        {
+          "budget": 6,
+          "candidate_k": 20,
+          "full_fusion_gain_recovery": 0.12745263687839956,
+          "gain_over_base": 0.004079922615528543,
+          "ndcg_at_10": 0.4987308843513778,
+          "policy": "boundary",
+          "probe_fraction": 0.3
+        },
+        {
+          "budget": 8,
+          "candidate_k": 20,
+          "full_fusion_gain_recovery": 0.3096199185656551,
+          "gain_over_base": 0.009911331290692276,
+          "ndcg_at_10": 0.5045622930265414,
+          "policy": "boundary",
+          "probe_fraction": 0.4
+        },
+        {
+          "budget": 12,
+          "candidate_k": 20,
+          "full_fusion_gain_recovery": 0.514993564845292,
+          "gain_over_base": 0.016485605504330435,
+          "ndcg_at_10": 0.5111365672401798,
+          "policy": "boundary",
+          "probe_fraction": 0.6
+        },
+        {
+          "budget": 16,
+          "candidate_k": 20,
+          "full_fusion_gain_recovery": 0.6280370800151596,
+          "gain_over_base": 0.020104273625888548,
+          "ndcg_at_10": 0.5147552353617377,
+          "policy": "boundary",
+          "probe_fraction": 0.8
+        },
+        {
+          "budget": 20,
+          "candidate_k": 20,
+          "full_fusion_gain_recovery": 1.0,
+          "gain_over_base": 0.03201128446970563,
+          "ndcg_at_10": 0.5266622462055548,
+          "policy": "boundary",
+          "probe_fraction": 1.0
+        }
+      ],
+      "schema_version": 1,
+      "target_metric": "ndcg_at_10"
+    }
+  },
+  "schema_version": 1
+}

@@ -1,0 +1,86 @@
+{
+  "artifacts": {
+    "candidate_runtime_sha256": "aada2d68d393010d8637351b461cd23d97fd72fb9e85c5de390900193531bb03",
+    "reference_runtime_sha256": "d3c223709e67d96672be4db14783cc550aa1213b3b9f6e6320abfe6a7342dfcd"
+  },
+  "bootstrap": {
+    "resamples": 4000,
+    "seed": 20260804
+  },
+  "candidate": "semantic-hierarchical-pool9",
+  "corpus_count": 2313,
+  "dataset": "vidore/vidore_v3_pharmaceuticals",
+  "protocol": "qrel-free-compression-risk-2026-08-04",
+  "qrel_free_ranking_certificate": {
+    "observed": {
+      "full_top10_at_candidate100_one_sided_95_lower": 0.9991758241758243,
+      "top10_mean": 0.8442307692307695,
+      "top10_one_sided_95_lower": 0.8348901098901098
+    },
+    "passes": false,
+    "status": "development_candidate_not_distribution_free_guarantee",
+    "thresholds": {
+      "minimum_full_top10_at_candidate100_one_sided_95_lower": 0.995,
+      "minimum_top10_mean": 0.9,
+      "minimum_top10_one_sided_95_lower": 0.88
+    },
+    "uses_qrels": false
+  },
+  "qrel_path_argument_available": false,
+  "qrels_loaded": false,
+  "query_count": 364,
+  "ranking_fidelity": {
+    "full_top10_escape_candidate_top100": {
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.000824175824175824,
+      "mean": 0.00027472527472527467,
+      "one_sided_95_lower": 0.0,
+      "one_sided_95_upper": 0.000824175824175824,
+      "queries": 364,
+      "resamples": 4000,
+      "seed": 20260804
+    },
+    "full_top10_retained_at_candidate_top100": {
+      "ci95_lower": 0.9991758241758242,
+      "ci95_upper": 1.0,
+      "mean": 0.9997252747252746,
+      "one_sided_95_lower": 0.9991758241758243,
+      "one_sided_95_upper": 1.0,
+      "queries": 364,
+      "resamples": 4000,
+      "seed": 20260804
+    },
+    "rbo_ext_at_100_p0.95": {
+      "ci95_lower": 0.8276530413235605,
+      "ci95_upper": 0.8418781412197287,
+      "mean": 0.8348271425694028,
+      "one_sided_95_lower": 0.8288254877142831,
+      "one_sided_95_upper": 0.8406898304042877,
+      "queries": 364,
+      "resamples": 4000,
+      "seed": 20260804
+    },
+    "top_100_overlap": {
+      "ci95_lower": 0.8367012362637363,
+      "ci95_upper": 0.8515666208791209,
+      "mean": 0.8442032967032967,
+      "one_sided_95_lower": 0.8379395604395605,
+      "one_sided_95_upper": 0.8504945054945054,
+      "queries": 364,
+      "resamples": 4000,
+      "seed": 20260804
+    },
+    "top_10_overlap": {
+      "ci95_lower": 0.8329670329670331,
+      "ci95_upper": 0.8555013736263739,
+      "mean": 0.8442307692307695,
+      "one_sided_95_lower": 0.8348901098901098,
+      "one_sided_95_upper": 0.8535714285714286,
+      "queries": 364,
+      "resamples": 4000,
+      "seed": 20260804
+    }
+  },
+  "schema_version": 1,
+  "stage": "pre-qrel-ranking-certification"
+}

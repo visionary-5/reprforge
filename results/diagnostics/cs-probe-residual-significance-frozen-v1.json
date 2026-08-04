@@ -1,0 +1,75 @@
+{
+  "baselines": {
+    "full": {
+      "ndcg_at_10": 0.7170344301046876,
+      "ndcg_at_5": 0.6885949866598629,
+      "recall_at_100": 0.9662909229393497
+    },
+    "pool9": {
+      "ndcg_at_10": 0.7027363954815896,
+      "ndcg_at_5": 0.6814340956403571,
+      "recall_at_100": 0.9700249924873728
+    }
+  },
+  "protocol": "paired query bootstrap; 4000 resamples",
+  "reports": {
+    "probe-residual-frozen-v1:p32-eps0.05": {
+      "configuration": "p32-eps0.05",
+      "metrics": {
+        "ndcg_at_10": {
+          "mean": 0.7058438197558248,
+          "vs_full": {
+            "ci95_lower": -0.0223374973019279,
+            "ci95_upper": -0.00010931244365708295,
+            "mean_difference": -0.011190610348862599,
+            "queries": 215,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.006937953612223266,
+            "ci95_upper": 0.013173293563318355,
+            "mean_difference": 0.0031074242742352826,
+            "queries": 215,
+            "resamples": 4000
+          }
+        },
+        "ndcg_at_5": {
+          "mean": 0.6843581100893836,
+          "vs_full": {
+            "ci95_lower": -0.01787940135830837,
+            "ci95_upper": 0.009040463692304015,
+            "mean_difference": -0.004236876570479135,
+            "queries": 215,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.010097509969520193,
+            "ci95_upper": 0.01595251078063381,
+            "mean_difference": 0.002924014449026471,
+            "queries": 215,
+            "resamples": 4000
+          }
+        },
+        "recall_at_100": {
+          "mean": 0.9627122793607061,
+          "vs_full": {
+            "ci95_lower": -0.009549733212523911,
+            "ci95_upper": 0.0006608527131782931,
+            "mean_difference": -0.003578643578643579,
+            "queries": 215,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.015174464424464424,
+            "ci95_upper": -0.0010226685459243574,
+            "mean_difference": -0.007312713126666615,
+            "queries": 215,
+            "resamples": 4000
+          }
+        }
+      },
+      "source": "/data/ldf/reprforge/vidore-official-a70f23a/results/cs-probe-residual-20260803/probe-residual-frozen-v1.json",
+      "token_fraction": 0.11974157624214735
+    }
+  }
+}

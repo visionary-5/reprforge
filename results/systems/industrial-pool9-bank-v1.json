@@ -1,0 +1,61 @@
+{
+  "bank_manifest": {
+    "format": "reprforge-embedding-bank",
+    "format_version": 1,
+    "item_count": 5244,
+    "queries": {
+      "count": 283,
+      "dimension": 128,
+      "dtype": "float16",
+      "files": {
+        "ids.json": {
+          "bytes": 2461,
+          "sha256": "4e4032cf948314e63a18fbf6ffb875ce1922913437f03d095bb8df89e607956b"
+        },
+        "offsets.npy": {
+          "bytes": 2400,
+          "sha256": "f15ac4b3381784533478db3ceda252c4d4914b138b8bac998e21e1c41903585d"
+        },
+        "vectors.npy": {
+          "bytes": 2452096,
+          "sha256": "226b6413b66eb5620f3c44872a6021416abcb17827308b1ae28b327222fd83a6"
+        }
+      },
+      "max_vectors_per_item": 62,
+      "min_vectors_per_item": 19,
+      "vector_bytes": 2451968,
+      "vectors": 9578
+    },
+    "routes": {
+      "image-pool-9": {
+        "count": 5244,
+        "dimension": 128,
+        "dtype": "float16",
+        "files": {
+          "ids.json": {
+            "bytes": 51333,
+            "sha256": "4f3ee75f92f83070bdca028f25bd6ce22759a178afa00c99833ca3c7126ac739"
+          },
+          "offsets.npy": {
+            "bytes": 42088,
+            "sha256": "91d59554bdbf413de6b5c1def44bc14cd2dd9e525b3d38b6cace24d598e0fb26"
+          },
+          "vectors.npy": {
+            "bytes": 153041024,
+            "sha256": "3729d361d6fdd947908fc08aef81b1d2bacb11cb6f9656a79933027449924756"
+          }
+        },
+        "max_vectors_per_item": 114,
+        "min_vectors_per_item": 114,
+        "vector_bytes": 153040896,
+        "vectors": 597816
+      }
+    },
+    "storage_dtype": "float16"
+  },
+  "full_tokens": 5401320,
+  "pool_factor": 9,
+  "pooled_tokens": 597816,
+  "pooling_ms": 893736.0701020807,
+  "token_fraction": 0.11067961165048544
+}

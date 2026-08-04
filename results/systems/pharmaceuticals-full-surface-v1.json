@@ -1,0 +1,81 @@
+{
+  "corpus": 2313,
+  "data_load_seconds": 52.92854095809162,
+  "dataset": "vidore/vidore_v3_pharmaceuticals",
+  "embedding_bank": {
+    "format": "reprforge-embedding-bank",
+    "format_version": 1,
+    "item_count": 2313,
+    "queries": {
+      "count": 364,
+      "dimension": 128,
+      "dtype": "float16",
+      "files": {
+        "ids.json": {
+          "bytes": 3191,
+          "sha256": "b6b45fe520c24cca737a3cc47dc0cc534a470f5ab563508331e3f99fd49b4df0"
+        },
+        "offsets.npy": {
+          "bytes": 3048,
+          "sha256": "7ef7a8f490abb101e719c8af91ecd139c9eebd4997a5e61d22acdc809d26da51"
+        },
+        "vectors.npy": {
+          "bytes": 3219328,
+          "sha256": "9d0cac8f0563b6973aa852d64e73f8c1c3f41f72334b6b2adc00d62aa34eb16c"
+        }
+      },
+      "max_vectors_per_item": 61,
+      "min_vectors_per_item": 20,
+      "vector_bytes": 3219200,
+      "vectors": 12575
+    },
+    "routes": {
+      "image": {
+        "count": 2313,
+        "dimension": 128,
+        "dtype": "float16",
+        "files": {
+          "ids.json": {
+            "bytes": 22023,
+            "sha256": "0cf31892f374be05db2ba00bc73058bad9f8ed1fad5b6a058f2ea36031ed5ba1"
+          },
+          "offsets.npy": {
+            "bytes": 18640,
+            "sha256": "3994795be1df14b7cda8b4f7f1d9ec079b1954d7357ba6657783c8e01b2bf90a"
+          },
+          "vectors.npy": {
+            "bytes": 609891968,
+            "sha256": "32c92263ce395b60f6bd7f95cf6e26377cb9182b8da2140835bb100b9875982d"
+          }
+        },
+        "max_vectors_per_item": 1030,
+        "min_vectors_per_item": 1030,
+        "vector_bytes": 609891840,
+        "vectors": 2382390
+      }
+    },
+    "storage_dtype": "float16"
+  },
+  "index_seconds": 256.98185985535383,
+  "language": "english",
+  "mode": "visual",
+  "protocol": "qrel-free-compression-risk-2026-08-04",
+  "qrel_directory_scanned": false,
+  "qrels_loaded": false,
+  "queries": 364,
+  "runtime": {
+    "path": "/data/ldf/reprforge/vidore-official-a70f23a/results/compression-risk-validation-20260804/pharmaceuticals/full-runtime.npz",
+    "score_shape": [
+      364,
+      2313
+    ],
+    "sha256": "d3c223709e67d96672be4db14783cc550aa1213b3b9f6e6320abfe6a7342dfcd"
+  },
+  "schema_version": 1,
+  "search_seconds": 10.662876216694713,
+  "source_sha256": {
+    "corpus": "420dd05adfa9e1bb222f6e6789e3ddda432b9febcf3cc0d49cc9eedc7276f5e9",
+    "queries": "6088a4d297ccddb980bb8af1aaeef51e4d8243959add4cbdaa8a65c2ef42f6a0"
+  },
+  "stage": "pre-qrel-surface-generation"
+}

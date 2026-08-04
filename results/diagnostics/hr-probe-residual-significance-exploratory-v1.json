@@ -1,0 +1,539 @@
+{
+  "baselines": {
+    "full": {
+      "ndcg_at_10": 0.5177793764220116,
+      "ndcg_at_5": 0.4941684911897843,
+      "recall_at_100": 0.8784033265649601
+    },
+    "pool9": {
+      "ndcg_at_10": 0.4931365260690946,
+      "ndcg_at_5": 0.4702535918817,
+      "recall_at_100": 0.8800973357027685
+    }
+  },
+  "protocol": "paired query bootstrap; 4000 resamples",
+  "reports": {
+    "hr-probe-residual-exploratory-v1:p16-eps0.05": {
+      "configuration": "p16-eps0.05",
+      "metrics": {
+        "ndcg_at_10": {
+          "mean": 0.500447499968175,
+          "vs_full": {
+            "ci95_lower": -0.03199726674826654,
+            "ci95_upper": -0.002809912169239824,
+            "mean_difference": -0.01733187645383659,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.0028759550234994874,
+            "ci95_upper": 0.018019056714413596,
+            "mean_difference": 0.00731097389908031,
+            "queries": 318,
+            "resamples": 4000
+          }
+        },
+        "ndcg_at_5": {
+          "mean": 0.475575539770718,
+          "vs_full": {
+            "ci95_lower": -0.03452338678423471,
+            "ci95_upper": -0.002582312449309138,
+            "mean_difference": -0.01859295141906623,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.00549628239997526,
+            "ci95_upper": 0.016214362833795584,
+            "mean_difference": 0.005321947889018018,
+            "queries": 318,
+            "resamples": 4000
+          }
+        },
+        "recall_at_100": {
+          "mean": 0.8773594014109076,
+          "vs_full": {
+            "ci95_lower": -0.011742792717790305,
+            "ci95_upper": 0.010350644900210398,
+            "mean_difference": -0.0010439251540523887,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.009457363295325986,
+            "ci95_upper": 0.003393106332334221,
+            "mean_difference": -0.002737934291860728,
+            "queries": 318,
+            "resamples": 4000
+          }
+        }
+      },
+      "source": "results/hr-probe-residual-exploratory-v1.json",
+      "token_fraction": 0.11519793579987754
+    },
+    "hr-probe-residual-exploratory-v1:p16-eps0.1": {
+      "configuration": "p16-eps0.1",
+      "metrics": {
+        "ndcg_at_10": {
+          "mean": 0.5070833870363897,
+          "vs_full": {
+            "ci95_lower": -0.02451787430268404,
+            "ci95_upper": 0.0035114402375274263,
+            "mean_difference": -0.01069598938562183,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": 0.0042262098845155145,
+            "ci95_upper": 0.023506946942677496,
+            "mean_difference": 0.013946860967295072,
+            "queries": 318,
+            "resamples": 4000
+          }
+        },
+        "ndcg_at_5": {
+          "mean": 0.4827078661113458,
+          "vs_full": {
+            "ci95_lower": -0.027168110713948607,
+            "ci95_upper": 0.0038035561446824804,
+            "mean_difference": -0.0114606250784385,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": 0.0022890205472675226,
+            "ci95_upper": 0.022200901701253082,
+            "mean_difference": 0.012454274229645748,
+            "queries": 318,
+            "resamples": 4000
+          }
+        },
+        "recall_at_100": {
+          "mean": 0.8831069177199345,
+          "vs_full": {
+            "ci95_lower": -0.006190082730162945,
+            "ci95_upper": 0.01624610151634113,
+            "mean_difference": 0.004703591154974523,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.0017189185581481187,
+            "ci95_upper": 0.0076990282270733325,
+            "mean_difference": 0.0030095820171661823,
+            "queries": 318,
+            "resamples": 4000
+          }
+        }
+      },
+      "source": "results/hr-probe-residual-exploratory-v1.json",
+      "token_fraction": 0.112124726668416
+    },
+    "hr-probe-residual-exploratory-v1:p16-eps0.15": {
+      "configuration": "p16-eps0.15",
+      "metrics": {
+        "ndcg_at_10": {
+          "mean": 0.5043155781642592,
+          "vs_full": {
+            "ci95_lower": -0.02749963563338118,
+            "ci95_upper": 0.0010957147395608282,
+            "mean_difference": -0.013463798257752242,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": 0.0020060811250657146,
+            "ci95_upper": 0.020398040912365096,
+            "mean_difference": 0.011179052095164661,
+            "queries": 318,
+            "resamples": 4000
+          }
+        },
+        "ndcg_at_5": {
+          "mean": 0.48092069981267216,
+          "vs_full": {
+            "ci95_lower": -0.029344140979327613,
+            "ci95_upper": 0.0021990619628435037,
+            "mean_difference": -0.01324779137711216,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": 0.0019669097903485646,
+            "ci95_upper": 0.019038398623334,
+            "mean_difference": 0.010667107930972088,
+            "queries": 318,
+            "resamples": 4000
+          }
+        },
+        "recall_at_100": {
+          "mean": 0.8836586664733149,
+          "vs_full": {
+            "ci95_lower": -0.00595449440182785,
+            "ci95_upper": 0.01722988377399773,
+            "mean_difference": 0.005255339908354907,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.00036981862774682517,
+            "ci95_upper": 0.00759714301724578,
+            "mean_difference": 0.0035613307705465672,
+            "queries": 318,
+            "resamples": 4000
+          }
+        }
+      },
+      "source": "results/hr-probe-residual-exploratory-v1.json",
+      "token_fraction": 0.11162879384238607
+    },
+    "hr-probe-residual-exploratory-v1:p32-eps0.05": {
+      "configuration": "p32-eps0.05",
+      "metrics": {
+        "ndcg_at_10": {
+          "mean": 0.5064777993977303,
+          "vs_full": {
+            "ci95_lower": -0.025915830005475156,
+            "ci95_upper": 0.003039192879819265,
+            "mean_difference": -0.011301577024281211,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": 0.002697418169731723,
+            "ci95_upper": 0.024052782608728757,
+            "mean_difference": 0.013341273328635689,
+            "queries": 318,
+            "resamples": 4000
+          }
+        },
+        "ndcg_at_5": {
+          "mean": 0.47917532703364096,
+          "vs_full": {
+            "ci95_lower": -0.03063795244597812,
+            "ci95_upper": 0.0007060963435298168,
+            "mean_difference": -0.014993164156143312,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.002209869647871807,
+            "ci95_upper": 0.020330594088603805,
+            "mean_difference": 0.008921735151940932,
+            "queries": 318,
+            "resamples": 4000
+          }
+        },
+        "recall_at_100": {
+          "mean": 0.8792978859456302,
+          "vs_full": {
+            "ci95_lower": -0.010101520455611511,
+            "ci95_upper": 0.011273679110737594,
+            "mean_difference": 0.0008945593806702437,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.011840192969101672,
+            "ci95_upper": 0.010476810493276062,
+            "mean_difference": -0.0007994497571380961,
+            "queries": 318,
+            "resamples": 4000
+          }
+        }
+      },
+      "source": "results/hr-probe-residual-exploratory-v1.json",
+      "token_fraction": 0.1194124026939561
+    },
+    "hr-probe-residual-exploratory-v1:p32-eps0.1": {
+      "configuration": "p32-eps0.1",
+      "metrics": {
+        "ndcg_at_10": {
+          "mean": 0.5027368086085392,
+          "vs_full": {
+            "ci95_lower": -0.028859441175534236,
+            "ci95_upper": -0.0005924014036205595,
+            "mean_difference": -0.01504256781347237,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": 0.00034033905365365855,
+            "ci95_upper": 0.019262866258127353,
+            "mean_difference": 0.00960028253944453,
+            "queries": 318,
+            "resamples": 4000
+          }
+        },
+        "ndcg_at_5": {
+          "mean": 0.47769770540628337,
+          "vs_full": {
+            "ci95_lower": -0.0323130132680749,
+            "ci95_upper": -0.0010245385886720221,
+            "mean_difference": -0.016470785783500853,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.0021608855543921003,
+            "ci95_upper": 0.017288152585684023,
+            "mean_difference": 0.007444113524583392,
+            "queries": 318,
+            "resamples": 4000
+          }
+        },
+        "recall_at_100": {
+          "mean": 0.884109513528253,
+          "vs_full": {
+            "ci95_lower": -0.005493345742090464,
+            "ci95_upper": 0.01767868117959042,
+            "mean_difference": 0.005706186963293017,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.000394172096863552,
+            "ci95_upper": 0.008412518018065949,
+            "mean_difference": 0.004012177825484677,
+            "queries": 318,
+            "resamples": 4000
+          }
+        }
+      },
+      "source": "results/hr-probe-residual-exploratory-v1.json",
+      "token_fraction": 0.11285611825417652
+    },
+    "hr-probe-residual-exploratory-v1:p32-eps0.15": {
+      "configuration": "p32-eps0.15",
+      "metrics": {
+        "ndcg_at_10": {
+          "mean": 0.5049179421573705,
+          "vs_full": {
+            "ci95_lower": -0.02753898327475427,
+            "ci95_upper": 0.001787526083592805,
+            "mean_difference": -0.012861434264641097,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": 0.0024894435124628903,
+            "ci95_upper": 0.02136299623899035,
+            "mean_difference": 0.011781416088275804,
+            "queries": 318,
+            "resamples": 4000
+          }
+        },
+        "ndcg_at_5": {
+          "mean": 0.48211327554929334,
+          "vs_full": {
+            "ci95_lower": -0.028265258115496288,
+            "ci95_upper": 0.003698352620059696,
+            "mean_difference": -0.012055215640490932,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": 0.003168804350898093,
+            "ci95_upper": 0.02046001755455447,
+            "mean_difference": 0.011859683667593315,
+            "queries": 318,
+            "resamples": 4000
+          }
+        },
+        "recall_at_100": {
+          "mean": 0.884061453028038,
+          "vs_full": {
+            "ci95_lower": -0.00541413983940896,
+            "ci95_upper": 0.017544752635736596,
+            "mean_difference": 0.005658126463077906,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.00013252888302461307,
+            "ci95_upper": 0.008107574047862713,
+            "mean_difference": 0.003964117325269566,
+            "queries": 318,
+            "resamples": 4000
+          }
+        }
+      },
+      "source": "results/hr-probe-residual-exploratory-v1.json",
+      "token_fraction": 0.1117645412402694
+    },
+    "hr-probe-residual-exploratory-v1:p64-eps0.05": {
+      "configuration": "p64-eps0.05",
+      "metrics": {
+        "ndcg_at_10": {
+          "mean": 0.5034469326730613,
+          "vs_full": {
+            "ci95_lower": -0.0273726730372082,
+            "ci95_upper": -0.0014521670770334524,
+            "mean_difference": -0.014332443748950202,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.002007563561891054,
+            "ci95_upper": 0.02205439051826524,
+            "mean_difference": 0.010310406603966697,
+            "queries": 318,
+            "resamples": 4000
+          }
+        },
+        "ndcg_at_5": {
+          "mean": 0.47155411344703163,
+          "vs_full": {
+            "ci95_lower": -0.03714073826365734,
+            "ci95_upper": -0.008861826258032217,
+            "mean_difference": -0.022614377742752666,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.012211921614889041,
+            "ci95_upper": 0.014009512816616004,
+            "mean_difference": 0.0013005215653315754,
+            "queries": 318,
+            "resamples": 4000
+          }
+        },
+        "recall_at_100": {
+          "mean": 0.8719669801870515,
+          "vs_full": {
+            "ci95_lower": -0.020837946642995972,
+            "ci95_upper": 0.006958413286463481,
+            "mean_difference": -0.006436346377908471,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.020589980082025373,
+            "ci95_upper": 0.0024162945031795955,
+            "mean_difference": -0.008130355515716812,
+            "queries": 318,
+            "resamples": 4000
+          }
+        }
+      },
+      "source": "results/hr-probe-residual-exploratory-v1.json",
+      "token_fraction": 0.12744091664480015
+    },
+    "hr-probe-residual-exploratory-v1:p64-eps0.1": {
+      "configuration": "p64-eps0.1",
+      "metrics": {
+        "ndcg_at_10": {
+          "mean": 0.5065953118874942,
+          "vs_full": {
+            "ci95_lower": -0.024783341123578863,
+            "ci95_upper": 0.00236700567962497,
+            "mean_difference": -0.011184064534517348,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": 0.0024243071987534613,
+            "ci95_upper": 0.024868414455018917,
+            "mean_difference": 0.013458785818399554,
+            "queries": 318,
+            "resamples": 4000
+          }
+        },
+        "ndcg_at_5": {
+          "mean": 0.47952136062855805,
+          "vs_full": {
+            "ci95_lower": -0.030140436306547995,
+            "ci95_upper": 0.0003054942229658224,
+            "mean_difference": -0.014647130561226147,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.00288138868021479,
+            "ci95_upper": 0.021428948626165522,
+            "mean_difference": 0.009267768746858095,
+            "queries": 318,
+            "resamples": 4000
+          }
+        },
+        "recall_at_100": {
+          "mean": 0.8838531431857465,
+          "vs_full": {
+            "ci95_lower": -0.005934392537633092,
+            "ci95_upper": 0.017790323002635833,
+            "mean_difference": 0.005449816620786497,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.00103503507182835,
+            "ci95_upper": 0.008295648538149401,
+            "mean_difference": 0.003755807482978157,
+            "queries": 318,
+            "resamples": 4000
+          }
+        }
+      },
+      "source": "results/hr-probe-residual-exploratory-v1.json",
+      "token_fraction": 0.11445482375579463
+    },
+    "hr-probe-residual-exploratory-v1:p64-eps0.15": {
+      "configuration": "p64-eps0.15",
+      "metrics": {
+        "ndcg_at_10": {
+          "mean": 0.5065287366815842,
+          "vs_full": {
+            "ci95_lower": -0.025197686463768965,
+            "ci95_upper": 0.0032069443697107223,
+            "mean_difference": -0.011250639740427336,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": 0.003440701408903003,
+            "ci95_upper": 0.023431998180313184,
+            "mean_difference": 0.013392210612489568,
+            "queries": 318,
+            "resamples": 4000
+          }
+        },
+        "ndcg_at_5": {
+          "mean": 0.48101696994076587,
+          "vs_full": {
+            "ci95_lower": -0.02853252400252327,
+            "ci95_upper": 0.0024984455863644147,
+            "mean_difference": -0.013151521249018352,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": 0.0014878788663930317,
+            "ci95_upper": 0.019888293260410687,
+            "mean_difference": 0.010763378059065893,
+            "queries": 318,
+            "resamples": 4000
+          }
+        },
+        "recall_at_100": {
+          "mean": 0.8838239223382319,
+          "vs_full": {
+            "ci95_lower": -0.005873385657339637,
+            "ci95_upper": 0.017491876376222876,
+            "mean_difference": 0.005420595773271966,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.000613592036087414,
+            "ci95_upper": 0.007921754083843881,
+            "mean_difference": 0.0037265866354636266,
+            "queries": 318,
+            "resamples": 4000
+          }
+        }
+      },
+      "source": "results/hr-probe-residual-exploratory-v1.json",
+      "token_fraction": 0.11210618385375666
+    }
+  }
+}

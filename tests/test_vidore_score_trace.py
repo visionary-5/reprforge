@@ -5,7 +5,11 @@ import json
 import numpy as np
 
 import reprforge.vidore_local_eval as local_eval
-from reprforge.vidore_local_eval import load_local_vidore, write_score_trace
+from reprforge.vidore_local_eval import (
+    apply_query_order,
+    load_local_vidore,
+    write_score_trace,
+)
 
 
 class TracePipeline:
@@ -84,6 +88,28 @@ def test_component_paths_support_multiple_parquet_shards(tmp_path) -> None:
     digest = local_eval._component_sha256(paths)
     paths[1].write_bytes(b"changed")
     assert local_eval._component_sha256(paths) != digest
+
+
+def test_apply_query_order_requires_an_exact_permutation(tmp_path) -> None:
+    manifest = tmp_path / "order.json"
+    manifest.write_text(
+        json.dumps(
+            {
+                "scheduler": "frontier_reuse",
+                "candidate_k": 20,
+                "request_batch_size": 8,
+                "qrels_loaded": False,
+                "query_ids": ["q2", "q1"],
+            }
+        )
+    )
+    ids, queries, metadata = apply_query_order(
+        ["q1", "q2"], ["first", "second"], manifest
+    )
+    assert ids == ["q2", "q1"]
+    assert queries == ["second", "first"]
+    assert metadata["scheduler"] == "frontier_reuse"
+    assert metadata["qrels_loaded_by_scheduler"] is False
 
 
 def test_write_score_trace_separates_runtime_and_oracle_labels(tmp_path) -> None:

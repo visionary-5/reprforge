@@ -1,0 +1,454 @@
+{
+  "datasets": {
+    "biomedical_interaction_pilot": {
+      "best_global_route_selected_on_fit": "upgrade",
+      "corpus": 100,
+      "diagnostic_upper_bounds": {
+        "query_route_oracle": {
+          "gap_over_best_global": {
+            "ci95_lower": 0.008602997312019703,
+            "ci95_upper": 0.05692449123522689,
+            "mean_difference": 0.03071949619482805,
+            "queries": 16,
+            "resamples": 4000
+          },
+          "ndcg_at_5": 0.7403754875368025,
+          "selected_routes": {
+            "base": 1,
+            "upgrade": 9,
+            "windowed": 6
+          }
+        },
+        "relevant_evidence_best_rank": {
+          "recall_at_10": 0.875,
+          "recall_at_5": 0.78125
+        },
+        "relevant_evidence_rescued_over_best_global": {
+          "relevant_mass_at_10": 0.0,
+          "relevant_mass_at_5": 0.0125
+        }
+      },
+      "fit_label_static_document_plan": {
+        "eval": {
+          "ndcg_at_10": 0.7138240614772918,
+          "ndcg_at_5": 0.6578723506508497,
+          "recall_at_10": 0.875,
+          "recall_at_5": 0.76875
+        },
+        "gap_over_best_global": {
+          "ci95_lower": -0.10956192356091547,
+          "ci95_upper": -0.0033588012254118366,
+          "mean_difference": -0.05178364069112473,
+          "queries": 16,
+          "resamples": 4000
+        },
+        "route_counts": {
+          "base": 7,
+          "fit_observed_documents": 17,
+          "upgrade": 91,
+          "windowed": 2
+        },
+        "warning": "Routes are learned from fit relevance and fixed per document; this diagnoses corpus-side heterogeneity, not a deployable policy."
+      },
+      "interpretation_guardrails": {
+        "best_rank_pool_is_coherent_label_free_ranking": true,
+        "mixed_score_calibration": "within-query rank percentile; best-global percentile is a bounded secondary tie-breaker",
+        "query_route_oracle_uses_eval_labels": true,
+        "relevant_evidence_best_rank_is_not_coherent_ranking": true
+      },
+      "label_free_portfolios": {
+        "best_rank_pool": {
+          "ndcg_at_10": 0.7924174858089059,
+          "ndcg_at_5": 0.7308638147149888,
+          "recall_at_10": 0.875,
+          "recall_at_5": 0.75
+        },
+        "rrf_all_routes": {
+          "ndcg_at_10": 0.6344528078472538,
+          "ndcg_at_5": 0.5910880445703489,
+          "recall_at_10": 0.78125,
+          "recall_at_5": 0.70625
+        }
+      },
+      "queries": 48,
+      "route_disagreement": {
+        "base__upgrade": {
+          "top_10_jaccard": 0.5893689643689644,
+          "top_5_jaccard": 0.7906746031746033
+        },
+        "base__windowed": {
+          "top_10_jaccard": 0.8068181818181819,
+          "top_5_jaccard": 0.875
+        },
+        "upgrade__windowed": {
+          "top_10_jaccard": 0.5534257409257408,
+          "top_5_jaccard": 0.7073412698412698
+        }
+      },
+      "routes": [
+        "base",
+        "upgrade",
+        "windowed"
+      ],
+      "schema_version": 1,
+      "split_counts": {
+        "eval": 16,
+        "fit": 32
+      },
+      "target_metric": "ndcg_at_5",
+      "uniform_routes": {
+        "base": {
+          "all": {
+            "ndcg_at_10": 0.6947401823115461,
+            "ndcg_at_5": 0.6325132290815684,
+            "recall_at_10": 0.8312500000000002,
+            "recall_at_5": 0.6999999999999998
+          },
+          "cost": {
+            "representation_generation_ms": 905312.2303709388,
+            "score_surface_embedding_ms": 558.7979927659035
+          },
+          "eval": {
+            "ndcg_at_10": 0.6061906146547437,
+            "ndcg_at_5": 0.5435647615699541,
+            "recall_at_10": 0.76875,
+            "recall_at_5": 0.65
+          },
+          "fit": {
+            "ndcg_at_10": 0.7390149661399472,
+            "ndcg_at_5": 0.6769874628373757,
+            "recall_at_10": 0.8625,
+            "recall_at_5": 0.725
+          }
+        },
+        "upgrade": {
+          "all": {
+            "ndcg_at_10": 0.7921651791605843,
+            "ndcg_at_5": 0.7375882488523976,
+            "recall_at_10": 0.8802083333333334,
+            "recall_at_5": 0.7687499999999999
+          },
+          "cost": {
+            "representation_generation_ms": 722986.3866381347,
+            "score_surface_embedding_ms": 794.6066372096539
+          },
+          "eval": {
+            "ndcg_at_10": 0.7656077021684167,
+            "ndcg_at_5": 0.7096559913419745,
+            "recall_at_10": 0.875,
+            "recall_at_5": 0.76875
+          },
+          "fit": {
+            "ndcg_at_10": 0.805443917656668,
+            "ndcg_at_5": 0.7515543776076092,
+            "recall_at_10": 0.8828125,
+            "recall_at_5": 0.76875
+          }
+        },
+        "windowed": {
+          "all": {
+            "ndcg_at_10": 0.702992885051129,
+            "ndcg_at_5": 0.6356999335158161,
+            "recall_at_10": 0.8458333333333333,
+            "recall_at_5": 0.6979166666666666
+          },
+          "cost": {
+            "extra_windows": 20.0,
+            "representation_generation_ms": 905312.2303709388,
+            "score_surface_embedding_ms": 634.0474989265203
+          },
+          "eval": {
+            "ndcg_at_10": 0.6392391223880807,
+            "ndcg_at_5": 0.5841639757220094,
+            "recall_at_10": 0.78125,
+            "recall_at_5": 0.675
+          },
+          "fit": {
+            "ndcg_at_10": 0.7348697663826531,
+            "ndcg_at_5": 0.6614679124127194,
+            "recall_at_10": 0.878125,
+            "recall_at_5": 0.709375
+          }
+        }
+      }
+    },
+    "finance": {
+      "best_global_route_selected_on_fit": "visual",
+      "corpus": 2942,
+      "diagnostic_upper_bounds": {
+        "query_route_oracle": {
+          "gap_over_best_global": {
+            "ci95_lower": 0.07345703223260903,
+            "ci95_upper": 0.158872459251193,
+            "mean_difference": 0.1141618318220971,
+            "queries": 109,
+            "resamples": 4000
+          },
+          "ndcg_at_10": 0.5665818176575161,
+          "selected_routes": {
+            "text": 60,
+            "visual": 49
+          }
+        },
+        "relevant_evidence_best_rank": {
+          "recall_at_10": 0.6684257743732593,
+          "recall_at_5": 0.569317606801789
+        },
+        "relevant_evidence_rescued_over_best_global": {
+          "relevant_mass_at_10": 0.11628875491972614,
+          "relevant_mass_at_5": 0.12102610472588325
+        }
+      },
+      "fit_label_static_document_plan": {
+        "eval": {
+          "ndcg_at_10": 0.47923951337639753,
+          "ndcg_at_5": 0.44805337288903263,
+          "recall_at_10": 0.5833634255652604,
+          "recall_at_5": 0.4729694999190412
+        },
+        "gap_over_best_global": {
+          "ci95_lower": 0.007154154125277141,
+          "ci95_upper": 0.04886760704339036,
+          "mean_difference": 0.02681952754097854,
+          "queries": 109,
+          "resamples": 4000
+        },
+        "route_counts": {
+          "fit_observed_documents": 631,
+          "text": 267,
+          "visual": 2675
+        },
+        "warning": "Routes are learned from fit relevance and fixed per document; this diagnoses corpus-side heterogeneity, not a deployable policy."
+      },
+      "interpretation_guardrails": {
+        "best_rank_pool_is_coherent_label_free_ranking": true,
+        "mixed_score_calibration": "within-query rank percentile; best-global percentile is a bounded secondary tie-breaker",
+        "query_route_oracle_uses_eval_labels": true,
+        "relevant_evidence_best_rank_is_not_coherent_ranking": true
+      },
+      "label_free_portfolios": {
+        "best_rank_pool": {
+          "ndcg_at_10": 0.4779405545450468,
+          "ndcg_at_5": 0.44160180187419107,
+          "recall_at_10": 0.5902162418059286,
+          "recall_at_5": 0.47624570892919516
+        },
+        "rrf_all_routes": {
+          "ndcg_at_10": 0.4417564962141702,
+          "ndcg_at_5": 0.41169051265389134,
+          "recall_at_10": 0.5158626414360359,
+          "recall_at_5": 0.40642493337447466
+        }
+      },
+      "queries": 309,
+      "route_disagreement": {
+        "text__visual": {
+          "top_10_jaccard": 0.23033259207883572,
+          "top_5_jaccard": 0.2158875782728993
+        }
+      },
+      "routes": [
+        "text",
+        "visual"
+      ],
+      "schema_version": 1,
+      "split_counts": {
+        "eval": 109,
+        "fit": 200
+      },
+      "target_metric": "ndcg_at_10",
+      "uniform_routes": {
+        "text": {
+          "all": {
+            "ndcg_at_10": 0.4183773575267509,
+            "ndcg_at_5": 0.39580151049105217,
+            "recall_at_10": 0.47063735935095324,
+            "recall_at_5": 0.3877050970196028
+          },
+          "cost": {
+            "index_total_ms": 84992.39092133939,
+            "total_encode_ms": 83763.59375,
+            "total_vector_bytes": 795631104.0
+          },
+          "eval": {
+            "ndcg_at_10": 0.42049080847855447,
+            "ndcg_at_5": 0.4075901030945922,
+            "recall_at_10": 0.45908612065287174,
+            "recall_at_5": 0.401300646697673
+          },
+          "fit": {
+            "ndcg_at_10": 0.41722552675801805,
+            "ndcg_at_5": 0.38937672752212277,
+            "recall_at_10": 0.47693278444140774,
+            "recall_at_5": 0.38029552244505466
+          }
+        },
+        "visual": {
+          "all": {
+            "ndcg_at_10": 0.4731569596546872,
+            "ndcg_at_5": 0.4491820020654834,
+            "recall_at_10": 0.5428189703095706,
+            "recall_at_5": 0.4397550717955077
+          },
+          "cost": {
+            "index_total_ms": 281619.9872214347,
+            "total_encode_ms": 278174.4375,
+            "total_vector_bytes": 1551493120.0
+          },
+          "eval": {
+            "ndcg_at_10": 0.45241998583541904,
+            "ndcg_at_5": 0.42435892476364756,
+            "recall_at_10": 0.5521370194535332,
+            "recall_at_5": 0.44829150207590573
+          },
+          "fit": {
+            "ndcg_at_10": 0.4844586103861883,
+            "ndcg_at_5": 0.4627105791949839,
+            "recall_at_10": 0.5377406335261111,
+            "recall_at_5": 0.4351027172926906
+          }
+        }
+      }
+    },
+    "hr": {
+      "best_global_route_selected_on_fit": "visual",
+      "corpus": 1110,
+      "diagnostic_upper_bounds": {
+        "query_route_oracle": {
+          "gap_over_best_global": {
+            "ci95_lower": 0.07297286198351673,
+            "ci95_upper": 0.13877686973412773,
+            "mean_difference": 0.10379671924048113,
+            "queries": 115,
+            "resamples": 4000
+          },
+          "ndcg_at_10": 0.5918215991843535,
+          "selected_routes": {
+            "text": 58,
+            "visual": 57
+          }
+        },
+        "relevant_evidence_best_rank": {
+          "recall_at_10": 0.6787851735701701,
+          "recall_at_5": 0.5360977605840804
+        },
+        "relevant_evidence_rescued_over_best_global": {
+          "relevant_mass_at_10": 0.11324023697369634,
+          "relevant_mass_at_5": 0.08705762758891801
+        }
+      },
+      "fit_label_static_document_plan": {
+        "eval": {
+          "ndcg_at_10": 0.46785291990600725,
+          "ndcg_at_5": 0.43439721914453766,
+          "recall_at_10": 0.5559071469549034,
+          "recall_at_5": 0.4328503366541373
+        },
+        "gap_over_best_global": {
+          "ci95_lower": -0.05224480374568374,
+          "ci95_upper": 0.008570882150142308,
+          "mean_difference": -0.02017196003786528,
+          "queries": 115,
+          "resamples": 4000
+        },
+        "route_counts": {
+          "fit_observed_documents": 502,
+          "text": 239,
+          "visual": 871
+        },
+        "warning": "Routes are learned from fit relevance and fixed per document; this diagnoses corpus-side heterogeneity, not a deployable policy."
+      },
+      "interpretation_guardrails": {
+        "best_rank_pool_is_coherent_label_free_ranking": true,
+        "mixed_score_calibration": "within-query rank percentile; best-global percentile is a bounded secondary tie-breaker",
+        "query_route_oracle_uses_eval_labels": true,
+        "relevant_evidence_best_rank_is_not_coherent_ranking": true
+      },
+      "label_free_portfolios": {
+        "best_rank_pool": {
+          "ndcg_at_10": 0.5072334814082895,
+          "ndcg_at_5": 0.48546090965074323,
+          "recall_at_10": 0.5845212713308425,
+          "recall_at_5": 0.4807033097679799
+        },
+        "rrf_all_routes": {
+          "ndcg_at_10": 0.5007788429071865,
+          "ndcg_at_5": 0.47112600875098526,
+          "recall_at_10": 0.5588884336791011,
+          "recall_at_5": 0.4399137605228542
+        }
+      },
+      "queries": 318,
+      "route_disagreement": {
+        "text__visual": {
+          "top_10_jaccard": 0.3717381435513082,
+          "top_5_jaccard": 0.3485852311939268
+        }
+      },
+      "routes": [
+        "text",
+        "visual"
+      ],
+      "schema_version": 1,
+      "split_counts": {
+        "eval": 115,
+        "fit": 203
+      },
+      "target_metric": "ndcg_at_10",
+      "uniform_routes": {
+        "text": {
+          "all": {
+            "ndcg_at_10": 0.49465096173584927,
+            "ndcg_at_5": 0.47268887927958303,
+            "recall_at_10": 0.5481734655771713,
+            "recall_at_5": 0.43182646219417903
+          },
+          "cost": {
+            "index_total_ms": 33042.759362608194,
+            "total_encode_ms": 32384.8125,
+            "total_vector_bytes": 315128320.0
+          },
+          "eval": {
+            "ndcg_at_10": 0.4752628212265839,
+            "ndcg_at_5": 0.4500594388165031,
+            "recall_at_10": 0.5450482648162481,
+            "recall_at_5": 0.4227343946251517
+          },
+          "fit": {
+            "ndcg_at_10": 0.5056343910883887,
+            "ndcg_at_5": 0.48550851303945586,
+            "recall_at_10": 0.5499438995057733,
+            "recall_at_5": 0.43697714086628814
+          }
+        },
+        "visual": {
+          "all": {
+            "ndcg_at_10": 0.5177793764220116,
+            "ndcg_at_5": 0.4941684911897843,
+            "recall_at_10": 0.5698292009555016,
+            "recall_at_5": 0.45457913133614175
+          },
+          "cost": {
+            "index_total_ms": 117653.74219790101,
+            "total_encode_ms": 116739.203125,
+            "total_vector_bytes": 585369600.0
+          },
+          "eval": {
+            "ndcg_at_10": 0.48802487994387245,
+            "ndcg_at_5": 0.4619745301229083,
+            "recall_at_10": 0.5655449365964736,
+            "recall_at_5": 0.4490401329951624
+          },
+          "fit": {
+            "ndcg_at_10": 0.5346353719638144,
+            "ndcg_at_5": 0.5124064494296401,
+            "recall_at_10": 0.5722562472672662,
+            "recall_at_5": 0.4577169875391595
+          }
+        }
+      }
+    }
+  },
+  "purpose": "phenomenon-first localization of representation heterogeneity",
+  "schema_version": 1
+}

@@ -640,3 +640,35 @@ class ReprForgeViDoRePipeline(BasePipeline):
             ),
             "model_load_ms": np.asarray(self.model_load_ms, dtype=np.float64),
         }
+
+    def write_embedding_bank(
+        self,
+        root: Path,
+        *,
+        query_ids: Sequence[str],
+        queries: Sequence[str],
+        storage_dtype: str = "float16",
+    ) -> dict[str, Any]:
+        """Persist full token embeddings for offline compiler research.
+
+        This path is deliberately explicit and restricted to the full visual
+        mode.  Ordinary score-trace evaluation does not retain embeddings.
+        Queries are re-encoded once because search intentionally releases its
+        temporary query batch after scoring.
+        """
+
+        if self.mode != "visual" or self._visual is None:
+            raise RuntimeError("embedding-bank export requires a visual index")
+        if len(query_ids) != len(queries):
+            raise ValueError("query identifiers and texts differ in length")
+        encoded_queries = self.backend.encode_queries(queries)
+        from reprforge.heterogeneous_index import write_embedding_bank
+
+        return write_embedding_bank(
+            root,
+            item_ids=self.corpus_ids,
+            route_embeddings={"image": self._visual.embeddings},
+            query_ids=[str(value) for value in query_ids],
+            query_embeddings=encoded_queries.embeddings,
+            storage_dtype=storage_dtype,
+        )

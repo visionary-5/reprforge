@@ -1,0 +1,206 @@
+{
+  "baselines": {
+    "typed-capacity-v1": {
+      "cost": 215806976.0,
+      "cost_fraction": 0.08813727314738337,
+      "mean_exact_position_agreement": 0.38222222222222213,
+      "mean_topk_overlap": 0.7333333333333333,
+      "quality": 0.5620631048929944,
+      "route_counts": {
+        "image": 203,
+        "image-pool-25": 4024,
+        "image-pool-9": 416
+      },
+      "teacher_cost": 2448532480.0,
+      "teacher_quality": 0.5409800231866524
+    },
+    "uniform-image": {
+      "cost": 2448532480.0,
+      "cost_fraction": 1.0,
+      "mean_exact_position_agreement": 1.0,
+      "mean_topk_overlap": 1.0,
+      "quality": 0.5409800231866524,
+      "route_counts": {
+        "image": 4643
+      },
+      "teacher_cost": 2448532480.0,
+      "teacher_quality": 0.5409800231866524
+    },
+    "uniform-image-pool-25": {
+      "cost": 97465856.0,
+      "cost_fraction": 0.039805825242718446,
+      "mean_exact_position_agreement": 0.4088888888888888,
+      "mean_topk_overlap": 0.7999999999999997,
+      "quality": 0.530028655525714,
+      "route_counts": {
+        "image-pool-25": 4643
+      },
+      "teacher_cost": 2448532480.0,
+      "teacher_quality": 0.5409800231866524
+    },
+    "uniform-image-pool-4": {
+      "cost": 610944512.0,
+      "cost_fraction": 0.24951456310679612,
+      "mean_exact_position_agreement": 0.7333333333333333,
+      "mean_topk_overlap": 0.9288888888888889,
+      "quality": 0.5367390074384206,
+      "route_counts": {
+        "image-pool-4": 4643
+      },
+      "teacher_cost": 2448532480.0,
+      "teacher_quality": 0.5409800231866524
+    },
+    "uniform-image-pool-9": {
+      "cost": 271002624.0,
+      "cost_fraction": 0.11067961165048544,
+      "mean_exact_position_agreement": 0.6044444444444446,
+      "mean_topk_overlap": 0.8488888888888888,
+      "quality": 0.5403262040759554,
+      "route_counts": {
+        "image-pool-9": 4643
+      },
+      "teacher_cost": 2448532480.0,
+      "teacher_quality": 0.5409800231866524
+    },
+    "uniform-text": {
+      "cost": 134967808.0,
+      "cost_fraction": 0.0551219185787562,
+      "mean_exact_position_agreement": 0.15555555555555559,
+      "mean_topk_overlap": 0.3733333333333333,
+      "quality": 0.10181879401151667,
+      "route_counts": {
+        "text": 4643
+      },
+      "teacher_cost": 2448532480.0,
+      "teacher_quality": 0.5409800231866524
+    }
+  },
+  "compiler_uses_qrels": false,
+  "cost_curve": {
+    "0.0": {
+      "cost": 2448532480.0,
+      "cost_fraction": 1.0,
+      "finite_bound_fraction": 0.9922463924186948,
+      "mean_exact_position_agreement": 1.0,
+      "mean_topk_overlap": 1.0,
+      "quality": 0.5409800231866524,
+      "route_counts": {
+        "image": 4643
+      },
+      "teacher_cost": 2448532480.0,
+      "teacher_quality": 0.5409800231866524
+    },
+    "0.05": {
+      "cost": 2437475840.0,
+      "cost_fraction": 0.9954843809137464,
+      "finite_bound_fraction": 0.9922463924186948,
+      "mean_exact_position_agreement": 0.9911111111111112,
+      "mean_topk_overlap": 0.9911111111111112,
+      "quality": 0.5409800231866524,
+      "route_counts": {
+        "image": 4618,
+        "image-pool-4": 8,
+        "text": 17
+      },
+      "teacher_cost": 2448532480.0,
+      "teacher_quality": 0.5409800231866524
+    },
+    "0.1": {
+      "cost": 2412553216.0,
+      "cost_fraction": 0.985305784467274,
+      "finite_bound_fraction": 0.9922463924186948,
+      "mean_exact_position_agreement": 0.9600000000000001,
+      "mean_topk_overlap": 0.9777777777777777,
+      "quality": 0.5409800231866524,
+      "route_counts": {
+        "image": 4558,
+        "image-pool-4": 50,
+        "image-pool-9": 5,
+        "text": 30
+      },
+      "teacher_cost": 2448532480.0,
+      "teacher_quality": 0.5409800231866524
+    },
+    "0.2": {
+      "cost": 2299271168.0,
+      "cost_fraction": 0.9390405015170556,
+      "finite_bound_fraction": 0.9922463924186948,
+      "mean_exact_position_agreement": 0.8222222222222224,
+      "mean_topk_overlap": 0.9422222222222222,
+      "quality": 0.5336764041954135,
+      "route_counts": {
+        "image": 4285,
+        "image-pool-25": 1,
+        "image-pool-4": 249,
+        "image-pool-9": 43,
+        "text": 65
+      },
+      "teacher_cost": 2448532480.0,
+      "teacher_quality": 0.5409800231866524
+    },
+    "0.4": {
+      "cost": 1588835328.0,
+      "cost_fraction": 0.6488928944083274,
+      "finite_bound_fraction": 0.9922463924186948,
+      "mean_exact_position_agreement": 0.7066666666666667,
+      "mean_topk_overlap": 0.8977777777777776,
+      "quality": 0.5339345810585805,
+      "route_counts": {
+        "image": 2545,
+        "image-pool-25": 17,
+        "image-pool-4": 1726,
+        "image-pool-9": 227,
+        "text": 128
+      },
+      "teacher_cost": 2448532480.0,
+      "teacher_quality": 0.5409800231866524
+    },
+    "0.8": {
+      "cost": 680211968.0,
+      "cost_fraction": 0.2778039391170339,
+      "finite_bound_fraction": 0.9922463924186948,
+      "mean_exact_position_agreement": 0.5511111111111111,
+      "mean_topk_overlap": 0.7866666666666666,
+      "quality": 0.5379408749154598,
+      "route_counts": {
+        "image": 625,
+        "image-pool-25": 216,
+        "image-pool-4": 1759,
+        "image-pool-9": 1818,
+        "text": 225
+      },
+      "teacher_cost": 2448532480.0,
+      "teacher_quality": 0.5409800231866524
+    },
+    "1.6": {
+      "cost": 289710592.0,
+      "cost_fraction": 0.11832009351168582,
+      "finite_bound_fraction": 0.9922463924186948,
+      "mean_exact_position_agreement": 0.45333333333333337,
+      "mean_topk_overlap": 0.76,
+      "quality": 0.4968001278705557,
+      "route_counts": {
+        "image": 139,
+        "image-pool-25": 1716,
+        "image-pool-4": 410,
+        "image-pool-9": 2028,
+        "text": 350
+      },
+      "teacher_cost": 2448532480.0,
+      "teacher_quality": 0.5409800231866524
+    }
+  },
+  "eval_queries": 45,
+  "evaluation_boundary": "official MMDocIR within-document candidates",
+  "fit_quantile": 1.0,
+  "fit_queries": 96,
+  "protocol": "fit-workload residual bound; held-out-query evaluation",
+  "teacher_route": "image",
+  "uniform_route_index_bytes": {
+    "image": 2448532480,
+    "image-pool-25": 97465856,
+    "image-pool-4": 610944512,
+    "image-pool-9": 271002624,
+    "text": 134967808
+  }
+}

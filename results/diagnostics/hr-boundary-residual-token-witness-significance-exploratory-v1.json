@@ -1,0 +1,539 @@
+{
+  "baselines": {
+    "full": {
+      "ndcg_at_10": 0.5177793764220116,
+      "ndcg_at_5": 0.4941684911897843,
+      "recall_at_100": 0.8784033265649601
+    },
+    "pool9": {
+      "ndcg_at_10": 0.4931365260690946,
+      "ndcg_at_5": 0.4702535918817,
+      "recall_at_100": 0.8800973357027685
+    }
+  },
+  "protocol": "paired query bootstrap; 4000 resamples",
+  "reports": {
+    "hr-boundary-residual-token-witness-exploratory-v1:k100-eps0.12": {
+      "configuration": "k100-eps0.12",
+      "metrics": {
+        "ndcg_at_10": {
+          "mean": 0.5080452114108006,
+          "vs_full": {
+            "ci95_lower": -0.022061105015269995,
+            "ci95_upper": 0.0025205238238473152,
+            "mean_difference": -0.009734165011210882,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": 0.0006965318953949441,
+            "ci95_upper": 0.03042844214432766,
+            "mean_difference": 0.014908685341706017,
+            "queries": 318,
+            "resamples": 4000
+          }
+        },
+        "ndcg_at_5": {
+          "mean": 0.48168468778620804,
+          "vs_full": {
+            "ci95_lower": -0.027340709896036312,
+            "ci95_upper": 0.0016968848953148913,
+            "mean_difference": -0.012483803403576228,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.0043513018332279425,
+            "ci95_upper": 0.027900853244913686,
+            "mean_difference": 0.01143109590450802,
+            "queries": 318,
+            "resamples": 4000
+          }
+        },
+        "recall_at_100": {
+          "mean": 0.8667708935605856,
+          "vs_full": {
+            "ci95_lower": -0.023750084794879923,
+            "ci95_upper": -0.0020299820114435146,
+            "mean_difference": -0.011632433004374597,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.029418238875782394,
+            "ci95_upper": 0.0004333490345566609,
+            "mean_difference": -0.01332644214218294,
+            "queries": 318,
+            "resamples": 4000
+          }
+        }
+      },
+      "source": "results/hr-boundary-residual-token-witness-exploratory-v1.json",
+      "token_fraction": 0.12720038485087032
+    },
+    "hr-boundary-residual-token-witness-exploratory-v1:k100-eps0.15": {
+      "configuration": "k100-eps0.15",
+      "metrics": {
+        "ndcg_at_10": {
+          "mean": 0.5081278331251794,
+          "vs_full": {
+            "ci95_lower": -0.021707225266652273,
+            "ci95_upper": 0.002764915790429979,
+            "mean_difference": -0.009651543296832165,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": 0.0018691272460046899,
+            "ci95_upper": 0.02938869444082139,
+            "mean_difference": 0.014991307056084735,
+            "queries": 318,
+            "resamples": 4000
+          }
+        },
+        "ndcg_at_5": {
+          "mean": 0.48124226054262803,
+          "vs_full": {
+            "ci95_lower": -0.028176033966102756,
+            "ci95_upper": 0.0022810968844302394,
+            "mean_difference": -0.012926230647156181,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.0038114576031764973,
+            "ci95_upper": 0.026899642062336325,
+            "mean_difference": 0.010988668660928062,
+            "queries": 318,
+            "resamples": 4000
+          }
+        },
+        "recall_at_100": {
+          "mean": 0.880987379926584,
+          "vs_full": {
+            "ci95_lower": -0.004656490911615205,
+            "ci95_upper": 0.011530360106473155,
+            "mean_difference": 0.002584053361624008,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.007937915921228385,
+            "ci95_upper": 0.01013018842308185,
+            "mean_difference": 0.0008900442238156676,
+            "queries": 318,
+            "resamples": 4000
+          }
+        }
+      },
+      "source": "results/hr-boundary-residual-token-witness-exploratory-v1.json",
+      "token_fraction": 0.11954675063412927
+    },
+    "hr-boundary-residual-token-witness-exploratory-v1:k100-eps0.2": {
+      "configuration": "k100-eps0.2",
+      "metrics": {
+        "ndcg_at_10": {
+          "mean": 0.5056725903063355,
+          "vs_full": {
+            "ci95_lower": -0.025672921768986216,
+            "ci95_upper": 0.0018975354652158531,
+            "mean_difference": -0.012106786115675986,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": 0.0009922799224064503,
+            "ci95_upper": 0.02489880403662964,
+            "mean_difference": 0.012536064237240916,
+            "queries": 318,
+            "resamples": 4000
+          }
+        },
+        "ndcg_at_5": {
+          "mean": 0.4781088717334459,
+          "vs_full": {
+            "ci95_lower": -0.03234924763734883,
+            "ci95_upper": -0.0001643031254298496,
+            "mean_difference": -0.016059619456338294,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.005806315597800954,
+            "ci95_upper": 0.02154271058548637,
+            "mean_difference": 0.007855279851745955,
+            "queries": 318,
+            "resamples": 4000
+          }
+        },
+        "recall_at_100": {
+          "mean": 0.8820731750824184,
+          "vs_full": {
+            "ci95_lower": -0.007899359215805698,
+            "ci95_upper": 0.015860832741721047,
+            "mean_difference": 0.003669848517458301,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.004055181148901438,
+            "ci95_upper": 0.00844600307061544,
+            "mean_difference": 0.0019758393796499617,
+            "queries": 318,
+            "resamples": 4000
+          }
+        }
+      },
+      "source": "results/hr-boundary-residual-token-witness-exploratory-v1.json",
+      "token_fraction": 0.11448841074083793
+    },
+    "hr-boundary-residual-token-witness-exploratory-v1:k20-eps0.12": {
+      "configuration": "k20-eps0.12",
+      "metrics": {
+        "ndcg_at_10": {
+          "mean": 0.5018184292186286,
+          "vs_full": {
+            "ci95_lower": -0.029578205134212235,
+            "ci95_upper": -0.002724812526137401,
+            "mean_difference": -0.01596094720338285,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.0034604161991212508,
+            "ci95_upper": 0.021712775657750073,
+            "mean_difference": 0.008681903149534055,
+            "queries": 318,
+            "resamples": 4000
+          }
+        },
+        "ndcg_at_5": {
+          "mean": 0.4770886269483022,
+          "vs_full": {
+            "ci95_lower": -0.03175714498741321,
+            "ci95_upper": -0.002972072601068366,
+            "mean_difference": -0.017079864241482057,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.0064733089315329615,
+            "ci95_upper": 0.02023305247215148,
+            "mean_difference": 0.006835035066602193,
+            "queries": 318,
+            "resamples": 4000
+          }
+        },
+        "recall_at_100": {
+          "mean": 0.8825591496096872,
+          "vs_full": {
+            "ci95_lower": -0.0073459516866292845,
+            "ci95_upper": 0.016663989988362077,
+            "mean_difference": 0.004155823044727101,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.004824110393152832,
+            "ci95_upper": 0.01005938911014777,
+            "mean_difference": 0.0024618139069187608,
+            "queries": 318,
+            "resamples": 4000
+          }
+        }
+      },
+      "source": "results/hr-boundary-residual-token-witness-exploratory-v1.json",
+      "token_fraction": 0.1160393597480976
+    },
+    "hr-boundary-residual-token-witness-exploratory-v1:k20-eps0.15": {
+      "configuration": "k20-eps0.15",
+      "metrics": {
+        "ndcg_at_10": {
+          "mean": 0.5028016488814891,
+          "vs_full": {
+            "ci95_lower": -0.028189172256751292,
+            "ci95_upper": -0.001496637249764368,
+            "mean_difference": -0.014977727540522375,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.00198872692115636,
+            "ci95_upper": 0.021776041538558857,
+            "mean_difference": 0.009665122812394527,
+            "queries": 318,
+            "resamples": 4000
+          }
+        },
+        "ndcg_at_5": {
+          "mean": 0.48031797363886336,
+          "vs_full": {
+            "ci95_lower": -0.028703415267396636,
+            "ci95_upper": 0.000911368855040437,
+            "mean_difference": -0.013850517550920862,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.00268785860375239,
+            "ci95_upper": 0.023180999776866103,
+            "mean_difference": 0.010064381757163385,
+            "queries": 318,
+            "resamples": 4000
+          }
+        },
+        "recall_at_100": {
+          "mean": 0.8839948995475886,
+          "vs_full": {
+            "ci95_lower": -0.005840371765977696,
+            "ci95_upper": 0.018256057473291686,
+            "mean_difference": 0.005591572982628645,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.002498409245060562,
+            "ci95_upper": 0.010853195882665985,
+            "mean_difference": 0.003897563844820305,
+            "queries": 318,
+            "resamples": 4000
+          }
+        }
+      },
+      "source": "results/hr-boundary-residual-token-witness-exploratory-v1.json",
+      "token_fraction": 0.11386390273768913
+    },
+    "hr-boundary-residual-token-witness-exploratory-v1:k20-eps0.2": {
+      "configuration": "k20-eps0.2",
+      "metrics": {
+        "ndcg_at_10": {
+          "mean": 0.499101958557306,
+          "vs_full": {
+            "ci95_lower": -0.032080351100836645,
+            "ci95_upper": -0.004576566276565157,
+            "mean_difference": -0.018677417864705594,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.004094659915804879,
+            "ci95_upper": 0.016172720515730148,
+            "mean_difference": 0.005965432488211306,
+            "queries": 318,
+            "resamples": 4000
+          }
+        },
+        "ndcg_at_5": {
+          "mean": 0.478484865341995,
+          "vs_full": {
+            "ci95_lower": -0.030665018829153127,
+            "ci95_upper": -0.001119232429659128,
+            "mean_difference": -0.015683625847789227,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.0023453198153605558,
+            "ci95_upper": 0.01921729915797494,
+            "mean_difference": 0.008231273460295016,
+            "queries": 318,
+            "resamples": 4000
+          }
+        },
+        "recall_at_100": {
+          "mean": 0.8859846967122634,
+          "vs_full": {
+            "ci95_lower": -0.0040956680666695685,
+            "ci95_upper": 0.020038431381379555,
+            "mean_difference": 0.00758137014730354,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": 0.0005885793692650663,
+            "ci95_upper": 0.011956795256868501,
+            "mean_difference": 0.005887361009495202,
+            "queries": 318,
+            "resamples": 4000
+          }
+        }
+      },
+      "source": "results/hr-boundary-residual-token-witness-exploratory-v1.json",
+      "token_fraction": 0.112305781509665
+    },
+    "hr-boundary-residual-token-witness-exploratory-v1:k50-eps0.12": {
+      "configuration": "k50-eps0.12",
+      "metrics": {
+        "ndcg_at_10": {
+          "mean": 0.5082762901194575,
+          "vs_full": {
+            "ci95_lower": -0.022931202864387535,
+            "ci95_upper": 0.0037284542830273966,
+            "mean_difference": -0.009503086302554012,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": 0.0015672024901620285,
+            "ci95_upper": 0.03004133765461063,
+            "mean_difference": 0.015139764050362891,
+            "queries": 318,
+            "resamples": 4000
+          }
+        },
+        "ndcg_at_5": {
+          "mean": 0.4796203615856732,
+          "vs_full": {
+            "ci95_lower": -0.029321495926439223,
+            "ci95_upper": -8.487564182241373e-05,
+            "mean_difference": -0.014548129604111004,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.00551170033097812,
+            "ci95_upper": 0.025546439755936307,
+            "mean_difference": 0.009366769703973243,
+            "queries": 318,
+            "resamples": 4000
+          }
+        },
+        "recall_at_100": {
+          "mean": 0.8766334510507788,
+          "vs_full": {
+            "ci95_lower": -0.012060454327851359,
+            "ci95_upper": 0.009151177298218448,
+            "mean_difference": -0.0017698755141811466,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.011006904865813225,
+            "ci95_upper": 0.00339531961181512,
+            "mean_difference": -0.0034638846519894862,
+            "queries": 318,
+            "resamples": 4000
+          }
+        }
+      },
+      "source": "results/hr-boundary-residual-token-witness-exploratory-v1.json",
+      "token_fraction": 0.1210697104871862
+    },
+    "hr-boundary-residual-token-witness-exploratory-v1:k50-eps0.15": {
+      "configuration": "k50-eps0.15",
+      "metrics": {
+        "ndcg_at_10": {
+          "mean": 0.5081750486714218,
+          "vs_full": {
+            "ci95_lower": -0.02258015009409206,
+            "ci95_upper": 0.003279132523806461,
+            "mean_difference": -0.00960432775058978,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": 0.0019678859599042866,
+            "ci95_upper": 0.02909157098249208,
+            "mean_difference": 0.015038522602327123,
+            "queries": 318,
+            "resamples": 4000
+          }
+        },
+        "ndcg_at_5": {
+          "mean": 0.48358939646814586,
+          "vs_full": {
+            "ci95_lower": -0.025582262473286023,
+            "ci95_upper": 0.004718635449069141,
+            "mean_difference": -0.010579094721638508,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.001305728943112563,
+            "ci95_upper": 0.02855659237172208,
+            "mean_difference": 0.013335804586445739,
+            "queries": 318,
+            "resamples": 4000
+          }
+        },
+        "recall_at_100": {
+          "mean": 0.8828140863153269,
+          "vs_full": {
+            "ci95_lower": -0.006882768003364844,
+            "ci95_upper": 0.01687003714393031,
+            "mean_difference": 0.004410759750366729,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.003974133397708863,
+            "ci95_upper": 0.009870708605813723,
+            "mean_difference": 0.002716750612558389,
+            "queries": 318,
+            "resamples": 4000
+          }
+        }
+      },
+      "source": "results/hr-boundary-residual-token-witness-exploratory-v1.json",
+      "token_fraction": 0.1164831627744249
+    },
+    "hr-boundary-residual-token-witness-exploratory-v1:k50-eps0.2": {
+      "configuration": "k50-eps0.2",
+      "metrics": {
+        "ndcg_at_10": {
+          "mean": 0.5043031575686306,
+          "vs_full": {
+            "ci95_lower": -0.026802911461411248,
+            "ci95_upper": 0.0007241968975776879,
+            "mean_difference": -0.013476218853380862,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": 0.0006175506863192247,
+            "ci95_upper": 0.022256705734769747,
+            "mean_difference": 0.011166631499536039,
+            "queries": 318,
+            "resamples": 4000
+          }
+        },
+        "ndcg_at_5": {
+          "mean": 0.4797148889432132,
+          "vs_full": {
+            "ci95_lower": -0.029715588336002102,
+            "ci95_upper": 0.0006503123421238984,
+            "mean_difference": -0.014453602246571072,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.0023605514400700392,
+            "ci95_upper": 0.021488280933099305,
+            "mean_difference": 0.009461297061513175,
+            "queries": 318,
+            "resamples": 4000
+          }
+        },
+        "recall_at_100": {
+          "mean": 0.8823770204334336,
+          "vs_full": {
+            "ci95_lower": -0.007707995290073342,
+            "ci95_upper": 0.01639386472556002,
+            "mean_difference": 0.0039736938684734645,
+            "queries": 318,
+            "resamples": 4000
+          },
+          "vs_pool9": {
+            "ci95_lower": -0.003652384972911481,
+            "ci95_upper": 0.008979770148218678,
+            "mean_difference": 0.0022796847306651236,
+            "queries": 318,
+            "resamples": 4000
+          }
+        }
+      },
+      "source": "results/hr-boundary-residual-token-witness-exploratory-v1.json",
+      "token_fraction": 0.11336184728417738
+    }
+  }
+}

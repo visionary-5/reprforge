@@ -1,0 +1,17 @@
+{
+  "corpus_count": 5244,
+  "dataset": "vidore/vidore_v3_industrial",
+  "label_count": 1614,
+  "labels_sha256": "d9d18287892f50257e4e62838c53c5b4bb80289699c0029977345e001df8c4bf",
+  "pre_qrel_certificate_sha256": {
+    "semantic-hierarchical-pool25": "ca4e1d92a92c017563faa114d90e3e320902adbbfd519750531727ab3761877b",
+    "semantic-hierarchical-pool4": "4e3055883c183c4215746ff948d6f194c41a8d1eb977f6ac2c52120d3f9805a1",
+    "semantic-hierarchical-pool9": "5c80a8014bcc87978b304103992b82ddff7048737b7a1825b729245ce42d1cbc"
+  },
+  "protocol": "qrel-free-compression-risk-2026-08-04",
+  "qrels_sha256": "ff55eb5407d934dc63d33f98f12ee0976cc7a74509eeed88459aa9b5a66deddd",
+  "query_count": 283,
+  "runtime_sha256": "d3813daa0e1c0b4c49a6d704322dc00521bb9d69e156d303df5c18f0861ab8da",
+  "schema_version": 1,
+  "stage": "post-certificate-oracle-label-materialization"
+}

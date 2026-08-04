@@ -1,0 +1,17 @@
+{
+  "corpus_count": 2313,
+  "dataset": "vidore/vidore_v3_pharmaceuticals",
+  "label_count": 1732,
+  "labels_sha256": "c17267f6d36249a44895a5ddec684aa078d2adcc19064012dcb5b2b0519af3d5",
+  "pre_qrel_certificate_sha256": {
+    "semantic-hierarchical-pool25": "8ea8bdd4f0f59158bde14d677ed32feb99416fa88fc3e706a7762d3a8d73d516",
+    "semantic-hierarchical-pool4": "0ea06c99f409e30c75c7d540c3f1149d736e8e55494f742239fee2910c6778bf",
+    "semantic-hierarchical-pool9": "5a9201bb3b83e51b6abd53c3528deb6de499c0c54f1998a3c5d567c6725817a6"
+  },
+  "protocol": "qrel-free-compression-risk-2026-08-04",
+  "qrels_sha256": "d2812c5b425d520fb4f466d2c0aa0ce811e493bf85cf9a576c87cd48929882bf",
+  "query_count": 364,
+  "runtime_sha256": "d3c223709e67d96672be4db14783cc550aa1213b3b9f6e6320abfe6a7342dfcd",
+  "schema_version": 1,
+  "stage": "post-certificate-oracle-label-materialization"
+}

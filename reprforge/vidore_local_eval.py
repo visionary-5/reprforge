@@ -98,6 +98,37 @@ def _decode_image(value: Any) -> Any:
         return image.convert("RGB").copy()
 
 
+def apply_query_order(
+    query_ids: Sequence[str],
+    queries: Sequence[str],
+    manifest_path: Path,
+) -> tuple[list[str], list[str], dict[str, Any]]:
+    """Apply an exact query permutation without changing query content."""
+
+    if len(query_ids) != len(queries) or len(set(query_ids)) != len(query_ids):
+        raise ValueError("query IDs and texts must be aligned and unique")
+    payload = json.loads(manifest_path.read_text(encoding="utf-8"))
+    ordered_ids = [str(value) for value in payload.get("query_ids", [])]
+    if len(ordered_ids) != len(query_ids) or set(ordered_ids) != set(query_ids):
+        raise ValueError("query-order manifest is not an exact dataset permutation")
+    if len(set(ordered_ids)) != len(ordered_ids):
+        raise ValueError("query-order manifest contains duplicate IDs")
+    text_by_id = dict(zip(query_ids, queries, strict=True))
+    return (
+        ordered_ids,
+        [str(text_by_id[query_id]) for query_id in ordered_ids],
+        {
+            "path": str(manifest_path.resolve()),
+            "sha256": _sha256(manifest_path),
+            "dataset": payload.get("dataset"),
+            "scheduler": payload.get("scheduler"),
+            "candidate_k": payload.get("candidate_k"),
+            "request_batch_size": payload.get("request_batch_size"),
+            "qrels_loaded_by_scheduler": payload.get("qrels_loaded"),
+        },
+    )
+
+
 def load_local_vidore(
     root: Path,
     *,
@@ -309,6 +340,11 @@ def main() -> None:
     parser.add_argument("--cache-capacity-items", type=int, default=0)
     parser.add_argument("--request-batch-size", type=int, default=8)
     parser.add_argument(
+        "--query-order-manifest",
+        type=Path,
+        help="exact query-ID permutation produced by a qrel-free scheduler",
+    )
+    parser.add_argument(
         "--cohort-cache-policy",
         choices=["none", "resident"],
         default="resident",
@@ -347,6 +383,21 @@ def main() -> None:
         smoke_queries=args.smoke_queries,
         smoke_corpus=args.smoke_corpus,
     )
+    query_order = None
+    if args.query_order_manifest is not None:
+        query_ids, queries, query_order = apply_query_order(
+            query_ids,
+            queries,
+            args.query_order_manifest,
+        )
+        if query_order["dataset"] != args.dataset_name:
+            parser.error("query-order manifest dataset differs from --dataset-name")
+        if query_order["candidate_k"] != args.candidate_k:
+            parser.error("query-order manifest candidate K differs from the runner")
+        if query_order["request_batch_size"] != args.request_batch_size:
+            parser.error("query-order manifest batch size differs from the runner")
+        if query_order["qrels_loaded_by_scheduler"] is not False:
+            parser.error("query-order scheduler must attest that it did not load qrels")
     pipeline = ReprForgeViDoRePipeline(
         base_model=args.base_model,
         adapter=args.adapter,
@@ -406,6 +457,7 @@ def main() -> None:
             "a70f23af8bb3b33efe8a4a6c6c15a6e2d978035e"
         ),
         "local_source": source,
+        "query_order": query_order,
         "aggregated_metrics": aggregated,
         "score_trace": score_trace,
     }
