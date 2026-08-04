@@ -128,3 +128,86 @@ def test_all_policies_preserve_final_union_and_cache_capacity():
         assert result.final_unique_pages == 5
         assert sorted(result.dispatch_order) == [0, 1, 2, 3]
         assert result.cache["capacity_pages"] == 2
+
+
+def test_bounded_wait_accumulates_arrivals_and_charges_sojourn():
+    result = replay_cagr_comparison(
+        [[0], [1], [2]],
+        [0, 1, 2],
+        [0.0, 3.0, 10.0],
+        np.zeros(3),
+        base_mean_quality=0.4,
+        corpus_pages=3,
+        request_batch_size=2,
+        window=64,
+        policy="cagr_faithful",
+        cache_capacity=80,
+        cagr_group_pool=64,
+        cagr_grouping="fixed_jaccard",
+        cagr_target_group_size=16,
+        arrival_clock="unit",
+        cagr_wait_budget=4.0,
+        cagr_min_pending=2,
+        cagr_cross_group_fill=True,
+    )
+
+    # q0 waits for q1 at t=3; their atomic two-query batch publishes at t=5.
+    assert result.sojourn_unit_time == (5.0, 2.0, 1.0)
+    assert result.wait_unit_time == (3.0, 0.0, 0.0)
+    assert result.total_unit_work == 3.0
+    assert result.request_batches["size_max"] == 2
+
+
+def test_bounded_wait_deadline_is_finite_and_idle_is_not_unit_work():
+    result = replay_cagr_comparison(
+        [[0], [1]],
+        [0, 1],
+        [0.0, 100.0],
+        np.zeros(2),
+        base_mean_quality=0.4,
+        corpus_pages=2,
+        request_batch_size=2,
+        window=64,
+        policy="cagr_faithful",
+        cache_capacity=80,
+        cagr_group_pool=64,
+        cagr_grouping="fixed_jaccard",
+        cagr_target_group_size=16,
+        arrival_clock="unit",
+        cagr_wait_budget=4.0,
+        cagr_min_pending=2,
+        cagr_cross_group_fill=True,
+    )
+
+    assert result.dispatch_order == (0, 1)
+    assert result.sojourn_unit_time == (5.0, 1.0)
+    assert result.total_unit_work == 2.0
+
+
+def test_cross_group_fill_reports_physical_batch_purity():
+    result = replay_cagr_comparison(
+        [[query] for query in range(6)],
+        list(range(6)),
+        np.zeros(6),
+        np.zeros(6),
+        base_mean_quality=0.4,
+        corpus_pages=6,
+        request_batch_size=4,
+        window=64,
+        policy="cagr_faithful",
+        cache_capacity=80,
+        cagr_group_pool=64,
+        cagr_grouping="fixed_jaccard",
+        cagr_target_group_size=3,
+        arrival_clock="unit",
+        cagr_wait_budget=0.0,
+        cagr_min_pending=4,
+        cagr_cross_group_fill=True,
+    )
+
+    assert result.groups["count"] == 2
+    assert result.request_batches["count"] == 2
+    assert result.request_batches["query_slots_used_fraction"] == 0.75
+    assert result.request_batches["group_purity_mean"] == 0.875
+    assert result.request_batches["cross_group_count"] == 1
+    assert result.request_batches["cross_group_fraction"] == 0.5

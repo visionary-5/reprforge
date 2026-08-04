@@ -151,6 +151,8 @@ class ReplayResult:
     completion_unit_cost: tuple[float, ...]
     wait_page_work: tuple[float, ...]
     sojourn_page_work: tuple[float, ...]
+    wait_unit_time: tuple[float, ...]
+    sojourn_unit_time: tuple[float, ...]
     bypass_count: tuple[int, ...]
     final_unique_pages: int
     quality_work_auc: float
@@ -159,12 +161,15 @@ class ReplayResult:
     prefetch: dict[str, Any]
     groups: dict[str, Any]
     request_batches: dict[str, Any]
+    total_unit_work: float
 
     def as_dict(self, *, starvation_window: int) -> dict[str, Any]:
         completion = np.asarray(self.completion_pages, dtype=np.float64)
         cost = np.asarray(self.completion_unit_cost, dtype=np.float64)
         wait = np.asarray(self.wait_page_work, dtype=np.float64)
         sojourn = np.asarray(self.sojourn_page_work, dtype=np.float64)
+        wait_unit = np.asarray(self.wait_unit_time, dtype=np.float64)
+        sojourn_unit = np.asarray(self.sojourn_unit_time, dtype=np.float64)
         bypass = np.asarray(self.bypass_count, dtype=np.int64)
         starved = bypass >= starvation_window
 
@@ -183,6 +188,10 @@ class ReplayResult:
             "completion_unit_cost": distribution(cost),
             "wait_page_work": distribution(wait),
             "sojourn_page_work": distribution(sojourn),
+            "wait_unit_time": distribution(wait_unit),
+            "sojourn_unit_time": distribution(sojourn_unit),
+            "total_unit_work": self.total_unit_work,
+            "unit_work_per_query": self.total_unit_work / len(completion),
             "quality_work_auc": self.quality_work_auc,
             "normalized_quality_regret_auc": self.normalized_quality_regret_auc,
             "starvation": {
@@ -272,6 +281,10 @@ def replay_cagr_comparison(
     cagr_membership_rule: str = "max",
     cagr_grouping: str = "threshold",
     cagr_target_group_size: int = 8,
+    arrival_clock: str = "page",
+    cagr_wait_budget: float = 0.0,
+    cagr_min_pending: int = 1,
+    cagr_cross_group_fill: bool = False,
 ) -> ReplayResult:
     """Replay one policy with persistent compilation and equal active LRU."""
 
@@ -294,6 +307,12 @@ def replay_cagr_comparison(
         raise ValueError("cagr_grouping must be 'threshold' or 'fixed_jaccard'")
     if cagr_target_group_size <= 0:
         raise ValueError("cagr_target_group_size must be positive")
+    if arrival_clock not in {"page", "unit"}:
+        raise ValueError("arrival_clock must be 'page' or 'unit'")
+    if cagr_wait_budget < 0.0 or not np.isfinite(cagr_wait_budget):
+        raise ValueError("cagr_wait_budget must be finite and non-negative")
+    if cagr_min_pending <= 0:
+        raise ValueError("cagr_min_pending must be positive")
     if corpus_pages <= 0:
         raise ValueError("corpus_pages must be positive")
 
@@ -318,15 +337,20 @@ def replay_cagr_comparison(
     next_arrival = 0
     page_clock = 0.0
     unit_cost_clock = 0.0
+    total_unit_work = 0.0
     dispatch: list[int] = []
     dispatch_rank = np.empty(query_count, dtype=np.int64)
     completion_pages = np.zeros(query_count, dtype=np.float64)
     completion_cost = np.zeros(query_count, dtype=np.float64)
     wait_page = np.zeros(query_count, dtype=np.float64)
     sojourn_page = np.zeros(query_count, dtype=np.float64)
+    wait_unit = np.zeros(query_count, dtype=np.float64)
+    sojourn_unit = np.zeros(query_count, dtype=np.float64)
     current_quality = float(base_mean_quality)
     quality_points: list[tuple[int, float]] = [(0, current_quality)]
-    plan: deque[tuple[tuple[int, ...], tuple[int, ...] | None]] = deque()
+    plan: deque[
+        tuple[tuple[int, ...], tuple[int, ...] | None, tuple[int, ...]]
+    ] = deque()
 
     demand_events = demand_hits = demand_builds = demand_reloads = 0
     prefetch_events = prefetch_builds = prefetch_reloads = 0
@@ -335,6 +359,28 @@ def replay_cagr_comparison(
     outstanding_prefetch: dict[int, float] = {}
     group_sizes: list[int] = []
     query_batch_sizes: list[int] = []
+    batch_group_purity: list[float] = []
+    cross_group_batches = 0
+    logical_group_counter = 0
+
+    def current_arrival_clock() -> float:
+        return unit_cost_clock if arrival_clock == "unit" else page_clock
+
+    def advance_idle(delta: float) -> None:
+        nonlocal page_clock, unit_cost_clock
+        if delta < -1e-12:
+            raise AssertionError("cannot move replay clock backwards")
+        page_clock += max(0.0, delta)
+        unit_cost_clock += max(0.0, delta)
+
+    def release_arrivals() -> None:
+        nonlocal next_arrival
+        while (
+            next_arrival < query_count
+            and times[next_arrival] <= current_arrival_clock() + 1e-12
+        ):
+            pending.append(int(order[next_arrival]))
+            next_arrival += 1
 
     def insert_cache(page: int) -> None:
         nonlocal wasted_prefetches, wasted_prefetch_cost
@@ -345,6 +391,7 @@ def replay_cagr_comparison(
 
     def demand(page: int) -> None:
         nonlocal page_clock, unit_cost_clock
+        nonlocal total_unit_work
         nonlocal demand_events, demand_hits, demand_builds, demand_reloads
         nonlocal useful_prefetches
         demand_events += 1
@@ -362,10 +409,12 @@ def replay_cagr_comparison(
             compiled.add(page)
             page_clock += 1.0
         unit_cost_clock += 1.0
+        total_unit_work += 1.0
         insert_cache(page)
 
     def prefetch(pages: Sequence[int]) -> None:
         nonlocal page_clock, unit_cost_clock
+        nonlocal total_unit_work
         nonlocal prefetch_events, prefetch_builds, prefetch_reloads
         for page in sorted(set(int(value) for value in pages)):
             if cache.contains(page):
@@ -378,11 +427,13 @@ def replay_cagr_comparison(
                 compiled.add(page)
                 page_clock += 1.0
             unit_cost_clock += 1.0
+            total_unit_work += 1.0
             outstanding_prefetch[page] = 1.0
             insert_cache(page)
         quality_points.append((len(compiled), current_quality))
 
     def build_cagr_plan() -> None:
+        nonlocal logical_group_counter
         visible_count = min(window, cagr_group_pool, len(pending))
         visible = pending[:visible_count]
         groups = (
@@ -403,16 +454,58 @@ def replay_cagr_comparison(
             pending.remove(query)
             reserved.add(query)
         group_sizes.extend(len(group) for group in groups)
-        for group_index, group in enumerate(groups):
-            next_pages = (
-                tuple(sorted(normalized[groups[group_index + 1][0]]))
-                if group_index + 1 < len(groups)
-                else None
-            )
-            for start in range(0, len(group), request_batch_size):
-                batch = tuple(group[start : start + request_batch_size])
-                after = next_pages if start + request_batch_size >= len(group) else None
-                plan.append((batch, after))
+        identified_groups = []
+        for group in groups:
+            identified_groups.append((logical_group_counter, group))
+            logical_group_counter += 1
+        if cagr_cross_group_fill:
+            flattened = [
+                (query, group_id)
+                for group_id, group in identified_groups
+                for query in group
+            ]
+            batches = [
+                flattened[start : start + request_batch_size]
+                for start in range(0, len(flattened), request_batch_size)
+            ]
+            for batch_index, entries in enumerate(batches):
+                batch = tuple(query for query, _ in entries)
+                group_ids = tuple(group_id for _, group_id in entries)
+                next_pages = (
+                    tuple(sorted(normalized[batches[batch_index + 1][0][0]]))
+                    if batch_index + 1 < len(batches)
+                    else None
+                )
+                plan.append((batch, next_pages, group_ids))
+        else:
+            for group_index, (group_id, group) in enumerate(identified_groups):
+                next_pages = (
+                    tuple(sorted(normalized[identified_groups[group_index + 1][1][0]]))
+                    if group_index + 1 < len(identified_groups)
+                    else None
+                )
+                for start in range(0, len(group), request_batch_size):
+                    batch = tuple(group[start : start + request_batch_size])
+                    after = (
+                        next_pages
+                        if start + request_batch_size >= len(group)
+                        else None
+                    )
+                    plan.append((batch, after, (group_id,) * len(batch)))
+
+    def wait_for_group_trigger() -> None:
+        if policy != "cagr_faithful" or not pending or cagr_wait_budget <= 0.0:
+            return
+        oldest_arrival = min(query_arrival[query] for query in pending)
+        deadline = oldest_arrival + cagr_wait_budget
+        while (
+            len(pending) < cagr_min_pending
+            and next_arrival < query_count
+            and current_arrival_clock() < deadline - 1e-12
+        ):
+            target = min(float(times[next_arrival]), deadline)
+            advance_idle(target - current_arrival_clock())
+            release_arrivals()
 
     def select_regular_batch() -> tuple[int, ...]:
         batch: list[int] = []
@@ -486,29 +579,33 @@ def replay_cagr_comparison(
         return tuple(batch)
 
     while len(dispatch) < query_count:
-        while next_arrival < query_count and times[next_arrival] <= page_clock:
-            pending.append(int(order[next_arrival]))
-            next_arrival += 1
+        release_arrivals()
         if policy == "cagr_faithful" and not plan and pending:
+            wait_for_group_trigger()
             build_cagr_plan()
         if policy == "cagr_faithful" and plan:
-            batch, after_prefetch = plan.popleft()
+            batch, after_prefetch, group_ids = plan.popleft()
         elif pending:
             batch = select_regular_batch()
             after_prefetch = None
+            group_ids = ()
         else:
             if next_arrival >= query_count:
                 break
-            idle = float(times[next_arrival] - page_clock)
-            page_clock += idle
-            unit_cost_clock += idle
+            idle = float(times[next_arrival] - current_arrival_clock())
+            advance_idle(idle)
             continue
 
-        service_start = page_clock
+        service_start_page = page_clock
+        service_start_unit = unit_cost_clock
         for query in batch:
             for page in sorted(normalized[query]):
                 demand(page)
         query_batch_sizes.append(len(batch))
+        if group_ids:
+            counts = Counter(group_ids)
+            batch_group_purity.append(max(counts.values()) / len(group_ids))
+            cross_group_batches += int(len(counts) > 1)
         for query in batch:
             if query in reserved:
                 reserved.remove(query)
@@ -516,8 +613,10 @@ def replay_cagr_comparison(
             dispatch.append(query)
             completion_pages[query] = len(compiled)
             completion_cost[query] = unit_cost_clock
-            wait_page[query] = service_start - query_arrival[query]
+            wait_page[query] = service_start_page - query_arrival[query]
             sojourn_page[query] = page_clock - query_arrival[query]
+            wait_unit[query] = service_start_unit - query_arrival[query]
+            sojourn_unit[query] = unit_cost_clock - query_arrival[query]
         current_quality += float(gains[list(batch)].sum() / query_count)
         quality_points.append((len(compiled), current_quality))
         if after_prefetch is not None:
@@ -556,6 +655,8 @@ def replay_cagr_comparison(
         completion_unit_cost=tuple(completion_cost.tolist()),
         wait_page_work=tuple(wait_page.tolist()),
         sojourn_page_work=tuple(sojourn_page.tolist()),
+        wait_unit_time=tuple(wait_unit.tolist()),
+        sojourn_unit_time=tuple(sojourn_unit.tolist()),
         bypass_count=tuple(int(value) for value in bypass),
         final_unique_pages=len(compiled),
         quality_work_auc=quality_auc,
@@ -606,5 +707,20 @@ def replay_cagr_comparison(
             "size_p50": float(np.quantile(batch_array, 0.50)),
             "size_min": int(batch_array.min()),
             "size_max": int(batch_array.max()),
+            "group_purity_mean": (
+                float(np.mean(batch_group_purity)) if batch_group_purity else None
+            ),
+            "group_purity_p50": (
+                float(np.quantile(batch_group_purity, 0.50))
+                if batch_group_purity
+                else None
+            ),
+            "cross_group_count": cross_group_batches,
+            "cross_group_fraction": (
+                cross_group_batches / len(batch_group_purity)
+                if batch_group_purity
+                else None
+            ),
         },
+        total_unit_work=total_unit_work,
     )
