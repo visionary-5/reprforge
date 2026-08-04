@@ -166,6 +166,7 @@ class ReplayResult:
     bounded_group_wait: dict[str, Any]
     quality_publication_trace: tuple[dict[str, Any], ...]
     oracle_future_wait: dict[str, Any]
+    oracle_hard_fairness: dict[str, Any]
 
     def as_dict(self, *, starvation_window: int) -> dict[str, Any]:
         completion = np.asarray(self.completion_pages, dtype=np.float64)
@@ -198,6 +199,7 @@ class ReplayResult:
             "unit_work_per_query": self.total_unit_work / len(completion),
             "bounded_group_wait": self.bounded_group_wait,
             "oracle_future_wait": self.oracle_future_wait,
+            "oracle_hard_fairness": self.oracle_hard_fairness,
             "quality_work_auc": self.quality_work_auc,
             "normalized_quality_regret_auc": self.normalized_quality_regret_auc,
             "starvation": {
@@ -296,6 +298,8 @@ def replay_cagr_comparison(
     oracle_lambda_deadline: float = 0.0,
     oracle_deadline_scale: float = 64.0,
     oracle_future_wait_budget: float = 0.0,
+    oracle_bypass_budget: int | None = None,
+    oracle_wait_through_stream_end: bool = False,
 ) -> ReplayResult:
     """Replay one policy with persistent compilation and equal active LRU."""
 
@@ -349,6 +353,8 @@ def replay_cagr_comparison(
         oracle_future_wait_budget
     ):
         raise ValueError("oracle future wait must be finite and non-negative")
+    if oracle_bypass_budget is not None and oracle_bypass_budget < 0:
+        raise ValueError("oracle bypass budget must be non-negative")
 
     arrival_rank = np.empty(query_count, dtype=np.int64)
     arrival_rank[order] = np.arange(query_count)
@@ -408,6 +414,10 @@ def replay_cagr_comparison(
     logical_group_counter = 0
     bounded_group_wait_durations: list[float] = []
     oracle_future_wait_durations: list[float] = []
+    online_bypass = np.zeros(query_count, dtype=np.int64)
+    hard_fair_selection_count = 0
+    hard_fair_forced_count = 0
+    hard_fair_protected_queries: set[int] = set()
 
     def current_arrival_clock() -> float:
         return unit_cost_clock if arrival_clock == "unit" else page_clock
@@ -575,11 +585,19 @@ def replay_cagr_comparison(
             target = min(float(times[next_arrival]), deadline)
             advance_idle(target - current_arrival_clock())
             release_arrivals()
+        if (
+            oracle_wait_through_stream_end
+            and len(pending) < request_batch_size
+            and next_arrival >= query_count
+            and current_arrival_clock() < deadline - 1e-12
+        ):
+            advance_idle(deadline - current_arrival_clock())
         duration = current_arrival_clock() - wait_start
         if duration > 1e-12:
             oracle_future_wait_durations.append(duration)
 
     def select_regular_batch() -> tuple[int, ...]:
+        nonlocal hard_fair_selection_count, hard_fair_forced_count
         batch: list[int] = []
         staged: set[int] = set()
         virtual_compiled = set(compiled)
@@ -694,7 +712,7 @@ def replay_cagr_comparison(
                         + oracle_lambda_completion * completion_term
                         + oracle_lambda_deadline * deadline_term
                     )
-                selected = min(
+                unconstrained = min(
                     visible,
                     key=lambda query: (
                         -components[query],
@@ -702,8 +720,46 @@ def replay_cagr_comparison(
                         int(query),
                     ),
                 )
+                if oracle_bypass_budget is None:
+                    selected = unconstrained
+                else:
+                    hard_fair_selection_count += 1
+
+                    def feasible(query: int) -> bool:
+                        return all(
+                            online_bypass[victim] + 1 <= oracle_bypass_budget
+                            for victim in pending
+                            if arrival_rank[victim] < arrival_rank[query]
+                        )
+
+                    feasible_queries = [
+                        query for query in visible if feasible(query)
+                    ]
+                    if not feasible_queries:
+                        raise AssertionError("oldest pending query must remain feasible")
+                    selected = min(
+                        feasible_queries,
+                        key=lambda query: (
+                            -components[query],
+                            int(arrival_rank[query]),
+                            int(query),
+                        ),
+                    )
+                    if selected != unconstrained:
+                        hard_fair_forced_count += 1
+                        hard_fair_protected_queries.update(
+                            victim
+                            for victim in pending
+                            if arrival_rank[victim] < arrival_rank[unconstrained]
+                            and online_bypass[victim] + 1
+                            > oracle_bypass_budget
+                        )
             else:
                 raise AssertionError("regular selection called for CaGR")
+            if policy == "multiobjective_oracle":
+                for victim in pending:
+                    if arrival_rank[victim] < arrival_rank[selected]:
+                        online_bypass[victim] += 1
             pending.remove(selected)
             batch.append(selected)
             if policy == "multiobjective_oracle":
@@ -785,6 +841,12 @@ def replay_cagr_comparison(
     for query in range(query_count):
         younger = arrival_rank > arrival_rank[query]
         bypass[query] = int(np.sum(younger & (dispatch_rank < dispatch_rank[query])))
+    if (
+        policy == "multiobjective_oracle"
+        and oracle_bypass_budget is not None
+        and not np.array_equal(online_bypass, bypass)
+    ):
+        raise AssertionError("online hard-fair bypass accounting differs from replay")
 
     final_quality = float(base_mean_quality + gains.mean())
     quality_auc, normalized_regret = _quality_metrics(
@@ -904,6 +966,32 @@ def replay_cagr_comparison(
                 float(max(oracle_future_wait_durations))
                 if oracle_future_wait_durations
                 else 0.0
+            ),
+        },
+        oracle_hard_fairness={
+            "configured_bypass_budget": (
+                oracle_bypass_budget
+                if policy == "multiobjective_oracle"
+                else None
+            ),
+            "selection_count": hard_fair_selection_count,
+            "forced_selection_count": hard_fair_forced_count,
+            "forced_selection_fraction": (
+                hard_fair_forced_count / hard_fair_selection_count
+                if hard_fair_selection_count
+                else 0.0
+            ),
+            "protected_unique_queries": len(hard_fair_protected_queries),
+            "protected_query_fraction": (
+                len(hard_fair_protected_queries) / query_count
+                if query_count
+                else 0.0
+            ),
+            "max_final_younger_bypass": int(bypass.max()),
+            "budget_violation_count": (
+                int(np.sum(bypass > oracle_bypass_budget))
+                if oracle_bypass_budget is not None
+                else 0
             ),
         },
     )

@@ -81,6 +81,14 @@ def _replay(
         oracle_lambda_deadline=float(config.get("lambda_deadline", 0.0)),
         oracle_deadline_scale=float(config.get("deadline_scale", 64.0)),
         oracle_future_wait_budget=float(config.get("future_wait_budget", 0.0)),
+        oracle_bypass_budget=(
+            None
+            if config.get("bypass_budget") is None
+            else int(config["bypass_budget"])
+        ),
+        oracle_wait_through_stream_end=bool(
+            config.get("wait_through_stream_end", False)
+        ),
     )
 
 
