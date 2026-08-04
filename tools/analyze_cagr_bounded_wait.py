@@ -449,7 +449,7 @@ def _finance_gate(
                 frontier["unit_work_per_query"]
                 / adaptation["unit_work_per_query"]
             )
-            adaptation_pareto = bool(
+            adaptation_system_pareto = bool(
                 adaptation["sojourn_unit_time"]["mean"]
                 <= frontier["sojourn_unit_time"]["mean"]
                 and adaptation["unit_work_per_query"]
@@ -466,7 +466,13 @@ def _finance_gate(
                     "arrival_model": model,
                     "frontier_sojourn_advantage": sojourn_adv,
                     "frontier_unit_work_advantage": work_adv,
-                    "adaptation_pareto_dominates_frontier": adaptation_pareto,
+                    "adaptation_system_pareto_dominates_frontier": (
+                        adaptation_system_pareto
+                    ),
+                    "pareto_scope": (
+                        "two preregistered system axes only: mean sojourn and "
+                        "charged unit work; quality regret is excluded"
+                    ),
                     "frontier_over_adaptation_p95_sojourn_ratio": (
                         frontier["sojourn_unit_time"]["p95"]
                         / adaptation["sojourn_unit_time"]["p95"]
@@ -482,7 +488,7 @@ def _finance_gate(
                     "passes": bool(
                         sojourn_adv >= 0.05
                         and work_adv >= 0.05
-                        and not adaptation_pareto
+                        and not adaptation_system_pareto
                     ),
                 }
             )
@@ -544,6 +550,25 @@ def main() -> None:
             "arrival-to-publication unit-time: build/reload/prefetch=1, hit=0; "
             "idle and bounded wait advance elapsed time but not charged unit work"
         ),
+        "comparison_invariants": {
+            "same_arrival_timestamps_per_seed_and_model": True,
+            "arrival_and_service_clock": "unit",
+            "cache_capacity_pages": 80,
+            "physical_request_batch_max_queries": 8,
+            "demand_build_unit_work": 1,
+            "demand_reload_unit_work": 1,
+            "prefetch_build_or_reload_unit_work": 1,
+            "hit_unit_work": 0,
+            "atomic_batch_publication": True,
+            "frontier_prefetch": (
+                "disabled because frontier has no preregistered stable group or "
+                "physical-batch boundary; bounded CaGR prefetch is fully charged"
+            ),
+            "pareto_scope": (
+                "mean arrival-to-publication sojourn and charged unit work per "
+                "query only; quality regret is a reported tradeoff, not a gate axis"
+            ),
+        },
         "hr_access_only_provenance": hr_access["provenance"],
         "selection": {
             **selection,

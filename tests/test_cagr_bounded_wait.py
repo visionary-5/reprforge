@@ -76,6 +76,10 @@ def test_finance_gate_requires_five_percent_on_both_primary_metrics():
     assert gate["decision"] == "STOP/DOWNGRADE"
     assert all(not check["passes"] for check in gate["checks"])
     assert all(
+        "quality regret is excluded" in check["pareto_scope"]
+        for check in gate["checks"]
+    )
+    assert all(
         np.isclose(check["frontier_unit_work_advantage"], 0.04)
         for check in gate["checks"]
     )
