@@ -14,6 +14,8 @@ from typing import Any
 
 import numpy as np
 
+from reprforge.causal_hard_frontier import HardBudgetFrontier
+
 
 POLICIES = (
     "fifo",
@@ -23,6 +25,7 @@ POLICIES = (
     "cagr_faithful",
     "frontier",
     "multiobjective_oracle",
+    "hard_budget_frontier",
 )
 
 
@@ -167,6 +170,7 @@ class ReplayResult:
     quality_publication_trace: tuple[dict[str, Any], ...]
     oracle_future_wait: dict[str, Any]
     oracle_hard_fairness: dict[str, Any]
+    scheduler_control: dict[str, Any]
 
     def as_dict(self, *, starvation_window: int) -> dict[str, Any]:
         completion = np.asarray(self.completion_pages, dtype=np.float64)
@@ -414,10 +418,22 @@ def replay_cagr_comparison(
     logical_group_counter = 0
     bounded_group_wait_durations: list[float] = []
     oracle_future_wait_durations: list[float] = []
+    causal_wait_durations: list[float] = []
     online_bypass = np.zeros(query_count, dtype=np.int64)
     hard_fair_selection_count = 0
     hard_fair_forced_count = 0
     hard_fair_protected_queries: set[int] = set()
+    if policy == "hard_budget_frontier" and (
+        request_batch_size != HardBudgetFrontier.BATCH_SIZE
+        or window != HardBudgetFrontier.WINDOW
+        or cache_capacity != HardBudgetFrontier.CACHE_CAPACITY
+    ):
+        raise ValueError("hard_budget_frontier has frozen batch/window/cache")
+    causal_scheduler = (
+        HardBudgetFrontier()
+        if policy == "hard_budget_frontier"
+        else None
+    )
 
     def current_arrival_clock() -> float:
         return unit_cost_clock if arrival_clock == "unit" else page_clock
@@ -435,7 +451,12 @@ def replay_cagr_comparison(
             next_arrival < query_count
             and times[next_arrival] <= current_arrival_clock() + 1e-12
         ):
-            pending.append(int(order[next_arrival]))
+            query = int(order[next_arrival])
+            pending.append(query)
+            if causal_scheduler is not None:
+                causal_scheduler.arrival(
+                    query, normalized[query], float(times[next_arrival])
+                )
             next_arrival += 1
 
     def insert_cache(page: int) -> None:
@@ -596,8 +617,39 @@ def replay_cagr_comparison(
         if duration > 1e-12:
             oracle_future_wait_durations.append(duration)
 
+    def wait_for_causal_trigger() -> None:
+        if causal_scheduler is None or not causal_scheduler.has_pending:
+            return
+        wait_start = current_arrival_clock()
+        while not causal_scheduler.ready(current_arrival_clock()):
+            deadline = causal_scheduler.timer_deadline()
+            if deadline is None:
+                break
+            if (
+                next_arrival < query_count
+                and float(times[next_arrival]) <= deadline + 1e-12
+            ):
+                target = float(times[next_arrival])
+                advance_idle(target - current_arrival_clock())
+                release_arrivals()
+                continue
+            advance_idle(deadline - current_arrival_clock())
+            causal_scheduler.timer(current_arrival_clock())
+            break
+        duration = current_arrival_clock() - wait_start
+        if duration > 1e-12:
+            causal_wait_durations.append(duration)
+
     def select_regular_batch() -> tuple[int, ...]:
         nonlocal hard_fair_selection_count, hard_fair_forced_count
+        if causal_scheduler is not None:
+            causal_scheduler.sync_index_state(compiled, tuple(cache.pages))
+            selected_batch = causal_scheduler.dispatch(current_arrival_clock())
+            if not selected_batch:
+                raise AssertionError("causal scheduler dispatched an empty batch")
+            for query in selected_batch:
+                pending.remove(query)
+            return selected_batch
         batch: list[int] = []
         staged: set[int] = set()
         virtual_compiled = set(compiled)
@@ -777,6 +829,8 @@ def replay_cagr_comparison(
             build_cagr_plan()
         if policy == "multiobjective_oracle" and pending:
             wait_for_oracle_trigger()
+        if policy == "hard_budget_frontier" and pending:
+            wait_for_causal_trigger()
         if policy == "cagr_faithful" and plan:
             batch, after_prefetch, group_ids = plan.popleft()
         elif pending:
@@ -847,6 +901,13 @@ def replay_cagr_comparison(
         and not np.array_equal(online_bypass, bypass)
     ):
         raise AssertionError("online hard-fair bypass accounting differs from replay")
+    if causal_scheduler is not None:
+        if causal_scheduler.has_pending:
+            raise AssertionError("causal scheduler ended with pending queries")
+        if causal_scheduler.bypass_counts(tuple(range(query_count))) != tuple(
+            int(value) for value in bypass
+        ):
+            raise AssertionError("causal bypass accounting differs from replay")
 
     final_quality = float(base_mean_quality + gains.mean())
     quality_auc, normalized_regret = _quality_metrics(
@@ -953,18 +1014,52 @@ def replay_cagr_comparison(
             "budget": (
                 oracle_future_wait_budget
                 if policy == "multiobjective_oracle"
-                else None
+                else (
+                    HardBudgetFrontier.TIMEOUT
+                    if policy == "hard_budget_frontier"
+                    else None
+                )
             ),
-            "events": len(oracle_future_wait_durations),
-            "total_unit_time": float(sum(oracle_future_wait_durations)),
+            "events": len(
+                causal_wait_durations
+                if policy == "hard_budget_frontier"
+                else oracle_future_wait_durations
+            ),
+            "total_unit_time": float(
+                sum(
+                    causal_wait_durations
+                    if policy == "hard_budget_frontier"
+                    else oracle_future_wait_durations
+                )
+            ),
             "mean_unit_time": (
-                float(np.mean(oracle_future_wait_durations))
-                if oracle_future_wait_durations
+                float(
+                    np.mean(
+                        causal_wait_durations
+                        if policy == "hard_budget_frontier"
+                        else oracle_future_wait_durations
+                    )
+                )
+                if (
+                    causal_wait_durations
+                    if policy == "hard_budget_frontier"
+                    else oracle_future_wait_durations
+                )
                 else 0.0
             ),
             "max_unit_time": (
-                float(max(oracle_future_wait_durations))
-                if oracle_future_wait_durations
+                float(
+                    max(
+                        causal_wait_durations
+                        if policy == "hard_budget_frontier"
+                        else oracle_future_wait_durations
+                    )
+                )
+                if (
+                    causal_wait_durations
+                    if policy == "hard_budget_frontier"
+                    else oracle_future_wait_durations
+                )
                 else 0.0
             ),
         },
@@ -972,18 +1067,43 @@ def replay_cagr_comparison(
             "configured_bypass_budget": (
                 oracle_bypass_budget
                 if policy == "multiobjective_oracle"
-                else None
+                else (
+                    HardBudgetFrontier.BYPASS_BUDGET
+                    if policy == "hard_budget_frontier"
+                    else None
+                )
             ),
-            "selection_count": hard_fair_selection_count,
-            "forced_selection_count": hard_fair_forced_count,
+            "selection_count": (
+                causal_scheduler.audit()["selection_count"]
+                if causal_scheduler is not None
+                else hard_fair_selection_count
+            ),
+            "forced_selection_count": (
+                causal_scheduler.audit()["forced_selection_count"]
+                if causal_scheduler is not None
+                else hard_fair_forced_count
+            ),
             "forced_selection_fraction": (
-                hard_fair_forced_count / hard_fair_selection_count
-                if hard_fair_selection_count
-                else 0.0
+                causal_scheduler.audit()["forced_selection_fraction"]
+                if causal_scheduler is not None
+                else (
+                    hard_fair_forced_count / hard_fair_selection_count
+                    if hard_fair_selection_count
+                    else 0.0
+                )
             ),
-            "protected_unique_queries": len(hard_fair_protected_queries),
+            "protected_unique_queries": (
+                causal_scheduler.audit()["protected_unique_queries"]
+                if causal_scheduler is not None
+                else len(hard_fair_protected_queries)
+            ),
             "protected_query_fraction": (
-                len(hard_fair_protected_queries) / query_count
+                (
+                    causal_scheduler.audit()["protected_unique_queries"]
+                    if causal_scheduler is not None
+                    else len(hard_fair_protected_queries)
+                )
+                / query_count
                 if query_count
                 else 0.0
             ),
@@ -991,7 +1111,22 @@ def replay_cagr_comparison(
             "budget_violation_count": (
                 int(np.sum(bypass > oracle_bypass_budget))
                 if oracle_bypass_budget is not None
-                else 0
+                else (
+                    causal_scheduler.audit()["budget_violation_count"]
+                    if causal_scheduler is not None
+                    else 0
+                )
             ),
         },
+        scheduler_control=(
+            causal_scheduler.audit()
+            if causal_scheduler is not None
+            else {
+                "policy": policy,
+                "counting_scope": "dispatch+selection lower bound only",
+                "dispatch_events": len(query_batch_sizes),
+                "selection_count": len(dispatch),
+                "control_operations": len(query_batch_sizes) + len(dispatch),
+            }
+        ),
     )
