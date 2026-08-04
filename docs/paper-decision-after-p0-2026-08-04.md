@@ -21,6 +21,7 @@ ReprForge 已经证明“视觉多向量索引构建过程值得被单独研究�
 | Completion-constrained locality | `exp/frontier-constrained-locality` `225be9a` | **NO-DEPLOYABLE** | delta=1 形成均值折中，但 P95 全部失败 | 简单无权重 Pareto key 不足以解决 tail |
 | Deadline/oldest override | `exp/deadline-constrained-locality` `b3b4662` | **NO-GO；停止微调** | 两规则 starvation 仍约 21%--23%，P95/pages/sojourn/work 同时失败 | 下一步需要有保证的 deadline 机制，不是再换 tie-break |
 | Multi-objective oracle headroom | `exp/multiobjective-oracle-headroom` `ad11bbd` | **注册家族内无安全点** | 60 个 qrel/cost/future-aware 配置中，24 个通过主要目标与 P95、4 个通过 starvation，但交集为 0；最强非安全点的六轴最坏比率为 0.828，starvation 仍为 12.26% | 简单权重扫描存在结构性效率--公平冲突；该结论仅限注册的 greedy oracle 家族 |
+| Fairness metric validity | `exp/fairness-metric-audit` `28ac077` | **bypass-only 无效** | 16 个 domain×arrival×method cell 没有一个让 bypass64 同时强匹配 extreme sojourn 与 slowdown；tail-label F1 仅 0.013--0.450 | bypass 只能作重排诊断；用户公平需联合 absolute sojourn 与 per-demand slowdown |
 
 ## 经独立复核的 Finance 反例
 
@@ -67,7 +68,7 @@ Frontier 在第 1 轴明显更强；bounded CaGR 在系统 mean/P95 和第 2 轴
 
 该验证现已完成：预注册的 60 点 clairvoyant greedy 家族在 HR 上没有安全候选，因此 Finance 按合同保持封存。最强非安全候选在 burst/Poisson 上把 mean sojourn、charged work 和 elapsed quality regret 全部压到对应端点的 0.72--0.83 倍，P95 也更好，但 starvation 为 12.26%；仅有的 4 个 starvation-safe 候选不使用 completion 信号，最坏主要比率约 1.38。这个结果否定的是“用现有三个信号做简单加权即可得到全面更优策略”，不是对所有调度算法的不可行性证明。
 
-因此下一项方法工作不能再是权重、tie-break 或窗口微调。只有在引入可证明的 per-query service guarantee、显式约束求解，或新的可观测 utility/cost predictor 后，才值得重新开启算法分支；否则应直接固化 measurement/system 论文。
+因此下一项方法工作不能再是权重、tie-break 或窗口微调。只有在引入可证明的 per-query service guarantee、显式约束求解，或新的可观测 utility/cost predictor 后，才值得重新开启算法分支；否则应直接固化 measurement/system 论文。并且 service guarantee 不能只定义成 bypass：审计中 deadline-only 的 bypass 恒为 0，但绝对等待尾部仍接近最差；bounded CaGR 的 max bypass 低于 64，slowdown P95 仍可达约 1848--2381。新的约束至少要联合 absolute sojourn 与按自身 demand 归一化的 slowdown，bypass 仅保留为排序诊断。
 
 ## 投稿建议
 

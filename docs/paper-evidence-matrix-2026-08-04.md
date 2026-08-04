@@ -28,6 +28,7 @@ ReprForge 只有同时满足下面五点，才能从“有效系统机制”提�
 | RQ8 发布修订是否安全 | HR、Finance | 全发布、不发布、固定规则、交叉拟合、oracle | 有害修订、正收益保留、CVaR | 严格 NO-GO | 作为局限，不列主贡献 |
 | RQ9 是否只是 EdgeRAG 缓存或 CaGR 分组 | HR、Finance，W64 burst/Poisson | EdgeRAG-faithful 成本缓存、CaGR-faithful/strong/bounded 分组预取、frontier | mean/P95 sojourn、charged work、命中、预取 | EdgeRAG **CONTINUE**；bounded CaGR **STOP/DOWNGRADE** | Frontier 不能再作为全面更优的主算法 |
 | RQ10 是否存在同时保质量与局部性的简单调度 | HR 选择、Finance 冻结 | cost-first、completion-constrained、deadline override、60 点 clairvoyant greedy oracle | 三轴 regret、P95、starvation、constraint violation | 三个启发式和注册 oracle 家族均 **NO-GO**；oracle 的 24 个 primary/P95 合格点与 4 个 starvation 合格点无交集 | 停止启发式微调；新方法必须引入显式服务保证或约束求解 |
+| RQ11 starvation 指标是否代表用户等待公平 | HR、Finance；burst/Poisson | frontier、bounded CaGR、oracle_15、deadline-only | bypass 阈值、absolute sojourn、per-demand slowdown、tail-label overlap | **bypass-only NO-GO**；16 cells 均未同时强匹配两个 extreme tail，F1 0.013--0.450 | 论文不得把 starvation=0 等同用户公平；采用 joint sojourn+slowdown |
 
 ## 数据集分工
 

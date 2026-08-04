@@ -162,3 +162,13 @@ pass the primary endpoint and P95 checks, and four pass the starvation check,
 but their intersection is empty.  This closes scheduler-weight and tie-break
 tuning; it is explicitly a finite-family result rather than an impossibility
 theorem.
+
+### `exp/fairness-metric-audit`
+
+Question: does the frozen `younger-bypass >= 64` diagnostic identify the same
+queries as extreme absolute sojourn and per-demand slowdown?
+
+Result: no.  Across 16 domain-by-arrival-by-method cells, bypass64 is never a
+strong detector for both user-facing tails.  Absolute sojourn and slowdown also
+select different queries.  Future constrained schedulers must therefore report
+both tails and treat bypass only as an ordering diagnostic.
