@@ -55,7 +55,12 @@ qualified 点，也是唯一 Pareto 点，配置 SHA-256 为
 这比“解耦”更具体：数据表明软 deadline 权重无法形成安全插值，而硬 ordering budget
 产生了一个非平凡可行区间；过紧、可行、过松三个区域都被四点实验观察到。
 
-## Finance 封存域结果
+## Finance 冻结迁移结果
+
+这里的 “冻结” 只表示配置选择函数没有 Finance 数据依赖，代码路径先在 HR 选择并固定
+SHA，随后才读取包含 Finance evaluation 的 time reference 和 Finance workload，整个
+transfer 不做 Finance 调参。仓库历史中早已有 Finance endpoint 与相关实验，因此不能
+声称实验者层面的全新盲测或严格未开封测试。
 
 ### 绝对指标
 
@@ -131,12 +136,19 @@ constraint，并在更多 benchmark、真实编译时间和并发执行下做 tr
 
 - 四个 endpoint 的全部 system aggregates/order hashes 与 time reference 精确一致；
 - 所有 hard runs final union/query parity，budget violation 为 0；
-- HR 先选择并冻结配置 SHA，随后才加载 Finance；
+- 配置选择函数不接收 Finance 数据；经测试的执行顺序为 HR load/evaluate/freeze、读取
+  Finance-bearing reference、加载 Finance workload；
+- 历史 Finance endpoint 已存在，本实验只称 frozen transfer/no Finance tuning，不称
+  human-level blind test；
+- 三个主门分别使用预注册的 strongest endpoint：sojourn/work 对 bounded CaGR，elapsed
+  quality regret 对 frontier；unique-page quality 则明确落后；
 - JSON 保存每 seed 三轴、system、trigger、dispatch/trace hashes、输入 provenance、主 gate
   和独立 observability diagnostic；
 - 全仓测试通过，JSON 连续运行 byte-identical。
 - result JSON SHA-256：
-  `a53d190e7122ae9e086e8c6fd65fbb565baf8671b3a3953ea54d5e071070fc2f`。
+  `765fbcdad3d02a2cb1a1222f87874f3721a797c933f226051df8a04d61e62233`。相对首版
+  `a53d190e...fc2f` 只修正 selection/transfer provenance 字段；删除这些字段后其余 JSON
+  精确一致，所有数值、顺序、GO 与 observability 结果不变。
 
 复现命令：
 

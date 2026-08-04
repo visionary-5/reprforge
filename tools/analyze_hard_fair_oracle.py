@@ -273,7 +273,7 @@ def _evaluate_hr(data: dict[str, Any]) -> dict[str, Any]:
                 "equal-weight distance-to-ideal knee"
             ),
             "candidate_count": len(candidates),
-            "finance_opened_during_selection": False,
+            "finance_data_used_during_selection": False,
             "candidate_table": candidates,
         }
     )
@@ -530,6 +530,42 @@ def _finance_gate(
     }
 
 
+def _read_json(path: Path) -> dict[str, Any]:
+    return json.loads(path.read_text())
+
+
+def _load_selection_first_inputs(
+    data_root: Path,
+    time_reference_path: Path,
+    *,
+    domain_loader: Any = load_domain,
+    hr_evaluator: Any = _evaluate_hr,
+    reference_loader: Any = _read_json,
+) -> tuple[
+    dict[str, Any],
+    dict[str, Any],
+    dict[str, Any] | None,
+    str,
+    dict[str, Any],
+    dict[str, Any],
+]:
+    """Freeze HR selection before reading any Finance-bearing input."""
+
+    hr = domain_loader(data_root / "hr", 20)
+    hr_result = hr_evaluator(hr)
+    selected = hr_result["selection"]["selected"]
+    frozen_digest = hr_result["selection"]["selected_config_sha256"]
+    if _json_digest(selected) != frozen_digest:
+        raise AssertionError("hard-fair selection digest was not frozen on HR")
+
+    # The time reference contains a Finance evaluation, so it belongs on the
+    # transfer side of the boundary even though it is used only for endpoint
+    # parity auditing.
+    time_reference = reference_loader(time_reference_path)
+    finance = domain_loader(data_root / "finance", 20)
+    return hr, hr_result, selected, frozen_digest, time_reference, finance
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--data-root", type=Path, required=True)
@@ -537,17 +573,16 @@ def main() -> None:
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
 
-    time_reference = json.loads(args.time_reference.read_text())
-    hr = load_domain(args.data_root / "hr", 20)
-    hr_result = _evaluate_hr(hr)
-    selected = hr_result["selection"]["selected"]
-    frozen_digest = hr_result["selection"]["selected_config_sha256"]
+    (
+        hr,
+        hr_result,
+        selected,
+        frozen_digest,
+        time_reference,
+        finance,
+    ) = _load_selection_first_inputs(args.data_root, args.time_reference)
     if _json_digest(selected) != frozen_digest:
-        raise AssertionError("hard-fair selection changed before Finance unseal")
-
-    finance = load_domain(args.data_root / "finance", 20)
-    if _json_digest(selected) != frozen_digest:
-        raise AssertionError("hard-fair selection changed after Finance unseal")
+        raise AssertionError("hard-fair selection changed during frozen transfer")
     finance_result = _evaluate_finance(finance, selected)
     gate = _finance_gate(
         finance_result,
@@ -621,10 +656,18 @@ def main() -> None:
             for domain, data in (("hr", hr), ("finance", finance))
         },
         "hr": hr_result,
-        "unseal_audit": {
-            "selected_config_sha256_before_finance": frozen_digest,
-            "selected_config_sha256_after_finance": _json_digest(selected),
-            "finance_loaded_after_hr_selection": True,
+        "frozen_transfer_provenance_audit": {
+            "selected_config_sha256_before_transfer_reads": frozen_digest,
+            "selected_config_sha256_after_transfer_evaluation": _json_digest(
+                selected
+            ),
+            "configuration_selection_has_finance_data_dependency": False,
+            "code_path_selection_first": True,
+            "finance_bearing_reference_loaded_after_hr_selection": True,
+            "finance_workload_loaded_after_hr_selection": True,
+            "finance_tuning_performed": False,
+            "historical_finance_endpoints_already_existed": True,
+            "human_level_novel_blind_test_claimed": False,
         },
         "finance": finance_result,
         "finance_gate": gate,

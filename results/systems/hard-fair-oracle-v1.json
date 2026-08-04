@@ -18767,6 +18767,17 @@
     "lambda_deadline": 0.25,
     "lambda_quality": 0.0
   },
+  "frozen_transfer_provenance_audit": {
+    "code_path_selection_first": true,
+    "configuration_selection_has_finance_data_dependency": false,
+    "finance_bearing_reference_loaded_after_hr_selection": true,
+    "finance_tuning_performed": false,
+    "finance_workload_loaded_after_hr_selection": true,
+    "historical_finance_endpoints_already_existed": true,
+    "human_level_novel_blind_test_claimed": false,
+    "selected_config_sha256_after_transfer_evaluation": "79b6aa7a5ed353bd19cb07109e45893b441835f1f16020c52b208c876b0b41f6",
+    "selected_config_sha256_before_transfer_reads": "79b6aa7a5ed353bd19cb07109e45893b441835f1f16020c52b208c876b0b41f6"
+  },
   "gpu_used": false,
   "hr": {
     "evaluation": {
@@ -48818,7 +48829,7 @@
         }
       ],
       "criterion": "seven-axis qualified Pareto set followed by min-max normalized equal-weight distance-to-ideal knee",
-      "finance_opened_during_selection": false,
+      "finance_data_used_during_selection": false,
       "normalization_maxima": [
         0.9321318266144262,
         0.949729173194861,
@@ -71449,10 +71460,5 @@
   "time_reference": {
     "path": "/Users/aura/gpu-systems-incubator/reprforge-worktrees/hard-fair-oracle/results/systems/time-aligned-quality-v1.json",
     "sha256": "ea618d84cc9306a9734841003f28f2a966cd8212938744ad69bcde06d8670017"
-  },
-  "unseal_audit": {
-    "finance_loaded_after_hr_selection": true,
-    "selected_config_sha256_after_finance": "79b6aa7a5ed353bd19cb07109e45893b441835f1f16020c52b208c876b0b41f6",
-    "selected_config_sha256_before_finance": "79b6aa7a5ed353bd19cb07109e45893b441835f1f16020c52b208c876b0b41f6"
   }
 }

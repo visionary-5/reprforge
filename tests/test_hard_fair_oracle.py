@@ -5,8 +5,10 @@ from tools.analyze_hard_fair_oracle import (
     BASE_ORACLE_CONFIG,
     _candidate_grid,
     _finance_gate,
+    _load_selection_first_inputs,
     _select_knee,
 )
+from tools.analyze_cagr_bounded_wait import _json_digest
 
 
 def _replay(budget, *, batch_size=1):
@@ -41,6 +43,53 @@ def test_registered_grid_only_changes_hard_bypass_budget() -> None:
         == BASE_ORACLE_CONFIG
         for row in grid
     )
+
+
+def test_hr_selection_precedes_all_finance_bearing_reads(tmp_path) -> None:
+    events = []
+    selection_frozen = False
+    selected = {**BASE_ORACLE_CONFIG, "bypass_budget": 32}
+
+    def domain_loader(path, candidate_k):
+        nonlocal selection_frozen
+        assert candidate_k == 20
+        if path.name == "finance":
+            assert selection_frozen
+        events.append(f"load_domain:{path.name}")
+        return {"domain": path.name}
+
+    def hr_evaluator(data):
+        nonlocal selection_frozen
+        assert data == {"domain": "hr"}
+        events.append("evaluate_and_freeze_hr")
+        selection_frozen = True
+        return {
+            "selection": {
+                "selected": selected,
+                "selected_config_sha256": _json_digest(selected),
+            }
+        }
+
+    def reference_loader(path):
+        assert selection_frozen
+        events.append("read_finance_bearing_reference")
+        return {"path": str(path)}
+
+    loaded = _load_selection_first_inputs(
+        tmp_path,
+        tmp_path / "time-reference.json",
+        domain_loader=domain_loader,
+        hr_evaluator=hr_evaluator,
+        reference_loader=reference_loader,
+    )
+    assert events == [
+        "load_domain:hr",
+        "evaluate_and_freeze_hr",
+        "read_finance_bearing_reference",
+        "load_domain:finance",
+    ]
+    assert loaded[2] == selected
+    assert loaded[3] == _json_digest(selected)
 
 
 def test_hard_constraint_forces_old_query_before_budget_violation() -> None:
