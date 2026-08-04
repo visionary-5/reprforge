@@ -505,7 +505,12 @@ def _finance_gate(
                     "passes": passes,
                 }
             )
-    decision = "STRONG GO" if checks and all(row["passes"] for row in checks) else "STOP/DOWNGRADE"
+    no_deployable = not checks
+    decision = (
+        "STRONG GO"
+        if not no_deployable and all(row["passes"] for row in checks)
+        else "STOP/DOWNGRADE"
+    )
     return {
         "criterion": (
             "every unique HR-selected deployable adaptation must leave frontier "
@@ -513,11 +518,17 @@ def _finance_gate(
             "with no adaptation Pareto dominance"
         ),
         "checks": checks,
+        "no_deployable_hr_selection": no_deployable,
         "decision": decision,
         "paper_action": (
             "retain strong beat-CaGR claim"
             if decision == "STRONG GO"
-            else "downgrade/stop beat-CaGR claim and expose counterexample"
+            else (
+                "downgrade/stop beat-CaGR claim: no adaptation passed the HR "
+                "deployment constraints"
+                if no_deployable
+                else "downgrade/stop beat-CaGR claim and expose counterexample"
+            )
         ),
     }
 
@@ -564,6 +575,20 @@ def main() -> None:
             "selected_config_sha256_after_finance_load": _json_digest(selected),
             "hr_quality_loaded_after_selection": True,
             "finance_loaded_after_selection": True,
+        },
+        "inputs_after_unseal": {
+            "hr": {
+                "query_count": hr_full["query_count"],
+                "corpus_pages": hr_full["corpus_pages"],
+                "candidate_union_pages": hr_full["candidate_union_pages"],
+                "provenance": hr_full["provenance"],
+            },
+            "finance": {
+                "query_count": finance_full["query_count"],
+                "corpus_pages": finance_full["corpus_pages"],
+                "candidate_union_pages": finance_full["candidate_union_pages"],
+                "provenance": finance_full["provenance"],
+            },
         },
         "evaluation": evaluation,
         "finance_gate": gate,

@@ -75,3 +75,12 @@ def test_finance_gate_stops_when_either_frontier_advantage_is_below_five_percent
         np.isclose(check["frontier_unit_cost_advantage"], 0.04)
         for check in gate["checks"]
     )
+
+
+def test_finance_gate_stops_explicitly_when_hr_has_no_deployable_candidate():
+    gate = _finance_gate({}, {"lower_theta": None, "fixed_size": None})
+
+    assert gate["decision"] == "STOP/DOWNGRADE"
+    assert gate["checks"] == []
+    assert gate["no_deployable_hr_selection"] is True
+    assert "no adaptation passed" in gate["paper_action"]
