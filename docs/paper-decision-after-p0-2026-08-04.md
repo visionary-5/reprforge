@@ -1,6 +1,6 @@
 # ReprForge P0 反事实后的论文决策
 
-日期：2026-08-04。状态：**停止软启发式微调；hard-budget frontier 成为主方法候选，等待联合尾部、跨域与真实系统验证。**
+日期：2026-08-04。状态：**hard-budget frontier 已达到 replay 级 paper-method candidate；当前优先补 closest-work、结构消融、跨检索器与真实成本验证。**
 
 ## 一句话判断
 
@@ -24,6 +24,8 @@ ReprForge 已经证明“视觉多向量索引构建过程值得被单独研究�
 | Fairness metric validity | `exp/fairness-metric-audit` `28ac077` | **bypass-only 无效** | 16 个 domain×arrival×method cell 没有一个让 bypass64 同时强匹配 extreme sojourn 与 slowdown；tail-label F1 仅 0.013--0.450 | bypass 只能作重排诊断；用户公平需联合 absolute sojourn 与 per-demand slowdown |
 | Hard-budget frontier | `exp/hard-fair-oracle` `e05fe87` | **HEADROOM GO** | HR 唯一选择 B=32；Finance burst/Poisson 相对 bounded CaGR mean sojourn -8.06%/-7.76%、work/query -5.79%/-5.11%，elapsed regret 不劣于 frontier；max bypass=32、违规=0 | 硬约束而非软权重产生可行区；冻结策略事后可观测性审计表明可因果在线实现 |
 | Joint user-tail transfer | `exp/hard-fair-joint-tail` `a1291fe` | **GO，带 subgroup 边界** | HR/Finance 4/4 主 cell 的 sojourn/slowdown P95/P99/max 与最长无服务全过；五域 joint-tail 10/10、完整综合门 9/10 | pooled tail 可迁移；Industrial burst 仅差 5% 效果量门，但 HR late-arrival Q4 slowdown P99 仍比 frontier 高 1.74--1.81× |
+| Counterfactual slowdown | `exp/counterfactual-slowdown` `e646106` | **校正后 GO** | 固定 FIFO demand 分母后 HR Q4 P99 ratio 从 1.814/1.736 修正为 0.945/0.896；五域 P95/P99 10/10 | 旧 Q4 弱点是内生分母伪影；校正后 slowdown 只是不劣/小幅改善，strict max 仍有单 query 反例 |
+| Causal Hard Frontier | `exp/causal-hard-frontier` `29448fd` | **PAPER METHOD CANDIDATE** | 无 qrel/future/EOS API；20/20 reference cells 全量 exact；五域 median sojourn/work/elapsed ratios 0.923/0.949/0.948，9/10 cell 至少一轴改善 5%，10/10 P99 更优 | 方法已从 oracle 物化成因果事件驱动 policy；跨 retriever 与真实 GPU/cost estimator 尚未验证 |
 
 ## 经独立复核的 Finance 反例
 
@@ -50,9 +52,9 @@ Frontier 在第 1 轴明显更强；bounded CaGR 在系统 mean/P95 和第 2 轴
 2. **系统：** ReprForge 实现可恢复、可版本化的异构表示构建和精确增量控制面；30K 查询低于 4.1 秒和 300 MiB。
 3. **实证：** 五个 ViDoRe 域、IRPapers、ColPali/ColModernVBERT 和真实 A100 表明构建顺序会显著改变查询完成和质量轨迹。
 4. **发现：** EdgeRAG 风格缓存不能消除共享 completion 价值，但强 CaGR locality 能在部分负载反超系统成本；方法排名随计量轴和负载反转。
-5. **方法候选：** 固定 completion/deadline 效用并施加每查询 younger-bypass 硬预算；B=32 在 HR 唯一合格并冻结迁移到 Finance，两种到达模型均在 mean/P95、charged work 和 elapsed evidence quality 上通过门槛。
+5. **方法：** Causal Hard Frontier 用已到达 locator cohort、当前 compiled/LRU、age 与 bypass counter 做 completion/deadline 调度，并施加每查询 younger-bypass 硬预算；独立 API 不接收 qrel 或未来 trace，五域取得稳定的延迟--工作量--elapsed-quality 改善。
 
-前四点足以支撑系统 measurement、benchmark 或经验型 IR 论文的核心。第五点让方法论文重新出现可能；joint sojourn+slowdown pooled tail 和五域迁移门现已通过，但当前仍不能声称“统一最优”或“所有子群公平”。剩余关键门是独立 causal implementation、method-independent slowdown 复核、跨表示原始 trace 和真实 GPU 成本。
+前四点足以支撑系统 measurement、benchmark 或经验型 IR 论文的核心。第五点现在达到 replay 级 paper-method candidate：causal implementation、method-independent slowdown、pooled joint tail 与五域迁移均已通过。当前仍不能声称“统一最优”或“所有单 query max 都更好”。剩余关键门是 Delay Scheduling/DLPM 风格强基线、结构破坏消融、跨表示原始 trace 和真实 GPU/成本预测。
 
 ## 如果继续冲方法论文，唯一值得做的新方向
 
@@ -77,11 +79,15 @@ Frontier 在第 1 轴明显更强；bounded CaGR 在系统 mean/P95 和第 2 轴
 
 联合尾部审计随后在 HR/Finance 四个主 cell 全部通过，三额外域也得到 10/10 joint-tail pass；完整系统+质量+尾部门为 9/10，唯一失败是 Industrial burst 的最大主轴改善 4.713%，略低于预注册 5%，而不是 tail 退化。边界同样重要：使用 policy-own-demand 定义 slowdown 时，HR 最晚到达四分位的 P99 相对 frontier 仍为 1.736--1.814×。因此主文可以写 pooled tail transfer，不能写 uniform subgroup fairness；slowdown 还需用与 policy 无关的反事实 demand 分母复核。
 
+反事实分母复核已完成：统一使用同 query 在 FIFO replay 中的 own demand 后，HR Q4 P99 ratio 变为 0.945/0.896，原反转被识别为 policy-dependent denominator 伪影；五域 pooled P95/P99 仍为 10/10 pass。校正也收回了过大的正面数字：slowdown ratio 约为 0.890--0.999，应写“不劣到小幅改善”。Computer Science Poisson 仍有一个 max=1.167× 的单 query 反例，所以不能声称所有 extrema 支配。
+
+独立 causal materialization 也通过：新 policy 构造器没有策略参数，公开 API 只接收逐条 arrival/timer/dispatch 与当前 compiled/LRU；HR/Finance 20/20 个 cell 在 dispatch、elapsed tuple、work/cache/union、bypass 和 publication trace 上与 B32 reference 精确一致。五域十个 cell 的 median ratio 为 0.923/0.949/0.948，9/10 至少一轴改善 5%，10/10 P99 更优且预算违规为 0。
+
 因此下一项方法工作不再是权重、tie-break 或窗口微调，而是把 B32 固化成不接收 qrel/未来数组的事件驱动在线 policy，并完成真实成本校准。service guarantee 不能只定义成 bypass：审计中 deadline-only 的 bypass 恒为 0，但绝对等待尾部仍接近最差；bounded CaGR 的 max bypass 低于 64，slowdown P95 仍可达约 1848--2381。主评价联合 absolute sojourn 与 method-independent slowdown，bypass 仅保留为排序诊断。
 
 ## 投稿建议
 
-- **若目标仍是 9 月 ICLR：** 不写原始 frontier 方法论文；以 hard-budget frontier 为唯一方法候选。只有它通过 causal、joint-tail、跨域/跨表示和真实 GPU 四个门，才升级成方法主线，否则回到 measurement/system 定位。
+- **若目标仍是 9 月 ICLR：** 不写原始 frontier 方法论文；以 Causal Hard Frontier 为唯一方法主线。causal、joint-tail 和五域门已经通过；是否继续冲方法论文取决于 closest-work baseline/structure ablation 与真实成本门，跨 retriever 若来不及必须明确列为未验证。
 - **若接受系统/IR measurement 论文：** 当前资产已经很强，主线可转为“何时先建哪些视觉表示：异构 RAG 索引构建的三轴 benchmark 与系统研究”，frontier、EdgeRAG、CaGR 作为互补政策而非单一 winner。
 - **若目标是项目落地：** 先把 B32 作为实验性默认候选；在联合尾部和真实成本未通过前，bounded CaGR 仍是保守成本基线，frontier 仍负责 unique-page 早期质量，不声称一个 policy 通吃。
 

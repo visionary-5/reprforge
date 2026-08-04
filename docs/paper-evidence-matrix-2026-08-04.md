@@ -31,6 +31,8 @@ ReprForge 只有同时满足下面五点，才能从“有效系统机制”提�
 | RQ11 starvation 指标是否代表用户等待公平 | HR、Finance；burst/Poisson | frontier、bounded CaGR、oracle_15、deadline-only | bypass 阈值、absolute sojourn、per-demand slowdown、tail-label overlap | **bypass-only NO-GO**；16 cells 均未同时强匹配两个 extreme tail，F1 0.013--0.450 | 论文不得把 starvation=0 等同用户公平；采用 joint sojourn+slowdown |
 | RQ12 硬顺序预算能否保留多目标余量 | HR 选择、Finance 冻结；burst/Poisson | B=8/16/32/64、bounded CaGR、frontier | mean/P95 sojourn、work/query、elapsed regret、forced slots、budget violation | **GO**；HR 唯一 B32，Finance sojourn -7.8%--8.1%、work -5.1%--5.8%，elapsed regret 不劣，违规 0 | 当前主方法候选；仍需 causal、joint-tail、跨域与 GPU 验证 |
 | RQ13 B32 是否通过用户尾部与五域迁移 | HR、Finance、CS、Industrial、Pharma | B32、bounded CaGR、frontier | sojourn/slowdown P95/P99/max、longest no-service、三主轴 gate | **pooled GO**；主 cell 4/4，五域 joint-tail 10/10，完整门 9/10；Industrial burst 最大收益 4.713%<5% | 支撑跨域 pooled tail；Q4 slowdown 与 policy-dependent denominator 仍需复核 |
+| RQ14 slowdown 是否被 policy-dependent demand 污染 | 五域；burst/Poisson | policy-own、FIFO-counterfactual、cold cohort denominator | pooled/arrival-quartile P95/P99/max | **校正后 GO**；HR Q4 反转消失，五域 P95/P99 10/10；strict max 9/10 | 主文使用 FIFO-counterfactual denominator；不夸大 slowdown 数量级优势 |
+| RQ15 B32 能否物化成严格因果方法 | 五域；HR/Finance exact reference | causal hard frontier、B32 oracle reference、FIFO/frontier/overlap/bounded | 20-cell tuple equality、五域三轴/P99、API observability | **PAPER METHOD CANDIDATE**；20/20 exact，median ratios 0.923/0.949/0.948，9/10 effect-size、10/10 P99 | 解决 oracle-to-method 缺口；跨 retriever 与真实成本仍未验证 |
 
 ## 数据集分工
 

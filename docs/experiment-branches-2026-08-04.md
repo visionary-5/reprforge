@@ -197,3 +197,25 @@ Industrial burst misses only the registered 5% effect-size threshold.  The
 result does not establish uniform subgroup fairness: late HR arrivals still
 show worse P99 slowdown than frontier, and the policy-dependent demand
 denominator requires a counterfactual-denominator audit.
+
+### `exp/counterfactual-slowdown`
+
+Question: is the apparent slowdown behavior an artifact of dividing each
+policy by demand that the same policy changes?
+
+Result: with FIFO own-demand frozen per query and reused across methods, the HR
+late-arrival reversal disappears and pooled five-domain P95/P99 remains safe.
+The corrected improvement is modest rather than order-of-magnitude; isolated
+max regressions remain and are reported.
+
+### `exp/causal-hard-frontier`
+
+Question: can the selected B32 behavior be implemented by a policy interface
+that cannot receive qrels, future arrivals, or end-of-stream?
+
+Result: yes.  Twenty HR/Finance reference cells are exact across dispatch,
+elapsed tuples, physical work, cache/union, bypass, and publication trace.  The
+same frozen policy transfers across five ViDoRe domains with median
+sojourn/work/elapsed-regret ratios of 0.923/0.949/0.948, 9/10 cells showing a
+registered 5% effect and all ten improving P99.  Cross-retriever replay and
+real heterogeneous costs remain open.
