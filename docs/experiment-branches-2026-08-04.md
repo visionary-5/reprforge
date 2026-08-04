@@ -1,0 +1,105 @@
+# ReprForge parallel experiment branches
+
+Date: 2026-08-04. Base branch: `research/anytime-index-base`.
+
+This registry keeps the experiments independent.  A branch may produce a
+negative result; it must not change the common K=20 fusion semantics or tune on
+held-out qrels merely to manufacture a positive result.  Frozen score replay is
+required before any new A100 execution.
+
+## `exp/windowed-arrivals`
+
+Question: does the cohort-frontier advantage survive when the scheduler sees
+only a bounded pending window rather than the full benchmark stream?
+
+Required comparisons:
+
+- FIFO, random, static history popularity and bounded frontier;
+- windows 1, 8, 16, 32 and 64;
+- at least five deterministic query permutations and burst/Poisson arrival
+  models;
+- mean/P50/P95 completion work, quality--work AUC, starvation and maximum wait.
+
+Go signal: W=16 or W=32 preserves at least half of the full-lookahead completion
+work gain on both HR and Finance without worse quality--work AUC than FIFO.
+
+## `exp/scheduler-baselines`
+
+Question: is the current mechanism better than strong, simpler explanations of
+the gain?
+
+Required comparisons:
+
+- FIFO and random;
+- future-aware static popularity, explicitly marked as an offline upper
+  baseline;
+- CaGR-style cohort-overlap grouping;
+- shortest-missing-cohort first;
+- reuse-only scheduling;
+- an offline qrel-free greedy construction-work oracle when tractable;
+- K in {10, 20, 50}, request batch in {1, 4, 8, 16}.
+
+Go signal: frontier is Pareto-competitive across both domains and its advantage
+cannot be reproduced by overlap-only or popularity-only scheduling.
+
+## `exp/revision-safety`
+
+Question: can a label-free publisher reduce harmful BM25-to-visual revisions
+without discarding most useful improvements?
+
+Candidate observables are restricted to text/visual rank agreement, top-score
+margin, candidate overlap, reciprocal-rank movement and score normalization
+statistics.  Qrels are used only for post-hoc evaluation under strict
+query-level cross-fitting.
+
+Required comparisons:
+
+- publish every completed visual cohort;
+- never revise;
+- fixed agreement/margin thresholds;
+- cross-fitted label-free feature model;
+- an oracle publisher to measure available headroom.
+
+Report improvement retained, harmful-revision precision/recall, abstention,
+mean nDCG, fifth-percentile revision loss and worst-5% CVaR.
+
+Go signal: on held-out folds in both HR and Finance, harmful revision frequency
+falls by at least 30% while retaining at least 80% of positive nDCG gain and
+without reducing mean quality below BM25.
+
+## `exp/benchmark-transfer`
+
+Question: do workload overlap and progressive construction benefits transfer
+beyond the two opened ViDoRe domains?
+
+Start with existing local traces and benchmark artifacts before downloading or
+encoding new data.  Candidate targets are Computer Science / other ViDoRe v3
+domains, IRPAPERS and MMDocIR; report where the task definition differs from
+full-corpus retrieval.  MIRACL-VISION or M3DocVQA is the preferred later public
+scale test if local artifacts are insufficient.
+
+Required outputs:
+
+- corpus/query/cohort overlap statistics;
+- FIFO, popularity and frontier exact-work replay;
+- locator coverage and pure-visual-query stratification where labels permit;
+- an explicit decision on whether a real GPU run is warranted.
+
+Go signal: at least one independent full-corpus benchmark shows a frontier
+completion-work gain with final semantic parity, without dataset-specific
+scheduler tuning.
+
+## Shared reporting contract
+
+Every branch must leave:
+
+1. a test-covered implementation;
+2. a deterministic command-line replay;
+3. machine-readable JSON results;
+4. a short Markdown result with a GO / NO-GO decision;
+5. exact data provenance and a statement of what the scheduler was allowed to
+   observe.
+
+No branch is merged merely because it has a positive mean.  It must beat its
+strongest relevant baseline, report tails, and survive at least one transfer or
+held-out split.
