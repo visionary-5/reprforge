@@ -8,6 +8,9 @@ Round-one results are summarized in
 `exp/revision-safety` at `e439efc`, and `exp/benchmark-transfer` at `9e268dd`.
 The two round-two branches and their frozen gates are registered in
 `docs/experiment-round2-contract-2026-08-04.md`.
+Round-two results are summarized in
+`docs/parallel-experiment-round2-result-2026-08-04.md`: aging-aware frontier
+`2b2f495`, value-aware frontier `afb1c54`, and anytime metrics `e67bfc3`.
 
 This registry keeps the experiments independent.  A branch may produce a
 negative result; it must not change the common K=20 fusion semantics or tune on
