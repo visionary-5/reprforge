@@ -12,7 +12,7 @@ ReprForge 只有同时满足下面五点，才能从“有效系统机制”提�
 4. **强反事实成立**：必须比较未来热门度、重叠分组、最短剩余工作、离线工作下界、瞬时不持久方案和容量缓存；
 5. **真实系统成立**：冻结方法后报告真实 GPU 时间、P50/P95、构建页数、持久字节和最终质量，而不只报告模拟页工作量。
 
-当前已经稳固满足第 1 点的工作量部分和第 4 点的大部分；第 2、3、5 点是第三轮主任务。
+当前第 1、2 点和第 4 点的大部分已经满足；第 5 点在控制面规模和两域真实 GPU 上部分满足。第 3 点经三种答案协议严格 NO-GO，因此当前只能定位为检索/索引系统论文。最近工作审计还增加了两条优先级最高的 novelty gate：EdgeRAG-faithful 成本缓存和 CaGR-RAG-faithful 分组/预取。
 
 ## 研究问题矩阵
 
@@ -21,11 +21,12 @@ ReprForge 只有同时满足下面五点，才能从“有效系统机制”提�
 | RQ1 渐进构建是否比完整预构建更早可用 | HR、Finance、IRPapers | BM25、完整视觉、静态融合、临时视觉不持久、渐进持久 | 最终质量、构建页/秒、T50/T90、质量遗憾 | HR/Finance 有真实 A100；IRPapers 有冻结回放 | 支撑问题价值和端到端 Pareto |
 | RQ2 前沿收益是否只是简单排序 | HR、Finance、IRPapers | FIFO、随机、热门度、重叠、最短缺失、仅复用、离线工作贪心 | mean/P50/P95 完成工作、AUC、距离线下界 | **GO** | 当前最强方法证据 |
 | RQ3 看不到完整未来时是否仍有效 | HR、Finance；burst/Poisson | W=1/8/16/32/64/full、历史热门度、硬/软公平 | 收益保留、等待尾部、饥饿、AUC | W64 GO；W32 和软公平 NO-GO | 限定高并发/批量适用范围 |
-| RQ4 状态是否能跨会话复用且受限容量可控 | HR→Finance/漂移会话，后续 IRPapers | 无缓存、LRU、LFU、GDSF、Belady、frontier+cache | 重编码、命中率、质量遗憾、P95、字节 | `exp/capacity-warmstart` 进行中 | 决定“持久索引”是否有独立价值 |
-| RQ5 检索提前是否转成答案提前 | 优先 ViDoRe v3 reference answers；IRPapers 备选 | 初始文本、FIFO、热门度、前沿、完整预构建 | 首次持续正确、最终准确、正确→错误、引用页 | `exp/answer-time-to-correct` 进行中 | 决定能否称为 RAG 贡献 |
-| RQ6 是否迁移到现代视觉检索器 | 至少 HR+Finance 或一个完整 ViDoRe v3 域 | ColPali-v1.1、ModernVBERT/ColModernVBERT 或公开现代模型 | 检索质量、union/reuse、调度工作、GPU时间/字节 | `exp/modern-retriever-transfer` 进行中 | 排除底层模型偶然性 |
-| RQ7 是否在大规模语料仍有意义 | MIRACL-VISION 分层子集→全量 | 全预构建、两阶段瞬时级联、持久候选编译 | GPU小时、索引字节、吞吐、质量预算曲线 | 尚未解锁 | 投稿前规模证据 |
+| RQ4 状态是否能跨会话复用且受限容量可控 | HR→Finance/漂移会话、IRPapers | 无缓存、LRU、LFU、GDSF、Belady、frontier+cache | 重编码、命中率、质量遗憾、P95、字节 | 热启动贡献 **NO-GO**；有限缓存下 frontier 仍稳健 | 缓存是系统功能，不列独立贡献 |
+| RQ5 检索提前是否转成答案提前 | IRPapers 180 proxy、24/8 reader pilot、48 held-out | 初始文本、FIFO、热门度、前沿、结构化引用、盲化语义 judge | 首次持续正确、最终准确、正确→错误、引用页 | 三层答案实验 **NO-GO** | 当前不能称答案级 RAG 贡献 |
+| RQ6 是否迁移到现代视觉检索器 | HR+Finance | ColPali-v1.1、ColModernVBERT | 检索质量、union/reuse、调度工作、GPU时间/字节 | 跨表示 **GO** | 排除底层模型偶然性 |
+| RQ7 是否在大规模语料仍有意义 | 合成到 338K pages / 30K queries；后续真实大语料 | naive exact、增量 exact、全预构建、两阶段瞬时级联 | 控制面时间/RSS、GPU小时、索引字节、吞吐 | 控制面规模 **GO**；真实 338K 编码仍未做 | 证明算法可扩展，但不能替代真实大语料 |
 | RQ8 发布修订是否安全 | HR、Finance | 全发布、不发布、固定规则、交叉拟合、oracle | 有害修订、正收益保留、CVaR | 严格 NO-GO | 作为局限，不列主贡献 |
+| RQ9 是否只是 EdgeRAG 缓存或 CaGR 分组 | HR、Finance，W64 burst/Poisson | EdgeRAG-faithful 成本缓存、CaGR-faithful 分组/预取、frontier | mean/P95 完成成本、遗憾、命中、预取浪费 | 两条 P0 分支进行中 | 决定 scheduler novelty 是否继续 |
 
 ## 数据集分工
 
@@ -69,6 +70,6 @@ ReprForge 只有同时满足下面五点，才能从“有效系统机制”提�
 
 ## 当前最有希望的论文表述
 
-> ReprForge 将昂贵的视觉文档表示视为可由查询逐步编译并跨请求积累的索引状态。廉价定位器暴露查询—页面依赖图，工作前沿调度利用常驻状态和跨查询复用，更早完成查询候选组；系统用原子发布保持可复现语义，并用随构建质量遗憾而非只看最终分数进行评价。
+> 给定固定的视觉多向量目标表示，廉价定位器暴露查询—页面依赖图。ReprForge 的 resident-aware cohort frontier 在 GPU 批次和常驻状态约束下选择页面构建顺序，更早完成并发查询候选组；系统用原子发布保持可复现语义，并用随构建质量遗憾而非只看最终分数进行评价。
 
-这一定义兼容最新视觉检索器。[ModernVBERT/ColModernVBERT](https://arxiv.org/abs/2510.01149) 提供了更小的公开视觉文档检索器迁移对象；[ViDoRe v3](https://arxiv.org/abs/2601.08620) 提供约 26K 页、3,099 条人工验证查询及 reference answers。它们分别对应跨表示和答案级两道关键门。
+跨表示门已经由 [ModernVBERT/ColModernVBERT](https://arxiv.org/abs/2510.01149) 在 HR/Finance 上通过；五个 ViDoRe v3 域也给出一致工作收益。宽泛的在线构建表述必须让位于 [EdgeRAG](https://arxiv.org/abs/2412.21023)，共享访问调度必须正面对照 [CaGR-RAG](https://arxiv.org/abs/2505.01164)。答案级门失败，因此本文不声称更早答对。
