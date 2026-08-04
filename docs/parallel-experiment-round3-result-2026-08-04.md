@@ -13,7 +13,7 @@
 
 > 给定固定的视觉多向量目标表示，廉价定位器把并发查询转成共享的查询—页面依赖图；ReprForge 调度下一批要构建的页面，使更多查询更早完成，并以原子版本发布可复现的增量索引状态。
 
-这条主线仍是**有条件 GO**。投稿前必须正面击败 EdgeRAG 风格成本缓存和 CaGR-RAG 风格查询分组/预取；两条 P0 基线已经在独立分支启动。
+这条主线在第三轮结束时仍是**有条件 GO**。后续 P0 已经完成：EdgeRAG 风格成本缓存未抹平收益，但 bounded CaGR adaptation 在 Finance 系统轴给出真实反例。最终决策见 `docs/paper-decision-after-p0-2026-08-04.md`，它取代本节的阶段性判断。
 
 ## 主要实验结果
 
@@ -83,21 +83,21 @@ Modern 模型不是统一更准：它在 HR 略低于旧 ColPali，在 Finance �
 
 可保留的是更窄、可被实验否证的表述：固定视觉多向量目标下，优化共享页面依赖的 cohort completion，而不是优化单请求 cache hit、已有向量的磁盘 I/O 或单查询 MaxSim。
 
-## 下一步唯一 P0
+## 后续 P0（现已完成）
 
-已启动两个独立分支：
+第三轮结束后启动两个独立分支：
 
 - `exp/edgerag-faithful-baseline`：高成本页面预建、成本×历史频率缓存、LRU/LFU、有限容量和漂移；
 - `exp/cagr-faithful-baseline`：Jaccard 查询分组、组内连续执行、下一组预取，并计入预取浪费。
 
-两者使用相同 HR/Finance、W64 burst/Poisson、五个排列、K=20、B=8 和容量约束。Frontier 必须在两个领域和设置中相对最强忠实基线至少改善 5%，且 P95 与质量遗憾不明显变差；否则停止把调度器作为论文主算法，转为 EdgeRAG 的视觉系统实现、measurement/benchmark 工作，或更换方法。
+两者使用相同 HR/Finance、W64 burst/Poisson、五个排列、K=20、B=8 和容量约束。结果是 EdgeRAG gate 通过；论文 θ=.5 的 CaGR 直接适配也通过，但更强的 bounded CaGR 在 Finance mean sojourn 与 charged work 上反超，触发 STOP/DOWNGRADE。三个后续 completion/locality/deadline 组合设计也未通过预注册门，因此已经停止 scheduler 微调。
 
 ## 当前投稿判断
 
 - **可以冻结的方法资产：** 依赖图形式化、resident-aware frontier、精确增量实现、原子发布与 anytime 指标。
 - **已经足够强的数据：** 五域旧表示、两域现代表示、两域真实 A100、216 组合与 30K 控制面压力。
 - **必须收缩的主张：** 不是端到端答案改进，不是一般低负载在线服务，不是在线索引生命周期首创。
-- **决定是否继续当前论文的最后门：** EdgeRAG-faithful 与 CaGR-faithful。
+- **最终方法判断：** Frontier 作为全面更优主算法 NO-GO；系统/测量论文仍有价值，方法论文必须先证明多目标 oracle headroom。
 
 建议标题：
 

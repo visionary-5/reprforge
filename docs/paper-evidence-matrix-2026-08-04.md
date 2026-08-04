@@ -26,7 +26,8 @@ ReprForge 只有同时满足下面五点，才能从“有效系统机制”提�
 | RQ6 是否迁移到现代视觉检索器 | HR+Finance | ColPali-v1.1、ColModernVBERT | 检索质量、union/reuse、调度工作、GPU时间/字节 | 跨表示 **GO** | 排除底层模型偶然性 |
 | RQ7 是否在大规模语料仍有意义 | 合成到 338K pages / 30K queries；后续真实大语料 | naive exact、增量 exact、全预构建、两阶段瞬时级联 | 控制面时间/RSS、GPU小时、索引字节、吞吐 | 控制面规模 **GO**；真实 338K 编码仍未做 | 证明算法可扩展，但不能替代真实大语料 |
 | RQ8 发布修订是否安全 | HR、Finance | 全发布、不发布、固定规则、交叉拟合、oracle | 有害修订、正收益保留、CVaR | 严格 NO-GO | 作为局限，不列主贡献 |
-| RQ9 是否只是 EdgeRAG 缓存或 CaGR 分组 | HR、Finance，W64 burst/Poisson | EdgeRAG-faithful 成本缓存、CaGR-faithful 分组/预取、frontier | mean/P95 完成成本、遗憾、命中、预取浪费 | 两条 P0 分支进行中 | 决定 scheduler novelty 是否继续 |
+| RQ9 是否只是 EdgeRAG 缓存或 CaGR 分组 | HR、Finance，W64 burst/Poisson | EdgeRAG-faithful 成本缓存、CaGR-faithful/strong/bounded 分组预取、frontier | mean/P95 sojourn、charged work、命中、预取 | EdgeRAG **CONTINUE**；bounded CaGR **STOP/DOWNGRADE** | Frontier 不能再作为全面更优的主算法 |
+| RQ10 是否存在同时保质量与局部性的简单调度 | HR 选择、Finance 冻结 | cost-first、completion-constrained、deadline override | 三轴 regret、P95、starvation、constraint violation | 三个设计均 **NO-GO** | 停止启发式微调；先做 oracle/headroom |
 
 ## 数据集分工
 
@@ -70,6 +71,6 @@ ReprForge 只有同时满足下面五点，才能从“有效系统机制”提�
 
 ## 当前最有希望的论文表述
 
-> 给定固定的视觉多向量目标表示，廉价定位器暴露查询—页面依赖图。ReprForge 的 resident-aware cohort frontier 在 GPU 批次和常驻状态约束下选择页面构建顺序，更早完成并发查询候选组；系统用原子发布保持可复现语义，并用随构建质量遗憾而非只看最终分数进行评价。
+> 给定固定的视觉多向量目标表示，廉价定位器暴露查询—页面依赖图。ReprForge 编译并原子发布共享页面状态，同时分开测量新页面构建、缓存/reload 工作和真实 elapsed quality。实验揭示 completion-oriented frontier 与 locality-oriented grouping 在不同负载下形成不可忽略的系统效率—证据质量 Pareto。
 
-跨表示门已经由 [ModernVBERT/ColModernVBERT](https://arxiv.org/abs/2510.01149) 在 HR/Finance 上通过；五个 ViDoRe v3 域也给出一致工作收益。宽泛的在线构建表述必须让位于 [EdgeRAG](https://arxiv.org/abs/2412.21023)，共享访问调度必须正面对照 [CaGR-RAG](https://arxiv.org/abs/2505.01164)。答案级门失败，因此本文不声称更早答对。
+跨表示门已经由 [ModernVBERT/ColModernVBERT](https://arxiv.org/abs/2510.01149) 在 HR/Finance 上通过；五个 ViDoRe v3 域也给出一致工作收益。宽泛的在线构建表述必须让位于 [EdgeRAG](https://arxiv.org/abs/2412.21023)。忠实和增强的 [CaGR-RAG](https://arxiv.org/abs/2505.01164) 对照进一步证明：frontier 在 unique-page 质量效率上更强，但 bounded locality 在 Finance 系统轴反超；本文不能声称单一 scheduler 全面更优。答案级门也失败，因此不声称更早答对。

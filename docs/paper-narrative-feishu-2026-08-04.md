@@ -828,12 +828,9 @@ RAGChecker 提供了检索与生成模块的细粒度诊断思路，可以借鉴
 
 ### 13.3 我建议的优先级
 
-前面的强基线、有限窗口、答案、跨域、跨表示和控制面规模都已完成。现在只剩两个优先级最高的 novelty gate：
+前面的强基线、有限窗口、答案、跨域、跨表示、控制面规模和两条 novelty gate 都已完成。EdgeRAG-faithful 没有抹平 frontier 的收益；但 HR 无标签选择的 bounded CaGR adaptation 在 Finance 的 mean sojourn 和 charged work 上同时反超 frontier。统一 elapsed-quality 又显示 burst/Poisson 排名反转、曲线交叉。
 
-1. EdgeRAG-faithful 高成本预建与成本×历史频率缓存；
-2. CaGR-RAG-faithful Jaccard 查询分组与下一组预取。
-
-若 frontier 在 HR/Finance 的 W64 burst/Poisson 上不能相对两条忠实基线保持至少 5% 的实质完成成本收益，或尾部/质量遗憾明显更差，就停止把 scheduler 当论文主算法。不要再用更多数据集掩盖机制对照失败。
+因此已经停止把 frontier 当成全面更优的主算法，并停止继续微调 scheduler。下一步不是增加数据集或 tie-break，而是先求多目标 oracle/headroom：如果同时满足系统成本、elapsed-quality 和 per-query deadline 的可达空间很小，就转 measurement/system 论文；只有 headroom 足够才设计新的约束优化或学习代理。
 
 ---
 
@@ -866,11 +863,11 @@ RAGChecker 提供了检索与生成模块的细粒度诊断思路，可以借鉴
 
 ### 最大风险
 
-W32 失败且存在饥饿，答案级收益失败；EdgeRAG 已覆盖宽泛按需索引生命周期，CaGR-RAG 已覆盖查询重叠分组。当前 scheduler 只有在两条忠实 P0 基线后仍显著占优才有论文新颖性。
+W32 失败且存在饥饿，答案级收益失败；EdgeRAG 已覆盖宽泛按需索引生命周期。更强的 bounded CaGR 已在 Finance 系统轴给出反例，三个后续 completion/locality/deadline 组合设计也严格 NO-GO。当前 frontier 不能作为统一 winner。
 
 ### 下一步
 
-只做 EdgeRAG-faithful 与 CaGR-RAG-faithful 两条判停基线；通过才固化 scheduler 论文，失败就 retitle 或停止当前主线。
+停止 scheduler 微调。先做 system-cost、time-aligned quality、deadline 三目标的 offline oracle/headroom；无明显支配空间则把论文转为异构视觉索引构建的系统 measurement/Pareto study，有空间才重新进入方法设计。
 
 ---
 
@@ -880,4 +877,4 @@ W32 失败且存在饥饿，答案级收益失败；EdgeRAG 已覆盖宽泛按�
 
 > 在固定视觉多向量目标表示下，研究共享查询—页面依赖上的 cohort-completion 构建调度，并诚实限定为深队列批量 onboarding 或高并发分析负载。
 
-解耦、缓存、批处理和原子更新是必要工程基础；可扩展的精确前沿调度和全过程质量评价是候选贡献。是否真正成立只由 EdgeRAG-faithful 与 CaGR-RAG-faithful 两条 P0 结果决定。
+解耦、缓存、批处理和原子更新是必要工程基础；三轴 anytime 测量、可扩展控制面和跨域/跨表示实证仍然有论文价值。Frontier 现在应作为 completion-oriented policy，与 locality-oriented CaGR 共同暴露 Pareto，而不是作为唯一主算法。完整的 P0 后决策见 `docs/paper-decision-after-p0-2026-08-04.md`。

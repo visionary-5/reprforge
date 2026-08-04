@@ -28,6 +28,20 @@ novelty gates are `exp/edgerag-faithful-baseline` and
 `exp/cagr-faithful-baseline`; neither has permission to weaken its gate after
 seeing HR/Finance results.
 
+The subsequent P0 and method-stress branches are frozen at:
+
+- `exp/edgerag-faithful-baseline` `8f5b21a` (**CONTINUE**);
+- `exp/cagr-faithful-baseline` `a3cd197` (conditional page-work GO);
+- `exp/cagr-strong-adaptation` `7fd795f` (no deployable HR selection);
+- `exp/cagr-bounded-wait` `af893b8` (**STOP/DOWNGRADE** counterexample);
+- `exp/time-aligned-quality` `887eaa2` (system--quality trade-off);
+- `exp/cost-locality-frontier` `3e2d33c` (NO-GO);
+- `exp/frontier-constrained-locality` `225be9a` (NO-DEPLOYABLE);
+- `exp/deadline-constrained-locality` `b3b4662` (NO-GO and stop tweaks).
+
+The final decision and corrected claim boundary are summarized in
+`docs/paper-decision-after-p0-2026-08-04.md`.
+
 This registry keeps the experiments independent.  A branch may produce a
 negative result; it must not change the common K=20 fusion semantics or tune on
 held-out qrels merely to manufacture a positive result.  Frozen score replay is
