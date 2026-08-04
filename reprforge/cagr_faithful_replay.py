@@ -163,6 +163,7 @@ class ReplayResult:
     request_batches: dict[str, Any]
     total_unit_work: float
     bounded_group_wait: dict[str, Any]
+    quality_publication_trace: tuple[dict[str, Any], ...]
 
     def as_dict(self, *, starvation_window: int) -> dict[str, Any]:
         completion = np.asarray(self.completion_pages, dtype=np.float64)
@@ -350,6 +351,16 @@ def replay_cagr_comparison(
     sojourn_unit = np.zeros(query_count, dtype=np.float64)
     current_quality = float(base_mean_quality)
     quality_points: list[tuple[int, float]] = [(0, current_quality)]
+    quality_publication_trace: list[dict[str, Any]] = [
+        {
+            "elapsed_unit_time": 0.0,
+            "charged_unit_work": 0.0,
+            "unique_compiled_pages": 0,
+            "mean_quality": current_quality,
+            "published_queries": 0,
+            "batch_queries": (),
+        }
+    ]
     plan: deque[
         tuple[tuple[int, ...], tuple[int, ...] | None, tuple[int, ...]]
     ] = deque()
@@ -626,6 +637,16 @@ def replay_cagr_comparison(
             sojourn_unit[query] = unit_cost_clock - query_arrival[query]
         current_quality += float(gains[list(batch)].sum() / query_count)
         quality_points.append((len(compiled), current_quality))
+        quality_publication_trace.append(
+            {
+                "elapsed_unit_time": float(unit_cost_clock),
+                "charged_unit_work": float(total_unit_work),
+                "unique_compiled_pages": len(compiled),
+                "mean_quality": current_quality,
+                "published_queries": len(dispatch),
+                "batch_queries": tuple(int(query) for query in batch),
+            }
+        )
         if after_prefetch is not None:
             prefetch(after_prefetch)
 
@@ -745,4 +766,5 @@ def replay_cagr_comparison(
                 else 0.0
             ),
         },
+        quality_publication_trace=tuple(quality_publication_trace),
     )
