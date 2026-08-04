@@ -1,0 +1,268 @@
+{
+  "artifacts": {
+    "bm25_runtime_sha256": "55bf5d9921a5df5151d346db394fbf4e0069b1751ec787117853fc4f1b67fa65",
+    "full_raw_sha256": "574f25628f7a13385c11a075c3135d7937427bd688659fef98ac7d217a9451bb",
+    "online_raw_sha256": "dcdc32db3c3b94a3c211f970038c72eb6f35ba2f39eac4f80e12e4deab8e0c6e",
+    "visual_runtime_sha256": "a6bbbf5bb26dadd4d060df40b225d9511b05a8470b574b71463ca4eadb635944"
+  },
+  "baselines": {
+    "bm25_mean_ndcg_at_10": 0.5285173146681086,
+    "full_prebuild_mean_quality_over_horizon": 0.5276162671167632,
+    "full_visual_end_to_end_horizon_ms": 320825.3538608551,
+    "full_visual_mean_ndcg_at_10": 0.4731569596546872,
+    "refined_fusion_mean_ndcg_at_10": 0.5628003944844325
+  },
+  "candidate_k": 20,
+  "comparison": {
+    "mean_quality_over_horizon_gain_vs_full_prebuild": 0.02639632809149628,
+    "relative_mean_quality_over_horizon_gain_vs_full_prebuild": 0.05002940533987488
+  },
+  "dataset": "vidore/vidore_v3_finance_en",
+  "metric": "per-query nDCG@10; base result is revised atomically at batch completion",
+  "progressive": {
+    "base_mean_quality": 0.5285173146681086,
+    "final_publish_ms": 172851.40145383775,
+    "horizon_ms": 320825.3538608551,
+    "mean_quality_gain_over_base_auc": 0.02549528054015087,
+    "mean_quality_over_horizon": 0.5540125952082595,
+    "normalized_gain_reference_quality": 0.5285173146681086,
+    "normalized_gain_targets": {
+      "fraction_0.5": {
+        "target_quality": 0.5456588545762706,
+        "time_to_target_ms": 56330.918392166495
+      },
+      "fraction_0.9": {
+        "target_quality": 0.5593720865028001,
+        "time_to_target_ms": 128107.11850039661
+      }
+    },
+    "points": [
+      {
+        "elapsed_ms": 546.9620227813721,
+        "mean_quality": 0.5285173146681086,
+        "refined_queries": 0
+      },
+      {
+        "elapsed_ms": 5400.861214846373,
+        "mean_quality": 0.5287382240598215,
+        "refined_queries": 8
+      },
+      {
+        "elapsed_ms": 6966.282118111849,
+        "mean_quality": 0.5278582398559977,
+        "refined_queries": 16
+      },
+      {
+        "elapsed_ms": 11152.34793163836,
+        "mean_quality": 0.5279495461612375,
+        "refined_queries": 24
+      },
+      {
+        "elapsed_ms": 16767.219815403223,
+        "mean_quality": 0.5290067815573517,
+        "refined_queries": 32
+      },
+      {
+        "elapsed_ms": 22863.72995004058,
+        "mean_quality": 0.5314514831996194,
+        "refined_queries": 40
+      },
+      {
+        "elapsed_ms": 27244.67754177749,
+        "mean_quality": 0.5322260112647499,
+        "refined_queries": 48
+      },
+      {
+        "elapsed_ms": 31190.00110961497,
+        "mean_quality": 0.5344946865708177,
+        "refined_queries": 56
+      },
+      {
+        "elapsed_ms": 34891.21647179127,
+        "mean_quality": 0.5357038049686302,
+        "refined_queries": 64
+      },
+      {
+        "elapsed_ms": 39075.14226809144,
+        "mean_quality": 0.5363326335670529,
+        "refined_queries": 72
+      },
+      {
+        "elapsed_ms": 43287.52381540835,
+        "mean_quality": 0.5376478187772663,
+        "refined_queries": 80
+      },
+      {
+        "elapsed_ms": 47122.67724238336,
+        "mean_quality": 0.5392025943000874,
+        "refined_queries": 88
+      },
+      {
+        "elapsed_ms": 50572.25720398128,
+        "mean_quality": 0.5417315764205604,
+        "refined_queries": 96
+      },
+      {
+        "elapsed_ms": 53541.96581616998,
+        "mean_quality": 0.5430178850119146,
+        "refined_queries": 104
+      },
+      {
+        "elapsed_ms": 56330.918392166495,
+        "mean_quality": 0.5456809745159914,
+        "refined_queries": 112
+      },
+      {
+        "elapsed_ms": 59512.85285130143,
+        "mean_quality": 0.5464242580995996,
+        "refined_queries": 120
+      },
+      {
+        "elapsed_ms": 62742.865750566125,
+        "mean_quality": 0.5460169857417977,
+        "refined_queries": 128
+      },
+      {
+        "elapsed_ms": 66265.74331894517,
+        "mean_quality": 0.5474495704747494,
+        "refined_queries": 136
+      },
+      {
+        "elapsed_ms": 69633.0465581268,
+        "mean_quality": 0.5474730088316376,
+        "refined_queries": 144
+      },
+      {
+        "elapsed_ms": 72870.99801190197,
+        "mean_quality": 0.5471743920855556,
+        "refined_queries": 152
+      },
+      {
+        "elapsed_ms": 76641.53880439699,
+        "mean_quality": 0.550534864585476,
+        "refined_queries": 160
+      },
+      {
+        "elapsed_ms": 80200.66121779382,
+        "mean_quality": 0.550433559732002,
+        "refined_queries": 168
+      },
+      {
+        "elapsed_ms": 83945.84338925779,
+        "mean_quality": 0.5511073376671063,
+        "refined_queries": 176
+      },
+      {
+        "elapsed_ms": 88104.12801988423,
+        "mean_quality": 0.5521722619328191,
+        "refined_queries": 184
+      },
+      {
+        "elapsed_ms": 92118.1893646717,
+        "mean_quality": 0.5530118525398336,
+        "refined_queries": 192
+      },
+      {
+        "elapsed_ms": 96198.18460568786,
+        "mean_quality": 0.5531480196863062,
+        "refined_queries": 200
+      },
+      {
+        "elapsed_ms": 100135.82609593868,
+        "mean_quality": 0.553976249633436,
+        "refined_queries": 208
+      },
+      {
+        "elapsed_ms": 103710.50752699375,
+        "mean_quality": 0.5557702307996235,
+        "refined_queries": 216
+      },
+      {
+        "elapsed_ms": 107529.4933989644,
+        "mean_quality": 0.5564521497773306,
+        "refined_queries": 224
+      },
+      {
+        "elapsed_ms": 111410.43513268232,
+        "mean_quality": 0.5558142029509308,
+        "refined_queries": 232
+      },
+      {
+        "elapsed_ms": 116509.09753330052,
+        "mean_quality": 0.5574849215842982,
+        "refined_queries": 240
+      },
+      {
+        "elapsed_ms": 121188.05350922048,
+        "mean_quality": 0.5583105157760625,
+        "refined_queries": 248
+      },
+      {
+        "elapsed_ms": 128107.11850039661,
+        "mean_quality": 0.5603651172878175,
+        "refined_queries": 256
+      },
+      {
+        "elapsed_ms": 136585.29545739293,
+        "mean_quality": 0.5604535587926985,
+        "refined_queries": 264
+      },
+      {
+        "elapsed_ms": 142259.95043478906,
+        "mean_quality": 0.5608383345329045,
+        "refined_queries": 272
+      },
+      {
+        "elapsed_ms": 147160.275246948,
+        "mean_quality": 0.5606534665621782,
+        "refined_queries": 280
+      },
+      {
+        "elapsed_ms": 155250.10275654495,
+        "mean_quality": 0.5615062202436012,
+        "refined_queries": 288
+      },
+      {
+        "elapsed_ms": 158171.30774632096,
+        "mean_quality": 0.5592506297527203,
+        "refined_queries": 296
+      },
+      {
+        "elapsed_ms": 166184.15766395628,
+        "mean_quality": 0.5617617682060516,
+        "refined_queries": 304
+      },
+      {
+        "elapsed_ms": 172851.40145383775,
+        "mean_quality": 0.5628003944844325,
+        "refined_queries": 309
+      }
+    ],
+    "refined_mean_quality": 0.5628003944844325,
+    "revision": {
+      "harmed_fraction": 0.22006472491909385,
+      "improved_fraction": 0.44983818770226536,
+      "mean_gain": 0.034283079816323885,
+      "p05_gain": -0.1833398373252892,
+      "p50_gain": 0.0,
+      "unchanged_fraction": 0.3300970873786408
+    },
+    "stabilization_ms": {
+      "max": 172851.40145383775,
+      "p50": 76641.53880439699,
+      "p95": 158171.30774632096
+    },
+    "target_quality": 0.5285173146681086,
+    "time_to_target_ms": 546.9620227813721
+  },
+  "queries": 309,
+  "schema_version": 1,
+  "stage": "post-hoc-time-integrated-evidence-quality",
+  "validity": {
+    "answer_generation_evaluated": false,
+    "full_prebuild_serves_bm25_while_visual_index_builds": true,
+    "query_order_is_official_not_natural_time": false,
+    "query_order_is_qrel_free_scheduled_batch": true,
+    "uses_qrels_for_post_hoc_metric_only": true
+  }
+}

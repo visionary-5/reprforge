@@ -13,7 +13,10 @@ reducing mean encoded pages at query completion by 19.3% and 28.7% versus
 FIFO. On a real HR A100 run it completes in 91.85 seconds versus 98.03 for
 FIFO and 99.26 for static popularity, while cutting first publication from
 15.54 seconds to 6.73 seconds. Finance frontier transfers at 172.85 seconds
-versus 190.50 for FIFO; its static-popularity recovery is still pending.
+versus 190.50 for FIFO. The recovered static-popularity run finishes slightly
+faster at 171.36 seconds, but frontier publishes its first batch earlier (4.85
+versus 6.20 seconds), reaches 90% of final fusion gain earlier (128.11 versus
+156.22 seconds), and has the higher frozen quality--time AUC.
 
 This does not make asynchronous execution, caching, or query grouping novel.
 The candidate paper node is the evidence-quality trajectory of a reusable

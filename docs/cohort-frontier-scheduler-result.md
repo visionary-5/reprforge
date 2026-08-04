@@ -1,15 +1,15 @@
 # Cohort-Frontier Scheduler Result
 
-Date: 2026-08-04. Status: HR complete; Finance frontier complete and strong
-baseline recovery pending.
+Date: 2026-08-04. Status: HR and Finance scheduler comparisons complete.
 
 ## Decision so far
 
 The qrel-free cohort-frontier scheduler passes its frozen work gate on HR and
-Finance-EN and its real A100 gate on HR.  It also transfers from exact page
-work to real A100 time on Finance-EN.  The remaining Finance
-static-popularity run must be recovered before calling the two-domain system
-comparison complete.
+Finance-EN and its real A100 quality--time gate on both.  It transfers from
+exact page work to real A100 time on Finance-EN, but the recovered Finance
+static-popularity run is 0.9% faster in final wall-clock completion.  Frontier
+instead publishes the first batch earlier and reaches useful quality sooner.
+The result is a trajectory trade-off, not universal wall-clock dominance.
 
 This is the first ReprForge mechanism in the current branch that improves the
 trajectory without changing K, fusion, final cohort coverage, or the model.
@@ -70,10 +70,25 @@ work AUC.
 |---|---:|---:|---:|---:|---:|---:|
 | FIFO | 1,855 | 190.50 s | 15.98 s | 9.13 s | 0.56280 | 0.88045 |
 | **Cohort frontier** | 1,855 | **172.85 s** | **4.85 s** | **8.02 s** | 0.56255 | 0.88045 |
-| Static popularity | pending | pending | pending | pending | pending | pending |
+| Static popularity | 1,855 | **171.36 s** | 6.20 s | **6.85 s** | 0.56275 | 0.88045 |
 
-Frontier is 9.3% faster end-to-end and cuts first publication latency by
-69.6%.  The observed nDCG difference is -0.00026 and Recall@100 is unchanged.
+Frontier is 9.3% faster end-to-end than FIFO and cuts its first publication
+latency by 69.6%.  Static popularity is 0.9% faster than frontier at final
+completion and has a lower batch P95, but frontier publishes its first batch
+21.7% earlier.  The observed nDCG span across the scheduled real executions is
+0.00020 and Recall@100 is unchanged.
+
+Frozen-score quality--time replay over the real Finance batch traces gives:
+
+| Schedule | Mean nDCG over full-build horizon | Gain vs fair full prebuild | Time to 90% final fusion gain | Evidence P50 |
+|---|---:|---:|---:|---:|
+| FIFO | 0.54802 | +0.02051 | 176.95 s | 135.67 s |
+| Static popularity | 0.55356 | +0.02595 | 156.22 s | 82.67 s |
+| **Cohort frontier** | **0.55401** | **+0.02640** | **128.11 s** | **76.64 s** |
+
+Thus the Finance result supports the paper's anytime objective: frontier is
+not the fastest way to finish the final batch, but it makes quality available
+earlier than both FIFO and the strongest simple full-stream schedule.
 
 ## Reproducibility correction
 
