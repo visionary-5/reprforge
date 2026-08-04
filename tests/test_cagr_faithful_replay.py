@@ -155,6 +155,13 @@ def test_bounded_wait_accumulates_arrivals_and_charges_sojourn():
     assert result.sojourn_unit_time == (5.0, 2.0, 1.0)
     assert result.wait_unit_time == (3.0, 0.0, 0.0)
     assert result.total_unit_work == 3.0
+    assert result.bounded_group_wait == {
+        "budget": 4.0,
+        "events": 1,
+        "total_unit_time": 3.0,
+        "mean_unit_time": 3.0,
+        "max_unit_time": 3.0,
+    }
     assert result.request_batches["size_max"] == 2
 
 
@@ -182,6 +189,7 @@ def test_bounded_wait_deadline_is_finite_and_idle_is_not_unit_work():
     assert result.dispatch_order == (0, 1)
     assert result.sojourn_unit_time == (5.0, 1.0)
     assert result.total_unit_work == 2.0
+    assert result.bounded_group_wait["max_unit_time"] == 4.0
 
 
 def test_cross_group_fill_reports_physical_batch_purity():

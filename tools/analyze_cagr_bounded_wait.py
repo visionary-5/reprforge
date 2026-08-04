@@ -127,6 +127,20 @@ def _aggregate(replays: list[Any], *, with_quality: bool) -> dict[str, Any]:
         "publication_clock": _distribution(publication),
         "total_unit_work": total_work,
         "unit_work_per_query": total_work / query_count,
+        "bounded_group_wait": {
+            "events": sum(row.bounded_group_wait["events"] for row in replays),
+            "total_unit_time": sum(
+                row.bounded_group_wait["total_unit_time"] for row in replays
+            ),
+            "mean_unit_time_per_run": float(
+                np.mean(
+                    [row.bounded_group_wait["total_unit_time"] for row in replays]
+                )
+            ),
+            "max_single_wait_unit_time": max(
+                row.bounded_group_wait["max_unit_time"] for row in replays
+            ),
+        },
         "cache": {
             "demand_events": demand_events,
             "hits": sum(row.cache["hits"] for row in replays),
@@ -292,6 +306,8 @@ def _select_on_hr(access: dict[str, Any]) -> tuple[list[dict[str, Any]], dict[st
                 and config["wait_budget"] in {0, 4, 16, 64}
                 and union_ok
                 and aggregate["dispatch_complete"]
+                and aggregate["bounded_group_wait"]["max_single_wait_unit_time"]
+                <= config["wait_budget"] + 1e-12
                 and p95_ratio <= 1.05
                 and aggregate["starvation"]["fraction"] <= 0.05
             )

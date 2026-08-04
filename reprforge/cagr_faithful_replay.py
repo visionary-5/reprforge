@@ -162,6 +162,7 @@ class ReplayResult:
     groups: dict[str, Any]
     request_batches: dict[str, Any]
     total_unit_work: float
+    bounded_group_wait: dict[str, Any]
 
     def as_dict(self, *, starvation_window: int) -> dict[str, Any]:
         completion = np.asarray(self.completion_pages, dtype=np.float64)
@@ -192,6 +193,7 @@ class ReplayResult:
             "sojourn_unit_time": distribution(sojourn_unit),
             "total_unit_work": self.total_unit_work,
             "unit_work_per_query": self.total_unit_work / len(completion),
+            "bounded_group_wait": self.bounded_group_wait,
             "quality_work_auc": self.quality_work_auc,
             "normalized_quality_regret_auc": self.normalized_quality_regret_auc,
             "starvation": {
@@ -362,6 +364,7 @@ def replay_cagr_comparison(
     batch_group_purity: list[float] = []
     cross_group_batches = 0
     logical_group_counter = 0
+    bounded_group_wait_durations: list[float] = []
 
     def current_arrival_clock() -> float:
         return unit_cost_clock if arrival_clock == "unit" else page_clock
@@ -496,6 +499,7 @@ def replay_cagr_comparison(
     def wait_for_group_trigger() -> None:
         if policy != "cagr_faithful" or not pending or cagr_wait_budget <= 0.0:
             return
+        wait_start = current_arrival_clock()
         oldest_arrival = min(query_arrival[query] for query in pending)
         deadline = oldest_arrival + cagr_wait_budget
         while (
@@ -506,6 +510,9 @@ def replay_cagr_comparison(
             target = min(float(times[next_arrival]), deadline)
             advance_idle(target - current_arrival_clock())
             release_arrivals()
+        duration = current_arrival_clock() - wait_start
+        if duration > 1e-12:
+            bounded_group_wait_durations.append(duration)
 
     def select_regular_batch() -> tuple[int, ...]:
         batch: list[int] = []
@@ -723,4 +730,19 @@ def replay_cagr_comparison(
             ),
         },
         total_unit_work=total_unit_work,
+        bounded_group_wait={
+            "budget": cagr_wait_budget if policy == "cagr_faithful" else None,
+            "events": len(bounded_group_wait_durations),
+            "total_unit_time": float(sum(bounded_group_wait_durations)),
+            "mean_unit_time": (
+                float(np.mean(bounded_group_wait_durations))
+                if bounded_group_wait_durations
+                else 0.0
+            ),
+            "max_unit_time": (
+                float(max(bounded_group_wait_durations))
+                if bounded_group_wait_durations
+                else 0.0
+            ),
+        },
     )

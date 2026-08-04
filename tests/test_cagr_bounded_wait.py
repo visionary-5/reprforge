@@ -46,6 +46,7 @@ def test_aggregate_separates_elapsed_sojourn_from_charged_work():
     assert aggregate["sojourn_unit_time"]["mean"] == 3.0
     assert aggregate["total_unit_work"] == 2.0
     assert aggregate["unit_work_per_query"] == 1.0
+    assert aggregate["bounded_group_wait"]["max_single_wait_unit_time"] == 4.0
     assert aggregate["dispatch_complete"] is True
 
 
