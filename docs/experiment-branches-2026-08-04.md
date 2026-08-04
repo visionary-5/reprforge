@@ -11,6 +11,9 @@ The two round-two branches and their frozen gates are registered in
 Round-two results are summarized in
 `docs/parallel-experiment-round2-result-2026-08-04.md`: aging-aware frontier
 `2b2f495`, value-aware frontier `afb1c54`, and anytime metrics `e67bfc3`.
+The third-round branches are `exp/answer-time-to-correct`,
+`exp/capacity-warmstart`, and `exp/modern-retriever-transfer`.  Their role in
+the full paper matrix is registered in `docs/paper-evidence-matrix-2026-08-04.md`.
 
 This registry keeps the experiments independent.  A branch may produce a
 negative result; it must not change the common K=20 fusion semantics or tune on
