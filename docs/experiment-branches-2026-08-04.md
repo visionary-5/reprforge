@@ -143,3 +143,22 @@ Every branch must leave:
 No branch is merged merely because it has a positive mean.  It must beat its
 strongest relevant baseline, report tails, and survive at least one transfer or
 held-out split.
+
+## Final headroom branch
+
+### `exp/multiobjective-oracle-headroom`
+
+Question: after the simple scheduler variants fail, does a favorable finite
+oracle family still contain a policy that simultaneously improves system cost,
+elapsed evidence quality, tail latency, and starvation?
+
+The preregistered family contains 60 greedy configurations over qrel-derived
+quality density, exact next-step completion cost, deadline pressure, and a
+bounded future-arrival wait.  HR is the only selection domain; Finance remains
+sealed unless HR yields a safety-qualified point.
+
+Result: no registered configuration is HR-safe.  Twenty-four configurations
+pass the primary endpoint and P95 checks, and four pass the starvation check,
+but their intersection is empty.  This closes scheduler-weight and tie-break
+tuning; it is explicitly a finite-family result rather than an impossibility
+theorem.

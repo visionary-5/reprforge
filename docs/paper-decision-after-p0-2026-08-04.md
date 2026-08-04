@@ -20,6 +20,7 @@ ReprForge 已经证明“视觉多向量索引构建过程值得被单独研究�
 | Cost-first locality frontier | `exp/cost-locality-frontier` `3e2d33c` | **NO-GO** | 相对 overlap unit-cost 好 7.8%--20.8%，但相对 page frontier 完成收益约 -0.03%--2.31%，公平更差 | locality 信号有效，但不是第二贡献 |
 | Completion-constrained locality | `exp/frontier-constrained-locality` `225be9a` | **NO-DEPLOYABLE** | delta=1 形成均值折中，但 P95 全部失败 | 简单无权重 Pareto key 不足以解决 tail |
 | Deadline/oldest override | `exp/deadline-constrained-locality` `b3b4662` | **NO-GO；停止微调** | 两规则 starvation 仍约 21%--23%，P95/pages/sojourn/work 同时失败 | 下一步需要有保证的 deadline 机制，不是再换 tie-break |
+| Multi-objective oracle headroom | `exp/multiobjective-oracle-headroom` `ad11bbd` | **注册家族内无安全点** | 60 个 qrel/cost/future-aware 配置中，24 个通过主要目标与 P95、4 个通过 starvation，但交集为 0；最强非安全点的六轴最坏比率为 0.828，starvation 仍为 12.26% | 简单权重扫描存在结构性效率--公平冲突；该结论仅限注册的 greedy oracle 家族 |
 
 ## 经独立复核的 Finance 反例
 
@@ -64,13 +65,16 @@ Frontier 在第 1 轴明显更强；bounded CaGR 在系统 mean/P95 和第 2 轴
 
 最快的验证顺序：先在现有完整 trace 上做离线 oracle，测量同时满足系统成本、time-aligned quality 和 deadline 的可达空间。如果 oracle 都不能明显支配 bounded CaGR/frontier，两目标存在真实不可消除冲突，应停止算法路线；只有 oracle headroom 足够，才值得训练代理或设计近似算法。
 
+该验证现已完成：预注册的 60 点 clairvoyant greedy 家族在 HR 上没有安全候选，因此 Finance 按合同保持封存。最强非安全候选在 burst/Poisson 上把 mean sojourn、charged work 和 elapsed quality regret 全部压到对应端点的 0.72--0.83 倍，P95 也更好，但 starvation 为 12.26%；仅有的 4 个 starvation-safe 候选不使用 completion 信号，最坏主要比率约 1.38。这个结果否定的是“用现有三个信号做简单加权即可得到全面更优策略”，不是对所有调度算法的不可行性证明。
+
+因此下一项方法工作不能再是权重、tie-break 或窗口微调。只有在引入可证明的 per-query service guarantee、显式约束求解，或新的可观测 utility/cost predictor 后，才值得重新开启算法分支；否则应直接固化 measurement/system 论文。
+
 ## 投稿建议
 
-- **若目标仍是 9 月 ICLR：** 现在不要直接写 frontier 方法论文。先做多目标 oracle/headroom；没有明显空间就换投稿定位。
+- **若目标仍是 9 月 ICLR：** 现在不要直接写 frontier 方法论文。注册 oracle 家族已经没有安全 headroom，应换投稿定位，除非能提出带服务保证的新 formulation，而非继续调参。
 - **若接受系统/IR measurement 论文：** 当前资产已经很强，主线可转为“何时先建哪些视觉表示：异构 RAG 索引构建的三轴 benchmark 与系统研究”，frontier、EdgeRAG、CaGR 作为互补政策而非单一 winner。
 - **若目标是项目落地：** 默认用 bounded CaGR/locality 获得成本和尾部；需要最早的新页面质量时用 frontier；根据 workload arrival 与 quality budget 选择策略，不声称一个 policy 通吃。
 
 建议保留 ReprForge 名称，但标题改成不预设 winner：
 
 > **ReprForge: Measuring and Compiling the Quality--Locality Frontier of On-Demand Visual Index Construction**
-
