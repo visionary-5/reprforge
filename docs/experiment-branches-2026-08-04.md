@@ -185,3 +185,15 @@ regret no worse than frontier, and incur zero budget violations.  Roughly 30%
 of slots are forcibly changed by the constraint.  The selected rule is causal
 under the replay state interface, but remains pending joint user-tail,
 cross-domain, and real-cost validation.
+
+### `exp/hard-fair-joint-tail`
+
+Question: does frozen B32 retain absolute-sojourn and per-demand-slowdown tails,
+not only a younger-bypass bound?
+
+Result: pooled joint-tail transfer passes all four HR/Finance cells and all ten
+five-domain arrival cells.  The complete system-quality-tail gate passes 9/10;
+Industrial burst misses only the registered 5% effect-size threshold.  The
+result does not establish uniform subgroup fairness: late HR arrivals still
+show worse P99 slowdown than frontier, and the policy-dependent demand
+denominator requires a counterfactual-denominator audit.

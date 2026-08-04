@@ -22,7 +22,8 @@ ReprForge 已经证明“视觉多向量索引构建过程值得被单独研究�
 | Deadline/oldest override | `exp/deadline-constrained-locality` `b3b4662` | **NO-GO；停止微调** | 两规则 starvation 仍约 21%--23%，P95/pages/sojourn/work 同时失败 | 下一步需要有保证的 deadline 机制，不是再换 tie-break |
 | Multi-objective oracle headroom | `exp/multiobjective-oracle-headroom` `ad11bbd` | **注册家族内无安全点** | 60 个 qrel/cost/future-aware 配置中，24 个通过主要目标与 P95、4 个通过 starvation，但交集为 0；最强非安全点的六轴最坏比率为 0.828，starvation 仍为 12.26% | 简单权重扫描存在结构性效率--公平冲突；该结论仅限注册的 greedy oracle 家族 |
 | Fairness metric validity | `exp/fairness-metric-audit` `28ac077` | **bypass-only 无效** | 16 个 domain×arrival×method cell 没有一个让 bypass64 同时强匹配 extreme sojourn 与 slowdown；tail-label F1 仅 0.013--0.450 | bypass 只能作重排诊断；用户公平需联合 absolute sojourn 与 per-demand slowdown |
-| Hard-budget frontier | `exp/hard-fair-oracle` `461d03c` | **HEADROOM GO** | HR 唯一选择 B=32；Finance burst/Poisson 相对 bounded CaGR mean sojourn -8.06%/-7.76%、work/query -5.79%/-5.11%，elapsed regret 不劣于 frontier；max bypass=32、违规=0 | 硬约束而非软权重产生可行区；冻结策略事后可观测性审计表明可因果在线实现，但尚未证明用户尾部公平与真实 GPU 收益 |
+| Hard-budget frontier | `exp/hard-fair-oracle` `e05fe87` | **HEADROOM GO** | HR 唯一选择 B=32；Finance burst/Poisson 相对 bounded CaGR mean sojourn -8.06%/-7.76%、work/query -5.79%/-5.11%，elapsed regret 不劣于 frontier；max bypass=32、违规=0 | 硬约束而非软权重产生可行区；冻结策略事后可观测性审计表明可因果在线实现 |
+| Joint user-tail transfer | `exp/hard-fair-joint-tail` `a1291fe` | **GO，带 subgroup 边界** | HR/Finance 4/4 主 cell 的 sojourn/slowdown P95/P99/max 与最长无服务全过；五域 joint-tail 10/10、完整综合门 9/10 | pooled tail 可迁移；Industrial burst 仅差 5% 效果量门，但 HR late-arrival Q4 slowdown P99 仍比 frontier 高 1.74--1.81× |
 
 ## 经独立复核的 Finance 反例
 
@@ -51,7 +52,7 @@ Frontier 在第 1 轴明显更强；bounded CaGR 在系统 mean/P95 和第 2 轴
 4. **发现：** EdgeRAG 风格缓存不能消除共享 completion 价值，但强 CaGR locality 能在部分负载反超系统成本；方法排名随计量轴和负载反转。
 5. **方法候选：** 固定 completion/deadline 效用并施加每查询 younger-bypass 硬预算；B=32 在 HR 唯一合格并冻结迁移到 Finance，两种到达模型均在 mean/P95、charged work 和 elapsed evidence quality 上通过门槛。
 
-前四点足以支撑系统 measurement、benchmark 或经验型 IR 论文的核心。第五点让方法论文重新出现可能，但当前仍不能声称“统一最优”或“用户公平已解决”；必须先通过 causal implementation、joint sojourn+slowdown tail、跨域/跨表示和真实 GPU 门。
+前四点足以支撑系统 measurement、benchmark 或经验型 IR 论文的核心。第五点让方法论文重新出现可能；joint sojourn+slowdown pooled tail 和五域迁移门现已通过，但当前仍不能声称“统一最优”或“所有子群公平”。剩余关键门是独立 causal implementation、method-independent slowdown 复核、跨表示原始 trace 和真实 GPU 成本。
 
 ## 如果继续冲方法论文，唯一值得做的新方向
 
@@ -74,7 +75,9 @@ Frontier 在第 1 轴明显更强；bounded CaGR 在系统 mean/P95 和第 2 轴
 
 “冻结到 Finance”只表示配置由 HR-only 选择函数机械确定、没有用 Finance 反选；不能写成实验者首次盲测，因为仓库历史中已经存在 Finance endpoint 结果。各轴还使用不同的最强 reference：mean/work 对 bounded CaGR，elapsed regret 对 frontier，P95 对二者较优者。这符合预注册的 envelope gate，但不是相对一个单一方法在所有轴上 Pareto 支配。
 
-因此下一项方法工作不再是权重、tie-break 或窗口微调，而是把 B32 固化成不接收 qrel/未来数组的事件驱动在线 policy，并验证联合 tail-SLO。service guarantee 不能只定义成 bypass：审计中 deadline-only 的 bypass 恒为 0，但绝对等待尾部仍接近最差；bounded CaGR 的 max bypass 低于 64，slowdown P95 仍可达约 1848--2381。新的约束至少要联合 absolute sojourn 与按自身 demand 归一化的 slowdown，bypass 仅保留为排序诊断。
+联合尾部审计随后在 HR/Finance 四个主 cell 全部通过，三额外域也得到 10/10 joint-tail pass；完整系统+质量+尾部门为 9/10，唯一失败是 Industrial burst 的最大主轴改善 4.713%，略低于预注册 5%，而不是 tail 退化。边界同样重要：使用 policy-own-demand 定义 slowdown 时，HR 最晚到达四分位的 P99 相对 frontier 仍为 1.736--1.814×。因此主文可以写 pooled tail transfer，不能写 uniform subgroup fairness；slowdown 还需用与 policy 无关的反事实 demand 分母复核。
+
+因此下一项方法工作不再是权重、tie-break 或窗口微调，而是把 B32 固化成不接收 qrel/未来数组的事件驱动在线 policy，并完成真实成本校准。service guarantee 不能只定义成 bypass：审计中 deadline-only 的 bypass 恒为 0，但绝对等待尾部仍接近最差；bounded CaGR 的 max bypass 低于 64，slowdown P95 仍可达约 1848--2381。主评价联合 absolute sojourn 与 method-independent slowdown，bypass 仅保留为排序诊断。
 
 ## 投稿建议
 
