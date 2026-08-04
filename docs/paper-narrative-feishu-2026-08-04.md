@@ -2,7 +2,7 @@
 
 更新时间：2026 年 8 月 5 日
 文档性质：用于统一问题、论文叙事和下一阶段实验，不是投稿定稿  
-当前判断：Causal Hard Frontier 已达到 replay 级 paper-method candidate；论文主线成立，但 closest-work、真实异构成本和跨检索器门仍需补齐
+当前判断：Causal Hard Frontier 已达到 replay 级系统方法候选；Delay-D32 证明 B32 不是新公平算法，主线应放在在线表示编译问题、compiled/LRU 状态感知策略和三轴物理证据链
 
 ---
 
@@ -28,7 +28,7 @@ ReprForge 目前最值得推进的方向，不是泛泛地说“把文本索引�
 3. 做出可以先服务、再构建、可复用、可回滚的端到端系统；
 4. 用质量—时间、证据稳定时间和有害修订等指标，而不只用最终检索分数评价它。
 
-目前第 1--3 点已有完整证据链，第 4 点的检索/证据指标成立但答案级结果失败。强调度基线、有限到达窗口、IRPapers、五域、两种视觉表示和控制面规模均已完成；新的因果在线方法在五域上通过冻结迁移。当前最关键缺口是 Delay Scheduling/DLPM 风格 closest-work、共享结构破坏消融、真实异构构建成本和跨检索器原始 trace，而不是继续搜索软权重。
+目前第 1--3 点已有完整证据链，第 4 点的检索/证据指标成立但答案级结果失败。强调度基线、有限到达窗口、IRPapers、五域、两种视觉表示、closest-work、结构破坏和成本噪声均已完成。Delay-D32 与 B32 可行域结构等价且只落后约 1%，因此算法 novelty 必须降级；private-pages 消融又把收益降到 0，证明跨查询共享机制确实成立。当前最关键缺口是同一 B32 可行域内的 scoring 单变量消融、真实控制面/GPU 时间和跨检索器原始 trace。
 
 ---
 
@@ -510,7 +510,7 @@ HR 训练内同时大幅改善工作和 AUC，Finance 也通过门槛，但 IRPa
 当前贡献可以压缩成三条：
 
 1. **问题与评价：** 我们提出“随用随建的多模态索引编译”问题，把评价对象从索引完成后的静态质量，扩展到索引构建期间的证据质量、稳定时间、构建工作和修订风险。
-2. **机制：** 我们提出 Causal Hard Frontier：一个不接收 qrel 或未来请求的事件驱动调度器，用 completion/locality 效用降低构建与重载工作，并用逐请求 bounded-overtaking contract 提供严格顺序保证。
+2. **机制：** 我们实例化 Causal Hard Frontier：一个不接收 qrel 或未来请求的事件驱动策略，在与 Delay-D32 等价的 bounded-overtaking 可行域内，利用 compiled/LRU 状态上的 normalized completion 与 continuous age 降低构建和重载工作。贡献不在 hard bypass 本身。
 3. **系统与实证：** 我们实现具有持久复用状态和原子发布语义的端到端系统，并在五个视觉文档域、两类到达模型和三条物理质量时间轴上验证：冻结方法的跨 cell median sojourn/work/elapsed-regret ratio 为 0.923/0.949/0.948，10/10 P99 更优；同时报告 unique-page 质量和单 query max 的反例。
 
 如果加入安全发布机制并验证成功，可以有第四条：
@@ -563,7 +563,7 @@ HR 训练内同时大幅改善工作和 AUC，Finance 也通过门槛，但 IRPa
 
 **第四段：我们的观察和方法。** 廉价文本定位器不仅提供初始答案，还暴露查询—页面依赖图。候选组之间存在重叠，调度顺序会改变构建、重载和证据发布时间；只追求局部性又会无限绕过孤立请求。Causal Hard Frontier 因此只基于已到达需求选择低完成成本、高复用的候选，同时给每个请求一个硬的 younger-bypass 上限。
 
-**第五段：结果和贡献。** 概括问题定义、因果 hard-budget 方法、原子可复用系统，以及五域 median ratio、10/10 P99 和真实 A100 三类数字；同时主动给出 unique-page 质量与单 query max 反例。
+**第五段：结果和贡献。** 概括问题定义、因果 hard-budget 系统策略、原子可复用状态，以及五域 median ratio、10/10 P99、private-pages 收益归零和成本噪声四类数字；同时主动说明 Delay-D32 只差约 1%、unique-page 质量与单 query max 反例。
 
 ### 8.4 相关工作章节
 
@@ -835,13 +835,13 @@ RAGChecker 提供了检索与生成模块的细粒度诊断思路，可以借鉴
 - EdgeRAG 已覆盖按需嵌入生成与跨请求缓存，DVI 和 CaGR-RAG 分别压住“延迟摄取”和“查询分组”两边的新颖性；
 - hard bypass、delay scheduling 和 locality-aware fairness 也有经典前作，算法新意不能只写 B32；
 - 最终视觉覆盖仍高，必须诚实解释收益来自更早可用和融合质量，而不是极端稀疏索引；
-- 五域 replay 已通过，但真实异构 GPU 成本、跨检索器 B32 trace 和 faithful fairness-locality baseline 仍未关闭。
+- 五域 replay、fair-locality adaptation、结构消融与 A100 per-page 成本噪声均已完成；但 Delay-D32 太接近，且当前成本 truth 仍是加法 proxy，不是并发 wall-clock；跨检索器 B32 trace 仍未关闭。
 
 ### 13.3 我建议的优先级
 
 强基线、有限窗口、答案、跨域、跨表示、控制面规模和 novelty gate 均已完成。原始 frontier 被 bounded CaGR 反超后，60 点软 oracle 揭示显著效率余量但无法满足 hard ordering；固定效用加 B32 后出现唯一可行点。独立 Causal Hard Frontier 又在 20/20 reference cell 精确物化，并在五域取得 median 0.923/0.949/0.948 与 10/10 P99 安全。
 
-因此主方法方向已从“继续找 scheduler”收敛为固定 Causal Hard Frontier。下一优先级只保留会改变论文判断的四项：Delay Scheduling/DLPM/CaGR max-wait closest baselines；degree-preserving 与 non-persistent 结构消融；预测成本误差/漂移；跨 retriever 与真实 GPU 校准。任何新实验都不得重调 B32 或软权重。
+因此主方法方向已从“继续找 scheduler”收敛为固定 Causal Hard Frontier，但投稿定位要更诚实：这是在线表示编译系统中的状态感知 policy，不是全新 fairness scheduler。下一优先级只保留三项：固定同一 B32 可行域的 completion-only/age 单变量消融；增量成本缓存与 scheduler CPU/真实 GPU 比例；跨 retriever 原始 trace。任何新实验都不得重调 B32 或软权重。
 
 ---
 
@@ -871,16 +871,19 @@ RAGChecker 提供了检索与生成模块的细粒度诊断思路，可以借鉴
 - 精确增量调度比 naive 快 17.45×，30K 查询控制面低于 4.1 秒；
 - 独立 causal API 在 HR/Finance 20/20 cell 与 B32 reference 全量精确等价；
 - 五域 median sojourn/work/elapsed-regret ratio 为 0.923/0.949/0.948，9/10 cell 有 5% 效果，10/10 P99 更优；
+- Delay-D32 median 只落后约 0.7%--1.1%，说明 B32 本身不是算法新意；
+- private-pages 消融后工作收益精确变 0，证明跨查询共享是必要机制；
+- A100逐页成本 proxy 下 unit-count 与 CV=0.5 噪声仍过门，CV=1 与系统性低估会吃掉收益；
 - 最终候选覆盖基本一致，但真实 bf16 有小幅数值波动；
 - 答案语义正确率没有提升，约 19%—22% 查询存在有害检索修订。
 
 ### 最大风险
 
-答案级收益失败；EdgeRAG 已覆盖宽泛按需索引生命周期，CaGR 覆盖共享访问分组，Delay Scheduling/DLPM 覆盖 bounded skip 与 locality/fairness。Causal Hard Frontier 的新意必须来自“会持久改变检索证据的在线表示编译问题 + 严格因果接口 + 多物理轴实证”的组合，而不能把 hard bypass 本身写新。跨 retriever 和真实异构成本仍未验证。
+答案级收益失败；EdgeRAG 已覆盖宽泛按需索引生命周期，CaGR 覆盖共享访问分组，Delay Scheduling/DLPM 覆盖 bounded skip 与 locality/fairness。Delay-D32 与 B32 feasible set 结构等价且性能很接近。Causal Hard Frontier 的可守价值来自“会持久改变检索证据的在线表示编译问题 + compiled/LRU completion-age policy + 严格因果接口 + 多物理轴实证”的组合。跨 retriever 和真实并发成本仍未验证。
 
 ### 下一步
 
-固定 B32 和全部常数，不再调 scheduler。优先完成 closest-work baseline、依赖结构破坏、成本预测鲁棒性和真实 GPU 校准；这些通过后立即固化主表与论文，不再扩张新模块。
+固定 B32 和全部常数，不再调 scheduler。只补同一 feasible set 的 scoring 消融、控制面优化/真实 GPU 比例和跨 retriever trace；随后立即固化主表与论文，不再扩张新模块。
 
 ---
 

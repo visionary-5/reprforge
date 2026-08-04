@@ -219,3 +219,34 @@ same frozen policy transfers across five ViDoRe domains with median
 sojourn/work/elapsed-regret ratios of 0.923/0.949/0.948, 9/10 cells showing a
 registered 5% effect and all ten improving P99.  Cross-retriever replay and
 real heterogeneous costs remain open.
+
+### `exp/fair-locality-baselines`
+
+Question: is the method merely Delay Scheduling, max-wait locality, or a
+query-level DLPM adaptation?
+
+Result: the registered baselines do not make the complete method redundant,
+but Delay-D32 is extremely close and has the same feasible set as uniform B32.
+Its median primary metrics trail by only about 1%, while the transparent hard
+implementation performs substantially more control operations.  B32 fairness
+is therefore prior art, not an independent algorithm contribution.
+
+### `exp/dependency-structure-ablation`
+
+Question: does the gain require actual cross-query page sharing and persistent
+state?
+
+Result: making pages private removes the gain, while degree-preserving edge
+swaps retain most of it.  Degree/hotness creates the opportunity and exact
+topology changes its magnitude.  Persistence improves absolute work, but equal
+unit build/reload cost cannot separate compiled from cache persistence.
+
+### `exp/causal-cost-robustness`
+
+Question: does the causal method depend on exact page costs?
+
+Result: no within the registered measured-profile proxy.  Unit counts and
+cost predictions with CV 0.5 remain robust; CV 1 and systematic expensive-tail
+underestimation can consume the gain, and winsorization partly restores it.
+The truth profile is additive A100 per-page encode time, not concurrent
+wall-clock service.

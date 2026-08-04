@@ -1,6 +1,6 @@
 # ReprForge P0 反事实后的论文决策
 
-日期：2026-08-04。状态：**hard-budget frontier 已达到 replay 级 paper-method candidate；当前优先补 closest-work、结构消融、跨检索器与真实成本验证。**
+日期：2026-08-04。状态：**Causal Hard Frontier 已达到 replay 级系统方法候选；Delay-D32 证明算法独立新颖性弱，论文应主打在线表示编译问题、状态感知策略与物理质量前沿。**
 
 ## 一句话判断
 
@@ -26,6 +26,9 @@ ReprForge 已经证明“视觉多向量索引构建过程值得被单独研究�
 | Joint user-tail transfer | `exp/hard-fair-joint-tail` `a1291fe` | **GO，带 subgroup 边界** | HR/Finance 4/4 主 cell 的 sojourn/slowdown P95/P99/max 与最长无服务全过；五域 joint-tail 10/10、完整综合门 9/10 | pooled tail 可迁移；Industrial burst 仅差 5% 效果量门，但 HR late-arrival Q4 slowdown P99 仍比 frontier 高 1.74--1.81× |
 | Counterfactual slowdown | `exp/counterfactual-slowdown` `e646106` | **校正后 GO** | 固定 FIFO demand 分母后 HR Q4 P99 ratio 从 1.814/1.736 修正为 0.945/0.896；五域 P95/P99 10/10 | 旧 Q4 弱点是内生分母伪影；校正后 slowdown 只是不劣/小幅改善，strict max 仍有单 query 反例 |
 | Causal Hard Frontier | `exp/causal-hard-frontier` `29448fd` | **PAPER METHOD CANDIDATE** | 无 qrel/future/EOS API；20/20 reference cells 全量 exact；五域 median sojourn/work/elapsed ratios 0.923/0.949/0.948，9/10 cell 至少一轴改善 5%，10/10 P99 更优 | 方法已从 oracle 物化成因果事件驱动 policy；跨 retriever 与真实 GPU/cost estimator 尚未验证 |
+| Fair-locality closest work | `exp/fair-locality-baselines` `ec900ca` | **非冗余，但算法 novelty 降级** | Delay-D32 在 7/10 cell 三主轴距 hard≤2%，median 仅差 0.94%/0.72%/1.07%；其 feasible set 与 uniform-B32 hard constraint 结构等价 | B32/公平+局部性不能称新；差异只在同一可行域内的 completion+continuous-age scoring，且控制操作约高 75.6% |
+| Dependency structure ablation | `exp/dependency-structure-ablation` `01c0bd1` | **机制 GO** | private-pages 后 work gain=0、sojourn/elapsed gain≈0；degree-preserving swaps 后仍保留 4.66% sojourn、3.71% work、10.82% elapsed gain | 跨查询共享是必要收益机制；度数/热度决定机会，精确拓扑调节幅度；equal-cost 下不能区分 build/reload persistence |
+| Cost robustness | `exp/causal-cost-robustness` `a9cd66d` | **ORACLE-INDEPENDENT** | unit-count 与 CV=.5 预测通过；CV=.5 median penalty约2.5%--3.6%，最坏≤5.5%；CV=1 和 expensive-tail underestimation 吃掉优势，winsorization 部分恢复 | 不依赖 exact cost oracle；需要稳健成本估计；A100逐页加法 proxy 仍不等于并发 wall-clock |
 
 ## 经独立复核的 Finance 反例
 
@@ -52,9 +55,9 @@ Frontier 在第 1 轴明显更强；bounded CaGR 在系统 mean/P95 和第 2 轴
 2. **系统：** ReprForge 实现可恢复、可版本化的异构表示构建和精确增量控制面；30K 查询低于 4.1 秒和 300 MiB。
 3. **实证：** 五个 ViDoRe 域、IRPapers、ColPali/ColModernVBERT 和真实 A100 表明构建顺序会显著改变查询完成和质量轨迹。
 4. **发现：** EdgeRAG 风格缓存不能消除共享 completion 价值，但强 CaGR locality 能在部分负载反超系统成本；方法排名随计量轴和负载反转。
-5. **方法：** Causal Hard Frontier 用已到达 locator cohort、当前 compiled/LRU、age 与 bypass counter 做 completion/deadline 调度，并施加每查询 younger-bypass 硬预算；独立 API 不接收 qrel 或未来 trace，五域取得稳定的延迟--工作量--elapsed-quality 改善。
+5. **系统方法实例：** Causal Hard Frontier 用已到达 locator cohort、当前 compiled/LRU、age 与 bypass counter 做 completion/deadline 调度，并施加与 Delay-D32 等价的 bounded-overtaking 可行域；独立 API 不接收 qrel 或未来 trace，五域取得稳定的延迟--工作量--elapsed-quality 改善。新意不在 B32 本身，而在表示编译状态、目标与完整证据链的结合。
 
-前四点足以支撑系统 measurement、benchmark 或经验型 IR 论文的核心。第五点现在达到 replay 级 paper-method candidate：causal implementation、method-independent slowdown、pooled joint tail 与五域迁移均已通过。当前仍不能声称“统一最优”或“所有单 query max 都更好”。剩余关键门是 Delay Scheduling/DLPM 风格强基线、结构破坏消融、跨表示原始 trace 和真实 GPU/成本预测。
+前四点足以支撑系统 measurement、benchmark 或经验型 IR 论文的核心。第五点达到 replay 级系统方法候选：causal implementation、method-independent slowdown、pooled joint tail、五域迁移、结构因果与成本噪声均已通过。Delay-D32 的接近结果同时表明，当前不足以支撑“全新的公平调度算法”或纯算法 ICLR 故事。剩余关键门是同一 B32 可行域内的单变量 scoring 消融、控制面优化/真实 GPU、跨表示原始 trace。
 
 ## 如果继续冲方法论文，唯一值得做的新方向
 
@@ -87,7 +90,7 @@ Frontier 在第 1 轴明显更强；bounded CaGR 在系统 mean/P95 和第 2 轴
 
 ## 投稿建议
 
-- **若目标仍是 9 月 ICLR：** 不写原始 frontier 方法论文；以 Causal Hard Frontier 为唯一方法主线。causal、joint-tail 和五域门已经通过；是否继续冲方法论文取决于 closest-work baseline/structure ablation 与真实成本门，跨 retriever 若来不及必须明确列为未验证。
+- **若目标仍是 9 月 ICLR：** 当前数据很强，但 Delay-D32 只差约 1%，不能把 hard constraint 包装成算法突破。若仍冲方法论文，需要把 scoring 形式化为共享依赖编译的约束优化并给出更明确的 bound/近似，或用单变量消融证明 completion+continuous-age 的稳定价值；否则更适合系统/IR measurement+method 投稿。
 - **若接受系统/IR measurement 论文：** 当前资产已经很强，主线可转为“何时先建哪些视觉表示：异构 RAG 索引构建的三轴 benchmark 与系统研究”，frontier、EdgeRAG、CaGR 作为互补政策而非单一 winner。
 - **若目标是项目落地：** 先把 B32 作为实验性默认候选；在联合尾部和真实成本未通过前，bounded CaGR 仍是保守成本基线，frontier 仍负责 unique-page 早期质量，不声称一个 policy 通吃。
 

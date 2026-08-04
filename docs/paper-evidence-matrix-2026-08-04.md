@@ -33,6 +33,9 @@ ReprForge 只有同时满足下面五点，才能从“有效系统机制”提�
 | RQ13 B32 是否通过用户尾部与五域迁移 | HR、Finance、CS、Industrial、Pharma | B32、bounded CaGR、frontier | sojourn/slowdown P95/P99/max、longest no-service、三主轴 gate | **pooled GO**；主 cell 4/4，五域 joint-tail 10/10，完整门 9/10；Industrial burst 最大收益 4.713%<5% | 支撑跨域 pooled tail；Q4 slowdown 与 policy-dependent denominator 仍需复核 |
 | RQ14 slowdown 是否被 policy-dependent demand 污染 | 五域；burst/Poisson | policy-own、FIFO-counterfactual、cold cohort denominator | pooled/arrival-quartile P95/P99/max | **校正后 GO**；HR Q4 反转消失，五域 P95/P99 10/10；strict max 9/10 | 主文使用 FIFO-counterfactual denominator；不夸大 slowdown 数量级优势 |
 | RQ15 B32 能否物化成严格因果方法 | 五域；HR/Finance exact reference | causal hard frontier、B32 oracle reference、FIFO/frontier/overlap/bounded | 20-cell tuple equality、五域三轴/P99、API observability | **PAPER METHOD CANDIDATE**；20/20 exact，median ratios 0.923/0.949/0.948，9/10 effect-size、10/10 P99 | 解决 oracle-to-method 缺口；跨 retriever 与真实成本仍未验证 |
+| RQ16 是否只是经典公平局部性调度 | 五域 | Delay-D32、max-wait overlap、DLPM query adaptation、hard | 三主轴±2%、P99、B32、control ops | 注册 redundancy **未通过**，但 Delay-D32 7/10 close，median 仅差约1%，feasible set 与 B32 等价 | 撤回 hard fairness 算法 novelty；Delay-D32 必须进主表 |
+| RQ17 收益是否真来自共享依赖与持久状态 | 五域；五种结构条件 | 原图、degree-preserving swaps、private pages、清 compiled/cache、仅清 active cache | overlap/reuse、三主轴 attenuation、absolute work | **共享机制 GO**；private 后收益归零；随机换边保留多数收益；equal-cost persistence 不可区分 | 证明不是普通 SPT/LRU 偶然；真实 build/reload 成本仍需校准 |
+| RQ18 是否依赖 exact per-page cost | 五域；A100 page profile | perfect、unit、CV .25/.5/1、domain drift、winsorized | 真成本下 mean/P95/P99/work/regret | **ORACLE-INDEPENDENT**；unit/CV.5 过门，CV1/drift 边界，clipping 有效 | 主方法可用 unit/稳健 predictor；仍需真实并发墙钟 |
 
 ## 数据集分工
 
