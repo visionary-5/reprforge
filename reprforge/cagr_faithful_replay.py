@@ -86,6 +86,63 @@ def form_cagr_groups(
     return tuple(tuple(group) for group in groups)
 
 
+def form_fixed_jaccard_groups(
+    queries: Sequence[int],
+    cohorts: Sequence[Sequence[int]],
+    *,
+    target_group_size: int,
+) -> tuple[tuple[int, ...], ...]:
+    """Greedy fixed-size Jaccard agglomeration for a strong CaGR adaptation.
+
+    Seeds maximize total Jaccard degree over the remaining pool.  Each next
+    member maximizes average Jaccard to the current group, then its strongest
+    single link.  Input order is the deterministic final tie-break.
+    """
+
+    if target_group_size <= 0:
+        raise ValueError("target_group_size must be positive")
+    normalized = normalize_cohorts(cohorts)
+    ordered = [int(query) for query in queries]
+    if len(set(ordered)) != len(ordered):
+        raise ValueError("queries must be unique")
+    if any(query < 0 or query >= len(normalized) for query in ordered):
+        raise ValueError("query index is out of range")
+    rank = {query: index for index, query in enumerate(ordered)}
+    similarity: dict[tuple[int, int], float] = {}
+
+    def score(left: int, right: int) -> float:
+        key = (min(left, right), max(left, right))
+        if key not in similarity:
+            similarity[key] = jaccard(normalized[left], normalized[right])
+        return similarity[key]
+
+    remaining = set(ordered)
+    groups: list[tuple[int, ...]] = []
+    while remaining:
+        seed = min(
+            remaining,
+            key=lambda query: (
+                -sum(score(query, other) for other in remaining if other != query),
+                rank[query],
+            ),
+        )
+        group = [seed]
+        remaining.remove(seed)
+        while remaining and len(group) < target_group_size:
+            selected = min(
+                remaining,
+                key=lambda query: (
+                    -sum(score(query, member) for member in group) / len(group),
+                    -max(score(query, member) for member in group),
+                    rank[query],
+                ),
+            )
+            remaining.remove(selected)
+            group.append(selected)
+        groups.append(tuple(group))
+    return tuple(groups)
+
+
 @dataclass(frozen=True)
 class ReplayResult:
     policy: str
@@ -213,6 +270,8 @@ def replay_cagr_comparison(
     cagr_group_pool: int = 64,
     cagr_theta: float = 0.5,
     cagr_membership_rule: str = "max",
+    cagr_grouping: str = "threshold",
+    cagr_target_group_size: int = 8,
 ) -> ReplayResult:
     """Replay one policy with persistent compilation and equal active LRU."""
 
@@ -231,6 +290,10 @@ def replay_cagr_comparison(
         raise ValueError("quality_gain must be a finite aligned vector")
     if request_batch_size <= 0 or window <= 0 or cagr_group_pool <= 0:
         raise ValueError("batch, window, and group pool must be positive")
+    if cagr_grouping not in {"threshold", "fixed_jaccard"}:
+        raise ValueError("cagr_grouping must be 'threshold' or 'fixed_jaccard'")
+    if cagr_target_group_size <= 0:
+        raise ValueError("cagr_target_group_size must be positive")
     if corpus_pages <= 0:
         raise ValueError("corpus_pages must be positive")
 
@@ -322,11 +385,19 @@ def replay_cagr_comparison(
     def build_cagr_plan() -> None:
         visible_count = min(window, cagr_group_pool, len(pending))
         visible = pending[:visible_count]
-        groups = form_cagr_groups(
-            visible,
-            normalized,
-            theta=cagr_theta,
-            membership_rule=cagr_membership_rule,
+        groups = (
+            form_cagr_groups(
+                visible,
+                normalized,
+                theta=cagr_theta,
+                membership_rule=cagr_membership_rule,
+            )
+            if cagr_grouping == "threshold"
+            else form_fixed_jaccard_groups(
+                visible,
+                normalized,
+                target_group_size=cagr_target_group_size,
+            )
         )
         for query in visible:
             pending.remove(query)
@@ -509,6 +580,7 @@ def replay_cagr_comparison(
             "unused_unit_work": wasted_prefetch_cost,
         },
         groups={
+            "grouping": cagr_grouping if policy == "cagr_faithful" else None,
             "count": len(group_sizes),
             "singleton_count": sum(size == 1 for size in group_sizes),
             "singleton_fraction": (

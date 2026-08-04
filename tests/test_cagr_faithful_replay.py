@@ -2,6 +2,7 @@ import numpy as np
 
 from reprforge.cagr_faithful_replay import (
     form_cagr_groups,
+    form_fixed_jaccard_groups,
     replay_cagr_comparison,
 )
 
@@ -39,6 +40,19 @@ def test_cagr_keeps_groups_contiguous_and_does_not_fill_across_boundary():
     assert result.groups["count"] == 2
     assert result.request_batches["count"] == 2
     assert result.request_batches["size_max"] == 2
+
+
+def test_fixed_jaccard_groups_have_registered_size_and_locality():
+    cohorts = [[0, 1], [0, 2], [3, 4], [3, 5], [6, 7]]
+    groups = form_fixed_jaccard_groups(
+        [0, 1, 2, 3, 4], cohorts, target_group_size=2
+    )
+    assert all(len(group) <= 2 for group in groups)
+    assert {frozenset(group) for group in groups} >= {
+        frozenset({0, 1}),
+        frozenset({2, 3}),
+    }
+    assert sorted(query for group in groups for query in group) == list(range(5))
 
 
 def test_next_group_prefetch_is_charged_and_becomes_useful():

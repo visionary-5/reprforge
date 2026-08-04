@@ -64,6 +64,8 @@
 
 分别为 Family A、Family B 选择一个部署配置；另在全部 81 个候选中选 overall strongest。每个候选先聚合 HR 的 burst/Poisson × 五个 permutation。
 
+Family A 的 `theta=0.50` 只作为 faithful 锚点保留在候选表中；名为 `hr_selected_lower_theta` 的部署配置严格只从 `theta<0.50` 的 45 个候选中选择，避免把 faithful 锚点重复命名成 lower-theta。overall strongest 仍可选择 `theta=0.50`。
+
 令：
 
 - `R_page` = 候选 mean completion pages / 同设置 FIFO mean completion pages；
