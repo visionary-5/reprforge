@@ -6,6 +6,8 @@ Round-one results are summarized in
 `docs/parallel-experiment-round1-result-2026-08-04.md`.  Frozen commits are:
 `exp/windowed-arrivals` at `da021d6`, `exp/scheduler-baselines` at `a8009ca`,
 `exp/revision-safety` at `e439efc`, and `exp/benchmark-transfer` at `9e268dd`.
+The two round-two branches and their frozen gates are registered in
+`docs/experiment-round2-contract-2026-08-04.md`.
 
 This registry keeps the experiments independent.  A branch may produce a
 negative result; it must not change the common K=20 fusion semantics or tune on
