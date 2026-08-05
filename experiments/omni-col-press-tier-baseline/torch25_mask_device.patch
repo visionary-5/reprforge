@@ -1,0 +1,12 @@
+diff --git a/src/models/masking_utils.py b/src/models/masking_utils.py
+index 4211a95..7b469b4 100644
+--- a/src/models/masking_utils.py
++++ b/src/models/masking_utils.py
+@@ -462,6 +462,7 @@ def sdpa_mask_older_torch(
+     causal_mask = _vmap_for_bhqkv(mask_function, bh_indices=False)(None, None, cache_position, kv_arange)
+     causal_mask = causal_mask[None, None, :, :].expand(batch_size, -1, -1, -1)
+     if padding_mask is not None:
++        padding_mask = padding_mask.to(device=causal_mask.device)
+         causal_mask = causal_mask * padding_mask[:, None, None, :]
+ 
+     # Due to a bug in versions of torch<2.5, we need to update the mask in case a query is not attending to any

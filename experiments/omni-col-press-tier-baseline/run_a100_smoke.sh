@@ -6,6 +6,8 @@ readonly EXPECTED_COMPAT_PATCH_SHA256="5448707eaf3b49357784177fc46aea9be6a209d85
 readonly EXPECTED_COMPONENTS_FACTORY_SHA256="9f635a72d7ecf29e36c43a0f115beb099317787613d6bd79fd5b1c2553b659a9"
 readonly EXPECTED_LOADERS_PATCH_SHA256="cc6624be900caf2a4a45918443f9b0293e410c0386b270eaaaf650d4c7fa1210"
 readonly EXPECTED_LOADERS_SHA256="7de8abf3e19d318d942fc1c40fc71b6dcce9d9852d3b4397c997e99c8f53c41d"
+readonly EXPECTED_MASK_PATCH_SHA256="c2ce55b8e89a7155fa4cf01b6e9a62348bb401c037d1282aeb6b6cd71d8ed72d"
+readonly EXPECTED_MASKING_UTILS_SHA256="bb5aea0104c75e5fce99ddb6377d93905ee69ce4345cd6195f5e8a6c8ecdcf0f"
 readonly FULL_MODEL_ID="hltcoe/ColBERT_qwen2.5-vl_colpali"
 readonly FULL_MODEL_REVISION="14a7bb3328187705ff153e3511a47f9abb144054"
 readonly FULL_CONFIG_SHA256="b4b7d8e29a63cbd33d30b761a4fa09f1bdb3126e07ace2af1280bc7ad2c69f7d"
@@ -19,6 +21,7 @@ readonly ATTN_IMPLEMENTATION="${OMNI_ATTN_IMPLEMENTATION:-sdpa}"
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly COMPAT_PATCH="${SCRIPT_DIR}/image_only_optional_fast_plaid.patch"
 readonly LOADERS_PATCH="${SCRIPT_DIR}/image_only_optional_fast_plaid_loaders.patch"
+readonly MASK_PATCH="${SCRIPT_DIR}/torch25_mask_device.patch"
 
 IFS=',' read -r -a requested_cases <<< "${OMNI_CASES:-full,hpool,agc}"
 for case_name in "${requested_cases[@]}"; do
@@ -117,6 +120,29 @@ if [[ "${actual_loaders_sha256}" != "${EXPECTED_LOADERS_SHA256}" ]]; then
 fi
 if [[ "${actual_loaders_sha256}" != "${EXPECTED_LOADERS_SHA256}" ]]; then
   echo "patched loaders.py SHA-256 mismatch: ${actual_loaders_sha256}" >&2
+  exit 2
+fi
+if [[ ! -f "${MASK_PATCH}" ]]; then
+  echo "missing Torch 2.5 mask-device compatibility patch: ${MASK_PATCH}" >&2
+  exit 2
+fi
+actual_mask_patch_sha256="$(sha256sum "${MASK_PATCH}" | awk '{print $1}')"
+if [[ "${actual_mask_patch_sha256}" != "${EXPECTED_MASK_PATCH_SHA256}" ]]; then
+  echo "mask-device patch SHA-256 mismatch: ${actual_mask_patch_sha256}" >&2
+  exit 2
+fi
+masking_utils_file="${OMNI_SOURCE}/src/models/masking_utils.py"
+actual_masking_utils_sha256="$(sha256sum "${masking_utils_file}" | awk '{print $1}')"
+if [[ "${actual_masking_utils_sha256}" != "${EXPECTED_MASKING_UTILS_SHA256}" ]]; then
+  if ! git -C "${OMNI_SOURCE}" diff --quiet -- src/models/masking_utils.py; then
+    echo "refusing to patch an unexpectedly modified masking_utils.py" >&2
+    exit 2
+  fi
+  git -C "${OMNI_SOURCE}" apply "${MASK_PATCH}"
+  actual_masking_utils_sha256="$(sha256sum "${masking_utils_file}" | awk '{print $1}')"
+fi
+if [[ "${actual_masking_utils_sha256}" != "${EXPECTED_MASKING_UTILS_SHA256}" ]]; then
+  echo "patched masking_utils.py SHA-256 mismatch: ${actual_masking_utils_sha256}" >&2
   exit 2
 fi
 if [[ "${actual_factory_sha256}" != "${EXPECTED_COMPONENTS_FACTORY_SHA256}" ]]; then
@@ -270,6 +296,8 @@ python - \
   "${actual_factory_sha256}" \
   "${actual_loaders_patch_sha256}" \
   "${actual_loaders_sha256}" \
+  "${actual_mask_patch_sha256}" \
+  "${actual_masking_utils_sha256}" \
   "${FULL_MODEL_ID}" \
   "${FULL_MODEL_REVISION}" \
   "${needs_full}" \
@@ -296,6 +324,8 @@ from pathlib import Path
     factory_file_sha256,
     loaders_patch_sha256,
     loaders_file_sha256,
+    mask_patch_sha256,
+    masking_utils_sha256,
     model_id,
     model_revision,
     needs_full,
@@ -333,6 +363,8 @@ manifest = {
         "components_factory_sha256": factory_file_sha256,
         "loaders_patch_sha256": loaders_patch_sha256,
         "loaders_sha256": loaders_file_sha256,
+        "mask_device_patch_sha256": mask_patch_sha256,
+        "masking_utils_sha256": masking_utils_sha256,
     },
     "gpu_names": gpu_names.splitlines(),
     "physical_gpu_id": int(__import__("os").environ["CUDA_VISIBLE_DEVICES"]),
@@ -387,7 +419,8 @@ run_case() {
         --index_output_path "${index_path}" \
         --index_type multivec \
         --batch_size "${OMNI_BATCH_SIZE:-1}" \
-        "${extra_args[@]}"
+        "${extra_args[@]}" \
+        > "${OMNI_OUTPUT_ROOT}/${case_name}/build.log" 2>&1
 
     /usr/bin/time -p -o "${OMNI_OUTPUT_ROOT}/timing/${case_name}-eval.time" \
       python -m torch.distributed.run --nproc_per_node=1 -m src.evaluate \
@@ -408,7 +441,8 @@ run_case() {
         --output_path "${result_path}" \
         --batch_size "${OMNI_QUERY_BATCH_SIZE:-4}" \
         --top_k 1 5 10 \
-        "${extra_args[@]}"
+        "${extra_args[@]}" \
+        > "${OMNI_OUTPUT_ROOT}/${case_name}/eval.log" 2>&1
   )
 }
 

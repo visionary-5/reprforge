@@ -122,6 +122,12 @@ Fast-Plaid，而 Fast-Plaid 没有
 不能描述成上游源码零修改复现。官方当前源码还同时导入 Qwen3-VL processor，因此
 运行器要求隔离环境中的 `transformers>=4.57.1`，不得改动已有 ViDoRe 固定环境。
 
+真实 smoke 还发现官方 Torch 2.5 兼容 mask 在文本查询路径可能生成 CUDA causal
+mask 和 CPU padding mask。`torch25_mask_device.patch` 只在布尔相乘前把 padding mask
+移动到已经生成的 causal mask 所在设备，不改变掩码值；运行器同样校验补丁及补丁后
+文件 SHA-256。构建与评价的 stdout/stderr 分别保存为每个 case 的 `build.log` 和
+`eval.log`，控制连接结束不再丢失失败证据。
+
 ## 6. 对 ReprForge 的直接价值
 
 OmniColPress 是一个合适的表示 DAG 物理基线，但贡献边界要说清楚：
