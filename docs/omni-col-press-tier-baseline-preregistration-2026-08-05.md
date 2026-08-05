@@ -85,7 +85,19 @@ wrapper 不覆盖已有输出目录，并核验 A100、官方源码 commit、依
 CUDA_VISIBLE_DEVICES=<free-a100-id> OMNI_SOURCE=/path/to/omni-col-press OMNI_CORPUS_JSONL=/path/to/32-pages.jsonl OMNI_QUERY_JSONL=/path/to/16-queries.jsonl OMNI_QRELS=/path/to/qrels.jsonl OMNI_ASSETS=/path/to/images OMNI_MODEL_CACHE=/path/to/model-cache OMNI_OUTPUT_ROOT=/path/to/new-output bash experiments/omni-col-press-tier-baseline/run_a100_smoke.sh
 ```
 
-运行后应产生 `full/`、`hpool/`、`agc/` 三套官方 index/result，以及 `timing/` 和 `profiles/`。在这些文件实际生成并校验前，本分支的结论保持 `NO_GO_LOCAL_ARTIFACTS_MISSING`。
+共享服务器磁盘不足以无条件同时展开两个约 7.5 GB checkpoint 时，可以显式设置
+`OMNI_CASES=full,hpool`，先运行共享同一 checkpoint 的受控压缩比较。该设置不会
+下载 AGC checkpoint；第一阶段通过后，再用新的输出目录设置 `OMNI_CASES=agc`。
+模型通过 `huggingface_hub.snapshot_download` 按固定 revision 下载，不依赖特定版本
+的 `hf` 命令行入口。`OMNI_ATTN_IMPLEMENTATION` 默认为可移植的 `sdpa`，若使用
+`flash_attention_2`，必须在结果清单中记录并保证所有方法口径一致。
+
+运行后应产生所请求方法的官方 index/result，以及 `timing/` 和 `profiles/`。在这些
+文件实际生成并校验前，本分支的结论保持 `NO_GO_LOCAL_ARTIFACTS_MISSING`。
+
+ViDoRe smoke 输入由 `tools/export_vidore_omni_smoke.py` 从冻结本地 Parquet 导出。
+导出器只选择所有正相关页都能装入页预算的英文查询，写出源文件 SHA-256、查询和
+页面 ID，并断言所选查询的 qrel 完整，避免为了 32 页上限静默删除金标准证据。
 
 ## 6. 对 ReprForge 的直接价值
 

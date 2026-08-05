@@ -6,6 +6,18 @@ readonly FULL_MODEL_ID="hltcoe/ColBERT_qwen2.5-vl_colpali"
 readonly FULL_MODEL_REVISION="14a7bb3328187705ff153e3511a47f9abb144054"
 readonly AGC_MODEL_ID="hltcoe/AGC_qwen2.5-vl_colpali"
 readonly AGC_MODEL_REVISION="14ba8fb11de7d15d5a87c7fa17e893bffcdd9020"
+readonly ATTN_IMPLEMENTATION="${OMNI_ATTN_IMPLEMENTATION:-sdpa}"
+
+IFS=',' read -r -a requested_cases <<< "${OMNI_CASES:-full,hpool,agc}"
+for case_name in "${requested_cases[@]}"; do
+  case "${case_name}" in
+    full|hpool|agc) ;;
+    *)
+      echo "unsupported OMNI_CASES entry: ${case_name}" >&2
+      exit 2
+      ;;
+  esac
+done
 
 required_vars=(
   OMNI_SOURCE
@@ -52,7 +64,7 @@ if [[ "${actual_commit}" != "${EXPECTED_SOURCE_COMMIT}" ]]; then
   exit 2
 fi
 
-for executable in python torchrun hf nvidia-smi /usr/bin/time; do
+for executable in python torchrun nvidia-smi /usr/bin/time; do
   if ! command -v "${executable}" >/dev/null 2>&1; then
     echo "missing executable: ${executable}" >&2
     exit 2
@@ -113,11 +125,39 @@ mkdir -p "${OMNI_MODEL_CACHE}" "${OMNI_OUTPUT_ROOT}/timing" "${OMNI_OUTPUT_ROOT}
 readonly FULL_MODEL_PATH="${OMNI_MODEL_CACHE}/colbert-qwen2.5-vl-colpali-${FULL_MODEL_REVISION}"
 readonly AGC_MODEL_PATH="${OMNI_MODEL_CACHE}/agc-qwen2.5-vl-colpali-${AGC_MODEL_REVISION}"
 
-if [[ ! -f "${FULL_MODEL_PATH}/config.json" ]]; then
-  hf download "${FULL_MODEL_ID}" --revision "${FULL_MODEL_REVISION}" --local-dir "${FULL_MODEL_PATH}"
+download_model() {
+  local model_id="$1"
+  local revision="$2"
+  local model_path="$3"
+  if [[ -f "${model_path}/config.json" ]]; then
+    return
+  fi
+  python - "${model_id}" "${revision}" "${model_path}" <<'PY'
+import sys
+from huggingface_hub import snapshot_download
+
+snapshot_download(
+    repo_id=sys.argv[1],
+    revision=sys.argv[2],
+    local_dir=sys.argv[3],
+)
+PY
+}
+
+needs_full=false
+needs_agc=false
+for case_name in "${requested_cases[@]}"; do
+  if [[ "${case_name}" == "full" || "${case_name}" == "hpool" ]]; then
+    needs_full=true
+  elif [[ "${case_name}" == "agc" ]]; then
+    needs_agc=true
+  fi
+done
+if [[ "${needs_full}" == true ]]; then
+  download_model "${FULL_MODEL_ID}" "${FULL_MODEL_REVISION}" "${FULL_MODEL_PATH}"
 fi
-if [[ ! -f "${AGC_MODEL_PATH}/config.json" ]]; then
-  hf download "${AGC_MODEL_ID}" --revision "${AGC_MODEL_REVISION}" --local-dir "${AGC_MODEL_PATH}"
+if [[ "${needs_agc}" == true ]]; then
+  download_model "${AGC_MODEL_ID}" "${AGC_MODEL_REVISION}" "${AGC_MODEL_PATH}"
 fi
 
 run_case() {
@@ -140,7 +180,7 @@ run_case() {
         --model_name_or_path "${model_path}" \
         --processor_name_or_path "${model_path}" \
         --dtype bfloat16 \
-        --attn_implementation flash_attention_2 \
+        --attn_implementation "${ATTN_IMPLEMENTATION}" \
         --pooling "${pooling}" \
         --dataset_name json \
         --corpus_name json \
@@ -158,7 +198,7 @@ run_case() {
         --model_name_or_path "${model_path}" \
         --processor_name_or_path "${model_path}" \
         --dtype bfloat16 \
-        --attn_implementation flash_attention_2 \
+        --attn_implementation "${ATTN_IMPLEMENTATION}" \
         --pooling "${pooling}" \
         --dataset_name json \
         --query_path "${OMNI_QUERY_JSONL}" \
@@ -176,14 +216,24 @@ run_case() {
   )
 }
 
-run_case full "${FULL_MODEL_PATH}" colbert
-run_case hpool "${FULL_MODEL_PATH}" hierarchical_clustering --num_repr_vectors 64
-run_case agc "${AGC_MODEL_PATH}" select \
-  --num_repr_vectors 64 \
-  --num_appending_token 64 \
-  --use_parametric_appending_tokens \
-  --use_cluster_pooling \
-  --use_attn_weight_cluster_pooling
+for case_name in "${requested_cases[@]}"; do
+  case "${case_name}" in
+    full)
+      run_case full "${FULL_MODEL_PATH}" colbert
+      ;;
+    hpool)
+      run_case hpool "${FULL_MODEL_PATH}" hierarchical_clustering --num_repr_vectors 64
+      ;;
+    agc)
+      run_case agc "${AGC_MODEL_PATH}" select \
+        --num_repr_vectors 64 \
+        --num_appending_token 64 \
+        --use_parametric_appending_tokens \
+        --use_cluster_pooling \
+        --use_attn_weight_cluster_pooling
+      ;;
+  esac
+done
 
 echo "smoke completed; raw official outputs are under ${OMNI_OUTPUT_ROOT}"
 echo "do not report paper numbers or get_stats() byte estimates as local measurements"
