@@ -12,7 +12,7 @@ ReprForge 只有同时满足下面五点，才能从“有效系统机制”提�
 4. **强反事实成立**：必须比较未来热门度、重叠分组、最短剩余工作、离线工作下界、瞬时不持久方案和容量缓存；
 5. **真实系统成立**：冻结方法后报告真实 GPU 时间、P50/P95、构建页数、持久字节和最终质量，而不只报告模拟页工作量。
 
-当前已经稳固满足第 1 点的工作量部分和第 4 点的大部分；第 2、3、5 点是第三轮主任务。
+当前第 1、2 点和第 4 点的大部分已经满足；第 5 点在控制面规模和两域真实 GPU 上部分满足。第 3 点经三种答案协议严格 NO-GO，因此当前只能定位为检索/索引系统论文。最近工作审计还增加了两条优先级最高的 novelty gate：EdgeRAG-faithful 成本缓存和 CaGR-RAG-faithful 分组/预取。
 
 ## 研究问题矩阵
 
@@ -21,11 +21,21 @@ ReprForge 只有同时满足下面五点，才能从“有效系统机制”提�
 | RQ1 渐进构建是否比完整预构建更早可用 | HR、Finance、IRPapers | BM25、完整视觉、静态融合、临时视觉不持久、渐进持久 | 最终质量、构建页/秒、T50/T90、质量遗憾 | HR/Finance 有真实 A100；IRPapers 有冻结回放 | 支撑问题价值和端到端 Pareto |
 | RQ2 前沿收益是否只是简单排序 | HR、Finance、IRPapers | FIFO、随机、热门度、重叠、最短缺失、仅复用、离线工作贪心 | mean/P50/P95 完成工作、AUC、距离线下界 | **GO** | 当前最强方法证据 |
 | RQ3 看不到完整未来时是否仍有效 | HR、Finance；burst/Poisson | W=1/8/16/32/64/full、历史热门度、硬/软公平 | 收益保留、等待尾部、饥饿、AUC | W64 GO；W32 和软公平 NO-GO | 限定高并发/批量适用范围 |
-| RQ4 状态是否能跨会话复用且受限容量可控 | HR→Finance/漂移会话，后续 IRPapers | 无缓存、LRU、LFU、GDSF、Belady、frontier+cache | 重编码、命中率、质量遗憾、P95、字节 | `exp/capacity-warmstart` 进行中 | 决定“持久索引”是否有独立价值 |
-| RQ5 检索提前是否转成答案提前 | 优先 ViDoRe v3 reference answers；IRPapers 备选 | 初始文本、FIFO、热门度、前沿、完整预构建 | 首次持续正确、最终准确、正确→错误、引用页 | `exp/answer-time-to-correct` 进行中 | 决定能否称为 RAG 贡献 |
-| RQ6 是否迁移到现代视觉检索器 | 至少 HR+Finance 或一个完整 ViDoRe v3 域 | ColPali-v1.1、ModernVBERT/ColModernVBERT 或公开现代模型 | 检索质量、union/reuse、调度工作、GPU时间/字节 | `exp/modern-retriever-transfer` 进行中 | 排除底层模型偶然性 |
-| RQ7 是否在大规模语料仍有意义 | MIRACL-VISION 分层子集→全量 | 全预构建、两阶段瞬时级联、持久候选编译 | GPU小时、索引字节、吞吐、质量预算曲线 | 尚未解锁 | 投稿前规模证据 |
+| RQ4 状态是否能跨会话复用且受限容量可控 | HR→Finance/漂移会话、IRPapers | 无缓存、LRU、LFU、GDSF、Belady、frontier+cache | 重编码、命中率、质量遗憾、P95、字节 | 热启动贡献 **NO-GO**；有限缓存下 frontier 仍稳健 | 缓存是系统功能，不列独立贡献 |
+| RQ5 检索提前是否转成答案提前 | IRPapers 180 proxy、24/8 reader pilot、48 held-out | 初始文本、FIFO、热门度、前沿、结构化引用、盲化语义 judge | 首次持续正确、最终准确、正确→错误、引用页 | 三层答案实验 **NO-GO** | 当前不能称答案级 RAG 贡献 |
+| RQ6 是否迁移到现代视觉检索器 | HR+Finance | ColPali-v1.1、ColModernVBERT | 检索质量、union/reuse、调度工作、GPU时间/字节 | 跨表示 **GO** | 排除底层模型偶然性 |
+| RQ7 是否在大规模语料仍有意义 | 合成到 338K pages / 30K queries；后续真实大语料 | naive exact、增量 exact、全预构建、两阶段瞬时级联 | 控制面时间/RSS、GPU小时、索引字节、吞吐 | 控制面规模 **GO**；真实 338K 编码仍未做 | 证明算法可扩展，但不能替代真实大语料 |
 | RQ8 发布修订是否安全 | HR、Finance | 全发布、不发布、固定规则、交叉拟合、oracle | 有害修订、正收益保留、CVaR | 严格 NO-GO | 作为局限，不列主贡献 |
+| RQ9 是否只是 EdgeRAG 缓存或 CaGR 分组 | HR、Finance，W64 burst/Poisson | EdgeRAG-faithful 成本缓存、CaGR-faithful/strong/bounded 分组预取、frontier | mean/P95 sojourn、charged work、命中、预取 | EdgeRAG **CONTINUE**；bounded CaGR **STOP/DOWNGRADE** | Frontier 不能再作为全面更优的主算法 |
+| RQ10 是否存在同时保质量与局部性的简单调度 | HR 选择、Finance 冻结 | cost-first、completion-constrained、deadline override、60 点 clairvoyant greedy oracle | 三轴 regret、P95、starvation、constraint violation | 三个启发式和注册 oracle 家族均 **NO-GO**；oracle 的 24 个 primary/P95 合格点与 4 个 starvation 合格点无交集 | 停止启发式微调；新方法必须引入显式服务保证或约束求解 |
+| RQ11 starvation 指标是否代表用户等待公平 | HR、Finance；burst/Poisson | frontier、bounded CaGR、oracle_15、deadline-only | bypass 阈值、absolute sojourn、per-demand slowdown、tail-label overlap | **bypass-only NO-GO**；16 cells 均未同时强匹配两个 extreme tail，F1 0.013--0.450 | 论文不得把 starvation=0 等同用户公平；采用 joint sojourn+slowdown |
+| RQ12 硬顺序预算能否保留多目标余量 | HR 选择、Finance 冻结；burst/Poisson | B=8/16/32/64、bounded CaGR、frontier | mean/P95 sojourn、work/query、elapsed regret、forced slots、budget violation | **GO**；HR 唯一 B32，Finance sojourn -7.8%--8.1%、work -5.1%--5.8%，elapsed regret 不劣，违规 0 | 当前主方法候选；仍需 causal、joint-tail、跨域与 GPU 验证 |
+| RQ13 B32 是否通过用户尾部与五域迁移 | HR、Finance、CS、Industrial、Pharma | B32、bounded CaGR、frontier | sojourn/slowdown P95/P99/max、longest no-service、三主轴 gate | **pooled GO**；主 cell 4/4，五域 joint-tail 10/10，完整门 9/10；Industrial burst 最大收益 4.713%<5% | 支撑跨域 pooled tail；Q4 slowdown 与 policy-dependent denominator 仍需复核 |
+| RQ14 slowdown 是否被 policy-dependent demand 污染 | 五域；burst/Poisson | policy-own、FIFO-counterfactual、cold cohort denominator | pooled/arrival-quartile P95/P99/max | **校正后 GO**；HR Q4 反转消失，五域 P95/P99 10/10；strict max 9/10 | 主文使用 FIFO-counterfactual denominator；不夸大 slowdown 数量级优势 |
+| RQ15 B32 能否物化成严格因果方法 | 五域；HR/Finance exact reference | causal hard frontier、B32 oracle reference、FIFO/frontier/overlap/bounded | 20-cell tuple equality、五域三轴/P99、API observability | **PAPER METHOD CANDIDATE**；20/20 exact，median ratios 0.923/0.949/0.948，9/10 effect-size、10/10 P99 | 解决 oracle-to-method 缺口；跨 retriever 与真实成本仍未验证 |
+| RQ16 是否只是经典公平局部性调度 | 五域 | Delay-D32、max-wait overlap、DLPM query adaptation、hard | 三主轴±2%、P99、B32、control ops | 注册 redundancy **未通过**，但 Delay-D32 7/10 close，median 仅差约1%，feasible set 与 B32 等价 | 撤回 hard fairness 算法 novelty；Delay-D32 必须进主表 |
+| RQ17 收益是否真来自共享依赖与持久状态 | 五域；五种结构条件 | 原图、degree-preserving swaps、private pages、清 compiled/cache、仅清 active cache | overlap/reuse、三主轴 attenuation、absolute work | **共享机制 GO**；private 后收益归零；随机换边保留多数收益；equal-cost persistence 不可区分 | 证明不是普通 SPT/LRU 偶然；真实 build/reload 成本仍需校准 |
+| RQ18 是否依赖 exact per-page cost | 五域；A100 page profile | perfect、unit、CV .25/.5/1、domain drift、winsorized | 真成本下 mean/P95/P99/work/regret | **ORACLE-INDEPENDENT**；unit/CV.5 过门，CV1/drift 边界，clipping 有效 | 主方法可用 unit/稳健 predictor；仍需真实并发墙钟 |
 
 ## 数据集分工
 
@@ -61,6 +71,7 @@ ReprForge 只有同时满足下面五点，才能从“有效系统机制”提�
 ## 统计与泄漏纪律
 
 - 方法与阈值只在明确开发域选择；Finance、IRPapers 或新域作为冻结迁移；
+- “冻结迁移”表示选择代码不读取该域且配置不再改变，不自动等同于研究者从未见过历史 endpoint；已有结果必须在 provenance 中披露；
 - 调度时禁止 qrel、visual score、真实质量增益和答案正确性；
 - 查询级质量用配对 bootstrap；到达模型至少五个固定排列；GPU 墙钟至少三次，报告中位数和范围；
 - 所有顺序必须验证最终候选并集和冻结分数语义一致；
@@ -69,6 +80,8 @@ ReprForge 只有同时满足下面五点，才能从“有效系统机制”提�
 
 ## 当前最有希望的论文表述
 
-> ReprForge 将昂贵的视觉文档表示视为可由查询逐步编译并跨请求积累的索引状态。廉价定位器暴露查询—页面依赖图，工作前沿调度利用常驻状态和跨查询复用，更早完成查询候选组；系统用原子发布保持可复现语义，并用随构建质量遗憾而非只看最终分数进行评价。
+> 给定固定的视觉多向量目标表示，廉价定位器暴露查询—页面依赖图。ReprForge 编译并原子发布共享页面状态，同时分开测量新页面构建、缓存/reload 工作和真实 elapsed quality。实验揭示 completion-oriented frontier 与 locality-oriented grouping 在不同负载下形成不可忽略的系统效率—证据质量 Pareto。
 
-这一定义兼容最新视觉检索器。[ModernVBERT/ColModernVBERT](https://arxiv.org/abs/2510.01149) 提供了更小的公开视觉文档检索器迁移对象；[ViDoRe v3](https://arxiv.org/abs/2601.08620) 提供约 26K 页、3,099 条人工验证查询及 reference answers。它们分别对应跨表示和答案级两道关键门。
+跨表示门已经由 [ModernVBERT/ColModernVBERT](https://arxiv.org/abs/2510.01149) 在 HR/Finance 上通过；五个 ViDoRe v3 域也给出一致工作收益。宽泛的在线构建表述必须让位于 [EdgeRAG](https://arxiv.org/abs/2412.21023)。忠实和增强的 [CaGR-RAG](https://arxiv.org/abs/2505.01164) 对照进一步证明：frontier 在 unique-page 质量效率上更强，但 bounded locality 在 Finance 系统轴反超；本文不能声称单一 scheduler 全面更优。hard-budget frontier 现在填补了这两个 endpoint 之间的一部分可行区，但其 bounded bypass 原理还必须正面对比 [Delay Scheduling](https://cs.stanford.edu/~matei/papers/2010/eurosys_delay_scheduling.pdf) 和 locality/fairness scheduler，而不能声称 hard bypass 本身新。答案级门也失败，因此不声称更早答对。
+
+最后的 clairvoyant headroom probe 进一步限定了方法空间：在预注册的 60 个 qrel、精确成本和有限未来到达可见的 greedy 配置中，没有一个同时通过主要目标、P95 和 starvation 门。它支持“质量--局部性--公平是实质性的多目标边界”这一测量结论，但不构成全局最优性或数学不可能性证明。

@@ -11,9 +11,36 @@ The two round-two branches and their frozen gates are registered in
 Round-two results are summarized in
 `docs/parallel-experiment-round2-result-2026-08-04.md`: aging-aware frontier
 `2b2f495`, value-aware frontier `afb1c54`, and anytime metrics `e67bfc3`.
-The third-round branches are `exp/answer-time-to-correct`,
-`exp/capacity-warmstart`, and `exp/modern-retriever-transfer`.  Their role in
-the full paper matrix is registered in `docs/paper-evidence-matrix-2026-08-04.md`.
+The third-round and paper-audit branches are:
+
+- `exp/answer-time-to-correct` at `1fc5b43`;
+- `exp/capacity-warmstart` at `8a5bcae`;
+- `exp/structured-citation` at `20336f7`;
+- `exp/answer-semantic-judge` at `e2cb937`;
+- `exp/modern-retriever-transfer` at `972ceef`;
+- `exp/frontier-scale` at `5cca66f`;
+- `exp/vidore-domain-matrix` at `22780c1`;
+- `research/closest-work-audit` at `56003ee`.
+
+Their combined result is summarized in
+`docs/parallel-experiment-round3-result-2026-08-04.md`.  The two remaining P0
+novelty gates are `exp/edgerag-faithful-baseline` and
+`exp/cagr-faithful-baseline`; neither has permission to weaken its gate after
+seeing HR/Finance results.
+
+The subsequent P0 and method-stress branches are frozen at:
+
+- `exp/edgerag-faithful-baseline` `8f5b21a` (**CONTINUE**);
+- `exp/cagr-faithful-baseline` `a3cd197` (conditional page-work GO);
+- `exp/cagr-strong-adaptation` `7fd795f` (no deployable HR selection);
+- `exp/cagr-bounded-wait` `af893b8` (**STOP/DOWNGRADE** counterexample);
+- `exp/time-aligned-quality` `887eaa2` (system--quality trade-off);
+- `exp/cost-locality-frontier` `3e2d33c` (NO-GO);
+- `exp/frontier-constrained-locality` `225be9a` (NO-DEPLOYABLE);
+- `exp/deadline-constrained-locality` `b3b4662` (NO-GO and stop tweaks).
+
+The final decision and corrected claim boundary are summarized in
+`docs/paper-decision-after-p0-2026-08-04.md`.
 
 This registry keeps the experiments independent.  A branch may produce a
 negative result; it must not change the common K=20 fusion semantics or tune on
@@ -116,3 +143,110 @@ Every branch must leave:
 No branch is merged merely because it has a positive mean.  It must beat its
 strongest relevant baseline, report tails, and survive at least one transfer or
 held-out split.
+
+## Final headroom branch
+
+### `exp/multiobjective-oracle-headroom`
+
+Question: after the simple scheduler variants fail, does a favorable finite
+oracle family still contain a policy that simultaneously improves system cost,
+elapsed evidence quality, tail latency, and starvation?
+
+The preregistered family contains 60 greedy configurations over qrel-derived
+quality density, exact next-step completion cost, deadline pressure, and a
+bounded future-arrival wait.  HR is the only selection domain; Finance remains
+sealed unless HR yields a safety-qualified point.
+
+Result: no registered configuration is HR-safe.  Twenty-four configurations
+pass the primary endpoint and P95 checks, and four pass the starvation check,
+but their intersection is empty.  This closes scheduler-weight and tie-break
+tuning; it is explicitly a finite-family result rather than an impossibility
+theorem.
+
+### `exp/fairness-metric-audit`
+
+Question: does the frozen `younger-bypass >= 64` diagnostic identify the same
+queries as extreme absolute sojourn and per-demand slowdown?
+
+Result: no.  Across 16 domain-by-arrival-by-method cells, bypass64 is never a
+strong detector for both user-facing tails.  Absolute sojourn and slowdown also
+select different queries.  Future constrained schedulers must therefore report
+both tails and treat bypass only as an ordering diagnostic.
+
+### `exp/hard-fair-oracle`
+
+Question: can a fixed completion/deadline utility retain the relaxed oracle
+headroom when each pending query has a hard younger-bypass budget?
+
+Result: yes within the registered four-point family.  HR uniquely selects
+`B=32`; after freezing, Finance burst and Poisson both reduce mean sojourn by
+about 8% and charged work by 5%--6% versus bounded CaGR, keep elapsed quality
+regret no worse than frontier, and incur zero budget violations.  Roughly 30%
+of slots are forcibly changed by the constraint.  The selected rule is causal
+under the replay state interface, but remains pending joint user-tail,
+cross-domain, and real-cost validation.
+
+### `exp/hard-fair-joint-tail`
+
+Question: does frozen B32 retain absolute-sojourn and per-demand-slowdown tails,
+not only a younger-bypass bound?
+
+Result: pooled joint-tail transfer passes all four HR/Finance cells and all ten
+five-domain arrival cells.  The complete system-quality-tail gate passes 9/10;
+Industrial burst misses only the registered 5% effect-size threshold.  The
+result does not establish uniform subgroup fairness: late HR arrivals still
+show worse P99 slowdown than frontier, and the policy-dependent demand
+denominator requires a counterfactual-denominator audit.
+
+### `exp/counterfactual-slowdown`
+
+Question: is the apparent slowdown behavior an artifact of dividing each
+policy by demand that the same policy changes?
+
+Result: with FIFO own-demand frozen per query and reused across methods, the HR
+late-arrival reversal disappears and pooled five-domain P95/P99 remains safe.
+The corrected improvement is modest rather than order-of-magnitude; isolated
+max regressions remain and are reported.
+
+### `exp/causal-hard-frontier`
+
+Question: can the selected B32 behavior be implemented by a policy interface
+that cannot receive qrels, future arrivals, or end-of-stream?
+
+Result: yes.  Twenty HR/Finance reference cells are exact across dispatch,
+elapsed tuples, physical work, cache/union, bypass, and publication trace.  The
+same frozen policy transfers across five ViDoRe domains with median
+sojourn/work/elapsed-regret ratios of 0.923/0.949/0.948, 9/10 cells showing a
+registered 5% effect and all ten improving P99.  Cross-retriever replay and
+real heterogeneous costs remain open.
+
+### `exp/fair-locality-baselines`
+
+Question: is the method merely Delay Scheduling, max-wait locality, or a
+query-level DLPM adaptation?
+
+Result: the registered baselines do not make the complete method redundant,
+but Delay-D32 is extremely close and has the same feasible set as uniform B32.
+Its median primary metrics trail by only about 1%, while the transparent hard
+implementation performs substantially more control operations.  B32 fairness
+is therefore prior art, not an independent algorithm contribution.
+
+### `exp/dependency-structure-ablation`
+
+Question: does the gain require actual cross-query page sharing and persistent
+state?
+
+Result: making pages private removes the gain, while degree-preserving edge
+swaps retain most of it.  Degree/hotness creates the opportunity and exact
+topology changes its magnitude.  Persistence improves absolute work, but equal
+unit build/reload cost cannot separate compiled from cache persistence.
+
+### `exp/causal-cost-robustness`
+
+Question: does the causal method depend on exact page costs?
+
+Result: no within the registered measured-profile proxy.  Unit counts and
+cost predictions with CV 0.5 remain robust; CV 1 and systematic expensive-tail
+underestimation can consume the gain, and winsorization partly restores it.
+The truth profile is additive A100 per-page encode time, not concurrent
+wall-clock service.
