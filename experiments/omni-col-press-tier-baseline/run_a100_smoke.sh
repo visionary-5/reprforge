@@ -189,7 +189,7 @@ if qrels_path.stat().st_size == 0:
     raise SystemExit("qrels file is empty")
 PY
 
-mkdir -p "${OMNI_MODEL_CACHE}" "${OMNI_OUTPUT_ROOT}/timing" "${OMNI_OUTPUT_ROOT}/profiles"
+mkdir -p "${OMNI_MODEL_CACHE}"
 readonly FULL_MODEL_PATH="${OMNI_MODEL_CACHE}/colbert-qwen2.5-vl-colpali-${FULL_MODEL_REVISION}"
 readonly AGC_MODEL_PATH="${OMNI_MODEL_CACHE}/agc-qwen2.5-vl-colpali-${AGC_MODEL_REVISION}"
 
@@ -251,6 +251,99 @@ fi
 if [[ "${needs_agc}" == true ]]; then
   download_model "${AGC_MODEL_ID}" "${AGC_MODEL_REVISION}" "${AGC_MODEL_PATH}"
 fi
+
+mkdir -p "${OMNI_OUTPUT_ROOT}/timing" "${OMNI_OUTPUT_ROOT}/profiles"
+python - \
+  "${OMNI_OUTPUT_ROOT}/run-manifest.json" \
+  "${actual_commit}" \
+  "${actual_patch_sha256}" \
+  "${actual_factory_sha256}" \
+  "${actual_loaders_patch_sha256}" \
+  "${actual_loaders_sha256}" \
+  "${FULL_MODEL_ID}" \
+  "${FULL_MODEL_REVISION}" \
+  "${needs_full}" \
+  "${AGC_MODEL_ID}" \
+  "${AGC_MODEL_REVISION}" \
+  "${needs_agc}" \
+  "${OMNI_CORPUS_JSONL}" \
+  "${OMNI_QUERY_JSONL}" \
+  "${OMNI_QRELS}" \
+  "${gpu_names}" \
+  "${ATTN_IMPLEMENTATION}" \
+  "${requested_cases[*]}" \
+  "${OMNI_WRAPPER_REVISION:-unknown}" <<'PY'
+import hashlib
+import importlib.metadata
+import json
+import sys
+from pathlib import Path
+
+(
+    output_path,
+    upstream_commit,
+    factory_patch_sha256,
+    factory_file_sha256,
+    loaders_patch_sha256,
+    loaders_file_sha256,
+    model_id,
+    model_revision,
+    needs_full,
+    agc_model_id,
+    agc_model_revision,
+    needs_agc,
+    corpus_path,
+    query_path,
+    qrels_path,
+    gpu_names,
+    attention_implementation,
+    cases,
+    wrapper_revision,
+) = sys.argv[1:]
+
+def sha256(path):
+    digest = hashlib.sha256()
+    with Path(path).open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+packages = {}
+for package in (
+    "accelerate", "datasets", "faiss-cpu", "huggingface-hub", "peft",
+    "qwen-vl-utils", "torch", "torchvision", "transformers",
+):
+    packages[package] = importlib.metadata.version(package)
+
+manifest = {
+    "attention_implementation": attention_implementation,
+    "cases": cases.split(),
+    "compatibility_patches": {
+        "components_factory_patch_sha256": factory_patch_sha256,
+        "components_factory_sha256": factory_file_sha256,
+        "loaders_patch_sha256": loaders_patch_sha256,
+        "loaders_sha256": loaders_file_sha256,
+    },
+    "gpu_names": gpu_names.splitlines(),
+    "inputs": {
+        "corpus": {"path": corpus_path, "sha256": sha256(corpus_path)},
+        "qrels": {"path": qrels_path, "sha256": sha256(qrels_path)},
+        "queries": {"path": query_path, "sha256": sha256(query_path)},
+    },
+    "models": [
+        model
+        for model, enabled in (
+            ({"id": model_id, "revision": model_revision}, needs_full == "true"),
+            ({"id": agc_model_id, "revision": agc_model_revision}, needs_agc == "true"),
+        )
+        if enabled
+    ],
+    "packages": packages,
+    "upstream_commit": upstream_commit,
+    "wrapper_revision": wrapper_revision,
+}
+Path(output_path).write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
+PY
 
 run_case() {
   local case_name="$1"
