@@ -8,6 +8,8 @@ readonly EXPECTED_LOADERS_PATCH_SHA256="cc6624be900caf2a4a45918443f9b0293e410c03
 readonly EXPECTED_LOADERS_SHA256="7de8abf3e19d318d942fc1c40fc71b6dcce9d9852d3b4397c997e99c8f53c41d"
 readonly EXPECTED_MASK_PATCH_SHA256="c2ce55b8e89a7155fa4cf01b6e9a62348bb401c037d1282aeb6b6cd71d8ed72d"
 readonly EXPECTED_MASKING_UTILS_SHA256="bb5aea0104c75e5fce99ddb6377d93905ee69ce4345cd6195f5e8a6c8ecdcf0f"
+readonly EXPECTED_ATTN_MASK_PATCH_SHA256="9b684103f82c318da6821b80639106f81482a5f42cefeeda7bb9ac56e15453d7"
+readonly EXPECTED_QWEN25VL_MODELING_SHA256="dbd2ece6823661da99a9337019888af86d313d7e3f301ffb71c65a04eefe32d3"
 readonly FULL_MODEL_ID="hltcoe/ColBERT_qwen2.5-vl_colpali"
 readonly FULL_MODEL_REVISION="14a7bb3328187705ff153e3511a47f9abb144054"
 readonly FULL_CONFIG_SHA256="b4b7d8e29a63cbd33d30b761a4fa09f1bdb3126e07ace2af1280bc7ad2c69f7d"
@@ -22,6 +24,7 @@ readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly COMPAT_PATCH="${SCRIPT_DIR}/image_only_optional_fast_plaid.patch"
 readonly LOADERS_PATCH="${SCRIPT_DIR}/image_only_optional_fast_plaid_loaders.patch"
 readonly MASK_PATCH="${SCRIPT_DIR}/torch25_mask_device.patch"
+readonly ATTN_MASK_PATCH="${SCRIPT_DIR}/qwen25vl_attention_mask_device.patch"
 
 IFS=',' read -r -a requested_cases <<< "${OMNI_CASES:-full,hpool,agc}"
 for case_name in "${requested_cases[@]}"; do
@@ -143,6 +146,29 @@ if [[ "${actual_masking_utils_sha256}" != "${EXPECTED_MASKING_UTILS_SHA256}" ]];
 fi
 if [[ "${actual_masking_utils_sha256}" != "${EXPECTED_MASKING_UTILS_SHA256}" ]]; then
   echo "patched masking_utils.py SHA-256 mismatch: ${actual_masking_utils_sha256}" >&2
+  exit 2
+fi
+if [[ ! -f "${ATTN_MASK_PATCH}" ]]; then
+  echo "missing Qwen2.5-VL attention-mask device compatibility patch: ${ATTN_MASK_PATCH}" >&2
+  exit 2
+fi
+actual_attn_mask_patch_sha256="$(sha256sum "${ATTN_MASK_PATCH}" | awk '{print $1}')"
+if [[ "${actual_attn_mask_patch_sha256}" != "${EXPECTED_ATTN_MASK_PATCH_SHA256}" ]]; then
+  echo "attention-mask device patch SHA-256 mismatch: ${actual_attn_mask_patch_sha256}" >&2
+  exit 2
+fi
+qwen25vl_modeling_file="${OMNI_SOURCE}/src/models/qwen2_5_vl_embed/modeling_qwen2_5_vl.py"
+actual_qwen25vl_modeling_sha256="$(sha256sum "${qwen25vl_modeling_file}" | awk '{print $1}')"
+if [[ "${actual_qwen25vl_modeling_sha256}" != "${EXPECTED_QWEN25VL_MODELING_SHA256}" ]]; then
+  if ! git -C "${OMNI_SOURCE}" diff --quiet -- src/models/qwen2_5_vl_embed/modeling_qwen2_5_vl.py; then
+    echo "refusing to patch an unexpectedly modified modeling_qwen2_5_vl.py" >&2
+    exit 2
+  fi
+  git -C "${OMNI_SOURCE}" apply "${ATTN_MASK_PATCH}"
+  actual_qwen25vl_modeling_sha256="$(sha256sum "${qwen25vl_modeling_file}" | awk '{print $1}')"
+fi
+if [[ "${actual_qwen25vl_modeling_sha256}" != "${EXPECTED_QWEN25VL_MODELING_SHA256}" ]]; then
+  echo "patched modeling_qwen2_5_vl.py SHA-256 mismatch: ${actual_qwen25vl_modeling_sha256}" >&2
   exit 2
 fi
 if [[ "${actual_factory_sha256}" != "${EXPECTED_COMPONENTS_FACTORY_SHA256}" ]]; then
@@ -298,6 +324,8 @@ python - \
   "${actual_loaders_sha256}" \
   "${actual_mask_patch_sha256}" \
   "${actual_masking_utils_sha256}" \
+  "${actual_attn_mask_patch_sha256}" \
+  "${actual_qwen25vl_modeling_sha256}" \
   "${FULL_MODEL_ID}" \
   "${FULL_MODEL_REVISION}" \
   "${needs_full}" \
@@ -326,6 +354,8 @@ from pathlib import Path
     loaders_file_sha256,
     mask_patch_sha256,
     masking_utils_sha256,
+    attention_mask_patch_sha256,
+    qwen25vl_modeling_sha256,
     model_id,
     model_revision,
     needs_full,
@@ -365,6 +395,8 @@ manifest = {
         "loaders_sha256": loaders_file_sha256,
         "mask_device_patch_sha256": mask_patch_sha256,
         "masking_utils_sha256": masking_utils_sha256,
+        "attention_mask_device_patch_sha256": attention_mask_patch_sha256,
+        "qwen25vl_modeling_sha256": qwen25vl_modeling_sha256,
     },
     "gpu_names": gpu_names.splitlines(),
     "physical_gpu_id": int(__import__("os").environ["CUDA_VISIBLE_DEVICES"]),

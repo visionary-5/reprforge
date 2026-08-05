@@ -125,8 +125,11 @@ Fast-Plaid，而 Fast-Plaid 没有
 真实 smoke 还发现官方 Torch 2.5 兼容 mask 在文本查询路径可能生成 CUDA causal
 mask 和 CPU padding mask。`torch25_mask_device.patch` 只在布尔相乘前把 padding mask
 移动到已经生成的 causal mask 所在设备，不改变掩码值；运行器同样校验补丁及补丁后
-文件 SHA-256。构建与评价的 stdout/stderr 分别保存为每个 case 的 `build.log` 和
-`eval.log`，控制连接结束不再丢失失败证据。
+文件 SHA-256。进一步的真实评测显示，预构造的 4D attention mask 仍可能在 Qwen2.5-VL
+注意力边界停留于 CPU；`qwen25vl_attention_mask_device.patch` 仅在其设备与 query states
+不同时搬到 query states 所在设备，不改变形状、类型或掩码值。构建与评价的
+stdout/stderr 分别保存为每个 case 的 `build.log` 和 `eval.log`，控制连接结束不再丢失
+失败证据。两个 mask 补丁及补丁后文件哈希都必须进入 run manifest。
 
 ## 6. 对 ReprForge 的直接价值
 
