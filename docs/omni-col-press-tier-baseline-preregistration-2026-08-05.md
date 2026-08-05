@@ -102,12 +102,14 @@ ViDoRe smoke 输入由 `tools/export_vidore_omni_smoke.py` 从冻结本地 Parqu
 偏向证据页较少或可复用的查询；它只验证环境、张量形状和官方评价链路，绝不作为
 有代表性的检索质量样本或论文效果数字。
 
-官方提交会在选择普通 `multivec` 时也顶层导入可选 Fast-Plaid，而 Fast-Plaid 没有
+官方提交会在选择普通 `multivec` 时也从构建器和评价加载器顶层导入可选
+Fast-Plaid，而 Fast-Plaid 没有
 与服务器 PyTorch 2.5 对应的公开 wheel。运行器因此应用并校验
-`image_only_optional_fast_plaid.patch`：只把 `FastPlaidIndex` 移到对应分支内延迟
-导入，不修改 `MultiVecIndex`、模型、压缩或评价代码。结果 manifest 必须记录官方
-commit、补丁 SHA-256 和补丁后文件 SHA-256；这属于公开的环境兼容差异，不能描述成
-上游源码零修改复现。
+`image_only_optional_fast_plaid*.patch`：只把两处 `FastPlaidIndex` 移到对应分支内
+延迟导入，不修改 `MultiVecIndex`、模型、压缩或评价代码。结果 manifest 必须记录
+官方 commit、两个补丁 SHA-256 和补丁后文件 SHA-256；这属于公开的环境兼容差异，
+不能描述成上游源码零修改复现。官方当前源码还同时导入 Qwen3-VL processor，因此
+运行器要求隔离环境中的 `transformers>=4.57.1`，不得改动已有 ViDoRe 固定环境。
 
 ## 6. 对 ReprForge 的直接价值
 

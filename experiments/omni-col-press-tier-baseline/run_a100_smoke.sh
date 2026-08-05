@@ -4,6 +4,8 @@ set -euo pipefail
 readonly EXPECTED_SOURCE_COMMIT="4a559677bbc8a3ea0c10322a721b52bb70d382ec"
 readonly EXPECTED_COMPAT_PATCH_SHA256="5448707eaf3b49357784177fc46aea9be6a209d85a86c2cb0d76351099d73721"
 readonly EXPECTED_COMPONENTS_FACTORY_SHA256="9f635a72d7ecf29e36c43a0f115beb099317787613d6bd79fd5b1c2553b659a9"
+readonly EXPECTED_LOADERS_PATCH_SHA256="cc6624be900caf2a4a45918443f9b0293e410c0386b270eaaaf650d4c7fa1210"
+readonly EXPECTED_LOADERS_SHA256="7de8abf3e19d318d942fc1c40fc71b6dcce9d9852d3b4397c997e99c8f53c41d"
 readonly FULL_MODEL_ID="hltcoe/ColBERT_qwen2.5-vl_colpali"
 readonly FULL_MODEL_REVISION="14a7bb3328187705ff153e3511a47f9abb144054"
 readonly AGC_MODEL_ID="hltcoe/AGC_qwen2.5-vl_colpali"
@@ -11,6 +13,7 @@ readonly AGC_MODEL_REVISION="14ba8fb11de7d15d5a87c7fa17e893bffcdd9020"
 readonly ATTN_IMPLEMENTATION="${OMNI_ATTN_IMPLEMENTATION:-sdpa}"
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly COMPAT_PATCH="${SCRIPT_DIR}/image_only_optional_fast_plaid.patch"
+readonly LOADERS_PATCH="${SCRIPT_DIR}/image_only_optional_fast_plaid_loaders.patch"
 
 IFS=',' read -r -a requested_cases <<< "${OMNI_CASES:-full,hpool,agc}"
 for case_name in "${requested_cases[@]}"; do
@@ -87,6 +90,30 @@ if [[ "${actual_factory_sha256}" != "${EXPECTED_COMPONENTS_FACTORY_SHA256}" ]]; 
   git -C "${OMNI_SOURCE}" apply "${COMPAT_PATCH}"
   actual_factory_sha256="$(sha256sum "${components_factory}" | awk '{print $1}')"
 fi
+
+if [[ ! -f "${LOADERS_PATCH}" ]]; then
+  echo "missing image-only optional Fast-Plaid loaders patch: ${LOADERS_PATCH}" >&2
+  exit 2
+fi
+actual_loaders_patch_sha256="$(sha256sum "${LOADERS_PATCH}" | awk '{print $1}')"
+if [[ "${actual_loaders_patch_sha256}" != "${EXPECTED_LOADERS_PATCH_SHA256}" ]]; then
+  echo "loaders patch SHA-256 mismatch: ${actual_loaders_patch_sha256}" >&2
+  exit 2
+fi
+loaders_file="${OMNI_SOURCE}/src/utils/loaders.py"
+actual_loaders_sha256="$(sha256sum "${loaders_file}" | awk '{print $1}')"
+if [[ "${actual_loaders_sha256}" != "${EXPECTED_LOADERS_SHA256}" ]]; then
+  if ! git -C "${OMNI_SOURCE}" diff --quiet -- src/utils/loaders.py; then
+    echo "refusing to patch an unexpectedly modified loaders.py" >&2
+    exit 2
+  fi
+  git -C "${OMNI_SOURCE}" apply "${LOADERS_PATCH}"
+  actual_loaders_sha256="$(sha256sum "${loaders_file}" | awk '{print $1}')"
+fi
+if [[ "${actual_loaders_sha256}" != "${EXPECTED_LOADERS_SHA256}" ]]; then
+  echo "patched loaders.py SHA-256 mismatch: ${actual_loaders_sha256}" >&2
+  exit 2
+fi
 if [[ "${actual_factory_sha256}" != "${EXPECTED_COMPONENTS_FACTORY_SHA256}" ]]; then
   echo "patched components_factory.py SHA-256 mismatch: ${actual_factory_sha256}" >&2
   exit 2
@@ -111,12 +138,20 @@ import importlib
 import json
 import sys
 from pathlib import Path
+from packaging.version import Version
 
 for module in (
     "accelerate", "datasets", "faiss", "jsonlines", "numpy", "peft",
     "qwen_vl_utils", "safetensors", "scipy", "torch", "transformers",
 ):
     importlib.import_module(module)
+
+transformers = importlib.import_module("transformers")
+if Version(transformers.__version__) < Version("4.57.1"):
+    raise SystemExit(
+        f"OmniColPress source requires transformers>=4.57.1; got {transformers.__version__}"
+    )
+importlib.import_module("transformers.models.qwen3_vl")
 
 corpus_path, query_path, qrels_path = map(Path, sys.argv[1:])
 
