@@ -1,0 +1,54 @@
+diff --git a/src/evaluate.py b/src/evaluate.py
+--- a/src/evaluate.py
++++ b/src/evaluate.py
+@@ -79,6 +79,7 @@ def _eval(
+ 
+     collect_lookup_indices = collect_query_embeddings or collect_rankings
+     query_embeddings: List[np.ndarray] = []
++    query_masks: List[np.ndarray] = []
+     lookup_indices: List[str] = []
+     all_retrieved_doc_ids: List[List[str]] = []
+     all_scores: List[Any] = []
+@@ -97,6 +98,7 @@ def _eval(
+ 
+             if collect_query_embeddings:
+                 query_embeddings.append(embeddings)
++                query_masks.append(query_mask.cpu().detach().numpy())
+ 
+             scores, indices = index.batch_search(outputs, k=max_k, quiet=quiet, query_mask=query_mask)
+             retrieved_doc_ids = index.get_doc_ids(indices)
+@@ -124,6 +126,7 @@ def _eval(
+         "mrr_sum": mrr_sum,
+         "valid_queries": valid_queries,
+         "query_embeddings": query_embeddings,
++        "query_masks": query_masks,
+         "lookup_indices": lookup_indices,
+         "retrieved_doc_ids": all_retrieved_doc_ids,
+         "scores": all_scores,
+@@ -151,6 +154,7 @@ def _gather_eval_results(
+         "mrr_sum": 0.0,
+         "valid_queries": 0,
+         "query_embeddings": [],
++        "query_masks": [],
+         "lookup_indices": [],
+         "retrieved_doc_ids": [],
+         "scores": [],
+@@ -165,6 +169,7 @@ def _gather_eval_results(
+         merged["mrr_sum"] += payload.get("mrr_sum", 0.0)
+         merged["valid_queries"] += payload.get("valid_queries", 0)
+         merged["query_embeddings"].extend(payload.get("query_embeddings", []))
++        merged["query_masks"].extend(payload.get("query_masks", []))
+         merged["lookup_indices"].extend(payload.get("lookup_indices", []))
+         merged["retrieved_doc_ids"].extend(payload.get("retrieved_doc_ids", []))
+         merged["scores"].extend(payload.get("scores", []))
+@@ -321,6 +326,10 @@ def main():
+             query_embeddings_file = os.path.join(eval_args.output_path, "query_embeddings.pkl")
+             with open(query_embeddings_file, "wb") as f:
+                 pickle.dump((query_embeddings, aggregated_payload["lookup_indices"]), f)
++            query_masks = pad_and_concat(arrays=aggregated_payload["query_masks"], is_equal_len=not is_var_len)
++            query_masks_file = os.path.join(eval_args.output_path, "query_masks.pkl")
++            with open(query_masks_file, "wb") as f:
++                pickle.dump((query_masks, aggregated_payload["lookup_indices"]), f)
+ 
+         if collect_rankings and aggregated_payload["retrieved_doc_ids"]:
+             ranking_file_path = os.path.join(eval_args.output_path, "ranking.txt")
