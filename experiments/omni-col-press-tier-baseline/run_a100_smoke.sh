@@ -124,7 +124,7 @@ if [[ "${actual_factory_sha256}" != "${EXPECTED_COMPONENTS_FACTORY_SHA256}" ]]; 
   exit 2
 fi
 
-for executable in git python sha256sum torchrun nvidia-smi /usr/bin/time; do
+for executable in git python sha256sum nvidia-smi /usr/bin/time; do
   if ! command -v "${executable}" >/dev/null 2>&1; then
     echo "missing executable: ${executable}" >&2
     exit 2
@@ -372,7 +372,7 @@ run_case() {
     PROFILE_BATCHES="${OMNI_PROFILE_BATCHES:-2}" \
     PROFILE_OUTPUT_DIR="${OMNI_OUTPUT_ROOT}/profiles/${case_name}" \
     /usr/bin/time -p -o "${OMNI_OUTPUT_ROOT}/timing/${case_name}-build.time" \
-      torchrun --nproc_per_node=1 -m src.build_index \
+      python -m torch.distributed.run --nproc_per_node=1 -m src.build_index \
         --model_name_or_path "${model_path}" \
         --processor_name_or_path "${model_path}" \
         --dtype bfloat16 \
@@ -390,7 +390,7 @@ run_case() {
         "${extra_args[@]}"
 
     /usr/bin/time -p -o "${OMNI_OUTPUT_ROOT}/timing/${case_name}-eval.time" \
-      torchrun --nproc_per_node=1 -m src.evaluate \
+      python -m torch.distributed.run --nproc_per_node=1 -m src.evaluate \
         --model_name_or_path "${model_path}" \
         --processor_name_or_path "${model_path}" \
         --dtype bfloat16 \

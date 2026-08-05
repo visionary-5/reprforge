@@ -97,6 +97,8 @@ CUDA_VISIBLE_DEVICES=<free-a100-id> OMNI_SOURCE=/path/to/omni-col-press OMNI_COR
 Full/H-Pool 基座在启动 GPU 前还会校验 config、权重索引、tokenizer 和两个权重分片
 的固定 SHA-256；仅存在 `config.json`、断点下载未完成或混入其他 revision 都不能
 通过 preflight。
+单进程分布式入口使用 `python -m torch.distributed.run`，不依赖环境是否额外安装
+`torchrun` console script；其 `--nproc_per_node=1 -m` 语义与官方命令相同。
 模型完整性通过后才创建输出目录，并写入 `run-manifest.json`：上游与 wrapper 提交、
 两处兼容补丁及补丁后文件哈希、模型 revision、三个输入文件哈希、软件版本、GPU、
 attention 实现和所请求方法。失败的模型准备不会留下看似有效的结果目录。
