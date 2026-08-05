@@ -16,8 +16,8 @@ def test_select_queries_is_deterministic_and_qrel_complete():
 
     selected, pages = select_queries(queries, qrels, max_queries=2, max_pages=3)
 
-    assert [row["query_id"] for row in selected] == [1, 2]
-    assert pages == {10, 11, 12}
+    assert [row["query_id"] for row in selected] == [2, 3]
+    assert pages == {12, 13}
 
 
 def test_select_queries_skips_query_that_would_exceed_page_budget():

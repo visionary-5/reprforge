@@ -41,16 +41,26 @@ def select_queries(
 
     selected: list[dict[str, Any]] = []
     page_ids: set[int] = set()
-    for query in sorted(queries, key=lambda row: int(row["query_id"])):
-        query_id = int(query["query_id"])
-        query_pages = relevant.get(query_id, set())
-        if not query_pages or len(page_ids | query_pages) > max_pages:
-            continue
+    remaining = list(queries)
+    while remaining and len(selected) < max_queries:
+        candidates = []
+        for query in remaining:
+            query_id = int(query["query_id"])
+            query_pages = relevant.get(query_id, set())
+            added_pages = query_pages - page_ids
+            if query_pages and len(page_ids | query_pages) <= max_pages:
+                candidates.append(
+                    (len(added_pages), len(query_pages), query_id, query, query_pages)
+                )
+        if not candidates:
+            break
+        _, _, selected_id, query, query_pages = min(
+            candidates, key=lambda row: row[:3]
+        )
         selected.append(query)
         page_ids.update(query_pages)
-        if len(selected) == max_queries:
-            break
-    return selected, page_ids
+        remaining = [row for row in remaining if int(row["query_id"]) != selected_id]
+    return sorted(selected, key=lambda row: int(row["query_id"])), page_ids
 
 
 def export_smoke(
@@ -161,6 +171,7 @@ def export_smoke(
         "num_qrels": len(qrel_rows),
         "num_queries": len(query_rows),
         "qrel_complete": True,
+        "selection_policy": "greedy_min_incremental_positive_pages_then_query_id",
         "selected_page_ids": sorted(selected_page_ids),
         "selected_query_ids": sorted(selected_query_ids),
         "source_sha256": {part: _sha256(path) for part, path in paths.items()},

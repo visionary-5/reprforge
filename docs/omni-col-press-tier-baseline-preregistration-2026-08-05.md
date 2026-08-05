@@ -98,6 +98,9 @@ CUDA_VISIBLE_DEVICES=<free-a100-id> OMNI_SOURCE=/path/to/omni-col-press OMNI_COR
 ViDoRe smoke 输入由 `tools/export_vidore_omni_smoke.py` 从冻结本地 Parquet 导出。
 导出器只选择所有正相关页都能装入页预算的英文查询，写出源文件 SHA-256、查询和
 页面 ID，并断言所选查询的 qrel 完整，避免为了 32 页上限静默删除金标准证据。
+查询按“新增正相关页数、总正相关页数、query ID”的固定顺序贪心选择，因此 smoke
+偏向证据页较少或可复用的查询；它只验证环境、张量形状和官方评价链路，绝不作为
+有代表性的检索质量样本或论文效果数字。
 
 官方提交会在选择普通 `multivec` 时也顶层导入可选 Fast-Plaid，而 Fast-Plaid 没有
 与服务器 PyTorch 2.5 对应的公开 wheel。运行器因此应用并校验
