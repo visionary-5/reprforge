@@ -15,6 +15,7 @@ from typing import Any
 import numpy as np
 
 from reprforge.causal_hard_frontier import HardBudgetFrontier
+from reprforge.incremental_causal_control_plane import CONTROL_SCHEDULER_CLASSES
 
 
 POLICIES = (
@@ -26,6 +27,9 @@ POLICIES = (
     "frontier",
     "multiobjective_oracle",
     "hard_budget_frontier",
+    "hard_budget_frontier_transparent",
+    "hard_budget_frontier_incremental",
+    "delay_scheduling_d32_control",
 )
 
 
@@ -423,15 +427,19 @@ def replay_cagr_comparison(
     hard_fair_selection_count = 0
     hard_fair_forced_count = 0
     hard_fair_protected_queries: set[int] = set()
-    if policy == "hard_budget_frontier" and (
+    event_scheduler_classes = {
+        HardBudgetFrontier.POLICY_NAME: HardBudgetFrontier,
+        **CONTROL_SCHEDULER_CLASSES,
+    }
+    if policy in event_scheduler_classes and (
         request_batch_size != HardBudgetFrontier.BATCH_SIZE
         or window != HardBudgetFrontier.WINDOW
         or cache_capacity != HardBudgetFrontier.CACHE_CAPACITY
     ):
-        raise ValueError("hard_budget_frontier has frozen batch/window/cache")
+        raise ValueError("causal control policy has frozen batch/window/cache")
     causal_scheduler = (
-        HardBudgetFrontier()
-        if policy == "hard_budget_frontier"
+        event_scheduler_classes[policy]()
+        if policy in event_scheduler_classes
         else None
     )
 
@@ -829,7 +837,7 @@ def replay_cagr_comparison(
             build_cagr_plan()
         if policy == "multiobjective_oracle" and pending:
             wait_for_oracle_trigger()
-        if policy == "hard_budget_frontier" and pending:
+        if causal_scheduler is not None and pending:
             wait_for_causal_trigger()
         if policy == "cagr_faithful" and plan:
             batch, after_prefetch, group_ids = plan.popleft()
@@ -1016,19 +1024,19 @@ def replay_cagr_comparison(
                 if policy == "multiobjective_oracle"
                 else (
                     HardBudgetFrontier.TIMEOUT
-                    if policy == "hard_budget_frontier"
+                    if causal_scheduler is not None
                     else None
                 )
             ),
             "events": len(
                 causal_wait_durations
-                if policy == "hard_budget_frontier"
+                if causal_scheduler is not None
                 else oracle_future_wait_durations
             ),
             "total_unit_time": float(
                 sum(
                     causal_wait_durations
-                    if policy == "hard_budget_frontier"
+                    if causal_scheduler is not None
                     else oracle_future_wait_durations
                 )
             ),
@@ -1036,13 +1044,13 @@ def replay_cagr_comparison(
                 float(
                     np.mean(
                         causal_wait_durations
-                        if policy == "hard_budget_frontier"
+                        if causal_scheduler is not None
                         else oracle_future_wait_durations
                     )
                 )
                 if (
                     causal_wait_durations
-                    if policy == "hard_budget_frontier"
+                    if causal_scheduler is not None
                     else oracle_future_wait_durations
                 )
                 else 0.0
@@ -1051,13 +1059,13 @@ def replay_cagr_comparison(
                 float(
                     max(
                         causal_wait_durations
-                        if policy == "hard_budget_frontier"
+                        if causal_scheduler is not None
                         else oracle_future_wait_durations
                     )
                 )
                 if (
                     causal_wait_durations
-                    if policy == "hard_budget_frontier"
+                    if causal_scheduler is not None
                     else oracle_future_wait_durations
                 )
                 else 0.0
@@ -1068,8 +1076,8 @@ def replay_cagr_comparison(
                 oracle_bypass_budget
                 if policy == "multiobjective_oracle"
                 else (
-                    HardBudgetFrontier.BYPASS_BUDGET
-                    if policy == "hard_budget_frontier"
+                    causal_scheduler.audit()["fixed_config"].get("bypass_budget")
+                    if causal_scheduler is not None
                     else None
                 )
             ),
