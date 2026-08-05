@@ -91,6 +91,9 @@ CUDA_VISIBLE_DEVICES=<free-a100-id> OMNI_SOURCE=/path/to/omni-col-press OMNI_COR
 模型通过 `huggingface_hub.snapshot_download` 按固定 revision 下载，不依赖特定版本
 的 `hf` 命令行入口。`OMNI_ATTN_IMPLEMENTATION` 默认为可移植的 `sdpa`，若使用
 `flash_attention_2`，必须在结果清单中记录并保证所有方法口径一致。
+Full/H-Pool 基座在启动 GPU 前还会校验 config、权重索引、tokenizer 和两个权重分片
+的固定 SHA-256；仅存在 `config.json`、断点下载未完成或混入其他 revision 都不能
+通过 preflight。
 
 运行后应产生所请求方法的官方 index/result，以及 `timing/` 和 `profiles/`。在这些
 文件实际生成并校验前，本分支的结论保持 `NO_GO_LOCAL_ARTIFACTS_MISSING`。

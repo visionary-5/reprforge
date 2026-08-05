@@ -8,6 +8,11 @@ readonly EXPECTED_LOADERS_PATCH_SHA256="cc6624be900caf2a4a45918443f9b0293e410c03
 readonly EXPECTED_LOADERS_SHA256="7de8abf3e19d318d942fc1c40fc71b6dcce9d9852d3b4397c997e99c8f53c41d"
 readonly FULL_MODEL_ID="hltcoe/ColBERT_qwen2.5-vl_colpali"
 readonly FULL_MODEL_REVISION="14a7bb3328187705ff153e3511a47f9abb144054"
+readonly FULL_CONFIG_SHA256="b4b7d8e29a63cbd33d30b761a4fa09f1bdb3126e07ace2af1280bc7ad2c69f7d"
+readonly FULL_INDEX_SHA256="709aaeedb9fce8dca08d95042870a8ff133fc43562e9b979d5d04527f8392d4c"
+readonly FULL_TOKENIZER_SHA256="9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+readonly FULL_SHARD_1_SHA256="b53e17cd524ec03250abd7feaa7a2c41b4173c38367ed7953a9627752a71a9dc"
+readonly FULL_SHARD_2_SHA256="23a2d511b1c6d2f9eac158cb6c944e90abd3ed5aacf5282c97ac2dca69d518ad"
 readonly AGC_MODEL_ID="hltcoe/AGC_qwen2.5-vl_colpali"
 readonly AGC_MODEL_REVISION="14ba8fb11de7d15d5a87c7fa17e893bffcdd9020"
 readonly ATTN_IMPLEMENTATION="${OMNI_ATTN_IMPLEMENTATION:-sdpa}"
@@ -192,7 +197,7 @@ download_model() {
   local model_id="$1"
   local revision="$2"
   local model_path="$3"
-  if [[ -f "${model_path}/config.json" ]]; then
+  if [[ -f "${model_path}/config.json" && -f "${model_path}/model-00001-of-00002.safetensors" && -f "${model_path}/model-00002-of-00002.safetensors" ]]; then
     return
   fi
   python - "${model_id}" "${revision}" "${model_path}" <<'PY'
@@ -207,6 +212,29 @@ snapshot_download(
 PY
 }
 
+verify_sha256() {
+  local path="$1"
+  local expected="$2"
+  if [[ ! -f "${path}" ]]; then
+    echo "missing fixed model artifact: ${path}" >&2
+    exit 2
+  fi
+  local actual
+  actual="$(sha256sum "${path}" | awk '{print $1}')"
+  if [[ "${actual}" != "${expected}" ]]; then
+    echo "model artifact SHA-256 mismatch for ${path}: ${actual}" >&2
+    exit 2
+  fi
+}
+
+verify_full_model() {
+  verify_sha256 "${FULL_MODEL_PATH}/config.json" "${FULL_CONFIG_SHA256}"
+  verify_sha256 "${FULL_MODEL_PATH}/model.safetensors.index.json" "${FULL_INDEX_SHA256}"
+  verify_sha256 "${FULL_MODEL_PATH}/tokenizer.json" "${FULL_TOKENIZER_SHA256}"
+  verify_sha256 "${FULL_MODEL_PATH}/model-00001-of-00002.safetensors" "${FULL_SHARD_1_SHA256}"
+  verify_sha256 "${FULL_MODEL_PATH}/model-00002-of-00002.safetensors" "${FULL_SHARD_2_SHA256}"
+}
+
 needs_full=false
 needs_agc=false
 for case_name in "${requested_cases[@]}"; do
@@ -218,6 +246,7 @@ for case_name in "${requested_cases[@]}"; do
 done
 if [[ "${needs_full}" == true ]]; then
   download_model "${FULL_MODEL_ID}" "${FULL_MODEL_REVISION}" "${FULL_MODEL_PATH}"
+  verify_full_model
 fi
 if [[ "${needs_agc}" == true ]]; then
   download_model "${AGC_MODEL_ID}" "${AGC_MODEL_REVISION}" "${AGC_MODEL_PATH}"
