@@ -131,10 +131,20 @@ for executable in git python sha256sum torchrun nvidia-smi /usr/bin/time; do
   fi
 done
 
-gpu_names="$(nvidia-smi --query-gpu=name --format=csv,noheader)"
-gpu_count="$(printf '%s\n' "${gpu_names}" | sed '/^[[:space:]]*$/d' | wc -l | tr -d ' ')"
-if [[ "${gpu_count}" != "1" || "${gpu_names}" != *A100* ]]; then
-  echo "this preregistration requires exactly one visible A100; visible GPUs: ${gpu_names}" >&2
+if [[ ! "${CUDA_VISIBLE_DEVICES:-}" =~ ^[0-9]+$ ]]; then
+  echo "CUDA_VISIBLE_DEVICES must name exactly one physical GPU index" >&2
+  exit 2
+fi
+readonly PHYSICAL_GPU_ID="${CUDA_VISIBLE_DEVICES}"
+gpu_names="$(nvidia-smi --id="${PHYSICAL_GPU_ID}" --query-gpu=name --format=csv,noheader)"
+if [[ "${gpu_names}" != *A100* ]]; then
+  echo "this preregistration requires one A100; GPU ${PHYSICAL_GPU_ID}: ${gpu_names}" >&2
+  exit 2
+fi
+gpu_memory_used="$(nvidia-smi --id="${PHYSICAL_GPU_ID}" --query-gpu=memory.used --format=csv,noheader,nounits | tr -d ' ')"
+gpu_compute_pids="$(nvidia-smi --id="${PHYSICAL_GPU_ID}" --query-compute-apps=pid --format=csv,noheader,nounits | sed '/^[[:space:]]*$/d')"
+if [[ -n "${gpu_compute_pids}" || "${gpu_memory_used}" -ge 100 ]]; then
+  echo "refusing to share occupied GPU ${PHYSICAL_GPU_ID}: memory=${gpu_memory_used} MiB pids=${gpu_compute_pids:-none}" >&2
   exit 2
 fi
 
@@ -325,6 +335,7 @@ manifest = {
         "loaders_sha256": loaders_file_sha256,
     },
     "gpu_names": gpu_names.splitlines(),
+    "physical_gpu_id": int(__import__("os").environ["CUDA_VISIBLE_DEVICES"]),
     "inputs": {
         "corpus": {"path": corpus_path, "sha256": sha256(corpus_path)},
         "qrels": {"path": qrels_path, "sha256": sha256(qrels_path)},

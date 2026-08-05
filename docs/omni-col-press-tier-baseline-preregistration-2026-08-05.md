@@ -80,6 +80,9 @@ Full ColBERT  vs.  H-Pool  vs.  AGC
 ## 5. 唯一 A100 smoke 命令
 
 wrapper 不覆盖已有输出目录，并核验 A100、官方源码 commit、依赖、输入行数和必要字段。它会在 A100 上下载两个固定 revision，而本轮没有执行。
+`CUDA_VISIBLE_DEVICES` 必须是单个物理 GPU 数字 ID；启动前通过该 ID 查询 compute PID
+并要求显存占用低于 100 MiB。该检查不依赖 `nvidia-smi` 是否遵守 CUDA 可见性环境
+变量，因此不会把其他三张组内共享卡误计入本次实验，也不会在目标卡已有进程时启动。
 
 ```bash
 CUDA_VISIBLE_DEVICES=<free-a100-id> OMNI_SOURCE=/path/to/omni-col-press OMNI_CORPUS_JSONL=/path/to/32-pages.jsonl OMNI_QUERY_JSONL=/path/to/16-queries.jsonl OMNI_QRELS=/path/to/qrels.jsonl OMNI_ASSETS=/path/to/images OMNI_MODEL_CACHE=/path/to/model-cache OMNI_OUTPUT_ROOT=/path/to/new-output bash experiments/omni-col-press-tier-baseline/run_a100_smoke.sh
