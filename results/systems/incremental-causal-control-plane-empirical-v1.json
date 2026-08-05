@@ -1,0 +1,3098 @@
+{
+  "claim_boundary": "local single-process Python wall time; nondeterministic and not production latency",
+  "contract_commit": "978063c",
+  "empirical_gate": {
+    "checks": {
+      "additional_retained_state_under_64_mib": true,
+      "exact_50_of_50": true,
+      "median_tracemalloc_peak_ratio_at_most_1_25": true,
+      "no_small_trace_slowdown_over_10_percent": true,
+      "operation_or_cpu_main_gate": true
+    },
+    "decision": "INCREMENTAL CONTROL PLANE GO",
+    "registered_incremental_over_transparent_small_cpu_ratio": {
+      "max": 0.6634819189689832,
+      "median": 0.639238310785159
+    },
+    "registered_tracemalloc_incremental_over_transparent": {
+      "max": 1.0378634078387488,
+      "median": 0.9708285859529794,
+      "p95": 1.0378271914902355
+    },
+    "registered_transparent_over_incremental_large_cpu_speedup": {
+      "max": 2.499184941300978,
+      "median": 2.0839641392126342,
+      "min": 1.8382048320532545,
+      "p95": 2.419298047391377
+    },
+    "uninstrumented_reference_sensitivity_audit": {
+      "incremental_over_reference_small_cpu_ratio": {
+        "max": 0.725808656316109,
+        "median": 0.6574127548104031
+      },
+      "reference_over_incremental_large_cpu_speedup": {
+        "max": 2.3776638790179607,
+        "median": 2.1107293704272836,
+        "min": 1.7810064387389986
+      },
+      "tracemalloc_incremental_over_reference": {
+        "max": 1.037897669689457,
+        "median": 0.9708651404448712
+      },
+      "used_for_registered_gate": false
+    }
+  },
+  "environment": {
+    "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+    "processor": "arm",
+    "python": "3.13.13 | packaged by Anaconda, Inc. | (main, Apr 14 2026, 06:14:06) [Clang 20.1.8 ]"
+  },
+  "inputs": {
+    "availability": {
+      "computer_science": {
+        "candidate_union_pages": 1144,
+        "corpus_pages": 1360,
+        "provenance": {
+          "bm25": {
+            "bytes": 1016688,
+            "path": "/private/tmp/reprforge-vidore-domain-matrix-v1/computer-science/bm25-runtime.npz",
+            "sha256": "840582502d0d0cb52e700244c2a3af9500551552471dacc8bf9011ff55828907",
+            "use": "locator cohort construction"
+          },
+          "labels": {
+            "bytes": 3198,
+            "path": "/private/tmp/reprforge-vidore-domain-matrix-v1/computer-science/oracle-labels.npz",
+            "sha256": "00153db7323ae6ed845a8aee5c1e625f295870b6836d4040e330f8bdd075c0a6",
+            "use": "post-hoc quality accounting only"
+          },
+          "visual": {
+            "bytes": 1004741,
+            "path": "/private/tmp/reprforge-vidore-domain-matrix-v1/computer-science/visual-runtime.npz",
+            "sha256": "ff6e14c1fa248e4b11cba9cecf62e78575958e8e21b42a2068631dfcbedf8248",
+            "use": "post-hoc quality accounting only"
+          }
+        },
+        "query_count": 215,
+        "status": "available"
+      },
+      "finance": {
+        "candidate_union_pages": 1855,
+        "corpus_pages": 2942,
+        "provenance": {
+          "oracle_labels": {
+            "bytes": 4243,
+            "path": "/Users/aura/gpu-systems-incubator/reprforge/data/current-anytime/finance/bm25/oracle-labels.npz",
+            "sha256": "8fa8613e7244c60332584b4a64186da31d979b4fb0c0d4cc6be10ad86d6b0336",
+            "use": "post-hoc quality-work accounting only"
+          },
+          "root": "/Users/aura/gpu-systems-incubator/reprforge/data/current-anytime/finance",
+          "text_manifest": {
+            "path": "/Users/aura/gpu-systems-incubator/reprforge/data/current-anytime/finance/bm25/manifest.json",
+            "sha256": "10846bc7e57930380b15dd3eb3e0653803fe39cbf6784987118fbcd810f5ece0"
+          },
+          "text_runtime": {
+            "bytes": 3123217,
+            "path": "/Users/aura/gpu-systems-incubator/reprforge/data/current-anytime/finance/bm25/runtime.npz",
+            "sha256": "55bf5d9921a5df5151d346db394fbf4e0069b1751ec787117853fc4f1b67fa65"
+          },
+          "visual_manifest": {
+            "path": "/Users/aura/gpu-systems-incubator/reprforge/data/current-anytime/finance/visual/manifest.json",
+            "sha256": "d81e4c7df09197de71c24f6d102b6aa881fc0fbc608ab1d3c32360ef5c93016c"
+          },
+          "visual_runtime": {
+            "bytes": 3083267,
+            "path": "/Users/aura/gpu-systems-incubator/reprforge/data/current-anytime/finance/visual/runtime.npz",
+            "sha256": "a6bbbf5bb26dadd4d060df40b225d9511b05a8470b574b71463ca4eadb635944"
+          }
+        },
+        "query_count": 309,
+        "status": "available"
+      },
+      "hr": {
+        "candidate_union_pages": 895,
+        "corpus_pages": 1110,
+        "provenance": {
+          "oracle_labels": {
+            "bytes": 4173,
+            "path": "/Users/aura/gpu-systems-incubator/reprforge/data/current-anytime/hr/bm25/oracle-labels.npz",
+            "sha256": "5557a6d1f641b3db01a839b67cb52a6a6a8e87a60d2f3642110034414bc5511d",
+            "use": "post-hoc quality-work accounting only"
+          },
+          "root": "/Users/aura/gpu-systems-incubator/reprforge/data/current-anytime/hr",
+          "text_manifest": {
+            "path": "/Users/aura/gpu-systems-incubator/reprforge/data/current-anytime/hr/bm25/manifest.json",
+            "sha256": "b56fdc8592cc999e15ef1b5309c3ce38c96402f3300edc2baab0ee62d9d692fd"
+          },
+          "text_runtime": {
+            "bytes": 1240680,
+            "path": "/Users/aura/gpu-systems-incubator/reprforge/data/current-anytime/hr/bm25/runtime.npz",
+            "sha256": "f057d766ab4d50e2cab00f3ecb63d15de0bf0b2b4840ec29330a38d045a1bc84"
+          },
+          "visual_manifest": {
+            "path": "/Users/aura/gpu-systems-incubator/reprforge/data/current-anytime/hr/visual/manifest.json",
+            "sha256": "520ccd2a4c6359658025bc9a4a24844346cd3f86cb792467592f45aecdba13ab"
+          },
+          "visual_runtime": {
+            "bytes": 1201724,
+            "path": "/Users/aura/gpu-systems-incubator/reprforge/data/current-anytime/hr/visual/runtime.npz",
+            "sha256": "8a6e8ec222a446c2499c89b3fc92294ab641f1b338b4c789c90e4917025c7eef"
+          }
+        },
+        "query_count": 318,
+        "status": "available"
+      },
+      "industrial": {
+        "candidate_union_pages": 2129,
+        "corpus_pages": 5244,
+        "provenance": {
+          "bm25": {
+            "bytes": 4735743,
+            "path": "/private/tmp/reprforge-vidore-domain-matrix-v1/industrial/bm25-runtime.npz",
+            "sha256": "1d2740fcffad008b4b40a696886ed6badbd70c5d0ec50ebabd5135febb714cba",
+            "use": "locator cohort construction"
+          },
+          "labels": {
+            "bytes": 4419,
+            "path": "/private/tmp/reprforge-vidore-domain-matrix-v1/industrial/oracle-labels.npz",
+            "sha256": "d9d18287892f50257e4e62838c53c5b4bb80289699c0029977345e001df8c4bf",
+            "use": "post-hoc quality accounting only"
+          },
+          "visual": {
+            "bytes": 4935343,
+            "path": "/private/tmp/reprforge-vidore-domain-matrix-v1/industrial/visual-runtime.npz",
+            "sha256": "d3813daa0e1c0b4c49a6d704322dc00521bb9d69e156d303df5c18f0861ab8da",
+            "use": "post-hoc quality accounting only"
+          }
+        },
+        "query_count": 283,
+        "status": "available"
+      },
+      "pharmaceuticals": {
+        "candidate_union_pages": 1797,
+        "corpus_pages": 2313,
+        "provenance": {
+          "bm25": {
+            "bytes": 2717510,
+            "path": "/private/tmp/reprforge-vidore-domain-matrix-v1/pharmaceuticals/bm25-runtime.npz",
+            "sha256": "e8ca142b990eca75c2907dfe25710987ad1f8ea518504b65ba7ff3d4403a488a",
+            "use": "locator cohort construction"
+          },
+          "labels": {
+            "bytes": 4576,
+            "path": "/private/tmp/reprforge-vidore-domain-matrix-v1/pharmaceuticals/oracle-labels.npz",
+            "sha256": "c17267f6d36249a44895a5ddec684aa078d2adcc19064012dcb5b2b0519af3d5",
+            "use": "post-hoc quality accounting only"
+          },
+          "visual": {
+            "bytes": 2858998,
+            "path": "/private/tmp/reprforge-vidore-domain-matrix-v1/pharmaceuticals/visual-runtime.npz",
+            "sha256": "d3c223709e67d96672be4db14783cc550aa1213b3b9f6e6320abfe6a7342dfcd",
+            "use": "post-hoc quality accounting only"
+          }
+        },
+        "query_count": 364,
+        "status": "available"
+      }
+    },
+    "deterministic_result": {
+      "path": "/Users/aura/gpu-systems-incubator/reprforge-worktrees/incremental-causal-control-plane/results/systems/incremental-causal-control-plane-deterministic-v1.json",
+      "sha256": "e79633056a8e6cf92cfe00281590bb26acb7cdd7eb3fad61efda5e9efa62c2fe"
+    }
+  },
+  "protocol": {
+    "gc_disabled_during_timed_replay": true,
+    "large_query_count": "full domain trace",
+    "memory_repeats": 5,
+    "method_order": "fixed rotation",
+    "seed": 20260804,
+    "single_python_process": true,
+    "small_query_count": 64,
+    "timer": "time.perf_counter_ns",
+    "timing_repeats": 9,
+    "warmups": 2
+  },
+  "schema_version": 1,
+  "stage": "empirical_cpu_and_memory",
+  "workloads": {
+    "computer_science/burst/large": {
+      "arrival_model": "burst",
+      "candidate_union_pages": 1144,
+      "corpus_pages": 1360,
+      "domain": "computer_science",
+      "memory": {
+        "incremental_over_reference_median_peak_ratio": 0.988794152073627,
+        "incremental_over_transparent_median_peak_ratio": 0.9887374206800005,
+        "methods": {
+          "delay_d32": {
+            "max": 1379624.0,
+            "median": 1379624.0,
+            "min": 1379624.0,
+            "p95": 1379624.0,
+            "raw": [
+              1379624,
+              1379624,
+              1379624,
+              1379624,
+              1379624
+            ]
+          },
+          "incremental": {
+            "max": 1378648.0,
+            "median": 1378648.0,
+            "min": 1378648.0,
+            "p95": 1378648.0,
+            "raw": [
+              1378648,
+              1378648,
+              1378648,
+              1378648,
+              1378648
+            ]
+          },
+          "reference": {
+            "max": 1394272.0,
+            "median": 1394272.0,
+            "min": 1394272.0,
+            "p95": 1394272.0,
+            "raw": [
+              1394272,
+              1394272,
+              1394272,
+              1394272,
+              1394272
+            ]
+          },
+          "transparent": {
+            "max": 1394352.0,
+            "median": 1394352.0,
+            "min": 1394352.0,
+            "p95": 1394352.0,
+            "raw": [
+              1394352,
+              1394352,
+              1394352,
+              1394352,
+              1394352
+            ]
+          }
+        },
+        "repeats": 5
+      },
+      "query_count": 215,
+      "size": "large",
+      "timing": {
+        "incremental_over_delay_median_ratio": 1.0026740885824692,
+        "methods": {
+          "delay_d32": {
+            "max": 119355917.0,
+            "median": 103088208.0,
+            "min": 96359334.0,
+            "p95": 117901450.2,
+            "raw": [
+              102790167,
+              103088208,
+              99662292,
+              98001333,
+              115719750,
+              104249125,
+              103322542,
+              96359334,
+              119355917
+            ]
+          },
+          "incremental": {
+            "max": 115892125.0,
+            "median": 103363875.0,
+            "min": 97699417.0,
+            "p95": 115300475.0,
+            "raw": [
+              101600875,
+              99840041,
+              97699417,
+              110262125,
+              114413000,
+              109764000,
+              102474375,
+              103363875,
+              115892125
+            ]
+          },
+          "reference": {
+            "max": 216571417.0,
+            "median": 189463125.0,
+            "min": 177091500.0,
+            "p95": 210012417.0,
+            "raw": [
+              191610167,
+              187975875,
+              189463125,
+              177091500,
+              216571417,
+              192272167,
+              184667292,
+              177945792,
+              200173917
+            ]
+          },
+          "transparent": {
+            "max": 221057417.0,
+            "median": 191681458.0,
+            "min": 182638833.0,
+            "p95": 219577450.2,
+            "raw": [
+              194618459,
+              189552292,
+              191081125,
+              182866375,
+              221057417,
+              217357500,
+              182638833,
+              191681458,
+              210544500
+            ]
+          }
+        },
+        "reference_over_incremental_median_speedup": 1.8329723513171308,
+        "repeats": 9,
+        "transparent_over_incremental_median_speedup": 1.854433746799837,
+        "warmups": 2
+      }
+    },
+    "computer_science/burst/small": {
+      "arrival_model": "burst",
+      "candidate_union_pages": 703,
+      "corpus_pages": 1360,
+      "domain": "computer_science",
+      "memory": {
+        "incremental_over_reference_median_peak_ratio": 0.9550800662617338,
+        "incremental_over_transparent_median_peak_ratio": 0.9549482401656315,
+        "methods": {
+          "delay_d32": {
+            "max": 560968.0,
+            "median": 560968.0,
+            "min": 560968.0,
+            "p95": 560968.0,
+            "raw": [
+              560968,
+              560968,
+              560968,
+              560968,
+              560968
+            ]
+          },
+          "incremental": {
+            "max": 553488.0,
+            "median": 553488.0,
+            "min": 553488.0,
+            "p95": 553488.0,
+            "raw": [
+              553488,
+              553488,
+              553488,
+              553488,
+              553488
+            ]
+          },
+          "reference": {
+            "max": 579520.0,
+            "median": 579520.0,
+            "min": 579520.0,
+            "p95": 579520.0,
+            "raw": [
+              579520,
+              579520,
+              579520,
+              579520,
+              579520
+            ]
+          },
+          "transparent": {
+            "max": 579600.0,
+            "median": 579600.0,
+            "min": 579600.0,
+            "p95": 579600.0,
+            "raw": [
+              579600,
+              579600,
+              579600,
+              579600,
+              579600
+            ]
+          }
+        },
+        "repeats": 5
+      },
+      "query_count": 64,
+      "size": "small",
+      "timing": {
+        "incremental_over_delay_median_ratio": 0.9772350869155118,
+        "methods": {
+          "delay_d32": {
+            "max": 20115834.0,
+            "median": 17426291.0,
+            "min": 15955459.0,
+            "p95": 19134117.2,
+            "raw": [
+              16440583,
+              17661542,
+              17426291,
+              20115834,
+              17645250,
+              17401208,
+              17383750,
+              17453625,
+              15955459
+            ]
+          },
+          "incremental": {
+            "max": 27465917.0,
+            "median": 17029583.0,
+            "min": 15593333.0,
+            "p95": 24147700.199999996,
+            "raw": [
+              16052083,
+              16894291,
+              17283667,
+              27465917,
+              19170375,
+              17029583,
+              17117458,
+              15655417,
+              15593333
+            ]
+          },
+          "reference": {
+            "max": 30254709.0,
+            "median": 26552125.0,
+            "min": 22597583.0,
+            "p95": 30172541.8,
+            "raw": [
+              22597583,
+              26576916,
+              26893167,
+              30254709,
+              30049291,
+              26497916,
+              26552125,
+              26499792,
+              24405083
+            ]
+          },
+          "transparent": {
+            "max": 30417375.0,
+            "median": 26675916.0,
+            "min": 23465375.0,
+            "p95": 30302825.0,
+            "raw": [
+              23465375,
+              24703417,
+              30417375,
+              28776875,
+              30131000,
+              26823500,
+              26675916,
+              25460417,
+              24482666
+            ]
+          }
+        },
+        "reference_over_incremental_median_speedup": 1.5591764636867502,
+        "repeats": 9,
+        "transparent_over_incremental_median_speedup": 1.5664456375708085,
+        "warmups": 2
+      }
+    },
+    "computer_science/poisson/large": {
+      "arrival_model": "poisson",
+      "candidate_union_pages": 1144,
+      "corpus_pages": 1360,
+      "domain": "computer_science",
+      "memory": {
+        "incremental_over_reference_median_peak_ratio": 0.9887406748855534,
+        "incremental_over_transparent_median_peak_ratio": 0.9886839662038879,
+        "methods": {
+          "delay_d32": {
+            "max": 1380083.0,
+            "median": 1380083.0,
+            "min": 1380032.0,
+            "p95": 1380083.0,
+            "raw": [
+              1380032,
+              1380083,
+              1380083,
+              1380083,
+              1380083
+            ]
+          },
+          "incremental": {
+            "max": 1379051.0,
+            "median": 1379051.0,
+            "min": 1379051.0,
+            "p95": 1379051.0,
+            "raw": [
+              1379051,
+              1379051,
+              1379051,
+              1379051,
+              1379051
+            ]
+          },
+          "reference": {
+            "max": 1394755.0,
+            "median": 1394755.0,
+            "min": 1394755.0,
+            "p95": 1394755.0,
+            "raw": [
+              1394755,
+              1394755,
+              1394755,
+              1394755,
+              1394755
+            ]
+          },
+          "transparent": {
+            "max": 1394835.0,
+            "median": 1394835.0,
+            "min": 1394835.0,
+            "p95": 1394835.0,
+            "raw": [
+              1394835,
+              1394835,
+              1394835,
+              1394835,
+              1394835
+            ]
+          }
+        },
+        "repeats": 5
+      },
+      "query_count": 215,
+      "size": "large",
+      "timing": {
+        "incremental_over_delay_median_ratio": 1.021216293813461,
+        "methods": {
+          "delay_d32": {
+            "max": 112144791.0,
+            "median": 94127750.0,
+            "min": 91002000.0,
+            "p95": 110715957.8,
+            "raw": [
+              91002000,
+              108572708,
+              100110333,
+              101986292,
+              94127750,
+              91560750,
+              93809875,
+              112144791,
+              91405958
+            ]
+          },
+          "incremental": {
+            "max": 110817709.0,
+            "median": 96124792.0,
+            "min": 89843584.0,
+            "p95": 106103075.39999999,
+            "raw": [
+              89843584,
+              110817709,
+              99031125,
+              91041792,
+              96124792,
+              98879708,
+              94040958,
+              99030292,
+              91516875
+            ]
+          },
+          "reference": {
+            "max": 191492125.0,
+            "median": 179974750.0,
+            "min": 165206791.0,
+            "p95": 191411791.8,
+            "raw": [
+              165206791,
+              182775000,
+              170344333,
+              179516458,
+              179974750,
+              174405708,
+              191492125,
+              191291292,
+              181394708
+            ]
+          },
+          "transparent": {
+            "max": 207560416.0,
+            "median": 180110000.0,
+            "min": 166861042.0,
+            "p95": 199859832.79999998,
+            "raw": [
+              167196250,
+              177990000,
+              180110000,
+              166861042,
+              185787750,
+              188308958,
+              207560416,
+              184350000,
+              175706167
+            ]
+          }
+        },
+        "reference_over_incremental_median_speedup": 1.8723031411084874,
+        "repeats": 9,
+        "transparent_over_incremental_median_speedup": 1.8737101662597095,
+        "warmups": 2
+      }
+    },
+    "computer_science/poisson/small": {
+      "arrival_model": "poisson",
+      "candidate_union_pages": 703,
+      "corpus_pages": 1360,
+      "domain": "computer_science",
+      "memory": {
+        "incremental_over_reference_median_peak_ratio": 0.955261574636733,
+        "incremental_over_transparent_median_peak_ratio": 0.9551298514383026,
+        "methods": {
+          "delay_d32": {
+            "max": 561451.0,
+            "median": 561451.0,
+            "min": 561451.0,
+            "p95": 561451.0,
+            "raw": [
+              561451,
+              561451,
+              561451,
+              561451,
+              561451
+            ]
+          },
+          "incremental": {
+            "max": 554131.0,
+            "median": 554131.0,
+            "min": 554131.0,
+            "p95": 554131.0,
+            "raw": [
+              554131,
+              554131,
+              554131,
+              554131,
+              554131
+            ]
+          },
+          "reference": {
+            "max": 580083.0,
+            "median": 580083.0,
+            "min": 580083.0,
+            "p95": 580083.0,
+            "raw": [
+              580083,
+              580083,
+              580083,
+              580083,
+              580083
+            ]
+          },
+          "transparent": {
+            "max": 580163.0,
+            "median": 580163.0,
+            "min": 580163.0,
+            "p95": 580163.0,
+            "raw": [
+              580163,
+              580163,
+              580163,
+              580163,
+              580163
+            ]
+          }
+        },
+        "repeats": 5
+      },
+      "query_count": 64,
+      "size": "small",
+      "timing": {
+        "incremental_over_delay_median_ratio": 0.9796701723795556,
+        "methods": {
+          "delay_d32": {
+            "max": 14639125.0,
+            "median": 13365042.0,
+            "min": 13302625.0,
+            "p95": 14142041.799999999,
+            "raw": [
+              13372333,
+              13354208,
+              13302625,
+              13365042,
+              14639125,
+              13396417,
+              13308750,
+              13379542,
+              13310792
+            ]
+          },
+          "incremental": {
+            "max": 13276750.0,
+            "median": 13093333.0,
+            "min": 12962875.0,
+            "p95": 13261700.0,
+            "raw": [
+              13276750,
+              12962875,
+              13098833,
+              13239125,
+              13144667,
+              13059625,
+              13093333,
+              13008292,
+              13086208
+            ]
+          },
+          "reference": {
+            "max": 21485792.0,
+            "median": 19623125.0,
+            "min": 19554833.0,
+            "p95": 20832408.4,
+            "raw": [
+              19843792,
+              19623125,
+              19555959,
+              21485792,
+              19852333,
+              19727750,
+              19570208,
+              19603125,
+              19554833
+            ]
+          },
+          "transparent": {
+            "max": 21384833.0,
+            "median": 20084375.0,
+            "min": 19845500.0,
+            "p95": 21167199.8,
+            "raw": [
+              21384833,
+              20084375,
+              19997625,
+              20563250,
+              20155750,
+              20840750,
+              19865750,
+              19911750,
+              19845500
+            ]
+          }
+        },
+        "reference_over_incremental_median_speedup": 1.4987112143256418,
+        "repeats": 9,
+        "transparent_over_incremental_median_speedup": 1.5339390665463102,
+        "warmups": 2
+      }
+    },
+    "finance/burst/large": {
+      "arrival_model": "burst",
+      "candidate_union_pages": 1855,
+      "corpus_pages": 2942,
+      "domain": "finance",
+      "memory": {
+        "incremental_over_reference_median_peak_ratio": 1.0337733219422867,
+        "incremental_over_transparent_median_peak_ratio": 1.0337343308295348,
+        "methods": {
+          "delay_d32": {
+            "max": 2192276.0,
+            "median": 2192276.0,
+            "min": 2192276.0,
+            "p95": 2192276.0,
+            "raw": [
+              2192276,
+              2192276,
+              2192276,
+              2192276,
+              2192276
+            ]
+          },
+          "incremental": {
+            "max": 2192596.0,
+            "median": 2192596.0,
+            "min": 2192596.0,
+            "p95": 2192596.0,
+            "raw": [
+              2192596,
+              2192596,
+              2192596,
+              2192596,
+              2192596
+            ]
+          },
+          "reference": {
+            "max": 2120964.0,
+            "median": 2120964.0,
+            "min": 2120964.0,
+            "p95": 2120964.0,
+            "raw": [
+              2120964,
+              2120964,
+              2120964,
+              2120964,
+              2120964
+            ]
+          },
+          "transparent": {
+            "max": 2121044.0,
+            "median": 2121044.0,
+            "min": 2121044.0,
+            "p95": 2121044.0,
+            "raw": [
+              2121044,
+              2121044,
+              2121044,
+              2121044,
+              2121044
+            ]
+          }
+        },
+        "repeats": 5
+      },
+      "query_count": 309,
+      "size": "large",
+      "timing": {
+        "incremental_over_delay_median_ratio": 0.9886698382602207,
+        "methods": {
+          "delay_d32": {
+            "max": 154218625.0,
+            "median": 118691333.0,
+            "min": 111792583.0,
+            "p95": 142244441.79999998,
+            "raw": [
+              123705042,
+              113587958,
+              114953791,
+              111792583,
+              118691333,
+              154218625,
+              119507333,
+              124283167,
+              117280000
+            ]
+          },
+          "incremental": {
+            "max": 132764250.0,
+            "median": 117346541.0,
+            "min": 113706000.0,
+            "p95": 128255350.0,
+            "raw": [
+              132764250,
+              115958708,
+              116475625,
+              113706000,
+              121492000,
+              115966542,
+              120531500,
+              117346541,
+              120459917
+            ]
+          },
+          "reference": {
+            "max": 285908375.0,
+            "median": 247540333.0,
+            "min": 239202500.0,
+            "p95": 277394675.0,
+            "raw": [
+              239202500,
+              246564792,
+              245818333,
+              243757167,
+              247540333,
+              285908375,
+              254366750,
+              264624125,
+              251497875
+            ]
+          },
+          "transparent": {
+            "max": 270543125.0,
+            "median": 258918958.0,
+            "min": 246845750.0,
+            "p95": 269931591.8,
+            "raw": [
+              257335541,
+              269014292,
+              246845750,
+              265197250,
+              258918958,
+              261958708,
+              248163375,
+              248517750,
+              270543125
+            ]
+          }
+        },
+        "reference_over_incremental_median_speedup": 2.109481292678239,
+        "repeats": 9,
+        "transparent_over_incremental_median_speedup": 2.206447295280736,
+        "warmups": 2
+      }
+    },
+    "finance/burst/small": {
+      "arrival_model": "burst",
+      "candidate_union_pages": 811,
+      "corpus_pages": 2942,
+      "domain": "finance",
+      "memory": {
+        "incremental_over_reference_median_peak_ratio": 0.9550800662617338,
+        "incremental_over_transparent_median_peak_ratio": 0.9549482401656315,
+        "methods": {
+          "delay_d32": {
+            "max": 560488.0,
+            "median": 560488.0,
+            "min": 560488.0,
+            "p95": 560488.0,
+            "raw": [
+              560488,
+              560488,
+              560488,
+              560488,
+              560488
+            ]
+          },
+          "incremental": {
+            "max": 553488.0,
+            "median": 553488.0,
+            "min": 553488.0,
+            "p95": 553488.0,
+            "raw": [
+              553488,
+              553488,
+              553488,
+              553488,
+              553488
+            ]
+          },
+          "reference": {
+            "max": 579520.0,
+            "median": 579520.0,
+            "min": 579520.0,
+            "p95": 579520.0,
+            "raw": [
+              579520,
+              579520,
+              579520,
+              579520,
+              579520
+            ]
+          },
+          "transparent": {
+            "max": 579600.0,
+            "median": 579600.0,
+            "min": 579600.0,
+            "p95": 579600.0,
+            "raw": [
+              579600,
+              579600,
+              579600,
+              579600,
+              579600
+            ]
+          }
+        },
+        "repeats": 5
+      },
+      "query_count": 64,
+      "size": "small",
+      "timing": {
+        "incremental_over_delay_median_ratio": 0.954999192391707,
+        "methods": {
+          "delay_d32": {
+            "max": 13171834.0,
+            "median": 12363667.0,
+            "min": 11768583.0,
+            "p95": 12946283.6,
+            "raw": [
+              11945500,
+              13171834,
+              12464542,
+              12273334,
+              11768583,
+              12607958,
+              12436375,
+              12307084,
+              12363667
+            ]
+          },
+          "incremental": {
+            "max": 12349584.0,
+            "median": 11807292.0,
+            "min": 11365791.0,
+            "p95": 12258967.2,
+            "raw": [
+              11668041,
+              11759667,
+              12123042,
+              12097625,
+              11807292,
+              11365791,
+              12041250,
+              11646000,
+              12349584
+            ]
+          },
+          "reference": {
+            "max": 19407041.0,
+            "median": 19138458.0,
+            "min": 18587458.0,
+            "p95": 19360657.8,
+            "raw": [
+              19407041,
+              19156417,
+              19138458,
+              19137916,
+              19246667,
+              19291083,
+              19059500,
+              19013417,
+              18587458
+            ]
+          },
+          "transparent": {
+            "max": 19433625.0,
+            "median": 18801375.0,
+            "min": 18241875.0,
+            "p95": 19428708.2,
+            "raw": [
+              19002500,
+              18310625,
+              19421333,
+              19383167,
+              18648708,
+              18682334,
+              19433625,
+              18801375,
+              18241875
+            ]
+          }
+        },
+        "reference_over_incremental_median_speedup": 1.6209015581218793,
+        "repeats": 9,
+        "transparent_over_incremental_median_speedup": 1.592352844327048,
+        "warmups": 2
+      }
+    },
+    "finance/poisson/large": {
+      "arrival_model": "poisson",
+      "candidate_union_pages": 1855,
+      "corpus_pages": 2942,
+      "domain": "finance",
+      "memory": {
+        "incremental_over_reference_median_peak_ratio": 1.0337524103646032,
+        "incremental_over_transparent_median_peak_ratio": 1.0337134311221423,
+        "methods": {
+          "delay_d32": {
+            "max": 2192863.0,
+            "median": 2192863.0,
+            "min": 2192863.0,
+            "p95": 2192863.0,
+            "raw": [
+              2192863,
+              2192863,
+              2192863,
+              2192863,
+              2192863
+            ]
+          },
+          "incremental": {
+            "max": 2193175.0,
+            "median": 2193175.0,
+            "min": 2193175.0,
+            "p95": 2193175.0,
+            "raw": [
+              2193175,
+              2193175,
+              2193175,
+              2193175,
+              2193175
+            ]
+          },
+          "reference": {
+            "max": 2121567.0,
+            "median": 2121567.0,
+            "min": 2121567.0,
+            "p95": 2121567.0,
+            "raw": [
+              2121567,
+              2121567,
+              2121567,
+              2121567,
+              2121567
+            ]
+          },
+          "transparent": {
+            "max": 2121647.0,
+            "median": 2121647.0,
+            "min": 2121647.0,
+            "p95": 2121647.0,
+            "raw": [
+              2121647,
+              2121647,
+              2121647,
+              2121647,
+              2121647
+            ]
+          }
+        },
+        "repeats": 5
+      },
+      "query_count": 309,
+      "size": "large",
+      "timing": {
+        "incremental_over_delay_median_ratio": 0.9813980389511479,
+        "methods": {
+          "delay_d32": {
+            "max": 195784625.0,
+            "median": 143609375.0,
+            "min": 126526459.0,
+            "p95": 189341808.2,
+            "raw": [
+              126526459,
+              179677583,
+              143609375,
+              135732042,
+              153230792,
+              142279125,
+              159316167,
+              195784625,
+              133887959
+            ]
+          },
+          "incremental": {
+            "max": 184228958.0,
+            "median": 140937959.0,
+            "min": 125571959.0,
+            "p95": 182841808.0,
+            "raw": [
+              126924125,
+              180761083,
+              143231291,
+              125571959,
+              131854000,
+              140937959,
+              169709584,
+              184228958,
+              134035667
+            ]
+          },
+          "reference": {
+            "max": 485607250.0,
+            "median": 297657791.0,
+            "min": 278583042.0,
+            "p95": 437718366.4,
+            "raw": [
+              284894417,
+              345664625,
+              295957291,
+              279311375,
+              278583042,
+              297657791,
+              326395416,
+              485607250,
+              365885041
+            ]
+          },
+          "transparent": {
+            "max": 498034625.0,
+            "median": 287071084.0,
+            "min": 275746125.0,
+            "p95": 456600958.2,
+            "raw": [
+              278009250,
+              276260875,
+              287071084,
+              281879834,
+              275746125,
+              324824667,
+              394450458,
+              498034625,
+              320639750
+            ]
+          }
+        },
+        "reference_over_incremental_median_speedup": 2.1119774481763285,
+        "repeats": 9,
+        "transparent_over_incremental_median_speedup": 2.0368613681996064,
+        "warmups": 2
+      }
+    },
+    "finance/poisson/small": {
+      "arrival_model": "poisson",
+      "candidate_union_pages": 811,
+      "corpus_pages": 2942,
+      "domain": "finance",
+      "memory": {
+        "incremental_over_reference_median_peak_ratio": 0.9552560210064982,
+        "incremental_over_transparent_median_peak_ratio": 0.9551242822246855,
+        "methods": {
+          "delay_d32": {
+            "max": 560851.0,
+            "median": 560851.0,
+            "min": 560800.0,
+            "p95": 560851.0,
+            "raw": [
+              560851,
+              560851,
+              560851,
+              560800,
+              560851
+            ]
+          },
+          "incremental": {
+            "max": 554059.0,
+            "median": 554059.0,
+            "min": 554059.0,
+            "p95": 554059.0,
+            "raw": [
+              554059,
+              554059,
+              554059,
+              554059,
+              554059
+            ]
+          },
+          "reference": {
+            "max": 580011.0,
+            "median": 580011.0,
+            "min": 580011.0,
+            "p95": 580011.0,
+            "raw": [
+              580011,
+              580011,
+              580011,
+              580011,
+              580011
+            ]
+          },
+          "transparent": {
+            "max": 580091.0,
+            "median": 580091.0,
+            "min": 580091.0,
+            "p95": 580091.0,
+            "raw": [
+              580091,
+              580091,
+              580091,
+              580091,
+              580091
+            ]
+          }
+        },
+        "repeats": 5
+      },
+      "query_count": 64,
+      "size": "small",
+      "timing": {
+        "incremental_over_delay_median_ratio": 0.981292196806221,
+        "methods": {
+          "delay_d32": {
+            "max": 14004000.0,
+            "median": 12784291.0,
+            "min": 12046667.0,
+            "p95": 13621783.2,
+            "raw": [
+              14004000,
+              12796417,
+              12784291,
+              12806542,
+              12083834,
+              12046667,
+              12075750,
+              12271666,
+              13048458
+            ]
+          },
+          "incremental": {
+            "max": 13893416.0,
+            "median": 12545125.0,
+            "min": 11728959.0,
+            "p95": 13457883.2,
+            "raw": [
+              13893416,
+              12545125,
+              12589084,
+              12512209,
+              11746250,
+              11728959,
+              11755208,
+              12804584,
+              12662916
+            ]
+          },
+          "reference": {
+            "max": 19497042.0,
+            "median": 19365791.0,
+            "min": 18235542.0,
+            "p95": 19495392.0,
+            "raw": [
+              19497042,
+              19450167,
+              19365791,
+              19407458,
+              18842750,
+              18235542,
+              18270333,
+              18641292,
+              19492917
+            ]
+          },
+          "transparent": {
+            "max": 21591792.0,
+            "median": 19599042.0,
+            "min": 18357500.0,
+            "p95": 21408191.6,
+            "raw": [
+              21591792,
+              21132791,
+              19602834,
+              19599042,
+              18357500,
+              18419209,
+              18516375,
+              19110042,
+              19999875
+            ]
+          }
+        },
+        "reference_over_incremental_median_speedup": 1.543690557088909,
+        "repeats": 9,
+        "transparent_over_incremental_median_speedup": 1.5622835165054154,
+        "warmups": 2
+      }
+    },
+    "hr/burst/large": {
+      "arrival_model": "burst",
+      "candidate_union_pages": 895,
+      "corpus_pages": 1110,
+      "domain": "hr",
+      "memory": {
+        "incremental_over_reference_median_peak_ratio": 1.0282006992333812,
+        "incremental_over_transparent_median_peak_ratio": 1.0281557104477874,
+        "methods": {
+          "delay_d32": {
+            "max": 1879967.0,
+            "median": 1879967.0,
+            "min": 1879879.0,
+            "p95": 1879967.0,
+            "raw": [
+              1879879,
+              1879967,
+              1879967,
+              1879967,
+              1879967
+            ]
+          },
+          "incremental": {
+            "max": 1879847.0,
+            "median": 1879847.0,
+            "min": 1879847.0,
+            "p95": 1879847.0,
+            "raw": [
+              1879847,
+              1879847,
+              1879847,
+              1879847,
+              1879847
+            ]
+          },
+          "reference": {
+            "max": 1828288.0,
+            "median": 1828288.0,
+            "min": 1828288.0,
+            "p95": 1828288.0,
+            "raw": [
+              1828288,
+              1828288,
+              1828288,
+              1828288,
+              1828288
+            ]
+          },
+          "transparent": {
+            "max": 1828368.0,
+            "median": 1828368.0,
+            "min": 1828368.0,
+            "p95": 1828368.0,
+            "raw": [
+              1828368,
+              1828368,
+              1828368,
+              1828368,
+              1828368
+            ]
+          }
+        },
+        "repeats": 5
+      },
+      "query_count": 318,
+      "size": "large",
+      "timing": {
+        "incremental_over_delay_median_ratio": 0.9868790806708921,
+        "methods": {
+          "delay_d32": {
+            "max": 113749208.0,
+            "median": 108678208.0,
+            "min": 107801667.0,
+            "p95": 113332974.8,
+            "raw": [
+              107801667,
+              108978417,
+              108028250,
+              112708625,
+              109239291,
+              108340291,
+              108678208,
+              113749208,
+              108626125
+            ]
+          },
+          "incremental": {
+            "max": 108759667.0,
+            "median": 107252250.0,
+            "min": 106525042.0,
+            "p95": 108571367.0,
+            "raw": [
+              107217958,
+              108759667,
+              106525042,
+              106677083,
+              106823250,
+              108288917,
+              107407250,
+              107627167,
+              107252250
+            ]
+          },
+          "reference": {
+            "max": 236486167.0,
+            "median": 201737459.0,
+            "min": 200163250.0,
+            "p95": 227044950.2,
+            "raw": [
+              201081208,
+              201447459,
+              200847166,
+              202617833,
+              200163250,
+              201737459,
+              236486167,
+              212883125,
+              205820584
+            ]
+          },
+          "transparent": {
+            "max": 446802125.0,
+            "median": 205114667.0,
+            "min": 202628917.0,
+            "p95": 353033374.9999999,
+            "raw": [
+              212380250,
+              205114667,
+              204159791,
+              202724125,
+              202628917,
+              207379333,
+              446802125,
+              206426708,
+              204275000
+            ]
+          }
+        },
+        "reference_over_incremental_median_speedup": 1.8809624879664528,
+        "repeats": 9,
+        "transparent_over_incremental_median_speedup": 1.9124509462505448,
+        "warmups": 2
+      }
+    },
+    "hr/burst/small": {
+      "arrival_model": "burst",
+      "candidate_union_pages": 626,
+      "corpus_pages": 1110,
+      "domain": "hr",
+      "memory": {
+        "incremental_over_reference_median_peak_ratio": 0.9510225732303884,
+        "incremental_over_transparent_median_peak_ratio": 0.9508824656000472,
+        "methods": {
+          "delay_d32": {
+            "max": 523912.0,
+            "median": 523912.0,
+            "min": 523912.0,
+            "p95": 523912.0,
+            "raw": [
+              523912,
+              523912,
+              523912,
+              523912,
+              523912
+            ]
+          },
+          "incremental": {
+            "max": 516352.0,
+            "median": 516352.0,
+            "min": 516352.0,
+            "p95": 516352.0,
+            "raw": [
+              516352,
+              516352,
+              516352,
+              516352,
+              516352
+            ]
+          },
+          "reference": {
+            "max": 542944.0,
+            "median": 542944.0,
+            "min": 542944.0,
+            "p95": 542944.0,
+            "raw": [
+              542944,
+              542944,
+              542944,
+              542944,
+              542944
+            ]
+          },
+          "transparent": {
+            "max": 543024.0,
+            "median": 543024.0,
+            "min": 543024.0,
+            "p95": 543024.0,
+            "raw": [
+              543024,
+              543024,
+              543024,
+              543024,
+              543024
+            ]
+          }
+        },
+        "repeats": 5
+      },
+      "query_count": 64,
+      "size": "small",
+      "timing": {
+        "incremental_over_delay_median_ratio": 0.9689477569347595,
+        "methods": {
+          "delay_d32": {
+            "max": 11878458.0,
+            "median": 11586667.0,
+            "min": 11425625.0,
+            "p95": 11865991.2,
+            "raw": [
+              11782125,
+              11425625,
+              11437083,
+              11498542,
+              11847291,
+              11586667,
+              11802708,
+              11878458,
+              11491625
+            ]
+          },
+          "incremental": {
+            "max": 11771625.0,
+            "median": 11226875.0,
+            "min": 11095083.0,
+            "p95": 11695841.8,
+            "raw": [
+              11449167,
+              11206042,
+              11095083,
+              11166833,
+              11154167,
+              11771625,
+              11582167,
+              11261709,
+              11226875
+            ]
+          },
+          "reference": {
+            "max": 17646875.0,
+            "median": 16831208.0,
+            "min": 16581500.0,
+            "p95": 17494858.6,
+            "raw": [
+              17266834,
+              16703250,
+              16783208,
+              16581500,
+              16706375,
+              17646875,
+              17104917,
+              17100583,
+              16831208
+            ]
+          },
+          "transparent": {
+            "max": 17644667.0,
+            "median": 17167167.0,
+            "min": 16882541.0,
+            "p95": 17589367.0,
+            "raw": [
+              17214375,
+              16987542,
+              16890375,
+              16882541,
+              16922708,
+              17644667,
+              17506417,
+              17500916,
+              17167167
+            ]
+          }
+        },
+        "reference_over_incremental_median_speedup": 1.4991890441463007,
+        "repeats": 9,
+        "transparent_over_incremental_median_speedup": 1.5291135779101486,
+        "warmups": 2
+      }
+    },
+    "hr/poisson/large": {
+      "arrival_model": "poisson",
+      "candidate_union_pages": 895,
+      "corpus_pages": 1110,
+      "domain": "hr",
+      "memory": {
+        "incremental_over_reference_median_peak_ratio": 1.0283873105403043,
+        "incremental_over_transparent_median_peak_ratio": 1.028342329900368,
+        "methods": {
+          "delay_d32": {
+            "max": 1880766.0,
+            "median": 1880766.0,
+            "min": 1880715.0,
+            "p95": 1880766.0,
+            "raw": [
+              1880766,
+              1880766,
+              1880715,
+              1880766,
+              1880766
+            ]
+          },
+          "incremental": {
+            "max": 1880914.0,
+            "median": 1880870.0,
+            "min": 1880870.0,
+            "p95": 1880905.2,
+            "raw": [
+              1880870,
+              1880870,
+              1880914,
+              1880870,
+              1880870
+            ]
+          },
+          "reference": {
+            "max": 1828951.0,
+            "median": 1828951.0,
+            "min": 1828900.0,
+            "p95": 1828951.0,
+            "raw": [
+              1828951,
+              1828900,
+              1828951,
+              1828951,
+              1828951
+            ]
+          },
+          "transparent": {
+            "max": 1829031.0,
+            "median": 1829031.0,
+            "min": 1828980.0,
+            "p95": 1829031.0,
+            "raw": [
+              1828980,
+              1829031,
+              1829031,
+              1829031,
+              1829031
+            ]
+          }
+        },
+        "repeats": 5
+      },
+      "query_count": 318,
+      "size": "large",
+      "timing": {
+        "incremental_over_delay_median_ratio": 0.9965502470671829,
+        "methods": {
+          "delay_d32": {
+            "max": 127790708.0,
+            "median": 110986209.0,
+            "min": 106742708.0,
+            "p95": 125345324.8,
+            "raw": [
+              106742708,
+              121677250,
+              116102333,
+              109038583,
+              109277875,
+              109669208,
+              110986209,
+              127790708,
+              117281500
+            ]
+          },
+          "incremental": {
+            "max": 125984084.0,
+            "median": 110603334.0,
+            "min": 105143375.0,
+            "p95": 123297634.0,
+            "raw": [
+              105143375,
+              125984084,
+              117546625,
+              105955792,
+              110603334,
+              106069166,
+              106282833,
+              115969333,
+              119267959
+            ]
+          },
+          "reference": {
+            "max": 224731042.0,
+            "median": 196985250.0,
+            "min": 192397709.0,
+            "p95": 219091408.4,
+            "raw": [
+              192710750,
+              210631958,
+              196099541,
+              192562333,
+              192397709,
+              196985250,
+              202135875,
+              224731042,
+              209968792
+            ]
+          },
+          "transparent": {
+            "max": 219843834.0,
+            "median": 203311583.0,
+            "min": 193879750.0,
+            "p95": 219054950.4,
+            "raw": [
+              193885292,
+              219843834,
+              197657750,
+              195194916,
+              203311583,
+              193879750,
+              217871625,
+              211618917,
+              212363958
+            ]
+          }
+        },
+        "reference_over_incremental_median_speedup": 1.7810064387389986,
+        "repeats": 9,
+        "transparent_over_incremental_median_speedup": 1.8382048320532545,
+        "warmups": 2
+      }
+    },
+    "hr/poisson/small": {
+      "arrival_model": "poisson",
+      "candidate_union_pages": 626,
+      "corpus_pages": 1110,
+      "domain": "hr",
+      "memory": {
+        "incremental_over_reference_median_peak_ratio": 0.9521302349213829,
+        "incremental_over_transparent_median_peak_ratio": 0.9520794062205467,
+        "methods": {
+          "delay_d32": {
+            "max": 524059.0,
+            "median": 524059.0,
+            "min": 524059.0,
+            "p95": 524059.0,
+            "raw": [
+              524059,
+              524059,
+              524059,
+              524059,
+              524059
+            ]
+          },
+          "incremental": {
+            "max": 517251.0,
+            "median": 517200.0,
+            "min": 517200.0,
+            "p95": 517251.0,
+            "raw": [
+              517200,
+              517251,
+              517251,
+              517200,
+              517200
+            ]
+          },
+          "reference": {
+            "max": 543203.0,
+            "median": 543203.0,
+            "min": 543152.0,
+            "p95": 543203.0,
+            "raw": [
+              543203,
+              543203,
+              543152,
+              543203,
+              543203
+            ]
+          },
+          "transparent": {
+            "max": 543283.0,
+            "median": 543232.0,
+            "min": 543232.0,
+            "p95": 543283.0,
+            "raw": [
+              543283,
+              543283,
+              543232,
+              543232,
+              543232
+            ]
+          }
+        },
+        "repeats": 5
+      },
+      "query_count": 64,
+      "size": "small",
+      "timing": {
+        "incremental_over_delay_median_ratio": 0.9777812458853146,
+        "methods": {
+          "delay_d32": {
+            "max": 9838208.0,
+            "median": 9592167.0,
+            "min": 9352750.0,
+            "p95": 9834991.2,
+            "raw": [
+              9592167,
+              9520292,
+              9830166,
+              9719916,
+              9594417,
+              9472000,
+              9361833,
+              9352750,
+              9838208
+            ]
+          },
+          "incremental": {
+            "max": 9970000.0,
+            "median": 9379041.0,
+            "min": 9144792.0,
+            "p95": 9928866.8,
+            "raw": [
+              9867167,
+              9432416,
+              9379041,
+              9970000,
+              9499167,
+              9166833,
+              9283125,
+              9219083,
+              9144792
+            ]
+          },
+          "reference": {
+            "max": 14114584.0,
+            "median": 13791792.0,
+            "min": 13691625.0,
+            "p95": 14069033.6,
+            "raw": [
+              13740250,
+              13758208,
+              14114584,
+              14000708,
+              13791792,
+              13857042,
+              13810584,
+              13691625,
+              13761583
+            ]
+          },
+          "transparent": {
+            "max": 15557958.0,
+            "median": 14174292.0,
+            "min": 13873791.0,
+            "p95": 15293441.6,
+            "raw": [
+              14896667,
+              14174292,
+              15557958,
+              14182167,
+              14338125,
+              13981750,
+              13873791,
+              13902542,
+              13925083
+            ]
+          }
+        },
+        "reference_over_incremental_median_speedup": 1.4704906397146573,
+        "repeats": 9,
+        "transparent_over_incremental_median_speedup": 1.511273060859847,
+        "warmups": 2
+      }
+    },
+    "industrial/burst/large": {
+      "arrival_model": "burst",
+      "candidate_union_pages": 2129,
+      "corpus_pages": 5244,
+      "domain": "industrial",
+      "memory": {
+        "incremental_over_reference_median_peak_ratio": 0.970829952158335,
+        "incremental_over_transparent_median_peak_ratio": 0.9707933961784591,
+        "methods": {
+          "delay_d32": {
+            "max": 2062272.0,
+            "median": 2062272.0,
+            "min": 2062272.0,
+            "p95": 2062272.0,
+            "raw": [
+              2062272,
+              2062272,
+              2062272,
+              2062272,
+              2062272
+            ]
+          },
+          "incremental": {
+            "max": 2062536.0,
+            "median": 2062536.0,
+            "min": 2062536.0,
+            "p95": 2062536.0,
+            "raw": [
+              2062536,
+              2062536,
+              2062536,
+              2062536,
+              2062536
+            ]
+          },
+          "reference": {
+            "max": 2124508.0,
+            "median": 2124508.0,
+            "min": 2124508.0,
+            "p95": 2124508.0,
+            "raw": [
+              2124508,
+              2124508,
+              2124508,
+              2124508,
+              2124508
+            ]
+          },
+          "transparent": {
+            "max": 2124588.0,
+            "median": 2124588.0,
+            "min": 2124588.0,
+            "p95": 2124588.0,
+            "raw": [
+              2124588,
+              2124588,
+              2124588,
+              2124588,
+              2124588
+            ]
+          }
+        },
+        "repeats": 5
+      },
+      "query_count": 283,
+      "size": "large",
+      "timing": {
+        "incremental_over_delay_median_ratio": 1.0010277454112264,
+        "methods": {
+          "delay_d32": {
+            "max": 167131584.0,
+            "median": 143477167.0,
+            "min": 132617666.0,
+            "p95": 165356117.2,
+            "raw": [
+              144036209,
+              141688833,
+              167131584,
+              162692917,
+              143477167,
+              132617666,
+              136183958,
+              145032125,
+              140319792
+            ]
+          },
+          "incremental": {
+            "max": 166069917.0,
+            "median": 143624625.0,
+            "min": 134158458.0,
+            "p95": 161057283.4,
+            "raw": [
+              153538333,
+              143624625,
+              147487625,
+              166069917,
+              143386708,
+              134158458,
+              140474334,
+              144271458,
+              137110375
+            ]
+          },
+          "reference": {
+            "max": 384401584.0,
+            "median": 341491083.0,
+            "min": 296514917.0,
+            "p95": 372476033.59999996,
+            "raw": [
+              296514917,
+              341491083,
+              352678208,
+              354587708,
+              384401584,
+              308951000,
+              354025709,
+              341005250,
+              325339000
+            ]
+          },
+          "transparent": {
+            "max": 405894000.0,
+            "median": 358944500.0,
+            "min": 313161292.0,
+            "p95": 398942233.2,
+            "raw": [
+              320307084,
+              337843917,
+              405894000,
+              388514583,
+              360756333,
+              351048500,
+              362862416,
+              358944500,
+              313161292
+            ]
+          }
+        },
+        "reference_over_incremental_median_speedup": 2.3776638790179607,
+        "repeats": 9,
+        "transparent_over_incremental_median_speedup": 2.499184941300978,
+        "warmups": 2
+      }
+    },
+    "industrial/burst/small": {
+      "arrival_model": "burst",
+      "candidate_union_pages": 846,
+      "corpus_pages": 5244,
+      "domain": "industrial",
+      "memory": {
+        "incremental_over_reference_median_peak_ratio": 1.0108713488677388,
+        "incremental_over_transparent_median_peak_ratio": 1.010733134622221,
+        "methods": {
+          "delay_d32": {
+            "max": 598384.0,
+            "median": 598384.0,
+            "min": 598384.0,
+            "p95": 598384.0,
+            "raw": [
+              598384,
+              598384,
+              598384,
+              598384,
+              598384
+            ]
+          },
+          "incremental": {
+            "max": 591384.0,
+            "median": 591384.0,
+            "min": 591384.0,
+            "p95": 591384.0,
+            "raw": [
+              591384,
+              591384,
+              591384,
+              591384,
+              591384
+            ]
+          },
+          "reference": {
+            "max": 585024.0,
+            "median": 585024.0,
+            "min": 585024.0,
+            "p95": 585024.0,
+            "raw": [
+              585024,
+              585024,
+              585024,
+              585024,
+              585024
+            ]
+          },
+          "transparent": {
+            "max": 585104.0,
+            "median": 585104.0,
+            "min": 585104.0,
+            "p95": 585104.0,
+            "raw": [
+              585104,
+              585104,
+              585104,
+              585104,
+              585104
+            ]
+          }
+        },
+        "repeats": 5
+      },
+      "query_count": 64,
+      "size": "small",
+      "timing": {
+        "incremental_over_delay_median_ratio": 1.0267863971164395,
+        "methods": {
+          "delay_d32": {
+            "max": 19532375.0,
+            "median": 17547750.0,
+            "min": 17337750.0,
+            "p95": 19524175.0,
+            "raw": [
+              19532375,
+              19382084,
+              19511875,
+              17547750,
+              17341375,
+              17457584,
+              17337750,
+              17463833,
+              17688541
+            ]
+          },
+          "incremental": {
+            "max": 19122375.0,
+            "median": 18017791.0,
+            "min": 16904250.0,
+            "p95": 19115025.0,
+            "raw": [
+              19104000,
+              19122375,
+              19099917,
+              18638333,
+              16904250,
+              17095458,
+              17114542,
+              16997042,
+              18017791
+            ]
+          },
+          "reference": {
+            "max": 30081792.0,
+            "median": 26917833.0,
+            "min": 26687833.0,
+            "p95": 29997542.0,
+            "raw": [
+              29871167,
+              30081792,
+              26753333,
+              26994625,
+              26917833,
+              26687833,
+              26704125,
+              26692917,
+              28001208
+            ]
+          },
+          "transparent": {
+            "max": 30399750.0,
+            "median": 27156416.0,
+            "min": 27041791.0,
+            "p95": 30366066.8,
+            "raw": [
+              30399750,
+              30315542,
+              27095333,
+              27156416,
+              27041791,
+              27073125,
+              27897667,
+              27061166,
+              27230667
+            ]
+          }
+        },
+        "reference_over_incremental_median_speedup": 1.4939585546308092,
+        "repeats": 9,
+        "transparent_over_incremental_median_speedup": 1.5072000779673824,
+        "warmups": 2
+      }
+    },
+    "industrial/poisson/large": {
+      "arrival_model": "poisson",
+      "candidate_union_pages": 2129,
+      "corpus_pages": 5244,
+      "domain": "industrial",
+      "memory": {
+        "incremental_over_reference_median_peak_ratio": 0.9709003287314074,
+        "incremental_over_transparent_median_peak_ratio": 0.9708637757274997,
+        "methods": {
+          "delay_d32": {
+            "max": 2062739.0,
+            "median": 2062739.0,
+            "min": 2062739.0,
+            "p95": 2062739.0,
+            "raw": [
+              2062739,
+              2062739,
+              2062739,
+              2062739,
+              2062739
+            ]
+          },
+          "incremental": {
+            "max": 2063003.0,
+            "median": 2063003.0,
+            "min": 2063003.0,
+            "p95": 2063003.0,
+            "raw": [
+              2063003,
+              2063003,
+              2063003,
+              2063003,
+              2063003
+            ]
+          },
+          "reference": {
+            "max": 2124835.0,
+            "median": 2124835.0,
+            "min": 2124784.0,
+            "p95": 2124835.0,
+            "raw": [
+              2124835,
+              2124835,
+              2124835,
+              2124784,
+              2124835
+            ]
+          },
+          "transparent": {
+            "max": 2124915.0,
+            "median": 2124915.0,
+            "min": 2124915.0,
+            "p95": 2124915.0,
+            "raw": [
+              2124915,
+              2124915,
+              2124915,
+              2124915,
+              2124915
+            ]
+          }
+        },
+        "repeats": 5
+      },
+      "query_count": 283,
+      "size": "large",
+      "timing": {
+        "incremental_over_delay_median_ratio": 0.9884686562260382,
+        "methods": {
+          "delay_d32": {
+            "max": 155943417.0,
+            "median": 130091083.0,
+            "min": 123902792.0,
+            "p95": 151127133.79999998,
+            "raw": [
+              124679292,
+              143902709,
+              131982459,
+              126743375,
+              155943417,
+              130091083,
+              127916250,
+              123902792,
+              140743166
+            ]
+          },
+          "incremental": {
+            "max": 159695875.0,
+            "median": 128590958.0,
+            "min": 120043708.0,
+            "p95": 156520475.0,
+            "raw": [
+              120250500,
+              159695875,
+              128590958,
+              120043708,
+              151757375,
+              141674916,
+              127818041,
+              124358250,
+              141204791
+            ]
+          },
+          "reference": {
+            "max": 346946875.0,
+            "median": 297644334.0,
+            "min": 277446250.0,
+            "p95": 334266641.8,
+            "raw": [
+              299290167,
+              315246292,
+              297644334,
+              277446250,
+              284625084,
+              304284750,
+              296458959,
+              282637375,
+              346946875
+            ]
+          },
+          "transparent": {
+            "max": 338013875.0,
+            "median": 298544292.0,
+            "min": 281463166.0,
+            "p95": 332636308.2,
+            "raw": [
+              297613375,
+              306217667,
+              296691167,
+              281797292,
+              303372667,
+              324569958,
+              298544292,
+              281463166,
+              338013875
+            ]
+          }
+        },
+        "reference_over_incremental_median_speedup": 2.3146599001152164,
+        "repeats": 9,
+        "transparent_over_incremental_median_speedup": 2.321658510390754,
+        "warmups": 2
+      }
+    },
+    "industrial/poisson/small": {
+      "arrival_model": "poisson",
+      "candidate_union_pages": 846,
+      "corpus_pages": 5244,
+      "domain": "industrial",
+      "memory": {
+        "incremental_over_reference_median_peak_ratio": 0.9551711832235441,
+        "incremental_over_transparent_median_peak_ratio": 0.9550394652242339,
+        "methods": {
+          "delay_d32": {
+            "max": 561419.0,
+            "median": 561419.0,
+            "min": 561368.0,
+            "p95": 561419.0,
+            "raw": [
+              561419,
+              561419,
+              561419,
+              561368,
+              561419
+            ]
+          },
+          "incremental": {
+            "max": 554048.0,
+            "median": 554048.0,
+            "min": 554048.0,
+            "p95": 554048.0,
+            "raw": [
+              554048,
+              554048,
+              554048,
+              554048,
+              554048
+            ]
+          },
+          "reference": {
+            "max": 580051.0,
+            "median": 580051.0,
+            "min": 580051.0,
+            "p95": 580051.0,
+            "raw": [
+              580051,
+              580051,
+              580051,
+              580051,
+              580051
+            ]
+          },
+          "transparent": {
+            "max": 580131.0,
+            "median": 580131.0,
+            "min": 580131.0,
+            "p95": 580131.0,
+            "raw": [
+              580131,
+              580131,
+              580131,
+              580131,
+              580131
+            ]
+          }
+        },
+        "repeats": 5
+      },
+      "query_count": 64,
+      "size": "small",
+      "timing": {
+        "incremental_over_delay_median_ratio": 0.9765151806208582,
+        "methods": {
+          "delay_d32": {
+            "max": 13621458.0,
+            "median": 13352583.0,
+            "min": 13316666.0,
+            "p95": 13613658.0,
+            "raw": [
+              13370125,
+              13344709,
+              13316666,
+              13318833,
+              13338958,
+              13621458,
+              13352583,
+              13416625,
+              13601958
+            ]
+          },
+          "incremental": {
+            "max": 13080791.0,
+            "median": 13039000.0,
+            "min": 12993167.0,
+            "p95": 13076641.4,
+            "raw": [
+              13022167,
+              13011166,
+              13024875,
+              13080791,
+              13047459,
+              13043625,
+              12993167,
+              13039000,
+              13070417
+            ]
+          },
+          "reference": {
+            "max": 20607750.0,
+            "median": 20273125.0,
+            "min": 20173500.0,
+            "p95": 20486116.4,
+            "raw": [
+              20173500,
+              20235000,
+              20278209,
+              20258875,
+              20303666,
+              20246667,
+              20607750,
+              20287667,
+              20273125
+            ]
+          },
+          "transparent": {
+            "max": 20612959.0,
+            "median": 20487584.0,
+            "min": 20357458.0,
+            "p95": 20607342.2,
+            "raw": [
+              20357458,
+              20522458,
+              20473958,
+              20612959,
+              20454042,
+              20487584,
+              20598917,
+              20526917,
+              20396333
+            ]
+          }
+        },
+        "reference_over_incremental_median_speedup": 1.5548067336452183,
+        "repeats": 9,
+        "transparent_over_incremental_median_speedup": 1.5712542372881355,
+        "warmups": 2
+      }
+    },
+    "pharmaceuticals/burst/large": {
+      "arrival_model": "burst",
+      "candidate_union_pages": 1797,
+      "corpus_pages": 2313,
+      "domain": "pharmaceuticals",
+      "memory": {
+        "incremental_over_reference_median_peak_ratio": 1.037897669689457,
+        "incremental_over_transparent_median_peak_ratio": 1.0378634078387488,
+        "methods": {
+          "delay_d32": {
+            "max": 2514944.0,
+            "median": 2514944.0,
+            "min": 2514944.0,
+            "p95": 2514944.0,
+            "raw": [
+              2514944,
+              2514944,
+              2514944,
+              2514944,
+              2514944
+            ]
+          },
+          "incremental": {
+            "max": 2515208.0,
+            "median": 2515208.0,
+            "min": 2515208.0,
+            "p95": 2515208.0,
+            "raw": [
+              2515208,
+              2515208,
+              2515208,
+              2515208,
+              2515208
+            ]
+          },
+          "reference": {
+            "max": 2423368.0,
+            "median": 2423368.0,
+            "min": 2423368.0,
+            "p95": 2423368.0,
+            "raw": [
+              2423368,
+              2423368,
+              2423368,
+              2423368,
+              2423368
+            ]
+          },
+          "transparent": {
+            "max": 2423448.0,
+            "median": 2423448.0,
+            "min": 2423448.0,
+            "p95": 2423448.0,
+            "raw": [
+              2423448,
+              2423448,
+              2423448,
+              2423448,
+              2423448
+            ]
+          }
+        },
+        "repeats": 5
+      },
+      "query_count": 364,
+      "size": "large",
+      "timing": {
+        "incremental_over_delay_median_ratio": 0.9229359315431049,
+        "methods": {
+          "delay_d32": {
+            "max": 225327959.0,
+            "median": 202730667.0,
+            "min": 176463291.0,
+            "p95": 223465125.4,
+            "raw": [
+              194033583,
+              176463291,
+              208658666,
+              195965084,
+              194630459,
+              202730667,
+              225327959,
+              220670875,
+              214735125
+            ]
+          },
+          "incremental": {
+            "max": 220128041.0,
+            "median": 187107417.0,
+            "min": 175245041.0,
+            "p95": 218108874.6,
+            "raw": [
+              186763292,
+              175245041,
+              220128041,
+              187107417,
+              197681083,
+              188160125,
+              186963167,
+              177829708,
+              215080125
+            ]
+          },
+          "reference": {
+            "max": 591742459.0,
+            "median": 433387875.0,
+            "min": 379397000.0,
+            "p95": 544667358.5999999,
+            "raw": [
+              405705125,
+              450098959,
+              436448750,
+              422263334,
+              474054708,
+              433387875,
+              591742459,
+              415156667,
+              379397000
+            ]
+          },
+          "transparent": {
+            "max": 513632084.0,
+            "median": 416280792.0,
+            "min": 397642959.0,
+            "p95": 506413333.6,
+            "raw": [
+              416280792,
+              401241375,
+              409829541,
+              437121875,
+              495585208,
+              433615708,
+              513632084,
+              400913417,
+              397642959
+            ]
+          }
+        },
+        "reference_over_incremental_median_speedup": 2.3162517122450574,
+        "repeats": 9,
+        "transparent_over_incremental_median_speedup": 2.2248225039630576,
+        "warmups": 2
+      }
+    },
+    "pharmaceuticals/burst/small": {
+      "arrival_model": "burst",
+      "candidate_union_pages": 851,
+      "corpus_pages": 2313,
+      "domain": "pharmaceuticals",
+      "memory": {
+        "incremental_over_reference_median_peak_ratio": 0.9569880614298713,
+        "incremental_over_transparent_median_peak_ratio": 0.9568561504107626,
+        "methods": {
+          "delay_d32": {
+            "max": 561272.0,
+            "median": 561272.0,
+            "min": 561272.0,
+            "p95": 561272.0,
+            "raw": [
+              561272,
+              561272,
+              561272,
+              561272,
+              561272
+            ]
+          },
+          "incremental": {
+            "max": 555344.0,
+            "median": 555344.0,
+            "min": 555344.0,
+            "p95": 555344.0,
+            "raw": [
+              555344,
+              555344,
+              555344,
+              555344,
+              555344
+            ]
+          },
+          "reference": {
+            "max": 580304.0,
+            "median": 580304.0,
+            "min": 580304.0,
+            "p95": 580304.0,
+            "raw": [
+              580304,
+              580304,
+              580304,
+              580304,
+              580304
+            ]
+          },
+          "transparent": {
+            "max": 580384.0,
+            "median": 580384.0,
+            "min": 580384.0,
+            "p95": 580384.0,
+            "raw": [
+              580384,
+              580384,
+              580384,
+              580384,
+              580384
+            ]
+          }
+        },
+        "repeats": 5
+      },
+      "query_count": 64,
+      "size": "small",
+      "timing": {
+        "incremental_over_delay_median_ratio": 0.894693299870199,
+        "methods": {
+          "delay_d32": {
+            "max": 55126125.0,
+            "median": 38522791.0,
+            "min": 26485166.0,
+            "p95": 49756174.99999999,
+            "raw": [
+              27640083,
+              26485166,
+              31004125,
+              30595958,
+              55126125,
+              39346125,
+              41701250,
+              39896916,
+              38522791
+            ]
+          },
+          "incremental": {
+            "max": 40974625.0,
+            "median": 34466083.0,
+            "min": 26130833.0,
+            "p95": 40329441.8,
+            "raw": [
+              27559709,
+              26130833,
+              31572458,
+              30000000,
+              35923459,
+              40974625,
+              39361667,
+              34466083,
+              37327125
+            ]
+          },
+          "reference": {
+            "max": 63555125.0,
+            "median": 47486459.0,
+            "min": 44117917.0,
+            "p95": 62003358.199999996,
+            "raw": [
+              44117917,
+              45991417,
+              47486459,
+              47388541,
+              47287875,
+              63555125,
+              58017416,
+              59675708,
+              53672542
+            ]
+          },
+          "transparent": {
+            "max": 80019167.0,
+            "median": 55233541.0,
+            "min": 43246541.0,
+            "p95": 73364650.19999999,
+            "raw": [
+              43340708,
+              43246541,
+              48066917,
+              47756500,
+              63382875,
+              80019167,
+              60939250,
+              55233541,
+              57812916
+            ]
+          }
+        },
+        "reference_over_incremental_median_speedup": 1.3777735926649977,
+        "repeats": 9,
+        "transparent_over_incremental_median_speedup": 1.6025476698352987,
+        "warmups": 2
+      }
+    },
+    "pharmaceuticals/poisson/large": {
+      "arrival_model": "poisson",
+      "candidate_union_pages": 1797,
+      "corpus_pages": 2313,
+      "domain": "pharmaceuticals",
+      "memory": {
+        "incremental_over_reference_median_peak_ratio": 1.0378595383403737,
+        "incremental_over_transparent_median_peak_ratio": 1.0378252853666294,
+        "methods": {
+          "delay_d32": {
+            "max": 2515411.0,
+            "median": 2515411.0,
+            "min": 2515411.0,
+            "p95": 2515411.0,
+            "raw": [
+              2515411,
+              2515411,
+              2515411,
+              2515411,
+              2515411
+            ]
+          },
+          "incremental": {
+            "max": 2515675.0,
+            "median": 2515675.0,
+            "min": 2515675.0,
+            "p95": 2515675.0,
+            "raw": [
+              2515675,
+              2515675,
+              2515675,
+              2515675,
+              2515675
+            ]
+          },
+          "reference": {
+            "max": 2423907.0,
+            "median": 2423907.0,
+            "min": 2423907.0,
+            "p95": 2423907.0,
+            "raw": [
+              2423907,
+              2423907,
+              2423907,
+              2423907,
+              2423907
+            ]
+          },
+          "transparent": {
+            "max": 2423987.0,
+            "median": 2423987.0,
+            "min": 2423987.0,
+            "p95": 2423987.0,
+            "raw": [
+              2423987,
+              2423987,
+              2423987,
+              2423987,
+              2423987
+            ]
+          }
+        },
+        "repeats": 5
+      },
+      "query_count": 364,
+      "size": "large",
+      "timing": {
+        "incremental_over_delay_median_ratio": 1.0357508385302991,
+        "methods": {
+          "delay_d32": {
+            "max": 283421500.0,
+            "median": 180298792.0,
+            "min": 161534584.0,
+            "p95": 283232183.2,
+            "raw": [
+              282948208,
+              270600083,
+              283421500,
+              161534584,
+              171942042,
+              169283292,
+              169182125,
+              180298792,
+              188539458
+            ]
+          },
+          "incremental": {
+            "max": 327900583.0,
+            "median": 186744625.0,
+            "min": 159920500.0,
+            "p95": 319829849.8,
+            "raw": [
+              327900583,
+              246918167,
+              307723750,
+              159920500,
+              172355375,
+              168420625,
+              166065459,
+              228422084,
+              186744625
+            ]
+          },
+          "reference": {
+            "max": 741947167.0,
+            "median": 426640542.0,
+            "min": 345706625.0,
+            "p95": 699197450.1999999,
+            "raw": [
+              741947167,
+              635072875,
+              486032750,
+              345706625,
+              346330333,
+              361371375,
+              357067250,
+              426640542,
+              459604166
+            ]
+          },
+          "transparent": {
+            "max": 1081507916.0,
+            "median": 397965291.0,
+            "min": 339129834.0,
+            "p95": 889677715.9999998,
+            "raw": [
+              1081507916,
+              601932416,
+              397965291,
+              339129834,
+              395959792,
+              385008333,
+              362042083,
+              405424084,
+              430130458
+            ]
+          }
+        },
+        "reference_over_incremental_median_speedup": 2.2846201972345925,
+        "repeats": 9,
+        "transparent_over_incremental_median_speedup": 2.1310669102256625,
+        "warmups": 2
+      }
+    },
+    "pharmaceuticals/poisson/small": {
+      "arrival_model": "poisson",
+      "candidate_union_pages": 851,
+      "corpus_pages": 2313,
+      "domain": "pharmaceuticals",
+      "memory": {
+        "incremental_over_reference_median_peak_ratio": 0.957623719424126,
+        "incremental_over_transparent_median_peak_ratio": 0.9574918541545103,
+        "methods": {
+          "delay_d32": {
+            "max": 560907.0,
+            "median": 560907.0,
+            "min": 560907.0,
+            "p95": 560907.0,
+            "raw": [
+              560907,
+              560907,
+              560907,
+              560907,
+              560907
+            ]
+          },
+          "incremental": {
+            "max": 556275.0,
+            "median": 556275.0,
+            "min": 556275.0,
+            "p95": 556275.0,
+            "raw": [
+              556275,
+              556275,
+              556275,
+              556275,
+              556275
+            ]
+          },
+          "reference": {
+            "max": 580891.0,
+            "median": 580891.0,
+            "min": 580891.0,
+            "p95": 580891.0,
+            "raw": [
+              580891,
+              580891,
+              580891,
+              580891,
+              580891
+            ]
+          },
+          "transparent": {
+            "max": 580971.0,
+            "median": 580971.0,
+            "min": 580971.0,
+            "p95": 580971.0,
+            "raw": [
+              580971,
+              580971,
+              580971,
+              580971,
+              580971
+            ]
+          }
+        },
+        "repeats": 5
+      },
+      "query_count": 64,
+      "size": "small",
+      "timing": {
+        "incremental_over_delay_median_ratio": 0.9755707869315753,
+        "methods": {
+          "delay_d32": {
+            "max": 14607542.0,
+            "median": 14456708.0,
+            "min": 13307416.0,
+            "p95": 14581591.6,
+            "raw": [
+              14607542,
+              14456708,
+              14429625,
+              14542666,
+              14518417,
+              14489375,
+              14000000,
+              13307416,
+              14114042
+            ]
+          },
+          "incremental": {
+            "max": 14253208.0,
+            "median": 14103542.0,
+            "min": 12931750.0,
+            "p95": 14234458.0,
+            "raw": [
+              14253208,
+              14103542,
+              14092666,
+              14206333,
+              14076000,
+              14110375,
+              14120666,
+              12994500,
+              12931750
+            ]
+          },
+          "reference": {
+            "max": 25474708.0,
+            "median": 22240542.0,
+            "min": 20364375.0,
+            "p95": 24199658.0,
+            "raw": [
+              25474708,
+              22287083,
+              22138791,
+              22253916,
+              22240542,
+              22258250,
+              20444458,
+              20442042,
+              20364375
+            ]
+          },
+          "transparent": {
+            "max": 23543000.0,
+            "median": 22426542.0,
+            "min": 20562542.0,
+            "p95": 23146716.4,
+            "raw": [
+              23543000,
+              22426542,
+              22552291,
+              22440208,
+              22445209,
+              22417042,
+              20624625,
+              20562542,
+              20577291
+            ]
+          }
+        },
+        "reference_over_incremental_median_speedup": 1.5769472661548425,
+        "repeats": 9,
+        "transparent_over_incremental_median_speedup": 1.5901354425718022,
+        "warmups": 2
+      }
+    }
+  }
+}
