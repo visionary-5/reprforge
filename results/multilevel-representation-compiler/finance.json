@@ -1,0 +1,344 @@
+{
+  "artifacts": {
+    "activation_trace": null,
+    "labels": {
+      "path": "/Users/aura/gpu-systems-incubator/reprforge/data/current-anytime/finance/visual/oracle-labels.npz",
+      "sha256": "8fa8613e7244c60332584b4a64186da31d979b4fb0c0d4cc6be10ad86d6b0336"
+    },
+    "mixed_state_artifact": null,
+    "tiers": {
+      "cheap_base": {
+        "cost": {
+          "build_ms": 561.116548255086,
+          "per_item_build_available": false,
+          "per_item_reload_available": false,
+          "reload_ms": null,
+          "source": "runtime_npz_aggregate_index_total_ms",
+          "storage_available": true,
+          "storage_bytes": 5091200
+        },
+        "keys": [
+          "corpus_ids",
+          "encode_ms",
+          "index_total_ms",
+          "query_ids",
+          "scores",
+          "vector_bytes"
+        ],
+        "path": "/Users/aura/gpu-systems-incubator/reprforge/data/current-anytime/finance/bm25/runtime.npz",
+        "score_shape": [
+          309,
+          2942
+        ],
+        "sha256": "55bf5d9921a5df5151d346db394fbf4e0069b1751ec787117853fc4f1b67fa65"
+      },
+      "compact_pool": {
+        "cost": {
+          "build_ms": null,
+          "per_item_build_available": false,
+          "per_item_reload_available": false,
+          "reload_ms": null,
+          "source": "finance pool4 runtime fp16 vector bytes; construction fields are zero and no tracked pool4 derivation manifest exists",
+          "storage_available": true,
+          "storage_bytes": 193560064,
+          "warning": "Compact quality and storage are real; compact construction and reload are unmeasured."
+        },
+        "keys": [
+          "corpus_ids",
+          "encode_ms",
+          "index_total_ms",
+          "model_load_ms",
+          "query_ids",
+          "query_vector_counts",
+          "scores",
+          "vector_bytes",
+          "vector_counts"
+        ],
+        "path": "/private/tmp/reprforge-multilevel-artifacts/finance-en/pool4-runtime.npz",
+        "score_shape": [
+          309,
+          2942
+        ],
+        "sha256": "1878e1f523289f24f4c4ce921295019369b86b08a90abeea3055e37f260f92cb"
+      },
+      "full_multivector": {
+        "cost": {
+          "build_ms": 304329.91665649414,
+          "per_item_build_available": true,
+          "per_item_reload_available": false,
+          "reload_ms": null,
+          "source": "finance full runtime per-item encode_ms; fp32 runtime bytes normalized to the fp16 storage contract used by the pool bank",
+          "storage_available": true,
+          "storage_bytes": 775746560
+        },
+        "keys": [
+          "corpus_ids",
+          "encode_ms",
+          "index_total_ms",
+          "model_load_ms",
+          "query_ids",
+          "scores",
+          "vector_bytes"
+        ],
+        "path": "/Users/aura/gpu-systems-incubator/reprforge/data/current-anytime/finance/visual/runtime.npz",
+        "score_shape": [
+          309,
+          2942
+        ],
+        "sha256": "a6bbbf5bb26dadd4d060df40b225d9511b05a8470b574b71463ca4eadb635944"
+      }
+    }
+  },
+  "baseline_registry": {
+    "full_eager": {
+      "equivalent_to": "uniform_full_multivector",
+      "result": {
+        "cost": {
+          "build_ms": 304329.91665649414,
+          "per_item_build_available": true,
+          "per_item_reload_available": false,
+          "reload_ms": null,
+          "source": "finance full runtime per-item encode_ms; fp32 runtime bytes normalized to the fp16 storage contract used by the pool bank",
+          "storage_available": true,
+          "storage_bytes": 775746560
+        },
+        "eval": {
+          "ndcg_at_10": 0.45241998583541904,
+          "recall_at_100": 0.8124427538260187
+        },
+        "fit": {
+          "ndcg_at_10": 0.4844586103861883,
+          "recall_at_100": 0.8354312924217016
+        }
+      },
+      "status": "run_real_surface"
+    },
+    "gdsf": {
+      "reason": "common dynamic cost/quality contract is incomplete: score_comparable_mixed_state_execution, query_item_activation_trace, per_item_build_all_tiers, per_item_reload_all_tiers",
+      "status": "not_run_missing_artifact"
+    },
+    "lfu": {
+      "reason": "common dynamic cost/quality contract is incomplete: score_comparable_mixed_state_execution, query_item_activation_trace, per_item_build_all_tiers, per_item_reload_all_tiers",
+      "status": "not_run_missing_artifact"
+    },
+    "lru": {
+      "reason": "common dynamic cost/quality contract is incomplete: score_comparable_mixed_state_execution, query_item_activation_trace, per_item_build_all_tiers, per_item_reload_all_tiers",
+      "status": "not_run_missing_artifact"
+    },
+    "oracle_physical_design": {
+      "reason": "common dynamic cost/quality contract is incomplete: score_comparable_mixed_state_execution, query_item_activation_trace, per_item_build_all_tiers, per_item_reload_all_tiers",
+      "status": "not_run_missing_artifact"
+    },
+    "static_content_rule": {
+      "reason": "common dynamic cost/quality contract is incomplete: score_comparable_mixed_state_execution, query_item_activation_trace, per_item_build_all_tiers, per_item_reload_all_tiers",
+      "status": "not_run_missing_artifact"
+    },
+    "transient_refine": {
+      "reason": "common dynamic cost/quality contract is incomplete: score_comparable_mixed_state_execution, query_item_activation_trace, per_item_build_all_tiers, per_item_reload_all_tiers",
+      "status": "not_run_missing_artifact"
+    },
+    "uniform_cheap_base": {
+      "result": {
+        "cost": {
+          "build_ms": 561.116548255086,
+          "per_item_build_available": false,
+          "per_item_reload_available": false,
+          "reload_ms": null,
+          "source": "runtime_npz_aggregate_index_total_ms",
+          "storage_available": true,
+          "storage_bytes": 5091200
+        },
+        "eval": {
+          "ndcg_at_10": 0.5224554319651419,
+          "recall_at_100": 0.8944736706402319
+        },
+        "fit": {
+          "ndcg_at_10": 0.5318210407412255,
+          "recall_at_100": 0.8801949875039707
+        }
+      },
+      "status": "run_real_surface"
+    },
+    "uniform_compact_pool": {
+      "result": {
+        "cost": {
+          "build_ms": null,
+          "per_item_build_available": false,
+          "per_item_reload_available": false,
+          "reload_ms": null,
+          "source": "finance pool4 runtime fp16 vector bytes; construction fields are zero and no tracked pool4 derivation manifest exists",
+          "storage_available": true,
+          "storage_bytes": 193560064,
+          "warning": "Compact quality and storage are real; compact construction and reload are unmeasured."
+        },
+        "eval": {
+          "ndcg_at_10": 0.43961880135237225,
+          "recall_at_100": 0.8211701120946614
+        },
+        "fit": {
+          "ndcg_at_10": 0.48213255033882774,
+          "recall_at_100": 0.8268839096938269
+        }
+      },
+      "status": "run_real_surface"
+    },
+    "uniform_full_multivector": {
+      "result": {
+        "cost": {
+          "build_ms": 304329.91665649414,
+          "per_item_build_available": true,
+          "per_item_reload_available": false,
+          "reload_ms": null,
+          "source": "finance full runtime per-item encode_ms; fp32 runtime bytes normalized to the fp16 storage contract used by the pool bank",
+          "storage_available": true,
+          "storage_bytes": 775746560
+        },
+        "eval": {
+          "ndcg_at_10": 0.45241998583541904,
+          "recall_at_100": 0.8124427538260187
+        },
+        "fit": {
+          "ndcg_at_10": 0.4844586103861883,
+          "recall_at_100": 0.8354312924217016
+        }
+      },
+      "status": "run_real_surface"
+    }
+  },
+  "capability_matrix": {
+    "aligned_real_three_tier_score_surfaces": true,
+    "heldout_relevance": true,
+    "per_item_build_all_tiers": false,
+    "per_item_reload_all_tiers": false,
+    "query_item_activation_trace": false,
+    "score_comparable_mixed_state_execution": false,
+    "storage_all_tiers": true
+  },
+  "corpus": 2942,
+  "dataset": "vidore/vidore_v3_finance_en",
+  "decision": "NO-GO-current-artifacts",
+  "deployable_three_state_replay_ready": false,
+  "diagnostic_query_route_oracle": {
+    "deployable": false,
+    "eager_union_storage_bytes": 974397824,
+    "eval_ndcg_at_10": 0.6329554956792586,
+    "eval_recall_at_100_using_ndcg_selected_route": 0.9065754322832781,
+    "gap_over_fit_selected_uniform": {
+      "ci95_lower": 0.07586119676729057,
+      "ci95_upper": 0.1492005228539481,
+      "mean_difference": 0.11050006371411682,
+      "queries": 109,
+      "resamples": 4000
+    },
+    "selected_routes": {
+      "cheap_base": 66,
+      "compact_pool": 30,
+      "full_multivector": 13
+    },
+    "uses_eval_qrels": true,
+    "warning": "This chooses a globally uniform real tier separately for each evaluation query. It measures quality heterogeneity only and does not construct a mixed document score surface."
+  },
+  "interpretation_guardrails": {
+    "no_cross_dataset_latency_transplant": true,
+    "no_synthetic_intermediate_quality": true,
+    "query_route_oracle_is_not_a_physical_compiler": true
+  },
+  "planning_action_registry": {
+    "evict": {
+      "reason": "common dynamic cost/quality contract is incomplete: score_comparable_mixed_state_execution, query_item_activation_trace, per_item_build_all_tiers, per_item_reload_all_tiers",
+      "status": "not_run_missing_artifact"
+    },
+    "retain": {
+      "reason": "common dynamic cost/quality contract is incomplete: score_comparable_mixed_state_execution, query_item_activation_trace, per_item_build_all_tiers, per_item_reload_all_tiers",
+      "status": "not_run_missing_artifact"
+    },
+    "stay": {
+      "evidence": "uniform_tier_results",
+      "status": "measured_at_uniform_tier_granularity"
+    },
+    "switch_or_upgrade": {
+      "reason": "common dynamic cost/quality contract is incomplete: score_comparable_mixed_state_execution, query_item_activation_trace, per_item_build_all_tiers, per_item_reload_all_tiers",
+      "status": "not_run_missing_artifact"
+    }
+  },
+  "quality_work_storage_latency": {
+    "latency": "unavailable without same-workload reload measurements",
+    "quality": "real held-out nDCG@10 and Recall@100",
+    "storage": "reported from runtime or explicit same-domain override",
+    "work": "reported only where measured build fields exist"
+  },
+  "queries": 309,
+  "schema_version": 1,
+  "smallest_next_measurement": [
+    "persist a score-comparable query-scoped mixed-state outcome surface",
+    "persist the corresponding query-to-item activation stream",
+    "measure per-item compact construction and full/compact reload on the same hardware"
+  ],
+  "split": {
+    "eval_queries": 109,
+    "fit_queries": 200,
+    "method": "stable_sha256_query_id_two_thirds_fit_one_third_eval"
+  },
+  "stage": "preregistered_multilevel_artifact_audit_and_headroom",
+  "uniform_tier_results": {
+    "cheap_base": {
+      "cost": {
+        "build_ms": 561.116548255086,
+        "per_item_build_available": false,
+        "per_item_reload_available": false,
+        "reload_ms": null,
+        "source": "runtime_npz_aggregate_index_total_ms",
+        "storage_available": true,
+        "storage_bytes": 5091200
+      },
+      "eval": {
+        "ndcg_at_10": 0.5224554319651419,
+        "recall_at_100": 0.8944736706402319
+      },
+      "fit": {
+        "ndcg_at_10": 0.5318210407412255,
+        "recall_at_100": 0.8801949875039707
+      }
+    },
+    "compact_pool": {
+      "cost": {
+        "build_ms": null,
+        "per_item_build_available": false,
+        "per_item_reload_available": false,
+        "reload_ms": null,
+        "source": "finance pool4 runtime fp16 vector bytes; construction fields are zero and no tracked pool4 derivation manifest exists",
+        "storage_available": true,
+        "storage_bytes": 193560064,
+        "warning": "Compact quality and storage are real; compact construction and reload are unmeasured."
+      },
+      "eval": {
+        "ndcg_at_10": 0.43961880135237225,
+        "recall_at_100": 0.8211701120946614
+      },
+      "fit": {
+        "ndcg_at_10": 0.48213255033882774,
+        "recall_at_100": 0.8268839096938269
+      }
+    },
+    "full_multivector": {
+      "cost": {
+        "build_ms": 304329.91665649414,
+        "per_item_build_available": true,
+        "per_item_reload_available": false,
+        "reload_ms": null,
+        "source": "finance full runtime per-item encode_ms; fp32 runtime bytes normalized to the fp16 storage contract used by the pool bank",
+        "storage_available": true,
+        "storage_bytes": 775746560
+      },
+      "eval": {
+        "ndcg_at_10": 0.45241998583541904,
+        "recall_at_100": 0.8124427538260187
+      },
+      "fit": {
+        "ndcg_at_10": 0.4844586103861883,
+        "recall_at_100": 0.8354312924217016
+      }
+    }
+  },
+  "uniform_tier_selected_on_fit": "cheap_base"
+}
