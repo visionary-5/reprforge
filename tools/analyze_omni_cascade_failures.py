@@ -96,6 +96,11 @@ def _percentile(values: Iterable[float], level: float) -> float:
     return float(np.percentile(rows, level)) if rows else 0.0
 
 
+def _median(values: Iterable[float]) -> float:
+    rows = list(values)
+    return float(median(rows)) if rows else 0.0
+
+
 def _metric(ranking: list[str], relevance: dict[str, float], name: str) -> float:
     return _query_metrics(ranking, relevance, (10, 100))[name]
 
@@ -105,12 +110,12 @@ def _profile(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "queries": len(rows),
         "query_words": {
             "mean": _mean(row["query_words"] for row in rows),
-            "median": float(median(row["query_words"] for row in rows)),
+            "median": _median(row["query_words"] for row in rows),
             "p90": _percentile((row["query_words"] for row in rows), 90),
         },
         "positive_qrels": {
             "mean": _mean(row["positive_qrels"] for row in rows),
-            "median": float(median(row["positive_qrels"] for row in rows)),
+            "median": _median(row["positive_qrels"] for row in rows),
             "p90": _percentile((row["positive_qrels"] for row in rows), 90),
         },
         "mean_ndcg_at_10": {
@@ -294,6 +299,14 @@ def analyze(
     }
     signals: dict[str, Any] = {}
     for target_name, targets in signal_targets.items():
+        positives = sum(targets)
+        if positives in (0, len(targets)):
+            signals[target_name] = {
+                "positives": positives,
+                "markers": [],
+                "unavailable_reason": "AUROC requires both positive and negative examples",
+            }
+            continue
         signal_rows = []
         for marker_name in marker_names:
             auc = area_under_roc(
@@ -309,7 +322,7 @@ def analyze(
                 }
             )
         signals[target_name] = {
-            "positives": sum(targets),
+            "positives": positives,
             "markers": sorted(signal_rows, key=lambda row: row["oriented_auc"], reverse=True),
         }
     containment_quality_cross_tab = Counter(
