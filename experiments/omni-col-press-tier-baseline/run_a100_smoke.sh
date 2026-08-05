@@ -19,7 +19,14 @@ readonly FULL_SHARD_1_SHA256="b53e17cd524ec03250abd7feaa7a2c41b4173c38367ed7953a
 readonly FULL_SHARD_2_SHA256="23a2d511b1c6d2f9eac158cb6c944e90abd3ed5aacf5282c97ac2dca69d518ad"
 readonly AGC_MODEL_ID="hltcoe/AGC_qwen2.5-vl_colpali"
 readonly AGC_MODEL_REVISION="14ba8fb11de7d15d5a87c7fa17e893bffcdd9020"
+readonly AGC_CONFIG_SHA256="33d073da0e08ee25485a3f29de0d267718753ae19a4fd77bea9281d8f611b1c9"
+readonly AGC_INDEX_SHA256="2d9df234913fe64d64abb34b393f1c1fe5fb86f9d229c4c16fc4930587d2a858"
+readonly AGC_TOKENIZER_SHA256="415c5df5240dfbe73da9b203c4f714dd8ea787a562513406f3ad9714224e1671"
+readonly AGC_SHARD_1_SHA256="8169ed5c7b29533e39eb0109275d724d4b4be35fd4fd750cdbd118522830c548"
+readonly AGC_SHARD_2_SHA256="f7e4566b091cc43657cecc68016f7152ba355a57c88fb74fd1341c9f67420711"
 readonly ATTN_IMPLEMENTATION="${OMNI_ATTN_IMPLEMENTATION:-sdpa}"
+readonly MAX_CORPUS_ROWS="${OMNI_MAX_CORPUS_ROWS:-32}"
+readonly MAX_QUERY_ROWS="${OMNI_MAX_QUERY_ROWS:-16}"
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly COMPAT_PATCH="${SCRIPT_DIR}/image_only_optional_fast_plaid.patch"
 readonly LOADERS_PATCH="${SCRIPT_DIR}/image_only_optional_fast_plaid_loaders.patch"
@@ -36,6 +43,11 @@ for case_name in "${requested_cases[@]}"; do
       ;;
   esac
 done
+
+if [[ ! "${MAX_CORPUS_ROWS}" =~ ^[1-9][0-9]*$ ]] || [[ ! "${MAX_QUERY_ROWS}" =~ ^[1-9][0-9]*$ ]]; then
+  echo "OMNI_MAX_CORPUS_ROWS and OMNI_MAX_QUERY_ROWS must be positive integers" >&2
+  exit 2
+fi
 
 required_vars=(
   OMNI_SOURCE
@@ -200,7 +212,12 @@ if [[ -n "${gpu_compute_pids}" || "${gpu_memory_used}" -ge 100 ]]; then
   exit 2
 fi
 
-python - "${OMNI_CORPUS_JSONL}" "${OMNI_QUERY_JSONL}" "${OMNI_QRELS}" <<'PY'
+python - \
+  "${OMNI_CORPUS_JSONL}" \
+  "${OMNI_QUERY_JSONL}" \
+  "${OMNI_QRELS}" \
+  "${MAX_CORPUS_ROWS}" \
+  "${MAX_QUERY_ROWS}" <<'PY'
 import importlib
 import json
 import sys
@@ -220,7 +237,8 @@ if Version(transformers.__version__) < Version("4.57.1"):
     )
 importlib.import_module("transformers.models.qwen3_vl")
 
-corpus_path, query_path, qrels_path = map(Path, sys.argv[1:])
+corpus_path, query_path, qrels_path = map(Path, sys.argv[1:4])
+max_corpus_rows, max_query_rows = map(int, sys.argv[4:6])
 
 def load_jsonl(path):
     rows = []
@@ -235,10 +253,14 @@ def load_jsonl(path):
 
 corpus = load_jsonl(corpus_path)
 queries = load_jsonl(query_path)
-if not 1 <= len(corpus) <= 32:
-    raise SystemExit(f"smoke corpus must contain 1..32 rows, got {len(corpus)}")
-if not 1 <= len(queries) <= 16:
-    raise SystemExit(f"smoke query file must contain 1..16 rows, got {len(queries)}")
+if not 1 <= len(corpus) <= max_corpus_rows:
+    raise SystemExit(
+        f"corpus must contain 1..{max_corpus_rows} rows, got {len(corpus)}"
+    )
+if not 1 <= len(queries) <= max_query_rows:
+    raise SystemExit(
+        f"query file must contain 1..{max_query_rows} rows, got {len(queries)}"
+    )
 for i, row in enumerate(corpus, 1):
     if not (row.get("docid") or row.get("id")) or not row.get("image"):
         raise SystemExit(f"corpus row {i} requires docid/id and image")
@@ -297,6 +319,14 @@ verify_full_model() {
   verify_sha256 "${FULL_MODEL_PATH}/model-00002-of-00002.safetensors" "${FULL_SHARD_2_SHA256}"
 }
 
+verify_agc_model() {
+  verify_sha256 "${AGC_MODEL_PATH}/config.json" "${AGC_CONFIG_SHA256}"
+  verify_sha256 "${AGC_MODEL_PATH}/model.safetensors.index.json" "${AGC_INDEX_SHA256}"
+  verify_sha256 "${AGC_MODEL_PATH}/tokenizer.json" "${AGC_TOKENIZER_SHA256}"
+  verify_sha256 "${AGC_MODEL_PATH}/model-00001-of-00002.safetensors" "${AGC_SHARD_1_SHA256}"
+  verify_sha256 "${AGC_MODEL_PATH}/model-00002-of-00002.safetensors" "${AGC_SHARD_2_SHA256}"
+}
+
 needs_full=false
 needs_agc=false
 for case_name in "${requested_cases[@]}"; do
@@ -312,6 +342,7 @@ if [[ "${needs_full}" == true ]]; then
 fi
 if [[ "${needs_agc}" == true ]]; then
   download_model "${AGC_MODEL_ID}" "${AGC_MODEL_REVISION}" "${AGC_MODEL_PATH}"
+  verify_agc_model
 fi
 
 mkdir -p "${OMNI_OUTPUT_ROOT}/timing" "${OMNI_OUTPUT_ROOT}/profiles"

@@ -48,6 +48,10 @@ OmniColPress 的估计函数。H-Pool 构建比 Full 多 9.63 秒（+17.24%）�
 Top-k 边界翻转、实际索引字节和拆分后的构建/查询时间。固定 Full、固定 H-Pool、随机
 等预算升级和 qrel-only oracle 是最低比较组；smoke 指标不进入主表。
 
+规模运行仍复用同一不可覆盖 wrapper，但必须显式设置实际数据上限，例如 HR English
+设置 `OMNI_MAX_CORPUS_ROWS=1110`、`OMNI_MAX_QUERY_ROWS=318`。默认值仍是 32/16，
+避免误把任意大输入当作 smoke 静默启动。
+
 ## 5. 制品
 
 机器可读摘要见

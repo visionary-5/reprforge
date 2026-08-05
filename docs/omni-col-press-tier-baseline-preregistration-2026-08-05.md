@@ -96,7 +96,9 @@ CUDA_VISIBLE_DEVICES=<free-a100-id> OMNI_SOURCE=/path/to/omni-col-press OMNI_COR
 `flash_attention_2`，必须在结果清单中记录并保证所有方法口径一致。
 Full/H-Pool 基座在启动 GPU 前还会校验 config、权重索引、tokenizer 和两个权重分片
 的固定 SHA-256；仅存在 `config.json`、断点下载未完成或混入其他 revision 都不能
-通过 preflight。
+通过 preflight。AGC checkpoint 采用同样的五文件 SHA-256 preflight；服务器无法直连
+Hugging Face 时，允许在本地按固定 revision 下载并上传，但服务器端哈希必须与运行器
+冻结值完全一致。
 单进程分布式入口使用 `python -m torch.distributed.run`，不依赖环境是否额外安装
 `torchrun` console script；其 `--nproc_per_node=1 -m` 语义与官方命令相同。
 模型完整性通过后才创建输出目录，并写入 `run-manifest.json`：上游与 wrapper 提交、
