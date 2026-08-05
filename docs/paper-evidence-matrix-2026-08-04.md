@@ -12,7 +12,7 @@ ReprForge 只有同时满足下面五点，才能从“有效系统机制”提�
 4. **强反事实成立**：必须比较未来热门度、重叠分组、最短剩余工作、离线工作下界、瞬时不持久方案和容量缓存；
 5. **真实系统成立**：冻结方法后报告真实 GPU 时间、P50/P95、构建页数、持久字节和最终质量，而不只报告模拟页工作量。
 
-当前第 1、2 点和第 4 点的大部分已经满足；第 5 点在控制面规模和两域真实 GPU 上部分满足。第 3 点经三种答案协议严格 NO-GO，因此当前只能定位为检索/索引系统论文。最近工作审计还增加了两条优先级最高的 novelty gate：EdgeRAG-faithful 成本缓存和 CaGR-RAG-faithful 分组/预取。
+当前第 1、2 点和第 4 点的大部分已经满足；第 5 点在控制面规模和两域真实 GPU 上部分满足。第 3 点经三种答案协议严格 NO-GO，因此当前只能定位为检索/索引系统论文。第四轮已经关闭评分、工作负载 selector 和长周期 reoptimization 三条扩张路线，并把优先级收敛到真实 build+reload 成本与多级表示 activation artifact。
 
 ## 研究问题矩阵
 
@@ -36,6 +36,12 @@ ReprForge 只有同时满足下面五点，才能从“有效系统机制”提�
 | RQ16 是否只是经典公平局部性调度 | 五域 | Delay-D32、max-wait overlap、DLPM query adaptation、hard | 三主轴±2%、P99、B32、control ops | 注册 redundancy **未通过**，但 Delay-D32 7/10 close，median 仅差约1%，feasible set 与 B32 等价 | 撤回 hard fairness 算法 novelty；Delay-D32 必须进主表 |
 | RQ17 收益是否真来自共享依赖与持久状态 | 五域；五种结构条件 | 原图、degree-preserving swaps、private pages、清 compiled/cache、仅清 active cache | overlap/reuse、三主轴 attenuation、absolute work | **共享机制 GO**；private 后收益归零；随机换边保留多数收益；equal-cost persistence 不可区分 | 证明不是普通 SPT/LRU 偶然；真实 build/reload 成本仍需校准 |
 | RQ18 是否依赖 exact per-page cost | 五域；A100 page profile | perfect、unit、CV .25/.5/1、domain drift、winsorized | 真成本下 mean/P95/P99/work/regret | **ORACLE-INDEPENDENT**；unit/CV.5 过门，CV1/drift 边界，clipping 有效 | 主方法可用 unit/稳健 predictor；仍需真实并发墙钟 |
+| RQ19 completion+age 评分是否有独立贡献 | 五域；burst/Poisson×5 seeds | Delay exact-locality、completion-only、age-only、frozen full、remove-one | mean sojourn、work、elapsed regret、P95/P99、unique pages | **SCORING NO-GO**；三主指标同向 3/10，median geometric mean 1.0009，明确 tail win 0/10 | completion+age 降级为 system policy；不再扫描权重 |
+| RQ20 因果策略能否低开销精确执行 | 五域 50 full traces；十个 CPU workload | transparent、incremental Hard、efficient Delay-D32 | exact tuple、logical operations、CPU、peak memory | **GO**；50/50 exact，operations 12.63×、CPU 2.084×、peak ratio .971；与 Delay 控制面接近 | 支撑增量控制面这一系统贡献，不是 GPU throughput |
+| RQ21 能否按 workload 自动选择物理计划 | 五域 150 episodes | 固定 B32、Delay、其他计划、oracle、threshold、LODO ridge | 四轴 geometric mean、SLO violation | **ORACLE GO / DEPLOYABLE NO-GO**；oracle .961，LODO 1.001 且 24 次 SLO violation | locator 结构不足以跨域预测 evidence value；selector 不列贡献 |
+| RQ22 长周期漂移是否需要重优化计划 | 五域 60 stress episodes | fixed plans、免费 oracle、带成本动态 oracle、lag/periodic/trigger | 联合损失、work、regret、P99/max | **NO-GO**；带成本 oracle 仅 0.227%，免费 oracle 仅 0.637% | 当前 plan family 没有足够 headroom；停止 trigger/learner |
+| RQ23 多级异构表示能否闭环编译 | Finance、Industrial 三个真实 tier | text、pool-4、full、uniform/query oracle；动态 baseline capability audit | held-out nDCG@10、bytes、build/reload artifact completeness | **ARTIFACT NO-GO / ORACLE HEADROOM**；query oracle +.1105/+.1227 nDCG，但动态 baseline 因 artifact 缺失未运行 | 下一步先补 MMDocIR mixed activation 与逐 item 成本，不提前实现 controller |
+| RQ24 已服务 prefix 能否预测下一段计划 | 五域；50 个 prefix/continuation cell | frozen B32 continuation、prefix observable、后续 oracle/LODO gate | continuation exact、tail gain、normalized regret validity | **HEADROOM NO-GO**；50/50 continuation exact，但 1/50 tail gain=-.0040127，使注册 normalized regret 无定义；oracle/LODO 按合同未运行 | 质量轨迹可非单调；若重启必须独立预注册 signed 或 full-episode metric，不能事后改分母 |
 
 ## 数据集分工
 
@@ -80,8 +86,8 @@ ReprForge 只有同时满足下面五点，才能从“有效系统机制”提�
 
 ## 当前最有希望的论文表述
 
-> 给定固定的视觉多向量目标表示，廉价定位器暴露查询—页面依赖图。ReprForge 编译并原子发布共享页面状态，同时分开测量新页面构建、缓存/reload 工作和真实 elapsed quality。实验揭示 completion-oriented frontier 与 locality-oriented grouping 在不同负载下形成不可忽略的系统效率—证据质量 Pareto。
+> 给定固定的视觉多向量目标表示，廉价定位器暴露查询—页面依赖图。ReprForge 用 exact build+reload/LRU 状态描述尚未完成的索引，以不读取 qrel 或未来请求的因果控制面原子发布共享表示，并分开测量 elapsed time、charged work 和 unique-page quality。增量实现保持完整决策 exact，同时删除重复状态复制和可行性扫描。
 
-跨表示门已经由 [ModernVBERT/ColModernVBERT](https://arxiv.org/abs/2510.01149) 在 HR/Finance 上通过；五个 ViDoRe v3 域也给出一致工作收益。宽泛的在线构建表述必须让位于 [EdgeRAG](https://arxiv.org/abs/2412.21023)。忠实和增强的 [CaGR-RAG](https://arxiv.org/abs/2505.01164) 对照进一步证明：frontier 在 unique-page 质量效率上更强，但 bounded locality 在 Finance 系统轴反超；本文不能声称单一 scheduler 全面更优。hard-budget frontier 现在填补了这两个 endpoint 之间的一部分可行区，但其 bounded bypass 原理还必须正面对比 [Delay Scheduling](https://cs.stanford.edu/~matei/papers/2010/eurosys_delay_scheduling.pdf) 和 locality/fairness scheduler，而不能声称 hard bypass 本身新。答案级门也失败，因此不声称更早答对。
+跨表示门已经由 [ModernVBERT/ColModernVBERT](https://arxiv.org/abs/2510.01149) 在 HR/Finance 上通过；五个 ViDoRe v3 域也给出一致工作收益。宽泛的在线构建表述必须让位于 [EdgeRAG](https://arxiv.org/abs/2412.21023)。忠实和增强的 [CaGR-RAG](https://arxiv.org/abs/2505.01164) 对照进一步证明：frontier 在 unique-page 质量效率上更强，但 bounded locality 在 Finance 系统轴反超；本文不能声称单一 scheduler 全面更优。hard-budget frontier 填补了这两个 endpoint 之间的一部分可行区，但其 bounded bypass 与 [Delay Scheduling](https://cs.stanford.edu/~matei/papers/2010/eurosys_delay_scheduling.pdf) 可行域等价，completion+age 消融也未过门。它只能作为因果编译合同下的冻结策略。增量控制面在 50/50 full trace exact 下得到 12.63× operation 和 2.084× 本地 CPU 加速，这一系统结果与三轴实证才是当前主线。答案级门失败，因此不声称更早答对。
 
 最后的 clairvoyant headroom probe 进一步限定了方法空间：在预注册的 60 个 qrel、精确成本和有限未来到达可见的 greedy 配置中，没有一个同时通过主要目标、P95 和 starvation 门。它支持“质量--局部性--公平是实质性的多目标边界”这一测量结论，但不构成全局最优性或数学不可能性证明。

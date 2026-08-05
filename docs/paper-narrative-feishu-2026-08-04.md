@@ -2,7 +2,7 @@
 
 更新时间：2026 年 8 月 5 日
 文档性质：用于统一问题、论文叙事和下一阶段实验，不是投稿定稿  
-当前判断：Causal Hard Frontier 已达到 replay 级系统方法候选；Delay-D32 证明 B32 不是新公平算法，主线应放在在线表示编译问题、compiled/LRU 状态感知策略和三轴物理证据链
+当前判断：Causal Hard Frontier 是冻结的 replay 级系统策略；B32 与 completion+age 评分都不承担算法新颖性，主线应放在 exact build+reload 物理状态、因果编译合同、精确增量控制面和三轴证据链
 
 ---
 
@@ -19,16 +19,16 @@ ReprForge 目前最值得推进的方向，不是泛泛地说“把文本索引�
 
 一句话论文主张可以写成：
 
-> ReprForge 将多模态 RAG 的索引构建从“一次性预处理”改造成“可在线推进的编译过程”：廉价文本定位器先暴露查询—页面依赖，Causal Hard Frontier 在仅观察已到达请求和当前索引状态的条件下，联合利用完成成本、局部性和年龄，并用逐请求 hard bypass budget 防止无限越过；完成页面被原子、持久发布，从而改善真实 elapsed 时间上的延迟—工作量—证据质量前沿。
+> ReprForge 将多模态 RAG 的索引构建从“一次性预处理”改造成“可在线推进的编译过程”：廉价文本定位器先暴露查询—页面依赖，因果控制面只根据已到达请求和当前 build/reload/LRU 状态执行冻结策略；完成页面被原子、持久发布。系统分别测量 elapsed time、charged work 和 unique-page evidence quality，并用精确增量实现消除控制面重复工作。
 
 这里真正可能形成贡献的不是某一个模块，而是四件事的组合：
 
 1. 定义“索引尚在构建时，证据质量如何随时间变化”这个问题；
-2. 提出面向真实视觉表示构建成本的查询—页面依赖调度方法；
-3. 做出可以先服务、再构建、可复用、可回滚的端到端系统；
-4. 用质量—时间、证据稳定时间和有害修订等指标，而不只用最终检索分数评价它。
+2. 定义 build、reload、active-LRU 和原子发布组成的因果物理状态合同；
+3. 做出可以先服务、再构建、可复用、可回滚且可精确增量执行的端到端系统；
+4. 用 elapsed time、charged work 和 unique-page quality 三条轴评价它，而不只用最终检索分数。
 
-目前第 1--3 点已有完整证据链，第 4 点的检索/证据指标成立但答案级结果失败。强调度基线、有限到达窗口、IRPapers、五域、两种视觉表示、closest-work、结构破坏和成本噪声均已完成。Delay-D32 与 B32 可行域结构等价且只落后约 1%，因此算法 novelty 必须降级；private-pages 消融又把收益降到 0，证明跨查询共享机制确实成立。当前最关键缺口是同一 B32 可行域内的 scoring 单变量消融、真实控制面/GPU 时间和跨检索器原始 trace。
+目前第 1--3 点已有完整证据链，第 4 点的检索/证据指标成立但答案级结果失败。强调度基线、有限到达窗口、IRPapers、五域、两种视觉表示、closest-work、结构破坏和成本噪声均已完成。Delay-D32 与 B32 可行域结构等价且只落后约 1%；进一步的单变量评分消融只在 3/10 个 cell 三主指标同向，median geometric mean 为 1.0009，明确 tail win 为 0/10，因此 completion+age 只能作为冻结 system policy。private-pages 消融把收益降到 0，证明跨查询共享机制成立；增量控制面又以五域 50/50 exact、12.63× logical-operation 和 2.084× 本地 CPU 加速关闭了实现开销问题。当前最关键缺口只剩真实 build+reload wall-clock 和 MMDocIR 多级 activation/reload artifact。
 
 ---
 
@@ -507,25 +507,26 @@ HR 训练内同时大幅改善工作和 AUC，Finance 也通过门槛，但 IRPa
 
 ### 7.2 可以争取成为论文贡献的写法
 
-当前贡献可以压缩成三条：
+当前贡献可以压缩成四条：
 
 1. **问题与评价：** 我们提出“随用随建的多模态索引编译”问题，把评价对象从索引完成后的静态质量，扩展到索引构建期间的证据质量、稳定时间、构建工作和修订风险。
-2. **机制：** 我们实例化 Causal Hard Frontier：一个不接收 qrel 或未来请求的事件驱动策略，在与 Delay-D32 等价的 bounded-overtaking 可行域内，利用 compiled/LRU 状态上的 normalized completion 与 continuous age 降低构建和重载工作。贡献不在 hard bypass 本身。
-3. **系统与实证：** 我们实现具有持久复用状态和原子发布语义的端到端系统，并在五个视觉文档域、两类到达模型和三条物理质量时间轴上验证：冻结方法的跨 cell median sojourn/work/elapsed-regret ratio 为 0.923/0.949/0.948，10/10 P99 更优；同时报告 unique-page 质量和单 query max 的反例。
+2. **状态与合同：** 我们把每个候选表示的未构建、已构建但需 reload、active-LRU 和已发布状态放进同一因果编译合同；policy 只读取已到达 locator demand 和当前物理状态，不接收 qrel、未来请求或 EOS。
+3. **精确增量控制面：** 我们利用 cohort cache、LRU-only marginal cost 和等价 head-feasibility frontier，在五域 50/50 full replay 保持完整决策 exact，同时把透明控制面 logical operations 降低 12.63×、本地单线程时间降低 2.084×，peak memory ratio 为 0.971。
+4. **三轴系统实证：** 我们实现持久复用和原子发布，并在五个视觉文档域、两类到达模型和 elapsed/work/unique-page 三条质量轴上验证：冻结策略的跨 cell median sojourn/work/elapsed-regret ratio 为 0.923/0.949/0.948，10/10 P99 更优；同时报告 unique-page 质量和单 query max 的反例。
 
-如果加入安全发布机制并验证成功，可以有第四条：
+如果加入安全发布机制并验证成功，可以有第五条：
 
-4. **安全修订：** 我们识别并测量多模态增强导致的有害证据修订，提出无需测试标签的发布或保留策略，降低答案反复和质量尾部风险。
+5. **安全修订：** 我们识别并测量多模态增强导致的有害证据修订，提出无需测试标签的发布或保留策略，降低答案反复和质量尾部风险。
 
-第四条有潜力，但目前没有方法证据，不应提前写成已完成贡献。
+第五条有潜力，但目前没有方法证据，不应提前写成已完成贡献。
 
 ### 7.3 论文最核心的“新东西”到底是什么
 
 最窄、最可守住的表述是：
 
-> **带逐请求硬顺序保证的因果表示编译调度。**
+> **由真实 build/reload 状态驱动、可精确增量执行的因果表示编译。**
 
-一般查询调度是在已有数据和已有模型上分配请求；ReprForge 把“昂贵且可长期复用的检索表示尚未存在”纳入调度状态，并用证据完成度而不是单纯吞吐量定义收益。
+一般查询调度是在已有数据和已有模型上分配请求；ReprForge 把“昂贵且可长期复用的检索表示尚未存在或需要重载”纳入物理状态，并用三条证据时间轴而不是单纯吞吐量定义收益。B32 和 completion+age 都是这个合同下的一个实例，不单独声称新颖。
 
 这个点既不是纯模型，也不是纯缓存，更不是纯数学。它是一个跨检索质量和系统物理构建的机制。
 
@@ -549,7 +550,7 @@ HR 训练内同时大幅改善工作和 AUC，Finance 也通过门槛，但 IRPa
 
 ### 8.2 摘要草稿
 
-> 视觉文档 RAG 能保留表格、布局和图表信息，但完整构建多向量视觉索引需要昂贵编码。现有工作主要评价索引完成后的查询，较少研究新库接入期间：到达查询如何暴露可复用页面需求、构建完成如何改变后续可用证据，以及怎样同时控制工作量和尾部。我们提出 ReprForge，将多模态索引构建建模为在线渐进编译。系统先用廉价文本定位器产生查询—页面依赖，再由 Causal Hard Frontier 仅依据已到达请求和当前索引状态调度缺失表示；它联合 completion/locality 效用与逐请求有界越过，并原子持久发布新状态。我们区分 elapsed time、charged work 和 unique compiled pages 三条质量轴。独立因果实现与有利 B32 reference 在 20/20 replay cell 完全等价；冻结到五个 ViDoRe 域后，跨 cell median sojourn、work 和 elapsed-quality regret ratio 为 0.923、0.949 和 0.948，且 10/10 P99 优于强 endpoint。真实 A100 实验进一步验证渐进构建可行。结果表明，在线表示构建的共享结构与逐请求服务保证可以共同优化，但 unique-page 质量、跨检索器和真实异构成本仍构成边界。
+> 视觉文档 RAG 能保留表格、布局和图表信息，但完整构建多向量视觉索引需要昂贵编码。现有工作主要评价索引完成后的查询，较少研究新库接入期间：到达查询如何暴露可复用页面需求、构建与重载如何改变后续可用证据，以及怎样同时控制工作量和尾部。我们提出 ReprForge，将多模态索引构建建模为在线渐进编译。廉价定位器产生查询—页面依赖；因果控制面只读取已到达需求和当前 compiled/LRU 物理状态，并原子持久发布新表示。我们区分 elapsed time、charged work 和 unique compiled pages 三条质量轴。独立实现与 B32 reference 在 20/20 replay cell 完全等价；冻结到五个 ViDoRe 域后，跨 cell median sojourn、work 和 elapsed-quality regret ratio 为 0.923、0.949 和 0.948，且 10/10 P99 优于强 endpoint。精确增量实现又在五域 50/50 full trace 保持全部决策 exact，同时获得 12.63× logical-operation 和 2.084× 本地控制面加速。单变量消融表明 completion+age 不是独立算法贡献；真正可守的是物理状态、因果合同、增量执行和三轴证据链。真实 A100 实验验证了渐进构建可行，但多级 activation/reload 成本仍是边界。
 
 这版摘要只能称为“工作摘要”。在投稿版本中还需要补上在线到达、答案质量和第三数据集，并与最强在线基线比较。
 
@@ -561,9 +562,9 @@ HR 训练内同时大幅改善工作和 AUC，Finance 也通过门槛，但 IRPa
 
 **第三段：直观办法为什么不够。** 事后压缩没有消除第一次完整编码；纯查询时视觉理解难以积累可检索状态；普通缓存只决定已有对象留不留下；查询分组只优化已有向量访问。真正缺少的是把查询需求转成可复用视觉表示的构建计划，并评价构建过程中证据何时变得可用。
 
-**第四段：我们的观察和方法。** 廉价文本定位器不仅提供初始答案，还暴露查询—页面依赖图。候选组之间存在重叠，调度顺序会改变构建、重载和证据发布时间；只追求局部性又会无限绕过孤立请求。Causal Hard Frontier 因此只基于已到达需求选择低完成成本、高复用的候选，同时给每个请求一个硬的 younger-bypass 上限。
+**第四段：我们的观察和方法。** 廉价文本定位器不仅提供初始证据，还暴露查询—页面依赖图。候选组之间存在重叠，调度顺序会改变 build、reload 和证据发布时间；这些动作必须读取当前 compiled/LRU 状态，并在成功后原子发布。Causal Hard Frontier 是这个因果合同下的冻结策略；增量控制面在不改变其选择的前提下删除重复状态复制和可行性扫描。评分公式本身不作为贡献。
 
-**第五段：结果和贡献。** 概括问题定义、因果 hard-budget 系统策略、原子可复用状态，以及五域 median ratio、10/10 P99、private-pages 收益归零和成本噪声四类数字；同时主动说明 Delay-D32 只差约 1%、unique-page 质量与单 query max 反例。
+**第五段：结果和贡献。** 概括问题定义、exact build+reload 状态、因果合同、精确增量控制面和三轴评价，以及五域 median ratio、10/10 P99、50/50 exact、12.63×/2.084× 控制面收益、private-pages 收益归零和成本噪声；同时主动说明 Delay-D32 只差约 1%、scoring NO-GO、unique-page 质量与单 query max 反例。
 
 ### 8.4 相关工作章节
 
@@ -841,7 +842,7 @@ RAGChecker 提供了检索与生成模块的细粒度诊断思路，可以借鉴
 
 强基线、有限窗口、答案、跨域、跨表示、控制面规模和 novelty gate 均已完成。原始 frontier 被 bounded CaGR 反超后，60 点软 oracle 揭示显著效率余量但无法满足 hard ordering；固定效用加 B32 后出现唯一可行点。独立 Causal Hard Frontier 又在 20/20 reference cell 精确物化，并在五域取得 median 0.923/0.949/0.948 与 10/10 P99 安全。
 
-因此主方法方向已从“继续找 scheduler”收敛为固定 Causal Hard Frontier，但投稿定位要更诚实：这是在线表示编译系统中的状态感知 policy，不是全新 fairness scheduler。下一优先级只保留三项：固定同一 B32 可行域的 completion-only/age 单变量消融；增量成本缓存与 scheduler CPU/真实 GPU 比例；跨 retriever 原始 trace。任何新实验都不得重调 B32 或软权重。
+因此主线已从“继续找 scheduler”收敛为在线表示编译系统。Causal Hard Frontier 是稳定的实验策略，不是全新 fairness scheduler；completion+age 的单变量门已经失败，增量控制面已经通过。下一优先级只保留真实硬件 build/reload/H2D 校准，以及 MMDocIR query-scoped 多级 activation、逐 item 成本和 representation lineage。任何新实验都不得重调 B32、软权重、selector 或 reoptimization trigger。
 
 ---
 
@@ -869,9 +870,11 @@ RAGChecker 提供了检索与生成模块的细粒度诊断思路，可以借鉴
 - 真实 A100 总时间减少 6.3% 和 9.3%；
 - 第一批视觉证据提前 56.7% 和 69.6%；
 - 精确增量调度比 naive 快 17.45×，30K 查询控制面低于 4.1 秒；
+- 在与当前 Causal Hard Frontier 完全相同的五域 full replay 上，新增量实现 50/50 exact，operation proxy 12.63×、本地单线程 CPU 2.084×、peak memory ratio 0.971，并与 efficient Delay 控制面接近；
 - 独立 causal API 在 HR/Finance 20/20 cell 与 B32 reference 全量精确等价；
 - 五域 median sojourn/work/elapsed-regret ratio 为 0.923/0.949/0.948，9/10 cell 有 5% 效果，10/10 P99 更优；
 - Delay-D32 median 只落后约 0.7%--1.1%，说明 B32 本身不是算法新意；
+- completion+age 相对最强单因素/Delay 只有 3/10 cell 三主指标同向，median geometric mean 1.0009、明确 tail win 0/10，因此评分公式也不是新意；
 - private-pages 消融后工作收益精确变 0，证明跨查询共享是必要机制；
 - A100逐页成本 proxy 下 unit-count 与 CV=0.5 噪声仍过门，CV=1 与系统性低估会吃掉收益；
 - 最终候选覆盖基本一致，但真实 bf16 有小幅数值波动；
@@ -879,11 +882,11 @@ RAGChecker 提供了检索与生成模块的细粒度诊断思路，可以借鉴
 
 ### 最大风险
 
-答案级收益失败；EdgeRAG 已覆盖宽泛按需索引生命周期，CaGR 覆盖共享访问分组，Delay Scheduling/DLPM 覆盖 bounded skip 与 locality/fairness。Delay-D32 与 B32 feasible set 结构等价且性能很接近。Causal Hard Frontier 的可守价值来自“会持久改变检索证据的在线表示编译问题 + compiled/LRU completion-age policy + 严格因果接口 + 多物理轴实证”的组合。跨 retriever 和真实并发成本仍未验证。
+答案级收益失败；EdgeRAG 已覆盖宽泛按需索引生命周期，CaGR 覆盖共享访问分组，Delay Scheduling/DLPM 覆盖 bounded skip 与 locality/fairness。Delay-D32 与 B32 feasible set 结构等价且性能很接近，评分消融也没有稳定增益。ReprForge 的可守价值来自“会持久改变检索证据的在线表示编译问题 + exact build/reload/LRU 状态 + 严格因果合同 + 精确增量控制面 + 多物理轴实证”。跨 retriever B32 和真实并发多级成本仍未验证。
 
 ### 下一步
 
-固定 B32 和全部常数，不再调 scheduler。只补同一 feasible set 的 scoring 消融、控制面优化/真实 GPU 比例和跨 retriever trace；随后立即固化主表与论文，不再扩张新模块。
+固定 B32 和全部常数，不再调 scheduler；评分、selector 和长周期 reoptimization 三条线已经关闭。下一步只补同 workload 的真实 build/reload/H2D/overlap 成本，以及 MMDocIR query-scoped mixed activation、逐 item 成本和表示 lineage；先跑 oracle，过 10% matched-quality cost gate 后才设计多级 compiler。随后立即固化主表与论文，不再扩张无 artifact 支撑的新模块。
 
 ---
 
@@ -891,6 +894,6 @@ RAGChecker 提供了检索与生成模块的细粒度诊断思路，可以借鉴
 
 不能把“异构索引编译”“查询驱动构建”或 hard bypass 单独写成新颖性。更稳的具体切口是：
 
-> 到达中的 RAG 查询暴露重叠页面表示需求；构建/重载会改变持久、渐进发布的多模态检索索引。Causal Hard Frontier 在严格因果信息下联合优化 completion/locality 与 elapsed evidence quality，并给每个请求有界越过保证。
+> 到达中的 RAG 查询暴露重叠页面表示需求；build/reload 会改变持久、渐进发布的多模态检索索引。ReprForge 用严格因果合同表示这些物理状态，并以精确增量控制面执行冻结策略，再沿 elapsed、charged work 和 unique-page quality 三条轴评价结果。
 
-解耦、缓存、批处理、原子更新、查询分组和 bounded skip 都是已知组成。可守的贡献是新状态语义、因果 hard-budget 调度实例、三轴 anytime 测量与五域物理证据链。完整决策与所有正反结果见 `docs/paper-decision-after-p0-2026-08-04.md`。
+解耦、缓存、批处理、原子更新、查询分组、bounded skip 和 completion+age 评分都不能单独算贡献。可守的贡献是 exact build+reload 状态语义、因果编译合同、精确增量执行、三轴 anytime 测量与五域物理证据链。完整决策与所有正反结果见 `docs/paper-decision-after-p0-2026-08-04.md` 和 `docs/experiment-decision-round4-2026-08-05.md`。

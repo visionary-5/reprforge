@@ -8,7 +8,7 @@ ReprForge 已经从“异构索引解耦的工程想法”收敛为一个可研�
 
 > 到达中的 RAG 查询暴露重叠的页面表示需求；构建与重载会改变一个持久、渐进发布的多模态检索索引。系统必须在严格因果信息下优化延迟、物理工作量和随时间可用的证据质量，同时给每个请求明确的服务顺序保证。
 
-当前主方法实例是 `Causal Hard Frontier`：它只接收逐条 arrival/timer 事件、locator cohort 和当前 compiled/LRU 状态，在与 Delay-D32 等价的 bounded-overtaking 可行域内，用 normalized completion density 与 continuous age 选择 batch。
+当前主方法实例是 `Causal Hard Frontier`：它只接收逐条 arrival/timer 事件、locator cohort 和当前 compiled/LRU 状态，在与 Delay-D32 等价的 bounded-overtaking 可行域内，用 normalized completion density 与 continuous age 选择 batch。这里的 completion+age 是冻结的系统策略，不是论文要声称的新评分算法。
 
 它已经达到 **replay 级系统方法候选**，但还不是“全新的公平调度算法”。最强 closest work Delay-D32 只落后约 1%，因此论文的新颖性必须来自在线表示编译的状态语义、物理质量前沿、因果系统实现与跨域机制证据的组合。
 
@@ -52,9 +52,21 @@ ReprForge 已经从“异构索引解耦的工程想法”收敛为一个可研�
 | Delay-D32 | 1.009 | 1.007 | 1.011 | 10/10 | 6/10 | 极危险近邻；7/10 三轴在 2% 内 |
 | DLPM query adaptation | 1.038 | 1.005 | 1.012 | 0/10 | 5/10 | one-shot query 破坏原 per-client deficit 语义 |
 | Max-wait overlap | 1.298 | 1.237 | 1.228 | 10/10 | 0/10 | 时间 cap 不能替代 completion utility |
-| Causal Hard Frontier | 1.000 | 1.000 | 1.000 | 10/10 | 10/10 | 跨域最稳，但透明实现控制操作更多 |
+| Causal Hard Frontier | 1.000 | 1.000 | 1.000 | 10/10 | 10/10 | 跨域最稳；透明实现开销已由 exact 增量版关闭 |
 
-在单一 arrival total order、统一预算和逐 slot 原子选择下，all-older B32 feasibility 与 head skip-D32 feasible set 结构等价。因此必须撤回“新 hard fairness 算法”或“首次 fairness+locality”表述。可比较的差异只是在同一可行域内，completion normalization 与 continuous age scoring 带来约 1% median 增益和更稳的 slowdown tail，同时透明实现的 detailed control operations 约高 75.6%。
+在单一 arrival total order、统一预算和逐 slot 原子选择下，all-older B32 feasibility 与 head skip-D32 feasible set 结构等价。因此必须撤回“新 hard fairness 算法”或“首次 fairness+locality”表述。后续严格单变量消融进一步否定了评分新意：冻结 completion+age 相对每个 cell 最强的 Delay、completion-only 或 age-only，只在 3/10 个 domain×arrival cell 让 mean sojourn、work/query 和 elapsed regret 同向改善；三项比率的跨 cell median geometric mean 为 1.0009，P99 明显改善为 0/10。它应降级为合理的 system policy，而不是独立 contribution。
+
+## 第四轮决策补充
+
+| 问题 | 分支 / 提交 | 注册结论 | 关键数据 | 对主线的影响 |
+|---|---|---|---|---|
+| 同一 B32 可行域内的评分 | `exp/b32-scoring-ablation` `f5b04c1` | **SCORING NO-GO** | 三主指标同向 3/10；median geometric mean 1.0009；明确 P99 win 0/10 | completion+age 只保留为冻结策略；exact build+reload 状态和 normalization 作为组件证据 |
+| 精确增量控制面 | `exp/incremental-causal-control-plane` `b375224` | **GO** | 五域 50/50 exact；operation proxy 12.63×；单进程 CPU 2.084×；peak memory ratio 0.971 | 删除透明实现开销后，Hard 与 efficient Delay 控制面接近；这是系统实现贡献 |
+| 工作负载物理计划选择 | `exp/workload-physical-plan-selector` `51014c3` | **ORACLE GO / DEPLOYABLE NO-GO** | oracle 综合比 0.961；LODO selector 1.001 且 24 次 SLO violation | 当前 locator 结构不能安全预测下一 episode 的 evidence value；不升格为方法 |
+| 长周期重优化 | `exp/adaptive-compile-reoptimization` `44c81d1` | **NO-GO** | 带成本 oracle 仅改善 0.227%；免费 oracle 也仅 0.637% | 当前五计划家族没有足够 reoptimization headroom；停止做 trigger/learner |
+| 多级表示编译 | `exp/multilevel-representation-compiler` `88bf45d` | **ARTIFACT NO-GO / ORACLE HEADROOM** | Finance/Industrial 三路 query oracle nDCG@10 分别高 0.1105/0.1227 | 非单调多表示有真实质量空间，但缺 mixed-state activation、逐 item build/reload 和同 workload 成本，不能称动态 compiler 结果 |
+
+增量实现没有改变 dispatch、B32、W64、LRU、成本或发布轨迹。它通过 arrival-time cohort cache、只复制 80-page virtual LRU，以及等价的 head-feasibility frontier 消除重复工作。optimized Hard 相对 efficient Delay 的 operation 仅高约 0.75%，large CPU 比接近 1，因此此前约 75.6% 的控制操作差距主要是透明实现问题，不是 completion+age 固有代价。
 
 ## 机制消融
 
@@ -84,9 +96,10 @@ ReprForge 已经从“异构索引解耦的工程想法”收敛为一个可研�
 ## 可以安全写的贡献
 
 1. **问题与评价：** 在线渐进式多模态索引编译；到达查询暴露重叠表示需求，完成 build 持久改变后续可用证据；评价分开 elapsed、charged work 和 unique published pages。
-2. **因果系统策略：** compiled/LRU state-aware completion+age policy，在 Delay-equivalent bounded-overtaking 可行域中运行；不使用 qrel、未来请求或 EOS。
-3. **系统与机制证据：** 原子持久发布、精确重放、五域三轴/P99、private-pages 反事实、fair-locality closest work 和 A100 page-cost robustness。
-4. **经验发现：** completion-oriented quality、locality-oriented cost 和 per-query service contract 形成真实 Pareto；指标横轴和 fairness denominator 会改变方法排名。
+2. **因果编译合同：** policy 只能读取已到达 locator demand 与当前 compiled/LRU physical state；不使用 qrel、未来请求或 EOS，并在 Delay-equivalent B32 可行域中运行。
+3. **精确增量控制面：** 在 50/50 完整 trace 保持 dispatch、work、tail 和 publication exact 的同时，把透明控制面 operation 降低 12.63×、本地单线程时间降低 2.084×，且内存不回退。
+4. **系统与机制证据：** 原子持久发布、五域三轴/P99、private-pages 反事实、exact build+reload 状态消融、closest work 和 A100 page-cost robustness。
+5. **经验发现：** completion-oriented quality、locality-oriented cost 和 per-query service contract 形成真实 Pareto；指标横轴和 fairness denominator 会改变方法排名。
 
 ## 禁止写的过强主张
 
@@ -98,13 +111,14 @@ ReprForge 已经从“异构索引解耦的工程想法”收敛为一个可研�
 - 已验证跨 retriever 的 Causal Hard Frontier；
 - A100 per-page additive proxy 等于真实并发 wall-clock。
 
-## 投稿前只剩三项高价值工作
+## 下一轮只做最小物理闭环
 
-1. **同一 B32 可行域的单变量 scoring 消融：** Delay locality、completion-only、completion+continuous age，解释约 1% 差异究竟来自哪里；如果差异仍很小，算法独立贡献降级为系统 policy。
-2. **控制面与真实 GPU 校准：** 增量 marginal-cost cache/protected-prefix，报告 scheduler CPU 占真实 build/reload wall-clock 的比例；至少一个 HR/Finance arrival trace 重跑三次。
-3. **跨 retriever 原始 trace：** 在已有 ColModernVBERT artifact 所在机器做 CPU-only B32 replay；不重新编码，先验证 causal transfer，再决定是否做 GPU。
+评分消融和增量控制面已经完成，不再搜索 B、completion/age 权重、tie-break、selector 或 reoptimization trigger。投稿前最有价值的工作缩成两项：
 
-若这三项来不及，论文仍可按系统/IR measurement+method 主线固化；不应为了 ICLR 叙事继续发明新模块或重调 B32。
+1. **同 workload 的真实硬件成本：** 测量实际 batch 下的 build、active-LRU reload/H2D、命中和并发 overlap，把当前 unit/additive proxy 校准成可重放的物理成本表，并报告 scheduler CPU 占端到端 wall-clock 的比例。
+2. **MMDocIR 多级激活 artifact：** 为每个 query 保存 locator activation IDs、pool/full 混合执行结果、逐 item build/reload/bytes 和表示 lineage；先跑 static/dynamic oracle，只有两种文档角色都相对 full-eager、transient 和 GDSF 在 matched nDCG@10 下节省至少 10% charged cost，才继续设计 compiler。
+
+跨 retriever 原始 B32 trace 仍是边界，但不再优先于上述物理闭环。论文可以按系统/IR measurement+method 主线固化；不应为了 ICLR 叙事继续发明评分公式或重调 B32。
 
 ## 主要本地分支
 
@@ -116,5 +130,10 @@ ReprForge 已经从“异构索引解耦的工程想法”收敛为一个可研�
 | `exp/fair-locality-baselines` | `ec900ca` | Delay/DLPM/max-wait closest work |
 | `exp/dependency-structure-ablation` | `01c0bd1` | 共享依赖机制识别 |
 | `exp/causal-cost-robustness` | `a9cd66d` | A100 page-cost 噪声与漂移 |
+| `exp/b32-scoring-ablation` | `f5b04c1` | 评分独立贡献 NO-GO |
+| `exp/incremental-causal-control-plane` | `b375224` | exact 增量控制面 GO |
+| `exp/workload-physical-plan-selector` | `51014c3` | oracle 有空间、可部署选择器 NO-GO |
+| `exp/adaptive-compile-reoptimization` | `44c81d1` | 长周期重优化 NO-GO |
+| `exp/multilevel-representation-compiler` | `88bf45d` | 多级真实 surface headroom 与 artifact 缺口 |
 
 所有分支均为本地分支，未推送远程。
