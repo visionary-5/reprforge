@@ -42,14 +42,17 @@ def load_queries(path: Path) -> dict[str, str]:
 
 
 def minimum_containment_depth(
-    teacher_topk: Iterable[str], locator_ranking: list[str]
+    teacher_topk: Iterable[str],
+    locator_ranking: list[str],
+    *,
+    full_fallback_rows: int = FULL_FALLBACK_ROWS,
 ) -> int:
     """Return the first candidate depth containing every teacher item."""
     teacher = set(teacher_topk)
     for depth in DEPTHS:
         if teacher <= set(locator_ranking[:depth]):
             return depth
-    return FULL_FALLBACK_ROWS
+    return full_fallback_rows
 
 
 def candidate_recall(candidates: Iterable[str], relevant: Iterable[str]) -> float:
@@ -71,11 +74,16 @@ def area_under_roc(values: Iterable[float], targets: Iterable[bool]) -> float:
     return float((np.sum(comparisons > 0) + 0.5 * np.sum(comparisons == 0)) / comparisons.size)
 
 
-def minimum_quality_depth(row: dict[str, Any], tolerance: float = 0.001) -> int:
+def minimum_quality_depth(
+    row: dict[str, Any],
+    tolerance: float = 0.001,
+    *,
+    full_fallback_rows: int = FULL_FALLBACK_ROWS,
+) -> int:
     for depth in DEPTHS:
         if row["regret"][f"cascade{depth}_ndcg_at_10"] <= tolerance:
             return depth
-    return FULL_FALLBACK_ROWS
+    return full_fallback_rows
 
 
 def _mean(values: Iterable[float]) -> float:
@@ -136,6 +144,7 @@ def analyze(
     hpool_path: Path,
     agc_path: Path,
     cascade_paths: dict[int, Path],
+    corpus_pages: int,
     full_index_bytes: int,
     hpool_index_bytes: int,
     agc_index_bytes: int,
@@ -173,7 +182,11 @@ def analyze(
         agc100 = set(agc_docs)
         missing = [doc_id for doc_id in full_top10 if doc_id not in hpool100]
         evidence_missing = [doc_id for doc_id in missing if doc_id in relevance]
-        depth = minimum_containment_depth(full_top10, hpool_docs)
+        depth = minimum_containment_depth(
+            full_top10,
+            hpool_docs,
+            full_fallback_rows=corpus_pages,
+        )
         rankings = {
             "full": full_docs,
             "hpool": hpool_docs,
@@ -220,7 +233,10 @@ def analyze(
                 "hpool_agc_disagreement_at_100": 1.0 - len(hpool100 & agc100) / 100.0,
             },
         }
-        row["quality_preservation_depth"] = minimum_quality_depth(row)
+        row["quality_preservation_depth"] = minimum_quality_depth(
+            row,
+            full_fallback_rows=corpus_pages,
+        )
         per_query.append(row)
         if missing:
             full_positions = {doc_id: rank for rank, doc_id in enumerate(full_docs, 1)}
@@ -259,7 +275,7 @@ def analyze(
 
     groups = {
         str(depth): [row for row in per_query if row["teacher_containment_depth"] == depth]
-        for depth in (*DEPTHS, FULL_FALLBACK_ROWS)
+        for depth in (*DEPTHS, corpus_pages)
     }
     missing_docs = [item for row in escape_details for item in row["missing_documents"]]
     hpool_recalls = [row["candidate_recall_at_100"]["hpool"] for row in per_query]
@@ -307,6 +323,7 @@ def analyze(
         "analysis_scope": {
             "purpose": "post_hoc_failure_boundary_audit_not_a_deployable_policy",
             "queries": len(query_ids),
+            "corpus_pages": corpus_pages,
             "teacher_target": "contain_Full_top10_in_locator_candidates",
             "qrels_use": "analysis_only",
         },
@@ -422,6 +439,7 @@ def main() -> None:
     parser.add_argument("--agc", type=Path, required=True)
     for depth in DEPTHS:
         parser.add_argument(f"--cascade{depth}", type=Path, required=True)
+    parser.add_argument("--corpus-pages", type=int, required=True)
     parser.add_argument("--full-index-bytes", type=int, required=True)
     parser.add_argument("--hpool-index-bytes", type=int, required=True)
     parser.add_argument("--agc-index-bytes", type=int, required=True)
@@ -434,6 +452,7 @@ def main() -> None:
         hpool_path=args.hpool,
         agc_path=args.agc,
         cascade_paths={depth: getattr(args, f"cascade{depth}") for depth in DEPTHS},
+        corpus_pages=args.corpus_pages,
         full_index_bytes=args.full_index_bytes,
         hpool_index_bytes=args.hpool_index_bytes,
         agc_index_bytes=args.agc_index_bytes,

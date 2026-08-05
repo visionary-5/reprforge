@@ -13,6 +13,12 @@ def test_minimum_containment_depth_finds_first_complete_prefix():
     assert minimum_containment_depth(["0", "49"], locator) == 50
     assert minimum_containment_depth(["0", "99"], locator) == 100
     assert minimum_containment_depth(["0", "missing"], locator) == 1110
+    assert (
+        minimum_containment_depth(
+            ["0", "missing"], locator, full_fallback_rows=2942
+        )
+        == 2942
+    )
 
 
 def test_candidate_recall_measures_relevant_coverage_and_union():

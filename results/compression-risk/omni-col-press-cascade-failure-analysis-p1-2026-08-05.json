@@ -1,5 +1,6 @@
 {
   "analysis_scope": {
+    "corpus_pages": 1110,
     "purpose": "post_hoc_failure_boundary_audit_not_a_deployable_policy",
     "qrels_use": "analysis_only",
     "queries": 318,

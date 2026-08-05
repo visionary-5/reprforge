@@ -25,6 +25,19 @@ def _write_jsonl(path: Path, rows: Iterable[dict[str, Any]]) -> None:
             handle.write(json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n")
 
 
+def discover_parquet_shards(dataset_root: Path) -> dict[str, list[Path]]:
+    paths = {
+        part: sorted((dataset_root / part).glob("*.parquet"))
+        for part in ("corpus", "queries", "qrels")
+    }
+    missing = [part for part, shards in paths.items() if not shards]
+    if missing:
+        raise FileNotFoundError(
+            f"missing parquet shards under {dataset_root}: {missing}"
+        )
+    return paths
+
+
 def export_domain(
     dataset_root: Path,
     output_root: Path,
@@ -37,10 +50,7 @@ def export_domain(
     if output_root.exists():
         raise FileExistsError(f"refusing to overwrite output root: {output_root}")
 
-    paths = {
-        part: next((dataset_root / part).glob("*.parquet"))
-        for part in ("corpus", "queries", "qrels")
-    }
+    paths = discover_parquet_shards(dataset_root)
     corpus = sorted(
         parquet.read_table(paths["corpus"]).to_pylist(),
         key=lambda row: int(row["corpus_id"]),
@@ -117,7 +127,10 @@ def export_domain(
         "num_queries": len(query_rows),
         "qrel_complete": True,
         "selection_policy": "all_corpus_pages_and_all_queries_for_language",
-        "source_sha256": {part: _sha256(path) for part, path in paths.items()},
+        "source_sha256": {
+            part: {path.name: _sha256(path) for path in shards}
+            for part, shards in paths.items()
+        },
     }
     (output_root / "manifest.json").write_text(
         json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8"

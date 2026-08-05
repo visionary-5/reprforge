@@ -10,6 +10,8 @@ readonly EXPECTED_MASK_PATCH_SHA256="c2ce55b8e89a7155fa4cf01b6e9a62348bb401c037d
 readonly EXPECTED_MASKING_UTILS_SHA256="bb5aea0104c75e5fce99ddb6377d93905ee69ce4345cd6195f5e8a6c8ecdcf0f"
 readonly EXPECTED_ATTN_MASK_PATCH_SHA256="9b684103f82c318da6821b80639106f81482a5f42cefeeda7bb9ac56e15453d7"
 readonly EXPECTED_QWEN25VL_MODELING_SHA256="dbd2ece6823661da99a9337019888af86d313d7e3f301ffb71c65a04eefe32d3"
+readonly EXPECTED_QUERY_MASK_PATCH_SHA256="f844ed531c727c065f6165104e95eda006ad4913e6791f591bd162ffac32e04a"
+readonly EXPECTED_EVALUATE_SHA256="4221d3794bf2ac484303f103ecd6199e139b414ce2ebe79ae900d2a8cffdb5f0"
 readonly FULL_MODEL_ID="hltcoe/ColBERT_qwen2.5-vl_colpali"
 readonly FULL_MODEL_REVISION="14a7bb3328187705ff153e3511a47f9abb144054"
 readonly FULL_CONFIG_SHA256="b4b7d8e29a63cbd33d30b761a4fa09f1bdb3126e07ace2af1280bc7ad2c69f7d"
@@ -32,6 +34,7 @@ readonly COMPAT_PATCH="${SCRIPT_DIR}/image_only_optional_fast_plaid.patch"
 readonly LOADERS_PATCH="${SCRIPT_DIR}/image_only_optional_fast_plaid_loaders.patch"
 readonly MASK_PATCH="${SCRIPT_DIR}/torch25_mask_device.patch"
 readonly ATTN_MASK_PATCH="${SCRIPT_DIR}/qwen25vl_attention_mask_device.patch"
+readonly QUERY_MASK_PATCH="${SCRIPT_DIR}/query_mask_export.patch"
 
 IFS=',' read -r -a requested_cases <<< "${OMNI_CASES:-full,hpool,agc}"
 for case_name in "${requested_cases[@]}"; do
@@ -181,6 +184,29 @@ if [[ "${actual_qwen25vl_modeling_sha256}" != "${EXPECTED_QWEN25VL_MODELING_SHA2
 fi
 if [[ "${actual_qwen25vl_modeling_sha256}" != "${EXPECTED_QWEN25VL_MODELING_SHA256}" ]]; then
   echo "patched modeling_qwen2_5_vl.py SHA-256 mismatch: ${actual_qwen25vl_modeling_sha256}" >&2
+  exit 2
+fi
+if [[ ! -f "${QUERY_MASK_PATCH}" ]]; then
+  echo "missing query-mask export patch: ${QUERY_MASK_PATCH}" >&2
+  exit 2
+fi
+actual_query_mask_patch_sha256="$(sha256sum "${QUERY_MASK_PATCH}" | awk '{print $1}')"
+if [[ "${actual_query_mask_patch_sha256}" != "${EXPECTED_QUERY_MASK_PATCH_SHA256}" ]]; then
+  echo "query-mask export patch SHA-256 mismatch: ${actual_query_mask_patch_sha256}" >&2
+  exit 2
+fi
+evaluate_file="${OMNI_SOURCE}/src/evaluate.py"
+actual_evaluate_sha256="$(sha256sum "${evaluate_file}" | awk '{print $1}')"
+if [[ "${actual_evaluate_sha256}" != "${EXPECTED_EVALUATE_SHA256}" ]]; then
+  if ! git -C "${OMNI_SOURCE}" diff --quiet -- src/evaluate.py; then
+    echo "refusing to patch an unexpectedly modified evaluate.py" >&2
+    exit 2
+  fi
+  git -C "${OMNI_SOURCE}" apply "${QUERY_MASK_PATCH}"
+  actual_evaluate_sha256="$(sha256sum "${evaluate_file}" | awk '{print $1}')"
+fi
+if [[ "${actual_evaluate_sha256}" != "${EXPECTED_EVALUATE_SHA256}" ]]; then
+  echo "patched evaluate.py SHA-256 mismatch: ${actual_evaluate_sha256}" >&2
   exit 2
 fi
 if [[ "${actual_factory_sha256}" != "${EXPECTED_COMPONENTS_FACTORY_SHA256}" ]]; then
@@ -357,6 +383,8 @@ python - \
   "${actual_masking_utils_sha256}" \
   "${actual_attn_mask_patch_sha256}" \
   "${actual_qwen25vl_modeling_sha256}" \
+  "${actual_query_mask_patch_sha256}" \
+  "${actual_evaluate_sha256}" \
   "${FULL_MODEL_ID}" \
   "${FULL_MODEL_REVISION}" \
   "${needs_full}" \
@@ -387,6 +415,8 @@ from pathlib import Path
     masking_utils_sha256,
     attention_mask_patch_sha256,
     qwen25vl_modeling_sha256,
+    query_mask_patch_sha256,
+    evaluate_sha256,
     model_id,
     model_revision,
     needs_full,
@@ -428,6 +458,8 @@ manifest = {
         "masking_utils_sha256": masking_utils_sha256,
         "attention_mask_device_patch_sha256": attention_mask_patch_sha256,
         "qwen25vl_modeling_sha256": qwen25vl_modeling_sha256,
+        "query_mask_export_patch_sha256": query_mask_patch_sha256,
+        "evaluate_sha256": evaluate_sha256,
     },
     "gpu_names": gpu_names.splitlines(),
     "physical_gpu_id": int(__import__("os").environ["CUDA_VISIBLE_DEVICES"]),
@@ -459,6 +491,10 @@ run_case() {
   local extra_args=("$@")
   local index_path="${OMNI_OUTPUT_ROOT}/${case_name}/index"
   local result_path="${OMNI_OUTPUT_ROOT}/${case_name}/result"
+  local collection_args=(--output_rank_file)
+  if [[ "${case_name}" == "full" ]]; then
+    collection_args+=(--output_query_embeddings)
+  fi
 
   mkdir -p "${index_path}" "${result_path}" "${OMNI_OUTPUT_ROOT}/profiles/${case_name}"
   (
@@ -503,7 +539,8 @@ run_case() {
         --index_type multivec \
         --output_path "${result_path}" \
         --batch_size "${OMNI_QUERY_BATCH_SIZE:-4}" \
-        --top_k 1 5 10 \
+        --top_k 1 5 10 100 \
+        "${collection_args[@]}" \
         "${extra_args[@]}" \
         > "${OMNI_OUTPUT_ROOT}/${case_name}/eval.log" 2>&1
   )
