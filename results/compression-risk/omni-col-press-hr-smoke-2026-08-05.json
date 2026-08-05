@@ -1,0 +1,85 @@
+{
+  "artifact_root": "/data/ldf/reprforge/experiments/strong-baselines-20260805/outputs/omni-hr-full-hpool-470bcd4-gpu3",
+  "attention_implementation": "sdpa",
+  "benchmark": {
+    "corpus_pages": 32,
+    "domain": "vidore_v3_hr",
+    "queries": 16,
+    "representative_quality_sample": false,
+    "selection_caveat": "qrel-complete deterministic smoke biased toward queries requiring fewer incremental positive pages"
+  },
+  "decision": "GO_TO_SCALE",
+  "full": {
+    "artifact_bytes": 368943239,
+    "build_wall_seconds": 55.86,
+    "evaluation_wall_seconds": 16.66,
+    "index_file_bytes": 368575570,
+    "index_file_sha256": "ce47f5c24fd6646b9af09333b20168523eca21a5e68e8a84b7265df0715f2f",
+    "mask_file_bytes": 361042,
+    "mask_file_sha256": "8d89c1f6dd5803160788bec1e848436cec3a5b247dc6cdc3c04da5cb79e622c5",
+    "metrics": {
+      "mrr": 0.921875,
+      "ndcg_at_1": 0.875,
+      "ndcg_at_5": 0.9413503944778032,
+      "ndcg_at_10": 0.9413503944778032,
+      "recall_at_1": 0.875,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0
+    },
+    "results_sha256": "ed2747a8a4a625b856eac0f426bdd2c5476a9d666d135df8ccd10bde52cdf7e8",
+    "tensor": {
+      "dtype": "float32",
+      "payload_bytes": 368574464,
+      "shape": [32, 1406, 2048]
+    }
+  },
+  "hpool_64": {
+    "artifact_bytes": 16784998,
+    "build_wall_seconds": 65.49,
+    "evaluation_wall_seconds": 19.86,
+    "index_file_bytes": 16778322,
+    "index_file_sha256": "59682d6c746185b120be4a59deb81c24ebbc444cab58a005b9f72329d5069eeb",
+    "metrics": {
+      "mrr": 0.90625,
+      "ndcg_at_1": 0.875,
+      "ndcg_at_5": 0.9144331095982161,
+      "ndcg_at_10": 0.9144331095982161,
+      "recall_at_1": 0.875,
+      "recall_at_5": 0.9375,
+      "recall_at_10": 0.9375
+    },
+    "results_sha256": "10dd4498e1d35a49d3bdc01fd9b02c145f69bc574d12a8c6dafa17486a5d56b4",
+    "tensor": {
+      "dtype": "float32",
+      "payload_bytes": 16777216,
+      "shape": [32, 64, 2048]
+    }
+  },
+  "input_sha256": {
+    "corpus": "771f3e4a9359a90b7048528fd56a04ddb765405ea719333a03141df18e28f297",
+    "qrels": "cb3652092a2de66959e4848aa9a87d6ec030ae94af629cc853b558ab190866f0",
+    "queries": "a21f22c1f6fb350d1759865c61d3c7dce1ea223db9fe3c37749cac261c804e4f"
+  },
+  "model": {
+    "id": "hltcoe/ColBERT_qwen2.5-vl_colpali",
+    "revision": "14a7bb3328187705ff153e3511a47f9abb144054"
+  },
+  "provenance": {
+    "gpu": "NVIDIA A100-SXM4-80GB",
+    "manifest_sha256": "f99e7a89449d2d4231e061584133cedc485674747e461f531db876c711233895",
+    "omni_col_press_commit": "4a559677bbc8a3ea0c10322a721b52bb70d382ec",
+    "wrapper_commit": "470bcd4"
+  },
+  "relative": {
+    "artifact_size_reduction_fraction": 0.9545052023571572,
+    "artifact_size_ratio_full_over_hpool": 21.980535177901125,
+    "build_time_delta_seconds_hpool_minus_full": 9.63,
+    "mrr_drop": 0.015625,
+    "ndcg_at_5_drop": 0.02691728487958711,
+    "recall_at_1_drop": 0.0,
+    "recall_at_5_drop": 0.0625,
+    "vectors_per_page_ratio_full_over_hpool": 21.96875
+  },
+  "run_completed_at": "2026-08-05T20:09:25+08:00",
+  "schema_version": 1
+}
