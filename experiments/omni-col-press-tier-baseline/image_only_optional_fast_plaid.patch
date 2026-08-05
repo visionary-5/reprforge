@@ -1,0 +1,28 @@
+diff --git a/src/factory/components_factory.py b/src/factory/components_factory.py
+index 32e0748..d867300 100644
+--- a/src/factory/components_factory.py
++++ b/src/factory/components_factory.py
+@@ -1,6 +1,6 @@
+ from typing import List, Dict, Any, Optional
+ import numpy as np
+-from src.index import MultiModalIndex, MultiVecIndex, FastPlaidIndex
++from src.index import MultiModalIndex, MultiVecIndex
+ 
+ def build_index(
+     index_type: str, 
+@@ -22,6 +22,8 @@ def build_index(
+             build_config=build_config
+         )
+     elif "fast-plaid" in index_type:
++        from src.index import FastPlaidIndex
++
+         index = FastPlaidIndex(
+             index_path=index_output_path,
+             index_type=index_type,
+@@ -38,4 +40,4 @@ def build_index(
+     else:
+         raise ValueError(f"Unsupported index type: {index_type}")
+     index.add_vectors(doc_ids=ids, vectors=embeddings, masks=masks, metadata=metadata)
+-    return index
+\ No newline at end of file
++    return index

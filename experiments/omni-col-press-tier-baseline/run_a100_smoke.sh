@@ -2,11 +2,15 @@
 set -euo pipefail
 
 readonly EXPECTED_SOURCE_COMMIT="4a559677bbc8a3ea0c10322a721b52bb70d382ec"
+readonly EXPECTED_COMPAT_PATCH_SHA256="5448707eaf3b49357784177fc46aea9be6a209d85a86c2cb0d76351099d73721"
+readonly EXPECTED_COMPONENTS_FACTORY_SHA256="9f635a72d7ecf29e36c43a0f115beb099317787613d6bd79fd5b1c2553b659a9"
 readonly FULL_MODEL_ID="hltcoe/ColBERT_qwen2.5-vl_colpali"
 readonly FULL_MODEL_REVISION="14a7bb3328187705ff153e3511a47f9abb144054"
 readonly AGC_MODEL_ID="hltcoe/AGC_qwen2.5-vl_colpali"
 readonly AGC_MODEL_REVISION="14ba8fb11de7d15d5a87c7fa17e893bffcdd9020"
 readonly ATTN_IMPLEMENTATION="${OMNI_ATTN_IMPLEMENTATION:-sdpa}"
+readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+readonly COMPAT_PATCH="${SCRIPT_DIR}/image_only_optional_fast_plaid.patch"
 
 IFS=',' read -r -a requested_cases <<< "${OMNI_CASES:-full,hpool,agc}"
 for case_name in "${requested_cases[@]}"; do
@@ -64,7 +68,31 @@ if [[ "${actual_commit}" != "${EXPECTED_SOURCE_COMMIT}" ]]; then
   exit 2
 fi
 
-for executable in python torchrun nvidia-smi /usr/bin/time; do
+if [[ ! -f "${COMPAT_PATCH}" ]]; then
+  echo "missing image-only optional Fast-Plaid compatibility patch: ${COMPAT_PATCH}" >&2
+  exit 2
+fi
+actual_patch_sha256="$(sha256sum "${COMPAT_PATCH}" | awk '{print $1}')"
+if [[ "${actual_patch_sha256}" != "${EXPECTED_COMPAT_PATCH_SHA256}" ]]; then
+  echo "compatibility patch SHA-256 mismatch: ${actual_patch_sha256}" >&2
+  exit 2
+fi
+components_factory="${OMNI_SOURCE}/src/factory/components_factory.py"
+actual_factory_sha256="$(sha256sum "${components_factory}" | awk '{print $1}')"
+if [[ "${actual_factory_sha256}" != "${EXPECTED_COMPONENTS_FACTORY_SHA256}" ]]; then
+  if ! git -C "${OMNI_SOURCE}" diff --quiet -- src/factory/components_factory.py; then
+    echo "refusing to patch an unexpectedly modified components_factory.py" >&2
+    exit 2
+  fi
+  git -C "${OMNI_SOURCE}" apply "${COMPAT_PATCH}"
+  actual_factory_sha256="$(sha256sum "${components_factory}" | awk '{print $1}')"
+fi
+if [[ "${actual_factory_sha256}" != "${EXPECTED_COMPONENTS_FACTORY_SHA256}" ]]; then
+  echo "patched components_factory.py SHA-256 mismatch: ${actual_factory_sha256}" >&2
+  exit 2
+fi
+
+for executable in git python sha256sum torchrun nvidia-smi /usr/bin/time; do
   if ! command -v "${executable}" >/dev/null 2>&1; then
     echo "missing executable: ${executable}" >&2
     exit 2

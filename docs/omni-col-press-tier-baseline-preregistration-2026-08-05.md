@@ -99,6 +99,13 @@ ViDoRe smoke 输入由 `tools/export_vidore_omni_smoke.py` 从冻结本地 Parqu
 导出器只选择所有正相关页都能装入页预算的英文查询，写出源文件 SHA-256、查询和
 页面 ID，并断言所选查询的 qrel 完整，避免为了 32 页上限静默删除金标准证据。
 
+官方提交会在选择普通 `multivec` 时也顶层导入可选 Fast-Plaid，而 Fast-Plaid 没有
+与服务器 PyTorch 2.5 对应的公开 wheel。运行器因此应用并校验
+`image_only_optional_fast_plaid.patch`：只把 `FastPlaidIndex` 移到对应分支内延迟
+导入，不修改 `MultiVecIndex`、模型、压缩或评价代码。结果 manifest 必须记录官方
+commit、补丁 SHA-256 和补丁后文件 SHA-256；这属于公开的环境兼容差异，不能描述成
+上游源码零修改复现。
+
 ## 6. 对 ReprForge 的直接价值
 
 OmniColPress 是一个合适的表示 DAG 物理基线，但贡献边界要说清楚：
