@@ -9,6 +9,7 @@ required_vars=(
   OMNI_QRELS
   OMNI_ASSETS
   OMNI_MODEL_CACHE
+  OMNI_PYTHON_BIN
   OMNI_OUTPUT_ROOT
   OMNI_MAX_CORPUS_ROWS
   OMNI_MAX_QUERY_ROWS
@@ -20,13 +21,22 @@ for name in "${required_vars[@]}"; do
     exit 2
   fi
 done
-for path_name in REPRFORGE_ROOT OMNI_SOURCE OMNI_CORPUS_JSONL OMNI_QUERY_JSONL OMNI_QRELS OMNI_ASSETS OMNI_MODEL_CACHE OMNI_OUTPUT_ROOT; do
+for path_name in REPRFORGE_ROOT OMNI_SOURCE OMNI_CORPUS_JSONL OMNI_QUERY_JSONL OMNI_QRELS OMNI_ASSETS OMNI_MODEL_CACHE OMNI_PYTHON_BIN OMNI_OUTPUT_ROOT; do
   path_value="${!path_name}"
   if [[ "${path_value}" != /* ]]; then
     echo "${path_name} must be absolute: ${path_value}" >&2
     exit 2
   fi
 done
+if [[ ! -x "${OMNI_PYTHON_BIN}" ]]; then
+  echo "OMNI_PYTHON_BIN must be an executable file: ${OMNI_PYTHON_BIN}" >&2
+  exit 2
+fi
+export PATH="$(dirname "${OMNI_PYTHON_BIN}"):${PATH}"
+if [[ "$(command -v python)" != "${OMNI_PYTHON_BIN}" ]]; then
+  echo "failed to pin python to OMNI_PYTHON_BIN: $(command -v python)" >&2
+  exit 2
+fi
 
 readonly DOMAIN_RUNNER="${REPRFORGE_ROOT}/experiments/omni-col-press-tier-baseline/run_a100_smoke.sh"
 if [[ ! -f "${DOMAIN_RUNNER}" ]]; then

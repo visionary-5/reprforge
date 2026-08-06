@@ -402,6 +402,7 @@ python - \
 import hashlib
 import importlib.metadata
 import json
+import platform
 import sys
 from pathlib import Path
 
@@ -478,6 +479,7 @@ manifest = {
         if enabled
     ],
     "packages": packages,
+    "python": {"executable": sys.executable, "version": platform.python_version()},
     "upstream_commit": upstream_commit,
     "wrapper_revision": wrapper_revision,
 }
