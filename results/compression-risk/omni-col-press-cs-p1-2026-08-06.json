@@ -1,0 +1,167 @@
+{
+  "schema_version": 1,
+  "status": "completed",
+  "protocol": "omni-cs-full-hpool-agc-cascade-p1-2026-08-06",
+  "dataset": {
+    "name": "ViDoRe v3 computer science",
+    "corpus_pages": 1360,
+    "queries": 215,
+    "positive_qrels": 1049,
+    "corpus_sha256": "e17571061d7a051f2768abe1333e44b0e5219295ce00a252be6736ddc6bf79f3",
+    "queries_sha256": "fa1e969e822416fcd58dc58d0b2f44326e5a53a8e3e02f7b840c881238d5beec",
+    "qrels_sha256": "6c7a70a832edda50fdf87e90db310b5c5e4ed3f42862f28d7da46867bc144f90"
+  },
+  "environment": {
+    "gpu": "NVIDIA GeForce RTX 5090",
+    "gpu_memory_mib": 32607,
+    "python": "3.12.3",
+    "torch": "2.8.0+cu128",
+    "transformers": "4.57.1",
+    "attention_implementation": "sdpa",
+    "upstream_commit": "4a559677bbc8a3ea0c10322a721b52bb70d382ec",
+    "wrapper_revision": "50a66938265a551844b3af1e3393ca32b01bc831"
+  },
+  "representations": {
+    "full": {
+      "model_revision": "14a7bb3328187705ff153e3511a47f9abb144054",
+      "shape": [1360, 1386, 2048],
+      "index_directory_bytes": 15456710172,
+      "build_wall_seconds": 338.82,
+      "evaluate_wall_seconds": 38.73,
+      "metrics": {
+        "recall_at_1": 0.28076561681212864,
+        "recall_at_5": 0.6407310002658838,
+        "recall_at_10": 0.7887647107414548,
+        "recall_at_100": 0.9860718738625716,
+        "ndcg_at_5": 0.7101663385113977,
+        "ndcg_at_10": 0.7431684136784683,
+        "mrr": 0.852573440247859
+      }
+    },
+    "hpool_64": {
+      "model_revision": "14a7bb3328187705ff153e3511a47f9abb144054",
+      "shape": [1360, 64, 2048],
+      "index_directory_bytes": 713068266,
+      "full_over_index_ratio": 21.67634,
+      "build_wall_seconds": 931.4,
+      "evaluate_wall_seconds": 20.84,
+      "metrics": {
+        "recall_at_1": 0.2784106720153232,
+        "recall_at_5": 0.6456360177290411,
+        "recall_at_10": 0.7850337001499793,
+        "recall_at_100": 0.9838757237594448,
+        "ndcg_at_5": 0.7167363212594828,
+        "ndcg_at_10": 0.7430983680445202,
+        "mrr": 0.8468866361889618
+      },
+      "paired_full_minus_hpool_ndcg_at_10": {
+        "mean": 0.00007004563394766862,
+        "ci95": [-0.01152243022211116, 0.012022450295848355]
+      }
+    },
+    "agc_64": {
+      "model_revision": "14ba8fb11de7d15d5a87c7fa17e893bffcdd9020",
+      "shape": [1360, 64, 2048],
+      "index_directory_bytes": 713766031,
+      "full_over_index_ratio": 21.65515,
+      "build_wall_seconds": 289.79,
+      "evaluate_wall_seconds": 14.32,
+      "metrics": {
+        "recall_at_1": 0.2995547217640243,
+        "recall_at_5": 0.661094319117575,
+        "recall_at_10": 0.8012916928033207,
+        "recall_at_100": 0.9802343780250756,
+        "ndcg_at_5": 0.7359709490909612,
+        "ndcg_at_10": 0.763332373628379,
+        "mrr": 0.8823532668881505
+      },
+      "paired_full_minus_agc_ndcg_at_10": {
+        "mean": -0.02016395994991102,
+        "ci95": [-0.036613335221866786, -0.0036756172904838314]
+      },
+      "paired_full_minus_agc_recall_at_100": {
+        "mean": 0.005837495837495838,
+        "ci95": [0.0001665253351299873, 0.012109528068830387]
+      }
+    }
+  },
+  "cascade": {
+    "candidate_locator": "hpool_64",
+    "cold_reranker": "full",
+    "quality": {
+      "20": {
+        "recall_at_10": 0.7861991884084908,
+        "ndcg_at_10": 0.7431123892933426,
+        "mrr": 0.853126027719051,
+        "full_minus_candidate_ndcg_at_10": 0.00005602438512557768,
+        "ci95": [-0.0016728449449615079, 0.0018528806319765708],
+        "logical_full_bytes_per_query": 227304000
+      },
+      "50": {
+        "recall_at_10": 0.7896949432995944,
+        "ndcg_at_10": 0.7438471166829412,
+        "mrr": 0.8528170901905512,
+        "full_minus_candidate_ndcg_at_10": -0.0006787030044733169,
+        "ci95": [-0.0018322776141694792, 0.0],
+        "logical_full_bytes_per_query": 568260000
+      },
+      "100": {
+        "recall_at_10": 0.7887647107414549,
+        "ndcg_at_10": 0.743168413678468,
+        "mrr": 0.8525734402478589,
+        "full_minus_candidate_ndcg_at_10": 0.0,
+        "ci95": [0.0, 0.0],
+        "logical_full_bytes_per_query": 1136520000
+      }
+    },
+    "prototype_full_candidate_scoring": {
+      "queries": 215,
+      "total_seconds": 138.4088400863111,
+      "mean_query_seconds": 0.6437601000243841,
+      "p50_query_seconds": 0.6158108077943325,
+      "p95_query_seconds": 0.7080251339823007,
+      "query_encoding_excluded": true,
+      "os_page_cache_controlled": false
+    }
+  },
+  "failure_boundary": {
+    "full_top10_containment_depth_counts": {
+      "20": 165,
+      "50": 40,
+      "100": 9,
+      "full": 1
+    },
+    "ndcg_at_10_preservation_depth_counts": {
+      "20": 210,
+      "50": 5,
+      "100": 0,
+      "full": 0
+    },
+    "hpool_quality_harm_queries": 77,
+    "hpool_quality_harm_recovered_by_cascade100": 77,
+    "candidate_escape_queries": 1,
+    "candidate_escape_documents": 1,
+    "relevant_candidate_escape_queries": 0,
+    "irreducible_quality_failure_queries": 0
+  },
+  "multi_locator_diagnostic": {
+    "hpool_mean_relevant_recall_at_100": 0.9838757237594448,
+    "agc_mean_relevant_recall_at_100": 0.9802343780250757,
+    "hpool_agc_union_mean_relevant_recall_at_100": 0.9875024587815285,
+    "queries_improved_by_union": 7,
+    "combined_locator_index_bytes": 1426066358,
+    "combined_over_hpool_ratio": 2.0,
+    "mean_union_candidates": 122.4,
+    "interpretation": "Diagnostic only: the second checkpoint, query encoding, lifecycle and fusion costs are not yet charged."
+  },
+  "artifacts": {
+    "remote_root": "/root/autodl-tmp/outputs/omni-cs-p1-full-hpool-agc-cascade-50a6693-rtx5090-run5",
+    "run_manifest_sha256": "95a9be43791e1ee3b5a94c322affb06098a68a59b0584cf11b2fa2b3d0d97437",
+    "full_results_sha256": "91fd60182b44249bccdb8364390982df2132837cbf1b7377383447364fa7686f",
+    "hpool_results_sha256": "e1e75bbed536647c39a9bc333effe32b28f653dab7d39bc934d38d0fa1a2060d",
+    "agc_results_sha256": "f2e707708ee89081611f9564d5879c0eeb7f004006137db888fbb141323d4a7c",
+    "cascade_manifest_sha256": "73f2a7851e9e5548a243d3cecb27f8ffb0974fd41339a259fadcafef96a08bd4",
+    "ranking_matrix_sha256": "4a98995c29aa555f1135a262d67bc74393ee8d5cb558e62817cd5f50955dc426",
+    "failure_boundary_sha256": "75e411898dc9eac1d108e9aa1bea6633bf0b4480bab53e66687716a4226c8c08"
+  }
+}
