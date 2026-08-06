@@ -4,7 +4,7 @@ set -euo pipefail
 readonly DATA_ROOT="${AUTODL_DATA_ROOT:-/root/autodl-tmp}"
 readonly REPRFORGE_ROOT="${DATA_ROOT}/reprforge/repo"
 readonly INPUT_ROOT="${DATA_ROOT}/datasets/vidore-v3-computer-science"
-readonly OUTPUT_ROOT="${AUTODL_OUTPUT_ROOT:-${DATA_ROOT}/outputs/omni-cs-p1-full-hpool-agc-cascade-50a6693-rtx5090}"
+readonly OUTPUT_ROOT="${AUTODL_OUTPUT_ROOT:-${DATA_ROOT}/outputs/omni-cs-p1-full-hpool-agc-cascade-12bfcb2-rtx5090}"
 
 export REPRFORGE_ROOT
 export OMNI_SOURCE="${DATA_ROOT}/reprforge/omni-col-press"
@@ -18,7 +18,7 @@ export OMNI_OUTPUT_ROOT="${OUTPUT_ROOT}"
 export OMNI_MAX_CORPUS_ROWS=1360
 export OMNI_MAX_QUERY_ROWS=215
 export OMNI_EXPECTED_GPU_NAME_SUBSTRING="RTX 5090"
-export OMNI_WRAPPER_REVISION="50a66938265a551844b3af1e3393ca32b01bc831"
+export OMNI_WRAPPER_REVISION="12bfcb260b15b95f136db59074bd396a379139af"
 export OMNI_PROFILE_BATCHES=1
 export CUDA_VISIBLE_DEVICES=0
 export HF_HOME="${DATA_ROOT}/cache/huggingface"
