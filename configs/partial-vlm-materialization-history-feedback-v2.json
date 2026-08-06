@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "protocol_id": "partial-vlm-materialization-history-feedback-v2-2026-08-06",
+  "status": "FROZEN_BEFORE_HISTORY_FEEDBACK_RESULTS",
+  "claim_scope": "CPU cross-fit diagnostic of whether past relevance feedback can select persistently useful VLM retrieval pages",
+  "research_question": "Does historical relevance feedback, used only from past folds, close enough of the future-information oracle gap to justify persistent VLM retrieval-index materialization?",
+  "primary_fusion": {
+    "name": "rrf60_top100_fixed_global_visual_rank_oracle",
+    "text_top_k": 100,
+    "visual_top_k": 100,
+    "rrf_constant": 60,
+    "warning": "Full visual ranks remain forbidden to a deployable method; this experiment isolates selection transfer only."
+  },
+  "sensitivity_fusion": {
+    "name": "masked_full_corpus_zscore_oracle",
+    "warning": "Full-corpus visual calibration remains forbidden; selected-set fusions quantify the deployment gap."
+  },
+  "budgets": [0.0, 0.05, 0.1, 0.2, 0.4, 0.6, 1.0],
+  "cross_fit": {
+    "folds": 5,
+    "assignment": "sha256(query_id + seed) modulo folds",
+    "seed": 20260806,
+    "history_role": "page selection may use historical qrels as a proxy for clicks or successful-answer feedback",
+    "future_role": "future qrels and scores are evaluation-only"
+  },
+  "selection_policies": {
+    "random": "uniform random pages; 10 fixed repetitions",
+    "corpus_uniform": "even coverage over stable corpus order",
+    "text_risk": "lowest text posting bytes; fallback is lowest historical BM25 visibility",
+    "history_frequency": "historical BM25 Top-100 discounted candidate frequency",
+    "cover25_frequency75": "25% text-risk coverage plus historical candidate frequency",
+    "history_relevance": "historical qrel frequency as a proxy for observed clicks/success, filled by candidate frequency",
+    "history_relevance_cover25": "25% text-risk coverage plus historical relevance feedback, filled by candidate frequency",
+    "score_oracle": "future Full visual Top-100 frequency; forbidden",
+    "label_rank_oracle": "future qrels plus Full ranks; forbidden optimistic oracle"
+  },
+  "random_repetitions": 10,
+  "quality_metrics": ["nDCG@10", "Recall@100"],
+  "gain_recovery": "(Q_partial - Q_text) / (Q_full_hybrid - Q_text); omit when absolute denominator < 0.005",
+  "online_trace": {
+    "query_scope_top_k": 20,
+    "orders": 20,
+    "seed": 2026080611,
+    "nonpersistent_baseline": "Current-query BM25 Top-20 visual rescoring, discarded; DVI-style retrieval proxy only.",
+    "persistent_baseline": "Current-query BM25 Top-20 representations retained; naive selected-set RRF."
+  },
+  "audit_gate": {
+    "oracle_budget_range": [0.2, 0.4],
+    "oracle_gain_recovery_target": 0.7,
+    "minimum_full_hybrid_absolute_gain": 0.005,
+    "domains_required_with_positive_headroom": 2,
+    "realizable_feedback_target": "At 20% or 40% pages, historical-feedback selection should recover at least 50% of positive full-hybrid gain in two domains under oracle-fixed calibration.",
+    "persistence_boundary": "Report exact relevant-page overlap from history to future; zero-overlap workloads favor nonpersistent query-time analysis."
+  },
+  "information_boundary": {
+    "opened_domains": ["vidore_v3_hr", "vidore_v3_finance_en", "irpapers"],
+    "historical_qrels_semantics": "Only a proxy for observable feedback; not assumed free in deployment.",
+    "forbidden_to_feedback_policy": ["future qrels", "future visual scores", "complete visual score distribution"]
+  }
+}

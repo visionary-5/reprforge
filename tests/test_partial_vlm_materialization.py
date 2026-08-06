@@ -7,6 +7,7 @@ from reprforge.partial_vlm_materialization import (
     fold_assignments,
     gain_recovery,
     online_trace_audit,
+    relevance_reuse_crossfit,
     select_pages,
 )
 
@@ -133,6 +134,36 @@ def test_history_policy_does_not_read_future_visual_scores_or_qrels():
         seed=7,
     )
     np.testing.assert_array_equal(first, second)
+
+
+def test_history_relevance_policy_reads_history_feedback_but_not_future_labels():
+    original = _surface()
+    changed = _surface()
+    changed.qrels[2:] = changed.qrels[2:, ::-1]
+    first = select_pages(
+        original,
+        policy="history_relevance",
+        count=2,
+        history_queries=[0, 1],
+        future_queries=[2, 3],
+        seed=7,
+    )
+    second = select_pages(
+        changed,
+        policy="history_relevance",
+        count=2,
+        history_queries=[0, 1],
+        future_queries=[2, 3],
+        seed=7,
+    )
+    np.testing.assert_array_equal(first, second)
+    assert set(first) == {4, 5}
+
+
+def test_relevance_reuse_crossfit_distinguishes_repeated_evidence():
+    result = relevance_reuse_crossfit(_surface(), np.asarray([0, 0, 1, 1]))
+    assert result["unique_page_overlap_fraction_weighted"] == 1.0
+    assert result["event_overlap_fraction_weighted"] == 1.0
 
 
 def test_label_rank_oracle_is_explicitly_allowed_to_use_future_labels():

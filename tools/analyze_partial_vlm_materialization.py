@@ -22,19 +22,11 @@ from reprforge.partial_vlm_materialization import (
     fold_assignments,
     gain_recovery,
     online_trace_audit,
+    relevance_reuse_crossfit,
     select_pages,
 )
 
 
-POLICIES = (
-    "random",
-    "corpus_uniform",
-    "text_risk",
-    "history_frequency",
-    "cover25_frequency75",
-    "score_oracle",
-    "label_rank_oracle",
-)
 FUSIONS = ("rrf_global_oracle", "zscore_global_oracle", "rrf", "zscore")
 
 
@@ -95,7 +87,7 @@ def _audit_domain(surface: ScoreSurface, config: dict[str, Any]) -> dict[str, An
     baselines = _baseline(surface, config)
     curves: dict[str, Any] = {fusion: {} for fusion in FUSIONS}
     for fusion in FUSIONS:
-        for policy in POLICIES:
+        for policy in config["selection_policies"]:
             policy_rows: dict[str, Any] = {}
             for budget_fraction in config["budgets"]:
                 count = int(math.ceil(float(budget_fraction) * surface.pages))
@@ -211,6 +203,7 @@ def _audit_domain(surface: ScoreSurface, config: dict[str, Any]) -> dict[str, An
         "cross_fit_fold_sizes": {
             str(fold): int(np.sum(split == fold)) for fold in range(folds)
         },
+        "cross_fit_relevance_reuse": relevance_reuse_crossfit(surface, split),
         "static_materialization_curves": curves,
         "online_promotion_proxy": online_summary,
     }

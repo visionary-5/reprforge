@@ -308,6 +308,71 @@ def _top_utility(utility: np.ndarray, count: int, *, positive_only: bool = False
     return np.asarray(order[:count], dtype=np.int32)
 
 
+def relevance_reuse_crossfit(
+    surface: ScoreSurface, assignments: np.ndarray
+) -> dict[str, Any]:
+    """Measure whether future relevant evidence was observed in historical feedback.
+
+    This is an audit diagnostic, not an input to a deployment policy.  Each fold is
+    treated as the future and all other folds as history.
+    """
+    rows = []
+    for fold in sorted(set(map(int, assignments))):
+        history = np.flatnonzero(assignments != fold)
+        future = np.flatnonzero(assignments == fold)
+        history_pages = set(
+            map(int, np.flatnonzero(np.any(surface.qrels[history] > 0, axis=0)))
+        )
+        future_relevant = surface.qrels[future] > 0
+        future_pages = set(
+            map(int, np.flatnonzero(np.any(future_relevant, axis=0)))
+        )
+        future_events = int(np.sum(future_relevant))
+        repeated_events = int(np.sum(future_relevant[:, sorted(history_pages)]))
+        rows.append(
+            {
+                "fold": fold,
+                "history_relevant_pages": len(history_pages),
+                "future_unique_relevant_pages": len(future_pages),
+                "future_relevant_page_events": future_events,
+                "unique_page_overlap_fraction": (
+                    len(history_pages & future_pages) / len(future_pages)
+                    if future_pages
+                    else None
+                ),
+                "event_overlap_fraction": (
+                    repeated_events / future_events if future_events else None
+                ),
+            }
+        )
+    future_unique = sum(row["future_unique_relevant_pages"] for row in rows)
+    future_events = sum(row["future_relevant_page_events"] for row in rows)
+    return {
+        "folds": rows,
+        "unique_page_overlap_fraction_weighted": (
+            sum(
+                row["unique_page_overlap_fraction"]
+                * row["future_unique_relevant_pages"]
+                for row in rows
+                if row["unique_page_overlap_fraction"] is not None
+            )
+            / future_unique
+            if future_unique
+            else None
+        ),
+        "event_overlap_fraction_weighted": (
+            sum(
+                row["event_overlap_fraction"] * row["future_relevant_page_events"]
+                for row in rows
+                if row["event_overlap_fraction"] is not None
+            )
+            / future_events
+            if future_events
+            else None
+        ),
+    }
+
+
 def select_pages(
     surface: ScoreSurface,
     *,
@@ -333,6 +398,25 @@ def select_pages(
     )
     if policy == "history_frequency":
         return _top_utility(history_frequency, count)
+    if policy in ("history_relevance", "history_relevance_cover25"):
+        history_relevance = np.sum(
+            surface.qrels[np.asarray(history_queries, dtype=np.int32)], axis=0
+        ).astype(np.float64)
+        if policy == "history_relevance":
+            selected = list(
+                map(
+                    int,
+                    _top_utility(history_relevance, count, positive_only=True),
+                )
+            )
+            selected_set = set(selected)
+            if len(selected_set) >= count:
+                return np.asarray(sorted(selected_set), dtype=np.int32)
+            for page in _top_utility(history_frequency, surface.pages):
+                selected_set.add(int(page))
+                if len(selected_set) >= count:
+                    break
+            return np.asarray(sorted(selected_set), dtype=np.int32)
     if np.ptp(surface.text_bytes) > 0:
         positions = np.arange(surface.pages)
         risk_order = np.lexsort((positions, surface.text_bytes))
@@ -349,6 +433,25 @@ def select_pages(
             selected.add(int(page))
             if len(selected) >= count:
                 break
+        return np.asarray(sorted(selected), dtype=np.int32)
+    if policy == "history_relevance_cover25":
+        cover_count = max(1, int(math.ceil(0.25 * count)))
+        selected = set(map(int, risk_order[:cover_count]))
+        history_relevance = np.sum(
+            surface.qrels[np.asarray(history_queries, dtype=np.int32)], axis=0
+        ).astype(np.float64)
+        for utility in (history_relevance, history_frequency):
+            for page in _top_utility(utility, surface.pages, positive_only=True):
+                selected.add(int(page))
+                if len(selected) >= count:
+                    break
+            if len(selected) >= count:
+                break
+        if len(selected) < count:
+            for page in _top_utility(history_frequency, surface.pages):
+                selected.add(int(page))
+                if len(selected) >= count:
+                    break
         return np.asarray(sorted(selected), dtype=np.int32)
     if policy == "score_oracle":
         utility = _discounted_frequency(
