@@ -28,6 +28,7 @@ readonly AGC_TOKENIZER_SHA256="415c5df5240dfbe73da9b203c4f714dd8ea787a562513406f
 readonly AGC_SHARD_1_SHA256="8169ed5c7b29533e39eb0109275d724d4b4be35fd4fd750cdbd118522830c548"
 readonly AGC_SHARD_2_SHA256="f7e4566b091cc43657cecc68016f7152ba355a57c88fb74fd1341c9f67420711"
 readonly ATTN_IMPLEMENTATION="${OMNI_ATTN_IMPLEMENTATION:-sdpa}"
+readonly EXPECTED_GPU_NAME_SUBSTRING="${OMNI_EXPECTED_GPU_NAME_SUBSTRING:-A100}"
 readonly MAX_CORPUS_ROWS="${OMNI_MAX_CORPUS_ROWS:-32}"
 readonly MAX_QUERY_ROWS="${OMNI_MAX_QUERY_ROWS:-16}"
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -228,8 +229,8 @@ if [[ ! "${CUDA_VISIBLE_DEVICES:-}" =~ ^[0-9]+$ ]]; then
 fi
 readonly PHYSICAL_GPU_ID="${CUDA_VISIBLE_DEVICES}"
 gpu_names="$(nvidia-smi --id="${PHYSICAL_GPU_ID}" --query-gpu=name --format=csv,noheader)"
-if [[ "${gpu_names}" != *A100* ]]; then
-  echo "this preregistration requires one A100; GPU ${PHYSICAL_GPU_ID}: ${gpu_names}" >&2
+if [[ -z "${EXPECTED_GPU_NAME_SUBSTRING}" || "${gpu_names}" != *"${EXPECTED_GPU_NAME_SUBSTRING}"* ]]; then
+  echo "GPU ${PHYSICAL_GPU_ID} does not match expected name substring '${EXPECTED_GPU_NAME_SUBSTRING}': ${gpu_names}" >&2
   exit 2
 fi
 gpu_memory_used="$(nvidia-smi --id="${PHYSICAL_GPU_ID}" --query-gpu=memory.used --format=csv,noheader,nounits | tr -d ' ')"
