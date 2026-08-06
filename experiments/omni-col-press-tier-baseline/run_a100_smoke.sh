@@ -444,7 +444,7 @@ def sha256(path):
 packages = {}
 for package in (
     "accelerate", "datasets", "faiss-cpu", "huggingface-hub", "peft",
-    "qwen-vl-utils", "torch", "torchvision", "transformers",
+    "qwen-vl-utils", "scipy", "torch", "torchvision", "transformers",
 ):
     packages[package] = importlib.metadata.version(package)
 
