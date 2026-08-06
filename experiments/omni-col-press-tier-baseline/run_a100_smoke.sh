@@ -33,6 +33,8 @@ readonly ATTN_IMPLEMENTATION="${OMNI_ATTN_IMPLEMENTATION:-sdpa}"
 readonly EXPECTED_GPU_NAME_SUBSTRING="${OMNI_EXPECTED_GPU_NAME_SUBSTRING:-A100}"
 readonly MAX_CORPUS_ROWS="${OMNI_MAX_CORPUS_ROWS:-32}"
 readonly MAX_QUERY_ROWS="${OMNI_MAX_QUERY_ROWS:-16}"
+readonly DATASET_NUMBER_OF_SHARDS="${OMNI_DATASET_NUMBER_OF_SHARDS:-1}"
+readonly DATASET_SHARD_INDEX="${OMNI_DATASET_SHARD_INDEX:-0}"
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly COMPAT_PATCH="${SCRIPT_DIR}/image_only_optional_fast_plaid.patch"
 readonly LOADERS_PATCH="${SCRIPT_DIR}/image_only_optional_fast_plaid_loaders.patch"
@@ -54,6 +56,12 @@ done
 
 if [[ ! "${MAX_CORPUS_ROWS}" =~ ^[1-9][0-9]*$ ]] || [[ ! "${MAX_QUERY_ROWS}" =~ ^[1-9][0-9]*$ ]]; then
   echo "OMNI_MAX_CORPUS_ROWS and OMNI_MAX_QUERY_ROWS must be positive integers" >&2
+  exit 2
+fi
+if [[ ! "${DATASET_NUMBER_OF_SHARDS}" =~ ^[1-9][0-9]*$ ]] || \
+   [[ ! "${DATASET_SHARD_INDEX}" =~ ^[0-9]+$ ]] || \
+   (( DATASET_SHARD_INDEX >= DATASET_NUMBER_OF_SHARDS )); then
+  echo "invalid corpus shard ${DATASET_SHARD_INDEX}/${DATASET_NUMBER_OF_SHARDS}" >&2
   exit 2
 fi
 
@@ -514,6 +522,10 @@ manifest = {
     },
     "gpu_names": gpu_names.splitlines(),
     "physical_gpu_id": int(__import__("os").environ["CUDA_VISIBLE_DEVICES"]),
+    "corpus_shard": {
+        "number_of_shards": int(__import__("os").environ.get("OMNI_DATASET_NUMBER_OF_SHARDS", "1")),
+        "shard_index": int(__import__("os").environ.get("OMNI_DATASET_SHARD_INDEX", "0")),
+    },
     "inputs": {
         "corpus": {"path": corpus_path, "sha256": sha256(corpus_path)},
         "qrels": {"path": qrels_path, "sha256": sha256(qrels_path)},
@@ -544,6 +556,10 @@ run_case() {
   local index_path="${OMNI_OUTPUT_ROOT}/${case_name}/index"
   local result_path="${OMNI_OUTPUT_ROOT}/${case_name}/result"
   local collection_args=(--output_rank_file)
+  local sharding_args=(
+    --dataset_number_of_shards "${DATASET_NUMBER_OF_SHARDS}"
+    --dataset_shard_index "${DATASET_SHARD_INDEX}"
+  )
   if [[ "${case_name}" == "full" ]]; then
     collection_args+=(--output_query_embeddings)
   fi
@@ -570,6 +586,7 @@ run_case() {
         --index_output_path "${index_path}" \
         --index_type multivec \
         --batch_size "${OMNI_BATCH_SIZE:-1}" \
+        "${sharding_args[@]}" \
         "${extra_args[@]}" \
         > "${OMNI_OUTPUT_ROOT}/${case_name}/build.log" 2>&1
 
