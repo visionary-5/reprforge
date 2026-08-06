@@ -13,6 +13,8 @@ readonly EXPECTED_QWEN25VL_MODELING_SHA256="dbd2ece6823661da99a9337019888af86d31
 readonly EXPECTED_QUERY_MASK_PATCH_SHA256="f844ed531c727c065f6165104e95eda006ad4913e6791f591bd162ffac32e04a"
 # The upstream file has no final newline; git apply preserves that byte layout.
 readonly EXPECTED_EVALUATE_SHA256="e5bd7d82edd2871f8c72abe8ebb205e993850459732617b17e2715de46492259"
+readonly EXPECTED_BUILD_BUFFER_PATCH_SHA256="65340c79adf5ef47ad33f8c4a7ace75a6037f299a20eba7448e3615724e924df"
+readonly EXPECTED_BUILD_INDEX_SHA256="5ccacf56534f15926afdbfd04e270f807ee912d68f5b7a3f4a0e40e1020371d1"
 readonly FULL_MODEL_ID="hltcoe/ColBERT_qwen2.5-vl_colpali"
 readonly FULL_MODEL_REVISION="14a7bb3328187705ff153e3511a47f9abb144054"
 readonly FULL_CONFIG_SHA256="b4b7d8e29a63cbd33d30b761a4fa09f1bdb3126e07ace2af1280bc7ad2c69f7d"
@@ -37,6 +39,7 @@ readonly LOADERS_PATCH="${SCRIPT_DIR}/image_only_optional_fast_plaid_loaders.pat
 readonly MASK_PATCH="${SCRIPT_DIR}/torch25_mask_device.patch"
 readonly ATTN_MASK_PATCH="${SCRIPT_DIR}/qwen25vl_attention_mask_device.patch"
 readonly QUERY_MASK_PATCH="${SCRIPT_DIR}/query_mask_export.patch"
+readonly BUILD_BUFFER_PATCH="${SCRIPT_DIR}/release_build_buffers_before_save.patch"
 
 IFS=',' read -r -a requested_cases <<< "${OMNI_CASES:-full,hpool,agc}"
 for case_name in "${requested_cases[@]}"; do
@@ -209,6 +212,29 @@ if [[ "${actual_evaluate_sha256}" != "${EXPECTED_EVALUATE_SHA256}" ]]; then
 fi
 if [[ "${actual_evaluate_sha256}" != "${EXPECTED_EVALUATE_SHA256}" ]]; then
   echo "patched evaluate.py SHA-256 mismatch: ${actual_evaluate_sha256}" >&2
+  exit 2
+fi
+if [[ ! -f "${BUILD_BUFFER_PATCH}" ]]; then
+  echo "missing build-buffer release patch: ${BUILD_BUFFER_PATCH}" >&2
+  exit 2
+fi
+actual_build_buffer_patch_sha256="$(sha256sum "${BUILD_BUFFER_PATCH}" | awk '{print $1}')"
+if [[ "${actual_build_buffer_patch_sha256}" != "${EXPECTED_BUILD_BUFFER_PATCH_SHA256}" ]]; then
+  echo "build-buffer release patch SHA-256 mismatch: ${actual_build_buffer_patch_sha256}" >&2
+  exit 2
+fi
+build_index_file="${OMNI_SOURCE}/src/build_index.py"
+actual_build_index_sha256="$(sha256sum "${build_index_file}" | awk '{print $1}')"
+if [[ "${actual_build_index_sha256}" != "${EXPECTED_BUILD_INDEX_SHA256}" ]]; then
+  if ! git -C "${OMNI_SOURCE}" diff --quiet -- src/build_index.py; then
+    echo "refusing to patch an unexpectedly modified build_index.py" >&2
+    exit 2
+  fi
+  git -C "${OMNI_SOURCE}" apply "${BUILD_BUFFER_PATCH}"
+  actual_build_index_sha256="$(sha256sum "${build_index_file}" | awk '{print $1}')"
+fi
+if [[ "${actual_build_index_sha256}" != "${EXPECTED_BUILD_INDEX_SHA256}" ]]; then
+  echo "patched build_index.py SHA-256 mismatch: ${actual_build_index_sha256}" >&2
   exit 2
 fi
 if [[ "${actual_factory_sha256}" != "${EXPECTED_COMPONENTS_FACTORY_SHA256}" ]]; then
@@ -402,6 +428,8 @@ python - \
   "${actual_qwen25vl_modeling_sha256}" \
   "${actual_query_mask_patch_sha256}" \
   "${actual_evaluate_sha256}" \
+  "${actual_build_buffer_patch_sha256}" \
+  "${actual_build_index_sha256}" \
   "${FULL_MODEL_ID}" \
   "${FULL_MODEL_REVISION}" \
   "${needs_full}" \
@@ -435,6 +463,8 @@ from pathlib import Path
     qwen25vl_modeling_sha256,
     query_mask_patch_sha256,
     evaluate_sha256,
+    build_buffer_patch_sha256,
+    build_index_sha256,
     model_id,
     model_revision,
     needs_full,
@@ -479,6 +509,8 @@ manifest = {
         "qwen25vl_modeling_sha256": qwen25vl_modeling_sha256,
         "query_mask_export_patch_sha256": query_mask_patch_sha256,
         "evaluate_sha256": evaluate_sha256,
+        "build_buffer_release_patch_sha256": build_buffer_patch_sha256,
+        "build_index_sha256": build_index_sha256,
     },
     "gpu_names": gpu_names.splitlines(),
     "physical_gpu_id": int(__import__("os").environ["CUDA_VISIBLE_DEVICES"]),
