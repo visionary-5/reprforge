@@ -19,7 +19,7 @@
     "computer_science": {
       "artifact": {
         "path": "results/compression-risk/omni-col-press-cs-cascade-failure-analysis-p1-2026-08-06.json",
-        "sha256": "6718ab615e51bf74d1de204d927fae3e2fa07459f071bc2c28bfab818d60edf2"
+        "sha256": "663f178b789b801996cf585b2956651a76b15fd9e03ddd7357cf6dae04391761"
       },
       "corpus_pages": 1360,
       "evidence_escape_documents_recovered_by_agc": 0,
@@ -103,7 +103,7 @@
     "hr": {
       "artifact": {
         "path": "results/compression-risk/omni-col-press-cascade-failure-analysis-p1-2026-08-05.json",
-        "sha256": "f3fc7d5b80d01dfaf61ce79ee8e3a9f9f1e62179f24896eccef518bfadea4458"
+        "sha256": "9c1964c980ef25d42f7a62afbad7725f206a661a5b11402595fa3e5350a5ba30"
       },
       "corpus_pages": 1110,
       "evidence_escape_documents_recovered_by_agc": 1,

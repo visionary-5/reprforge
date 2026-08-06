@@ -113,6 +113,7 @@
     "combined_locator_index_bytes": 1426842258,
     "combined_over_hpool_ratio": 2.000977953919081,
     "extra_candidates_over_hpool100_mean": 22.57674418604651,
+    "full_index_bytes": 15456713946,
     "full_over_combined_ratio": 10.83281200801105,
     "hpool_index_bytes": 713072453,
     "interpretation": "candidate recall gains are diagnostic only until the unmeasured costs are charged",

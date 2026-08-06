@@ -414,6 +414,7 @@ def analyze(
             "queries_with_complete_union_relevant_coverage": sum(value == 1.0 for value in union_recalls),
         },
         "multi_locator_cost_ledger": {
+            "full_index_bytes": full_index_bytes,
             "hpool_index_bytes": hpool_index_bytes,
             "agc_index_bytes": agc_index_bytes,
             "combined_locator_index_bytes": combined_locator_bytes,

@@ -1,0 +1,252 @@
+{
+  "comparison_boundary": {
+    "omni_recall": "candidate recall is available for locator methods; Full and cascades require the frozen evaluator summaries for end-to-end Recall@100",
+    "quality": "direct comparison on the same public domain split",
+    "timing": "official reported hardware/configuration context only; not directly comparable with the local Omni A100 measurements"
+  },
+  "domains": {
+    "computer_science": {
+      "official_pipelines": [
+        {
+          "artifact": {
+            "path": "results/metrics/mxbai-edge-colbert-v0-32m/vidore_v3_computer_science.json",
+            "sha256": "f4a835871eab6660b2974e11d97d55edaad85427180917b5ddb4a0358cfa07c2"
+          },
+          "indexing_ms_per_document": 4.082554754088907,
+          "model": "mxbai-edge-colbert-v0-32m",
+          "ndcg_at_10": 0.6807602098665689,
+          "recall_at_100": 0.9439264482287737,
+          "search_ms_per_query": 4.095724017121071
+        },
+        {
+          "artifact": {
+            "path": "results/metrics/qwen3_embedding_8B/vidore_v3_computer_science.json",
+            "sha256": "ebacfbc14328dadf9226a01e3a14a1325a00f569e7ec0d0fd5500c35e05e4ec8"
+          },
+          "indexing_ms_per_document": 96.30388705169453,
+          "model": "qwen3_embedding_8B",
+          "ndcg_at_10": 0.735112044610023,
+          "recall_at_100": 0.9735498222707526,
+          "search_ms_per_query": 45.85211221561875
+        },
+        {
+          "artifact": {
+            "path": "results/metrics/nvidia_llama-nemotron-embed-vl-1b-v2_mod_image_text/vidore_v3_computer_science.json",
+            "sha256": "25f58317a16731b79f6247d5ab1d09e5f1926bc92aca96765b69e33f141ae879"
+          },
+          "indexing_ms_per_document": 206.9858186385211,
+          "model": "nvidia_llama-nemotron-embed-vl-1b-v2_mod_image_text",
+          "ndcg_at_10": 0.7391310201350642,
+          "recall_at_100": 0.9664093012930223,
+          "search_ms_per_query": 3.264526988184729
+        },
+        {
+          "artifact": {
+            "path": "results/metrics/nvidia_llama-nemotron-embed-rerank-vl-1b-v2_mod_image_text/vidore_v3_computer_science.json",
+            "sha256": "177670d0a5ef0f6d724c0081d576898db96f405f293ad6bf989d2a807fe9127b"
+          },
+          "indexing_ms_per_document": 185.94247768906985,
+          "model": "nvidia_llama-nemotron-embed-rerank-vl-1b-v2_mod_image_text",
+          "ndcg_at_10": 0.7804829522480712,
+          "recall_at_100": 0.8774439901184087,
+          "search_ms_per_query": 4896.424676096716
+        },
+        {
+          "artifact": {
+            "path": "results/metrics/nvidia_llama-nemotron-colembed-vl-3b-v2/vidore_v3_computer_science.json",
+            "sha256": "a2032a5c7ef3193baff2543e8d0ec45f94a467eeda73d85a5447b9f2b6dc5c6c"
+          },
+          "indexing_ms_per_document": 601.8534634043189,
+          "model": "nvidia_llama-nemotron-colembed-vl-3b-v2",
+          "ndcg_at_10": 0.7856369364512558,
+          "recall_at_100": 0.9872705588984659,
+          "search_ms_per_query": 680.0777945407601
+        },
+        {
+          "artifact": {
+            "path": "results/metrics/nvidia_nemotron-colembed-vl-8b-v2/vidore_v3_computer_science.json",
+            "sha256": "af0e92d3d69492ccb5b44becd7aa1e2a3c4113f2c825d5a94f687c4e3e23746d"
+          },
+          "indexing_ms_per_document": 485.13858528698194,
+          "model": "nvidia_nemotron-colembed-vl-8b-v2",
+          "ndcg_at_10": 0.8006621233325756,
+          "recall_at_100": 0.9857424874866735,
+          "search_ms_per_query": 2182.2117195572964
+        },
+        {
+          "artifact": {
+            "path": "results/metrics/jinav4_text_zerank2textual/vidore_v3_computer_science.json",
+            "sha256": "684355d3b08c6013d670c9769d2435a53d89f90cc9245fda5736a91d0e0dea02"
+          },
+          "indexing_ms_per_document": 142.40377790787642,
+          "model": "jinav4_text_zerank2textual",
+          "ndcg_at_10": 0.8346244310673788,
+          "recall_at_100": 0.9562003629445486,
+          "search_ms_per_query": 7842.154193478961
+        },
+        {
+          "artifact": {
+            "path": "results/metrics/nvidia_nemo-retriever-agentic_colembed-vl-8b-v2_opus-4-5/vidore_v3_computer_science.json",
+            "sha256": "aab822ebe593ad8d09f2081cebe2948c06db71f8fe0a12084eacc971f0786aae"
+          },
+          "indexing_ms_per_document": 383.3637329,
+          "model": "nvidia_nemo-retriever-agentic_colembed-vl-8b-v2_opus-4-5",
+          "ndcg_at_10": 0.8449406409955531,
+          "recall_at_100": 0.8630377245493527,
+          "search_ms_per_query": 97185.26
+        }
+      ],
+      "omni": {
+        "artifact": {
+          "path": "results/compression-risk/omni-col-press-cs-cascade-failure-analysis-p1-2026-08-06.json",
+          "sha256": "663f178b789b801996cf585b2956651a76b15fd9e03ddd7357cf6dae04391761"
+        },
+        "corpus_pages": 1360,
+        "index_bytes": {
+          "agc": 713769805,
+          "combined_locator": 1426842258,
+          "full": 15456713946,
+          "hpool": 713072453
+        },
+        "mean_ndcg_at_10": {
+          "agc": 0.7578089168734617,
+          "cascade100": 0.7474906155034737,
+          "cascade20": 0.7464301066771079,
+          "cascade50": 0.7475466439310325,
+          "full": 0.7474906155034737,
+          "hpool": 0.7427917656150674
+        },
+        "mean_qrel_candidate_recall_at_100": {
+          "agc": 0.9802343780250757,
+          "hpool": 0.9826005131819086,
+          "hpool_agc_union": 0.9858044152230199
+        },
+        "queries": 215
+      }
+    },
+    "hr": {
+      "official_pipelines": [
+        {
+          "artifact": {
+            "path": "results/metrics/mxbai-edge-colbert-v0-32m/vidore_v3_hr.json",
+            "sha256": "bab99bccdb22a28234d1736ae8f50e1b946748722d3fa5f9a2a9b0ea83f11337"
+          },
+          "indexing_ms_per_document": 4.58795959885056,
+          "model": "mxbai-edge-colbert-v0-32m",
+          "ndcg_at_10": 0.526067540489414,
+          "recall_at_100": 0.8721725936456675,
+          "search_ms_per_query": 4.0454587096688135
+        },
+        {
+          "artifact": {
+            "path": "results/metrics/qwen3_embedding_8B/vidore_v3_hr.json",
+            "sha256": "da9e37353dd025b7b2a12cfd5acfff3ac639bad16e2d5c9974e860f8148b47c2"
+          },
+          "indexing_ms_per_document": 159.68436808199496,
+          "model": "qwen3_embedding_8B",
+          "ndcg_at_10": 0.5232661717070046,
+          "recall_at_100": 0.8908308182521837,
+          "search_ms_per_query": 40.34517696068722
+        },
+        {
+          "artifact": {
+            "path": "results/metrics/nvidia_llama-nemotron-embed-vl-1b-v2_mod_image_text/vidore_v3_hr.json",
+            "sha256": "f2e73d4f6d0857f1c8d6789463de8391c0df801656c35d898fddb5763edc6a5c"
+          },
+          "indexing_ms_per_document": 235.17727465242953,
+          "model": "nvidia_llama-nemotron-embed-vl-1b-v2_mod_image_text",
+          "ndcg_at_10": 0.6080421564819682,
+          "recall_at_100": 0.9275508528315605,
+          "search_ms_per_query": 3.6065503486297414
+        },
+        {
+          "artifact": {
+            "path": "results/metrics/nvidia_llama-nemotron-embed-rerank-vl-1b-v2_mod_image_text/vidore_v3_hr.json",
+            "sha256": "b10142eb6913fdf3c7185111292744b07ca81d03a6aff847fdac40b37c99c09e"
+          },
+          "indexing_ms_per_document": 247.1553259067707,
+          "model": "nvidia_llama-nemotron-embed-rerank-vl-1b-v2_mod_image_text",
+          "ndcg_at_10": 0.6573470136490794,
+          "recall_at_100": 0.7919368932156022,
+          "search_ms_per_query": 6169.242345312106
+        },
+        {
+          "artifact": {
+            "path": "results/metrics/nvidia_llama-nemotron-colembed-vl-3b-v2/vidore_v3_hr.json",
+            "sha256": "979643a02da55aaede295caf11b7b34296a6c775318f55d09611754d373ba5e0"
+          },
+          "indexing_ms_per_document": 604.8290856249697,
+          "model": "nvidia_llama-nemotron-colembed-vl-3b-v2",
+          "ndcg_at_10": 0.6547653939184618,
+          "recall_at_100": 0.9432478277559039,
+          "search_ms_per_query": 455.3139862024559
+        },
+        {
+          "artifact": {
+            "path": "results/metrics/nvidia_nemotron-colembed-vl-8b-v2/vidore_v3_hr.json",
+            "sha256": "8195c69a0cf66eb6997b55b1b208f318ec5519385b5bcde4d629a2219d74f6d0"
+          },
+          "indexing_ms_per_document": 443.2212820998183,
+          "model": "nvidia_nemotron-colembed-vl-8b-v2",
+          "ndcg_at_10": 0.6840513267511462,
+          "recall_at_100": 0.9461647093269374,
+          "search_ms_per_query": 1146.3268987787594
+        },
+        {
+          "artifact": {
+            "path": "results/metrics/jinav4_text_zerank2textual/vidore_v3_hr.json",
+            "sha256": "8b512681d84736ddf6d409809f4487630be48759e2dfbba40156160238a00191"
+          },
+          "indexing_ms_per_document": 145.09740649042902,
+          "model": "jinav4_text_zerank2textual",
+          "ndcg_at_10": 0.6910464632327052,
+          "recall_at_100": 0.9415638406399689,
+          "search_ms_per_query": 9785.337094540866
+        },
+        {
+          "artifact": {
+            "path": "results/metrics/nvidia_nemo-retriever-agentic_colembed-vl-8b-v2_opus-4-5/vidore_v3_hr.json",
+            "sha256": "bd5bf2290aebb62e10ba9b57ccceac44ab3b4d04547a8529145e8f5ea374e947"
+          },
+          "indexing_ms_per_document": 439.967707,
+          "model": "nvidia_nemo-retriever-agentic_colembed-vl-8b-v2_opus-4-5",
+          "ndcg_at_10": 0.7450431548479172,
+          "recall_at_100": 0.7534810790367164,
+          "search_ms_per_query": 101714.74
+        }
+      ],
+      "omni": {
+        "artifact": {
+          "path": "results/compression-risk/omni-col-press-cascade-failure-analysis-p1-2026-08-05.json",
+          "sha256": "9c1964c980ef25d42f7a62afbad7725f206a661a5b11402595fa3e5350a5ba30"
+        },
+        "corpus_pages": 1110,
+        "index_bytes": {
+          "agc": 582559853,
+          "combined_locator": 1164550368,
+          "full": 12797444040,
+          "hpool": 581990515
+        },
+        "mean_ndcg_at_10": {
+          "agc": 0.5782322220837376,
+          "cascade100": 0.5700887168917345,
+          "cascade20": 0.5638753744449603,
+          "cascade50": 0.5698889653874877,
+          "full": 0.5704008608019224,
+          "hpool": 0.5503427841276626
+        },
+        "mean_qrel_candidate_recall_at_100": {
+          "agc": 0.9111914519545438,
+          "hpool": 0.9106052184210003,
+          "hpool_agc_union": 0.9416956554372361
+        },
+        "queries": 318
+      }
+    }
+  },
+  "official_source": {
+    "repository": "https://github.com/illuin-tech/vidore-benchmark",
+    "revision": "a70f23af8bb3b33efe8a4a6c6c15a6e2d978035e"
+  },
+  "protocol": "omni_vs_pinned_official_vidore_v3_pipelines_2026-08-06"
+}
