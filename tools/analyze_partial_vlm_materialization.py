@@ -35,7 +35,7 @@ POLICIES = (
     "score_oracle",
     "label_rank_oracle",
 )
-FUSIONS = ("rrf", "zscore")
+FUSIONS = ("rrf_global_oracle", "zscore_global_oracle", "rrf", "zscore")
 
 
 def _canonical_sha(path: Path) -> str:
@@ -59,6 +59,18 @@ def _baseline(surface: ScoreSurface, config: dict[str, Any]) -> dict[str, Any]:
         "text_only": evaluate_text_only(surface, queries),
         "visual_only": evaluate_visual_only(surface, queries),
         "full_hybrid": {
+            "rrf_global_oracle": evaluate_selection(
+                surface,
+                queries,
+                all_pages,
+                fusion="rrf_global_oracle",
+                text_top_k=int(rrf["text_top_k"]),
+                visual_top_k=int(rrf["visual_top_k"]),
+                rrf_constant=int(rrf["rrf_constant"]),
+            ),
+            "zscore_global_oracle": evaluate_selection(
+                surface, queries, all_pages, fusion="zscore_global_oracle"
+            ),
             "rrf": evaluate_selection(
                 surface,
                 queries,
@@ -211,11 +223,11 @@ def _gate(domains: dict[str, Any], config: dict[str, Any]) -> dict[str, Any]:
     for name, domain in domains.items():
         baseline = domain["baselines"]
         text = baseline["text_only"]["mean_ndcg_at_10"]
-        full = baseline["full_hybrid"]["rrf"]["mean_ndcg_at_10"]
+        full = baseline["full_hybrid"]["rrf_global_oracle"]["mean_ndcg_at_10"]
         full_gain = full - text
         oracle_recoveries = []
         for budget in ("0.2", "0.4"):
-            value = domain["static_materialization_curves"]["rrf"][
+            value = domain["static_materialization_curves"]["rrf_global_oracle"][
                 "label_rank_oracle"
             ][budget]["ndcg_gain_recovery"]["gain_recovery"]
             if value is not None:
@@ -292,4 +304,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

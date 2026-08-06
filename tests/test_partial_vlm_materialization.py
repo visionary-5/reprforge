@@ -68,6 +68,49 @@ def test_partial_rrf_charges_only_materialized_pages_and_improves_visual_gold():
     assert partial["mean_ndcg_at_10"] > text["mean_ndcg_at_10"]
 
 
+def test_global_rank_oracle_does_not_promote_selected_pages_to_fake_visual_top1():
+    pages = 120
+    text = np.arange(pages, 0, -1, dtype=np.float64)[None, :]
+    visual_order = list(range(99)) + [119] + list(range(99, 119))
+    visual = np.empty(pages, dtype=np.float64)
+    for rank, page in enumerate(visual_order):
+        visual[page] = pages - rank
+    qrels = np.zeros((1, pages), dtype=np.int16)
+    qrels[0, 119] = 1
+    surface = ScoreSurface(
+        name="rank-calibration",
+        query_ids=np.asarray(["q"]),
+        corpus_ids=np.asarray([f"d{i}" for i in range(pages)]),
+        text_scores=text,
+        visual_scores=visual[None, :],
+        qrels=qrels,
+        text_bytes=np.ones(pages),
+        visual_bytes=np.ones(pages),
+        visual_encode_ms=np.ones(pages),
+        input_sha256={},
+    )
+    selected = [119]
+    naive = evaluate_selection(
+        surface,
+        [0],
+        selected,
+        fusion="rrf",
+        text_top_k=100,
+        visual_top_k=100,
+        rrf_constant=60,
+    )
+    oracle_calibrated = evaluate_selection(
+        surface,
+        [0],
+        selected,
+        fusion="rrf_global_oracle",
+        text_top_k=100,
+        visual_top_k=100,
+        rrf_constant=60,
+    )
+    assert naive["mean_ndcg_at_10"] > oracle_calibrated["mean_ndcg_at_10"]
+
+
 def test_history_policy_does_not_read_future_visual_scores_or_qrels():
     original = _surface()
     changed = _surface()
@@ -127,4 +170,3 @@ def test_fold_assignment_and_gain_recovery_are_deterministic_and_explicit():
     assert np.isclose(recovered["gain_recovery"], 0.5)
     omitted = gain_recovery(0.7001, 0.7, 0.701)
     assert omitted["gain_recovery"] is None
-

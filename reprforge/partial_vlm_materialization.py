@@ -106,6 +106,7 @@ def _rrf_ranking(
     rrf_constant: int,
     include_text: bool = True,
     include_visual: bool = True,
+    use_full_visual_rank_oracle: bool = False,
 ) -> np.ndarray:
     contributions: dict[int, float] = {}
     if include_text:
@@ -114,9 +115,19 @@ def _rrf_ranking(
         ):
             contributions[int(page)] = 1.0 / (rrf_constant + rank)
     if include_visual and np.any(selected_mask):
-        visual_pages = surface.visual_order[query_position]
-        visual_pages = visual_pages[selected_mask[visual_pages]][:visual_top_k]
-        for rank, page in enumerate(visual_pages, start=1):
+        if use_full_visual_rank_oracle:
+            ranked_pairs = [
+                (rank, page)
+                for rank, page in enumerate(
+                    surface.visual_order[query_position, :visual_top_k], start=1
+                )
+                if selected_mask[page]
+            ]
+        else:
+            visual_pages = surface.visual_order[query_position]
+            visual_pages = visual_pages[selected_mask[visual_pages]][:visual_top_k]
+            ranked_pairs = list(enumerate(visual_pages, start=1))
+        for rank, page in ranked_pairs:
             key = int(page)
             contributions[key] = contributions.get(key, 0.0) + 1.0 / (
                 rrf_constant + rank
@@ -144,12 +155,20 @@ def _zscore(values: np.ndarray) -> np.ndarray:
 
 
 def _selected_zscore_ranking(
-    surface: ScoreSurface, query_position: int, selected_mask: np.ndarray
+    surface: ScoreSurface,
+    query_position: int,
+    selected_mask: np.ndarray,
+    *,
+    use_full_visual_calibration_oracle: bool = False,
 ) -> np.ndarray:
     scores = _zscore(surface.text_scores[query_position])
     selected = np.flatnonzero(selected_mask)
     if selected.size:
-        scores[selected] += _zscore(surface.visual_scores[query_position, selected])
+        if use_full_visual_calibration_oracle:
+            visual = _zscore(surface.visual_scores[query_position])
+            scores[selected] += visual[selected]
+        else:
+            scores[selected] += _zscore(surface.visual_scores[query_position, selected])
     positions = np.arange(surface.pages)
     return np.lexsort((positions, -scores))
 
@@ -172,7 +191,7 @@ def evaluate_selection(
     ndcg: list[float] = []
     recall: list[float] = []
     for query_position in query_positions:
-        if fusion == "rrf":
+        if fusion in ("rrf", "rrf_global_oracle"):
             ranking = _rrf_ranking(
                 surface,
                 int(query_position),
@@ -180,10 +199,14 @@ def evaluate_selection(
                 text_top_k=text_top_k,
                 visual_top_k=visual_top_k,
                 rrf_constant=rrf_constant,
+                use_full_visual_rank_oracle=fusion == "rrf_global_oracle",
             )
-        elif fusion == "zscore":
+        elif fusion in ("zscore", "zscore_global_oracle"):
             ranking = _selected_zscore_ranking(
-                surface, int(query_position), selected_mask
+                surface,
+                int(query_position),
+                selected_mask,
+                use_full_visual_calibration_oracle=fusion == "zscore_global_oracle",
             )
         else:
             raise ValueError(f"unsupported fusion: {fusion}")
