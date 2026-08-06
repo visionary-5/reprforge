@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "protocol": "omni-exported-ocr-bm25-2026-08-06",
+  "retrieval_uses_qrels": false,
+  "qrels_used_for_final_evaluation_only": true,
+  "parameters": {
+    "b": 0.75,
+    "k1": 1.2,
+    "top_k": 100
+  },
+  "domains": {
+    "computer_science": {
+      "corpus_pages": 1360,
+      "queries": 215,
+      "logical_index_bytes": 2087581,
+      "build_wall_seconds": 0.10091683315113187,
+      "score_all_queries_wall_seconds": 0.3339241249486804,
+      "metrics": {
+        "recall_at_1": 0.2782186676372723,
+        "recall_at_5": 0.5352589142124027,
+        "recall_at_10": 0.6481012011244568,
+        "recall_at_100": 0.8954695950044786,
+        "ndcg_at_10": 0.6330829967217078,
+        "mrr": 0.7963382855576678
+      },
+      "ranking_sha256": "9160e1e8f04d7d15bf34c6a06cc8ac6889a5572b472b2b25db64e3d61b15c9e0",
+      "raw_result_sha256": "0b7bb0825ec3948d584e9c02ff9f7010abbd0e1d2bd6cac24ed26004f01b7445"
+    },
+    "pharmaceuticals": {
+      "corpus_pages": 2313,
+      "queries": 364,
+      "logical_index_bytes": 2553679,
+      "build_wall_seconds": 0.12124420795589685,
+      "score_all_queries_wall_seconds": 0.781578291207552,
+      "metrics": {
+        "recall_at_1": 0.27545645232428556,
+        "recall_at_5": 0.5076822503837624,
+        "recall_at_10": 0.5965000929398463,
+        "recall_at_100": 0.8164382695410167,
+        "ndcg_at_10": 0.5536972657253086,
+        "mrr": 0.6622578791318017
+      },
+      "ranking_sha256": "7b46c8cbc4b62dd9bc019a39e67c2a6f87af63ebb72f5e97468811ecc59aa761",
+      "raw_result_sha256": "2f5c1ea90926f4d9496cc81095f46e78e494bda67c3146d2c84a1b4c7a7c2f95"
+    },
+    "industrial": {
+      "corpus_pages": 5244,
+      "queries": 283,
+      "logical_index_bytes": 6483457,
+      "build_wall_seconds": 0.3374043330550194,
+      "score_all_queries_wall_seconds": 1.3575419168919325,
+      "metrics": {
+        "recall_at_1": 0.24354204223423767,
+        "recall_at_5": 0.42842661315330377,
+        "recall_at_10": 0.49774642564580474,
+        "recall_at_100": 0.7238805112281502,
+        "ndcg_at_10": 0.46507582553949506,
+        "mrr": 0.5596390248400126
+      },
+      "ranking_sha256": "a56a320249072ca8581ce71838b696c8da99e4b4c14075300191dd7adf097a9f",
+      "raw_result_sha256": "d88b658077c5f6f64d0180f173c44ac4d979f3140f965df0230494b4163a85ae"
+    }
+  },
+  "interpretation": "BM25 is a millisecond-scale OCR-text locator baseline, not a replacement for the visual retrievers. Candidate-union benefits and fusion costs must be evaluated separately."
+}
