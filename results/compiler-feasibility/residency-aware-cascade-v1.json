@@ -1,0 +1,3311 @@
+{
+  "arrival_orders": 50,
+  "arrival_semantics": "Benchmark queries have no timestamps. Results aggregate deterministic random query permutations and establish order sensitivity, not natural temporal realism.",
+  "cost_unit": "LRU cold Full-page misses; page sizes and latency are not measured",
+  "domains": {
+    "industrial": {
+      "candidate_reuse": {
+        "100": {
+          "event_reuse_fraction": 0.8407420494699647,
+          "maximum_query_frequency": 80,
+          "page_events": 28300,
+          "unique_corpus_fraction": 0.8594584286803967,
+          "unique_pages": 4507
+        },
+        "20": {
+          "event_reuse_fraction": 0.5835689045936396,
+          "maximum_query_frequency": 28,
+          "page_events": 5660,
+          "unique_corpus_fraction": 0.4494660564454615,
+          "unique_pages": 2357
+        },
+        "50": {
+          "event_reuse_fraction": 0.7376678445229682,
+          "maximum_query_frequency": 49,
+          "page_events": 14150,
+          "unique_corpus_fraction": 0.7078565980167811,
+          "unique_pages": 3712
+        }
+      },
+      "capacities": {
+        "0.05": {
+          "capacity_pages": 262,
+          "fixed": {
+            "belady_oracle": {
+              "100": {
+                "mean_cold_page_misses": 59.07992932862191,
+                "mean_ndcg_at_10": 0.5303684935736932
+              },
+              "20": {
+                "mean_cold_page_misses": 11.205159010600708,
+                "mean_ndcg_at_10": 0.527693619055468
+              },
+              "50": {
+                "mean_cold_page_misses": 28.639505300353353,
+                "mean_ndcg_at_10": 0.5313362356284512
+              }
+            },
+            "lfu": {
+              "100": {
+                "mean_cold_page_misses": 72.97095406360425,
+                "mean_ndcg_at_10": 0.5303684935736931
+              },
+              "20": {
+                "mean_cold_page_misses": 14.502826855123676,
+                "mean_ndcg_at_10": 0.5276936190554677
+              },
+              "50": {
+                "mean_cold_page_misses": 36.18664310954064,
+                "mean_ndcg_at_10": 0.531336235628451
+              }
+            },
+            "lru": {
+              "100": {
+                "mean_cold_page_misses": 88.09773851590107,
+                "mean_ndcg_at_10": 0.5303684935736931
+              },
+              "20": {
+                "mean_cold_page_misses": 16.568763250883393,
+                "mean_ndcg_at_10": 0.5276936190554677
+              },
+              "50": {
+                "mean_cold_page_misses": 42.95151943462897,
+                "mean_ndcg_at_10": 0.531336235628451
+              }
+            }
+          },
+          "state_aware": [
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 16.56897526501767,
+                "mean_depth": 20.002120141342758,
+                "mean_ndcg_at_10": 0.5276936190554677
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 0.08551236749116953,
+                  "mean": 0.00171024734982268,
+                  "minimum": -7.105427357601002e-15,
+                  "order_q025": -3.552713678800501e-15,
+                  "order_q975": 3.552713678800501e-15
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 1.1102230246251565e-16,
+                  "mean": -6.938489971730632e-07,
+                  "minimum": -3.469244985998543e-05,
+                  "order_q025": 0.0,
+                  "order_q975": 1.1102230246251565e-16
+                },
+                "orders_with_fewer_cold_misses_fraction": 0.32,
+                "orders_with_higher_ndcg_fraction": 0.24,
+                "relative_cold_miss_reduction": 0.00010320920933194942
+              },
+              "maximum_depth": 50,
+              "miss_budget": 10,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 16.57068551236749,
+                "mean_depth": 20.002120141342758,
+                "mean_ndcg_at_10": 0.5276943129044649
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 16.582544169611307,
+                "mean_depth": 20.04452296819788,
+                "mean_ndcg_at_10": 0.5276936190554677
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 0.13745583038869214,
+                  "mean": 0.025639575971730864,
+                  "minimum": -7.105427357601002e-15,
+                  "order_q025": -3.552713678800501e-15,
+                  "order_q975": 0.13090989399293312
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 1.6614998488040378e-05,
+                  "mean": -6.960066725820724e-06,
+                  "minimum": -7.691485265381992e-05,
+                  "order_q025": -5.1210605316936995e-05,
+                  "order_q975": 1.3109104001096658e-06
+                },
+                "orders_with_fewer_cold_misses_fraction": 0.48,
+                "orders_with_higher_ndcg_fraction": 0.24,
+                "relative_cold_miss_reduction": 0.001543791685141558
+              },
+              "maximum_depth": 50,
+              "miss_budget": 15,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 16.60818374558304,
+                "mean_depth": 20.04452296819788,
+                "mean_ndcg_at_10": 0.5277005791221935
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 16.683321554770316,
+                "mean_depth": 20.309540636042403,
+                "mean_ndcg_at_10": 0.5276998933624306
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 0.37349823321554965,
+                  "mean": 0.1609505300353355,
+                  "minimum": 0.0,
+                  "order_q025": 0.006161660777388358,
+                  "order_q975": 0.3667137809187282
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0003430998817863795,
+                  "mean": -2.906016263329869e-05,
+                  "minimum": -0.00017668627695943684,
+                  "order_q025": -0.0001544333343745291,
+                  "order_q975": 2.434373542983813e-05
+                },
+                "orders_with_fewer_cold_misses_fraction": 0.98,
+                "orders_with_higher_ndcg_fraction": 0.3,
+                "relative_cold_miss_reduction": 0.009555208395174368
+              },
+              "maximum_depth": 50,
+              "miss_budget": 20,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 16.844272084805652,
+                "mean_depth": 20.309540636042403,
+                "mean_ndcg_at_10": 0.5277289535250639
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 17.241484098939928,
+                "mean_depth": 21.494699646643113,
+                "mean_ndcg_at_10": 0.5278524580525873
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 1.1775618374558334,
+                  "mean": 0.6642862190812724,
+                  "minimum": 0.26395759717314604,
+                  "order_q025": 0.2756581272084807,
+                  "order_q975": 1.1187676678445244
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0008422330273196721,
+                  "mean": -1.1573071265102986e-05,
+                  "minimum": -0.0006062336433171334,
+                  "order_q025": -0.00042498869194092513,
+                  "order_q975": 0.000525874155913078
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.38,
+                "relative_cold_miss_reduction": 0.037099002571964426
+              },
+              "maximum_depth": 50,
+              "miss_budget": 25,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 17.9057703180212,
+                "mean_depth": 21.494699646643113,
+                "mean_ndcg_at_10": 0.5278640311238524
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 18.46113074204947,
+                "mean_depth": 23.686925795053003,
+                "mean_ndcg_at_10": 0.5281134355369995
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 2.098233215547708,
+                  "mean": 1.3969399293286213,
+                  "minimum": 0.6989399293286205,
+                  "order_q025": 0.9023277385158984,
+                  "order_q975": 1.9767667844522974
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.001148240637294351,
+                  "mean": -3.576217794199144e-05,
+                  "minimum": -0.000775693048980286,
+                  "order_q025": -0.0007652862334465244,
+                  "order_q975": 0.0008208393435698678
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.44,
+                "relative_cold_miss_reduction": 0.07034620595554952
+              },
+              "maximum_depth": 50,
+              "miss_budget": 30,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 19.85807067137809,
+                "mean_depth": 23.686925795053003,
+                "mean_ndcg_at_10": 0.5281491977149415
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 23.27830388692579,
+                "mean_depth": 30.604946996466435,
+                "mean_ndcg_at_10": 0.5294191180478343
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 3.1602473498233152,
+                  "mean": 2.6847385159010604,
+                  "minimum": 2.1028268551236664,
+                  "order_q025": 2.2400485865724367,
+                  "order_q975": 3.112636925795053
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0018597558510122791,
+                  "mean": 0.0004208254638864495,
+                  "minimum": -0.0009678867520050982,
+                  "order_q025": -0.000810755912696623,
+                  "order_q975": 0.001659816158211266
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.84,
+                "relative_cold_miss_reduction": 0.10340615996562673
+              },
+              "maximum_depth": 50,
+              "miss_budget": 40,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 25.963042402826854,
+                "mean_depth": 30.604946996466435,
+                "mean_ndcg_at_10": 0.5289982925839478
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 42.95151943462897,
+                "mean_depth": 50.0,
+                "mean_ndcg_at_10": 0.531336235628451
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 1.4210854715202004e-14,
+                  "mean": 1.5631940186722204e-15,
+                  "minimum": -1.4210854715202004e-14,
+                  "order_q025": -7.105427357601002e-15,
+                  "order_q975": 1.4210854715202004e-14
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0,
+                  "mean": -9.103828801926283e-17,
+                  "minimum": -2.220446049250313e-16,
+                  "order_q025": -1.1102230246251565e-16,
+                  "order_q975": 0.0
+                },
+                "orders_with_fewer_cold_misses_fraction": 0.42,
+                "orders_with_higher_ndcg_fraction": 0.0,
+                "relative_cold_miss_reduction": 0.0
+              },
+              "maximum_depth": 50,
+              "miss_budget": 50,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 42.95151943462897,
+                "mean_depth": 50.0,
+                "mean_ndcg_at_10": 0.5313362356284511
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 16.56897526501767,
+                "mean_depth": 20.002120141342758,
+                "mean_ndcg_at_10": 0.5276936190554677
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 0.08551236749116953,
+                  "mean": 0.00171024734982268,
+                  "minimum": -7.105427357601002e-15,
+                  "order_q025": -3.552713678800501e-15,
+                  "order_q975": 3.552713678800501e-15
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 1.1102230246251565e-16,
+                  "mean": -6.938489971730632e-07,
+                  "minimum": -3.469244985998543e-05,
+                  "order_q025": 0.0,
+                  "order_q975": 1.1102230246251565e-16
+                },
+                "orders_with_fewer_cold_misses_fraction": 0.32,
+                "orders_with_higher_ndcg_fraction": 0.24,
+                "relative_cold_miss_reduction": 0.00010320920933194942
+              },
+              "maximum_depth": 100,
+              "miss_budget": 10,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 16.57068551236749,
+                "mean_depth": 20.002120141342758,
+                "mean_ndcg_at_10": 0.5276943129044649
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 16.582544169611307,
+                "mean_depth": 20.04452296819788,
+                "mean_ndcg_at_10": 0.5276936190554677
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 0.13745583038869214,
+                  "mean": 0.025639575971730864,
+                  "minimum": -7.105427357601002e-15,
+                  "order_q025": -3.552713678800501e-15,
+                  "order_q975": 0.13090989399293312
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 1.6614998488040378e-05,
+                  "mean": -6.960066725820724e-06,
+                  "minimum": -7.691485265381992e-05,
+                  "order_q025": -5.1210605316936995e-05,
+                  "order_q975": 1.3109104001096658e-06
+                },
+                "orders_with_fewer_cold_misses_fraction": 0.48,
+                "orders_with_higher_ndcg_fraction": 0.24,
+                "relative_cold_miss_reduction": 0.001543791685141558
+              },
+              "maximum_depth": 100,
+              "miss_budget": 15,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 16.60818374558304,
+                "mean_depth": 20.04452296819788,
+                "mean_ndcg_at_10": 0.5277005791221935
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 16.683321554770316,
+                "mean_depth": 20.309540636042403,
+                "mean_ndcg_at_10": 0.5276998933624306
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 0.37349823321554965,
+                  "mean": 0.1609505300353355,
+                  "minimum": 0.0,
+                  "order_q025": 0.006161660777388358,
+                  "order_q975": 0.3667137809187282
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0003430998817863795,
+                  "mean": -2.906016263329869e-05,
+                  "minimum": -0.00017668627695943684,
+                  "order_q025": -0.0001544333343745291,
+                  "order_q975": 2.434373542983813e-05
+                },
+                "orders_with_fewer_cold_misses_fraction": 0.98,
+                "orders_with_higher_ndcg_fraction": 0.3,
+                "relative_cold_miss_reduction": 0.009555208395174368
+              },
+              "maximum_depth": 100,
+              "miss_budget": 20,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 16.844272084805652,
+                "mean_depth": 20.309540636042403,
+                "mean_ndcg_at_10": 0.5277289535250639
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 17.24374558303887,
+                "mean_depth": 21.501766784452297,
+                "mean_ndcg_at_10": 0.5278524580525873
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 1.1775618374558334,
+                  "mean": 0.6685618374558309,
+                  "minimum": 0.26395759717314604,
+                  "order_q025": 0.2756581272084807,
+                  "order_q975": 1.1187676678445244
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0008422330273196721,
+                  "mean": -1.1573071265102986e-05,
+                  "minimum": -0.0006062336433171334,
+                  "order_q025": -0.00042498869194092513,
+                  "order_q975": 0.000525874155913078
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.38,
+                "relative_cold_miss_reduction": 0.03732416052054162
+              },
+              "maximum_depth": 100,
+              "miss_budget": 25,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 17.912307420494702,
+                "mean_depth": 21.501766784452297,
+                "mean_ndcg_at_10": 0.5278640311238524
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 18.515759717314484,
+                "mean_depth": 23.83816254416961,
+                "mean_ndcg_at_10": 0.5281134355369995
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 2.2266784452296804,
+                  "mean": 1.4823144876325087,
+                  "minimum": 0.6989399293286205,
+                  "order_q025": 0.9023277385158984,
+                  "order_q975": 2.1125044169611322
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.001148240637294351,
+                  "mean": -3.087004739486643e-05,
+                  "minimum": -0.0007713794291168696,
+                  "order_q025": -0.0007442426452146406,
+                  "order_q975": 0.0008208393435698678
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.44,
+                "relative_cold_miss_reduction": 0.0741228616536399
+              },
+              "maximum_depth": 100,
+              "miss_budget": 30,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 19.998074204946995,
+                "mean_depth": 23.83816254416961,
+                "mean_ndcg_at_10": 0.5281443055843943
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 23.718374558303886,
+                "mean_depth": 31.78374558303887,
+                "mean_ndcg_at_10": 0.5294175374088192
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 4.470318021201415,
+                  "mean": 3.3241978798586573,
+                  "minimum": 2.2303886925795027,
+                  "order_q025": 2.5879284452296845,
+                  "order_q975": 4.140079505300353
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0018597558510122791,
+                  "mean": 0.000450004156897057,
+                  "minimum": -0.0008726232897331432,
+                  "order_q025": -0.0007932319045987013,
+                  "order_q975": 0.001668032075702355
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.78,
+                "relative_cold_miss_reduction": 0.12292461774707297
+              },
+              "maximum_depth": 100,
+              "miss_budget": 40,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 27.042572438162548,
+                "mean_depth": 31.78374558303887,
+                "mean_ndcg_at_10": 0.5289675332519221
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 43.796325088339216,
+                "mean_depth": 51.71024734982331,
+                "mean_ndcg_at_10": 0.5313161100268219
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 1.3922261484098897,
+                  "mean": 0.6996325088339225,
+                  "minimum": 0.16784452296820263,
+                  "order_q025": 0.1840856890459346,
+                  "order_q975": 1.274001766784454
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 9.677420547571369e-05,
+                  "mean": 1.6977743023556257e-05,
+                  "minimum": -0.000378411053837846,
+                  "order_q025": -0.0002914147308683279,
+                  "order_q975": 9.386803128171027e-05
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.94,
+                "relative_cold_miss_reduction": 0.01572350718165877
+              },
+              "maximum_depth": 100,
+              "miss_budget": 50,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 44.49595759717315,
+                "mean_depth": 51.71024734982331,
+                "mean_ndcg_at_10": 0.5312991322837983
+              }
+            }
+          ]
+        },
+        "0.1": {
+          "capacity_pages": 524,
+          "fixed": {
+            "belady_oracle": {
+              "100": {
+                "mean_cold_page_misses": 45.65441696113075,
+                "mean_ndcg_at_10": 0.5303684935736932
+              },
+              "20": {
+                "mean_cold_page_misses": 9.342826855123677,
+                "mean_ndcg_at_10": 0.527693619055468
+              },
+              "50": {
+                "mean_cold_page_misses": 22.43879858657244,
+                "mean_ndcg_at_10": 0.5313362356284512
+              }
+            },
+            "lfu": {
+              "100": {
+                "mean_cold_page_misses": 61.2313074204947,
+                "mean_ndcg_at_10": 0.5303684935736931
+              },
+              "20": {
+                "mean_cold_page_misses": 12.418021201413428,
+                "mean_ndcg_at_10": 0.5276936190554677
+              },
+              "50": {
+                "mean_cold_page_misses": 30.747420494699647,
+                "mean_ndcg_at_10": 0.531336235628451
+              }
+            },
+            "lru": {
+              "100": {
+                "mean_cold_page_misses": 76.12395759717315,
+                "mean_ndcg_at_10": 0.5303684935736931
+              },
+              "20": {
+                "mean_cold_page_misses": 14.003321554770316,
+                "mean_ndcg_at_10": 0.5276936190554677
+              },
+              "50": {
+                "mean_cold_page_misses": 36.79491166077739,
+                "mean_ndcg_at_10": 0.531336235628451
+              }
+            }
+          },
+          "state_aware": [
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 14.036113074204945,
+                "mean_depth": 20.265017667844525,
+                "mean_ndcg_at_10": 0.5276999712461806
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 0.7008833922261495,
+                  "mean": 0.16973498233215564,
+                  "minimum": -3.552713678800501e-15,
+                  "order_q025": -1.7763568394002505e-15,
+                  "order_q975": 0.5419257950530042
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.00039255575847740865,
+                  "mean": -2.9039847871339396e-05,
+                  "minimum": -0.0002217442680225723,
+                  "order_q025": -0.00013509251452232529,
+                  "order_q975": 2.1495247818170678e-05
+                },
+                "orders_with_fewer_cold_misses_fraction": 0.86,
+                "orders_with_higher_ndcg_fraction": 0.26,
+                "relative_cold_miss_reduction": 0.011948247063930256
+              },
+              "maximum_depth": 50,
+              "miss_budget": 10,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 14.205848056537103,
+                "mean_depth": 20.265017667844525,
+                "mean_ndcg_at_10": 0.527729011094052
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 14.289752650176679,
+                "mean_depth": 21.761837455830392,
+                "mean_ndcg_at_10": 0.5277977817691578
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 1.8586572438162516,
+                  "mean": 1.062996466431096,
+                  "minimum": 0.35565371024734915,
+                  "order_q025": 0.415026501766784,
+                  "order_q975": 1.8235335689045955
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0008294206138256266,
+                  "mean": -9.673469093028908e-05,
+                  "minimum": -0.0005721510575755762,
+                  "order_q025": -0.000519286699048524,
+                  "order_q975": 0.0005444213943611886
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.24,
+                "relative_cold_miss_reduction": 0.06923818388207789
+              },
+              "maximum_depth": 50,
+              "miss_budget": 15,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 15.352749116607777,
+                "mean_depth": 21.761837455830392,
+                "mean_ndcg_at_10": 0.5278945164600881
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 15.060282685512366,
+                "mean_depth": 24.848763250883394,
+                "mean_ndcg_at_10": 0.5282262976150971
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 3.4632508833922255,
+                  "mean": 2.6483710247349825,
+                  "minimum": 1.5916961130742049,
+                  "order_q025": 1.7988250883392203,
+                  "order_q975": 3.3654770318021203
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0009770228179982743,
+                  "mean": -7.066493710061961e-05,
+                  "minimum": -0.0009995156099658065,
+                  "order_q025": -0.0009252742355971372,
+                  "order_q975": 0.0008426650980088487
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.44,
+                "relative_cold_miss_reduction": 0.149552363949749
+              },
+              "maximum_depth": 50,
+              "miss_budget": 20,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 17.70865371024735,
+                "mean_depth": 24.848763250883394,
+                "mean_ndcg_at_10": 0.5282969625521976
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 16.18975265017668,
+                "mean_depth": 27.698233215547702,
+                "mean_ndcg_at_10": 0.528802015459346
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 4.320494699646645,
+                  "mean": 3.681583038869258,
+                  "minimum": 2.8911660777385144,
+                  "order_q025": 3.085136925795049,
+                  "order_q975": 4.1803047703180205
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0010817241969811597,
+                  "mean": 0.00015885367600793955,
+                  "minimum": -0.0008677983933723654,
+                  "order_q025": -0.0008539246123254074,
+                  "order_q975": 0.0010103043286907502
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.6,
+                "relative_cold_miss_reduction": 0.18527104048162837
+              },
+              "maximum_depth": 50,
+              "miss_budget": 25,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 19.871335689045935,
+                "mean_depth": 27.698233215547702,
+                "mean_ndcg_at_10": 0.5286431617833381
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 17.759787985865724,
+                "mean_depth": 30.52650176678445,
+                "mean_ndcg_at_10": 0.5295688336152874
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 4.795583038869257,
+                  "mean": 4.250957597173145,
+                  "minimum": 3.6724381625441715,
+                  "order_q025": 3.709907243816258,
+                  "order_q975": 4.771674028268552
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.002039262861340818,
+                  "mean": 0.0005688448319075156,
+                  "minimum": -0.0007259239574276544,
+                  "order_q025": -0.00037055324464379814,
+                  "order_q975": 0.001853420526227234
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.86,
+                "relative_cold_miss_reduction": 0.19313101326512405
+              },
+              "maximum_depth": 50,
+              "miss_budget": 30,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 22.010745583038876,
+                "mean_depth": 30.52650176678445,
+                "mean_ndcg_at_10": 0.5289999887833798
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 22.684452296819785,
+                "mean_depth": 36.8190812720848,
+                "mean_ndcg_at_10": 0.5306157283151816
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 4.550530035335694,
+                  "mean": 4.098371024734983,
+                  "minimum": 3.551236749116608,
+                  "order_q025": 3.7247526501766792,
+                  "order_q975": 4.425318021201415
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.001895407590859377,
+                  "mean": 0.0008306754204138623,
+                  "minimum": -0.0007523372040194598,
+                  "order_q025": -0.00015591457814084498,
+                  "order_q975": 0.0017827780942782756
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.94,
+                "relative_cold_miss_reduction": 0.1530223671914612
+              },
+              "maximum_depth": 50,
+              "miss_budget": 40,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 26.78282332155477,
+                "mean_depth": 36.8190812720848,
+                "mean_ndcg_at_10": 0.5297850528947677
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 36.79491166077739,
+                "mean_depth": 50.0,
+                "mean_ndcg_at_10": 0.531336235628451
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 1.4210854715202004e-14,
+                  "mean": 7.105427357601002e-16,
+                  "minimum": -1.4210854715202004e-14,
+                  "order_q025": -7.105427357601002e-15,
+                  "order_q975": 1.4210854715202004e-14
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0,
+                  "mean": -9.103828801926283e-17,
+                  "minimum": -2.220446049250313e-16,
+                  "order_q025": -1.1102230246251565e-16,
+                  "order_q975": 0.0
+                },
+                "orders_with_fewer_cold_misses_fraction": 0.4,
+                "orders_with_higher_ndcg_fraction": 0.0,
+                "relative_cold_miss_reduction": 0.0
+              },
+              "maximum_depth": 50,
+              "miss_budget": 50,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 36.79491166077739,
+                "mean_depth": 50.0,
+                "mean_ndcg_at_10": 0.5313362356284511
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 14.036113074204945,
+                "mean_depth": 20.265017667844525,
+                "mean_ndcg_at_10": 0.5276999712461806
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 0.7008833922261495,
+                  "mean": 0.16973498233215564,
+                  "minimum": -3.552713678800501e-15,
+                  "order_q025": -1.7763568394002505e-15,
+                  "order_q975": 0.5419257950530042
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.00039255575847740865,
+                  "mean": -2.9039847871339396e-05,
+                  "minimum": -0.0002217442680225723,
+                  "order_q025": -0.00013509251452232529,
+                  "order_q975": 2.1495247818170678e-05
+                },
+                "orders_with_fewer_cold_misses_fraction": 0.86,
+                "orders_with_higher_ndcg_fraction": 0.26,
+                "relative_cold_miss_reduction": 0.011948247063930256
+              },
+              "maximum_depth": 100,
+              "miss_budget": 10,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 14.205848056537103,
+                "mean_depth": 20.265017667844525,
+                "mean_ndcg_at_10": 0.527729011094052
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 14.308127208480567,
+                "mean_depth": 21.888339222614842,
+                "mean_ndcg_at_10": 0.5278203511573728
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 2.501943462897529,
+                  "mean": 1.1448480565371026,
+                  "minimum": 0.35565371024734915,
+                  "order_q025": 0.415026501766784,
+                  "order_q975": 2.186947879858659
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0008294206138256266,
+                  "mean": -7.723502696625584e-05,
+                  "minimum": -0.0005581269745347228,
+                  "order_q025": -0.000519286699048524,
+                  "order_q975": 0.0006672711143512198
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.26,
+                "relative_cold_miss_reduction": 0.07408593082581322
+              },
+              "maximum_depth": 100,
+              "miss_budget": 15,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 15.452975265017669,
+                "mean_depth": 21.888339222614842,
+                "mean_ndcg_at_10": 0.5278975861843391
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 15.291519434628976,
+                "mean_depth": 26.768197879858658,
+                "mean_ndcg_at_10": 0.5282814244529134
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 6.173674911660779,
+                  "mean": 3.9583321554770317,
+                  "minimum": 1.7408127208480568,
+                  "order_q025": 2.3348939929328636,
+                  "order_q975": 5.656258833922261
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0010687505638111716,
+                  "mean": -1.4350638761884139e-05,
+                  "minimum": -0.0009886256285308592,
+                  "order_q025": -0.0008809463680810731,
+                  "order_q975": 0.000960068188230409
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.52,
+                "relative_cold_miss_reduction": 0.20562922976047912
+              },
+              "maximum_depth": 100,
+              "miss_budget": 20,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 19.249851590106008,
+                "mean_depth": 26.768197879858658,
+                "mean_ndcg_at_10": 0.5282957750916752
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 16.819505300353356,
+                "mean_depth": 32.21484098939929,
+                "mean_ndcg_at_10": 0.5288844562256121
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 8.627561837455826,
+                  "mean": 6.684713780918728,
+                  "minimum": 4.192049469964662,
+                  "order_q025": 4.788197879858656,
+                  "order_q975": 8.527632508833927
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0012776148574324964,
+                  "mean": 0.0002822914263432952,
+                  "minimum": -0.0006479087550499418,
+                  "order_q025": -0.00035182793301709314,
+                  "order_q975": 0.0011621323906755075
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.78,
+                "relative_cold_miss_reduction": 0.28440484484102857
+              },
+              "maximum_depth": 100,
+              "miss_budget": 25,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 23.504219081272087,
+                "mean_depth": 32.21484098939929,
+                "mean_ndcg_at_10": 0.5286021647992688
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 18.741413427561834,
+                "mean_depth": 37.107420494699646,
+                "mean_ndcg_at_10": 0.5294590770061844
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 10.10070671378092,
+                  "mean": 8.562289752650177,
+                  "minimum": 6.449999999999999,
+                  "order_q025": 7.087089222614841,
+                  "order_q975": 10.033590989399293
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0019082175220945796,
+                  "mean": 0.0005715757216131979,
+                  "minimum": -0.00047716923236107434,
+                  "order_q025": -0.00030647486554731817,
+                  "order_q975": 0.0016060083105264992
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.88,
+                "relative_cold_miss_reduction": 0.31359444893378347
+              },
+              "maximum_depth": 100,
+              "miss_budget": 30,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 27.30370318021201,
+                "mean_depth": 37.107420494699646,
+                "mean_ndcg_at_10": 0.5288875012845712
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 24.369823321554772,
+                "mean_depth": 46.00848056537103,
+                "mean_ndcg_at_10": 0.5303153195103857
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 11.535512367491162,
+                  "mean": 9.793250883392227,
+                  "minimum": 8.414840989399291,
+                  "order_q025": 8.512062720848052,
+                  "order_q975": 11.08858657243816
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.00217135446201433,
+                  "mean": 0.0007624667752159042,
+                  "minimum": -0.0005590615168338253,
+                  "order_q025": -0.0004487256704718639,
+                  "order_q975": 0.0019303511782444353
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.92,
+                "relative_cold_miss_reduction": 0.2866618742985989
+              },
+              "maximum_depth": 100,
+              "miss_budget": 40,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 34.163074204946994,
+                "mean_depth": 46.00848056537103,
+                "mean_ndcg_at_10": 0.5295528527351697
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 39.72445229681979,
+                "mean_depth": 59.166077738515895,
+                "mean_ndcg_at_10": 0.5311159609918787
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 5.245583038869256,
+                  "mean": 4.311349823321555,
+                  "minimum": 3.5007067137809216,
+                  "order_q025": 3.5919213780918664,
+                  "order_q975": 5.080923144876327
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.00033020404291883576,
+                  "mean": -4.399569604611076e-05,
+                  "minimum": -0.0004156611348661299,
+                  "order_q025": -0.00038854315833779517,
+                  "order_q975": 0.0002774037701045451
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.56,
+                "relative_cold_miss_reduction": 0.09790555901670732
+              },
+              "maximum_depth": 100,
+              "miss_budget": 50,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 44.035802120141334,
+                "mean_depth": 59.166077738515895,
+                "mean_ndcg_at_10": 0.531159956687925
+              }
+            }
+          ]
+        },
+        "0.2": {
+          "capacity_pages": 1049,
+          "fixed": {
+            "belady_oracle": {
+              "100": {
+                "mean_cold_page_misses": 31.81731448763251,
+                "mean_ndcg_at_10": 0.5303684935736932
+              },
+              "20": {
+                "mean_cold_page_misses": 8.32862190812721,
+                "mean_ndcg_at_10": 0.527693619055468
+              },
+              "50": {
+                "mean_cold_page_misses": 16.715618374558304,
+                "mean_ndcg_at_10": 0.5313362356284512
+              }
+            },
+            "lfu": {
+              "100": {
+                "mean_cold_page_misses": 47.39971731448763,
+                "mean_ndcg_at_10": 0.5303684935736931
+              },
+              "20": {
+                "mean_cold_page_misses": 10.180706713780918,
+                "mean_ndcg_at_10": 0.5276936190554677
+              },
+              "50": {
+                "mean_cold_page_misses": 23.893851590106,
+                "mean_ndcg_at_10": 0.531336235628451
+              }
+            },
+            "lru": {
+              "100": {
+                "mean_cold_page_misses": 57.79257950530035,
+                "mean_ndcg_at_10": 0.5303684935736931
+              },
+              "20": {
+                "mean_cold_page_misses": 10.74791519434629,
+                "mean_ndcg_at_10": 0.5276936190554677
+              },
+              "50": {
+                "mean_cold_page_misses": 27.76734982332156,
+                "mean_ndcg_at_10": 0.531336235628451
+              }
+            }
+          },
+          "state_aware": [
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 11.0565371024735,
+                "mean_depth": 25.49752650176679,
+                "mean_ndcg_at_10": 0.5283078270237515
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 3.230035335689047,
+                  "mean": 2.8465159010600702,
+                  "minimum": 2.2572438162544177,
+                  "order_q025": 2.311581272084804,
+                  "order_q975": 3.2038206713780935
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0010921285430032235,
+                  "mean": -5.7518813091554935e-05,
+                  "minimum": -0.0010136447944859572,
+                  "order_q025": -0.000888212917880224,
+                  "order_q975": 0.000982364827222107
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.44,
+                "relative_cold_miss_reduction": 0.20474034734217056
+              },
+              "maximum_depth": 50,
+              "miss_budget": 10,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 13.903053003533572,
+                "mean_depth": 25.49752650176679,
+                "mean_ndcg_at_10": 0.5283653458368431
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 11.605724381625441,
+                "mean_depth": 28.173144876325097,
+                "mean_ndcg_at_10": 0.5288851108898139
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 4.244522968197879,
+                  "mean": 3.815038869257951,
+                  "minimum": 3.404416961130744,
+                  "order_q025": 3.467888692579506,
+                  "order_q975": 4.200375441696114
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0009872063712876855,
+                  "mean": 0.00018418856533405136,
+                  "minimum": -0.000742647270741692,
+                  "order_q025": -0.0007026840277808754,
+                  "order_q975": 0.0008993452052597578
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.58,
+                "relative_cold_miss_reduction": 0.247396241495336
+              },
+              "maximum_depth": 50,
+              "miss_budget": 15,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 15.420763250883391,
+                "mean_depth": 28.173144876325097,
+                "mean_ndcg_at_10": 0.5287009223244798
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 12.531802120141345,
+                "mean_depth": 30.81908127208481,
+                "mean_ndcg_at_10": 0.5295282349800328
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 4.835512367491168,
+                  "mean": 4.37743109540636,
+                  "minimum": 3.9272084805653726,
+                  "order_q025": 3.982791519434631,
+                  "order_q975": 4.772420494699646
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0015361409808362092,
+                  "mean": 0.0004974430703775256,
+                  "minimum": -0.0008302154482875412,
+                  "order_q025": -0.0004258461613595776,
+                  "order_q975": 0.001490531777806131
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.78,
+                "relative_cold_miss_reduction": 0.25887815488767396
+              },
+              "maximum_depth": 50,
+              "miss_budget": 20,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 16.909233215547705,
+                "mean_depth": 30.81908127208481,
+                "mean_ndcg_at_10": 0.5290307919096553
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 13.832296819787986,
+                "mean_depth": 33.60282685512367,
+                "mean_ndcg_at_10": 0.5299943764884426
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 5.095406360424027,
+                  "mean": 4.662042402826855,
+                  "minimum": 4.195583038869257,
+                  "order_q025": 4.275326855123677,
+                  "order_q975": 4.96536660777385
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0018285443748499164,
+                  "mean": 0.00061863942173487,
+                  "minimum": -0.0006375194879238988,
+                  "order_q025": -0.0004265766543760818,
+                  "order_q975": 0.001717227133134269
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.84,
+                "relative_cold_miss_reduction": 0.2520794253155105
+              },
+              "maximum_depth": 50,
+              "miss_budget": 25,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 18.49433922261484,
+                "mean_depth": 33.60282685512367,
+                "mean_ndcg_at_10": 0.5293757370667078
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 15.453427561837454,
+                "mean_depth": 36.3356890459364,
+                "mean_ndcg_at_10": 0.5304778884882938
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 5.15406360424028,
+                  "mean": 4.579710247349824,
+                  "minimum": 4.077915194346295,
+                  "order_q025": 4.262230565371029,
+                  "order_q975": 4.916135159010599
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.001924963729018847,
+                  "mean": 0.0007815088287322913,
+                  "minimum": -0.00037221746026272484,
+                  "order_q025": -0.0001972123195272374,
+                  "order_q975": 0.0018874372267479872
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.88,
+                "relative_cold_miss_reduction": 0.22860673604758772
+              },
+              "maximum_depth": 50,
+              "miss_budget": 30,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 20.03313780918728,
+                "mean_depth": 36.3356890459364,
+                "mean_ndcg_at_10": 0.5296963796595615
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 20.132508833922262,
+                "mean_depth": 42.23816254416961,
+                "mean_ndcg_at_10": 0.5310764787226268
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 3.867667844522966,
+                  "mean": 3.2376961130742052,
+                  "minimum": 2.5893992932862204,
+                  "order_q025": 2.715198763250885,
+                  "order_q975": 3.639019434628978
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0014248540653809538,
+                  "mean": 0.0006263377388288083,
+                  "minimum": -0.00025473539385478805,
+                  "order_q025": -0.0002405462852627438,
+                  "order_q975": 0.0013941771001421577
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.86,
+                "relative_cold_miss_reduction": 0.138539483090426
+              },
+              "maximum_depth": 50,
+              "miss_budget": 40,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 23.37020494699647,
+                "mean_depth": 42.23816254416961,
+                "mean_ndcg_at_10": 0.530450140983798
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 27.76734982332156,
+                "mean_depth": 50.0,
+                "mean_ndcg_at_10": 0.531336235628451
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 7.105427357601002e-15,
+                  "mean": -2.842170943040401e-16,
+                  "minimum": -3.552713678800501e-15,
+                  "order_q025": -3.552713678800501e-15,
+                  "order_q975": 3.552713678800501e-15
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0,
+                  "mean": -9.103828801926283e-17,
+                  "minimum": -2.220446049250313e-16,
+                  "order_q025": -1.1102230246251565e-16,
+                  "order_q975": 0.0
+                },
+                "orders_with_fewer_cold_misses_fraction": 0.24,
+                "orders_with_higher_ndcg_fraction": 0.0,
+                "relative_cold_miss_reduction": 0.0
+              },
+              "maximum_depth": 50,
+              "miss_budget": 50,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 27.76734982332156,
+                "mean_depth": 50.0,
+                "mean_ndcg_at_10": 0.5313362356284511
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 11.282968197879857,
+                "mean_depth": 31.022614840989398,
+                "mean_ndcg_at_10": 0.5283876513364486
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 7.482332155477032,
+                  "mean": 6.012318021201413,
+                  "minimum": 4.57685512367491,
+                  "order_q025": 5.101267667844519,
+                  "order_q975": 7.2683083038869265
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.001114830335528172,
+                  "mean": 8.372019564126143e-05,
+                  "minimum": -0.0008449900445359759,
+                  "order_q025": -0.0007761634581628124,
+                  "order_q975": 0.0010443879876171707
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.54,
+                "relative_cold_miss_reduction": 0.3476275526778065
+              },
+              "maximum_depth": 100,
+              "miss_budget": 10,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 17.295286219081273,
+                "mean_depth": 31.022614840989398,
+                "mean_ndcg_at_10": 0.5283039311408074
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 12.026643109540636,
+                "mean_depth": 36.91660777385159,
+                "mean_ndcg_at_10": 0.5288358167137764
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 9.698056537102474,
+                  "mean": 8.75039222614841,
+                  "minimum": 7.469081272084807,
+                  "order_q025": 7.988674911660777,
+                  "order_q975": 9.576934628975263
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0010410528554636311,
+                  "mean": 0.000243318579418621,
+                  "minimum": -0.0011901297639121955,
+                  "order_q025": -0.0009637359776454496,
+                  "order_q975": 0.0010330369781467118
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.66,
+                "relative_cold_miss_reduction": 0.42115692083931344
+              },
+              "maximum_depth": 100,
+              "miss_budget": 15,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 20.777035335689046,
+                "mean_depth": 36.91660777385159,
+                "mean_ndcg_at_10": 0.5285924981343579
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 13.100494699646642,
+                "mean_depth": 41.42402826855124,
+                "mean_ndcg_at_10": 0.5292656967289306
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 11.375618374558304,
+                  "mean": 10.320908127208481,
+                  "minimum": 9.263604240282682,
+                  "order_q025": 9.508590989399293,
+                  "order_q975": 11.262301236749114
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0016280275580266013,
+                  "mean": 0.000418564714169225,
+                  "minimum": -0.001157146885261029,
+                  "order_q025": -0.0006464224424158865,
+                  "order_q975": 0.001430050350889028
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.78,
+                "relative_cold_miss_reduction": 0.44066139861505077
+              },
+              "maximum_depth": 100,
+              "miss_budget": 20,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 23.421402826855125,
+                "mean_depth": 41.42402826855124,
+                "mean_ndcg_at_10": 0.5288471320147614
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 14.631024734982331,
+                "mean_depth": 45.96749116607774,
+                "mean_ndcg_at_10": 0.5296794449575505
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 12.392579505300349,
+                  "mean": 11.42929681978799,
+                  "minimum": 10.671201413427562,
+                  "order_q025": 10.746448763250884,
+                  "order_q975": 12.30888250883392
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.001991376943618617,
+                  "mean": 0.0005588290010547348,
+                  "minimum": -0.0007197613335976349,
+                  "order_q025": -0.0006813772659077899,
+                  "order_q975": 0.001868389409375803
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.82,
+                "relative_cold_miss_reduction": 0.4385708286740563
+              },
+              "maximum_depth": 100,
+              "miss_budget": 25,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 26.060321554770322,
+                "mean_depth": 45.96749116607774,
+                "mean_ndcg_at_10": 0.5291206159564957
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 16.653780918727914,
+                "mean_depth": 50.4226148409894,
+                "mean_ndcg_at_10": 0.5301645603577293
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 12.645053003533565,
+                  "mean": 11.985049469964663,
+                  "minimum": 11.102826855123677,
+                  "order_q025": 11.194951413427564,
+                  "order_q975": 12.610393109540638
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0021611937573149387,
+                  "mean": 0.0007680862986977877,
+                  "minimum": -0.00048564853438082256,
+                  "order_q025": -0.00048138169359449035,
+                  "order_q975": 0.0020162890030325036
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.84,
+                "relative_cold_miss_reduction": 0.41848948812856196
+              },
+              "maximum_depth": 100,
+              "miss_budget": 30,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 28.638830388692575,
+                "mean_depth": 50.4226148409894,
+                "mean_ndcg_at_10": 0.5293964740590316
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 22.585865724381623,
+                "mean_depth": 59.7773851590106,
+                "mean_ndcg_at_10": 0.5305995841904038
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 12.435689045936396,
+                  "mean": 11.459865724381626,
+                  "minimum": 10.402473498233217,
+                  "order_q025": 10.475680212014138,
+                  "order_q975": 12.210083922261488
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.001506295577436867,
+                  "mean": 0.000560670048365366,
+                  "minimum": -0.000723864227334281,
+                  "order_q025": -0.00027948815959330796,
+                  "order_q975": 0.0014368600676323865
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.84,
+                "relative_cold_miss_reduction": 0.3366021300387695
+              },
+              "maximum_depth": 100,
+              "miss_budget": 40,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 34.045731448763256,
+                "mean_depth": 59.7773851590106,
+                "mean_ndcg_at_10": 0.5300389141420383
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 32.72720848056538,
+                "mean_depth": 71.36749116607774,
+                "mean_ndcg_at_10": 0.5308115527094888
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 8.674558303886926,
+                  "mean": 7.930639575971732,
+                  "minimum": 6.88144876325088,
+                  "order_q025": 7.252442579505303,
+                  "order_q975": 8.526276501766786
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0004705111934243389,
+                  "mean": -0.0001131390113307984,
+                  "minimum": -0.00042432360352584464,
+                  "order_q025": -0.0004100602595815017,
+                  "order_q975": 0.00043060546420059504
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.06,
+                "relative_cold_miss_reduction": 0.19505802581936232
+              },
+              "maximum_depth": 100,
+              "miss_budget": 50,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 40.657848056537105,
+                "mean_depth": 71.36749116607774,
+                "mean_ndcg_at_10": 0.5309246917208195
+              }
+            }
+          ]
+        }
+      },
+      "corpus_pages": 5244,
+      "input_sha256": {
+        "failure_analysis": "f3addc1eac8ce82b485895d59c387fc93a5ef8e6f99c0c658d309d05d0117777",
+        "hpool_ranking": "7db35a37192299e750159c0ab454b5a32302652b29e1716688779735c3030925"
+      },
+      "queries": 283
+    },
+    "pharma": {
+      "candidate_reuse": {
+        "100": {
+          "event_reuse_fraction": 0.9375,
+          "maximum_query_frequency": 102,
+          "page_events": 36400,
+          "unique_corpus_fraction": 0.9835711197578901,
+          "unique_pages": 2275
+        },
+        "20": {
+          "event_reuse_fraction": 0.7574175824175824,
+          "maximum_query_frequency": 31,
+          "page_events": 7280,
+          "unique_corpus_fraction": 0.7635105923043666,
+          "unique_pages": 1766
+        },
+        "50": {
+          "event_reuse_fraction": 0.8806043956043956,
+          "maximum_query_frequency": 52,
+          "page_events": 18200,
+          "unique_corpus_fraction": 0.9394725464764375,
+          "unique_pages": 2173
+        }
+      },
+      "capacities": {
+        "0.05": {
+          "capacity_pages": 116,
+          "fixed": {
+            "belady_oracle": {
+              "100": {
+                "mean_cold_page_misses": 67.73752747252746,
+                "mean_ndcg_at_10": 0.6255518852671628
+              },
+              "20": {
+                "mean_cold_page_misses": 12.747637362637361,
+                "mean_ndcg_at_10": 0.6240484530859676
+              },
+              "50": {
+                "mean_cold_page_misses": 32.90620879120879,
+                "mean_ndcg_at_10": 0.6250392120534349
+              }
+            },
+            "lfu": {
+              "100": {
+                "mean_cold_page_misses": 83.08197802197803,
+                "mean_ndcg_at_10": 0.6255518852671627
+              },
+              "20": {
+                "mean_cold_page_misses": 16.510604395604393,
+                "mean_ndcg_at_10": 0.6240484530859675
+              },
+              "50": {
+                "mean_cold_page_misses": 41.43796703296704,
+                "mean_ndcg_at_10": 0.6250392120534349
+              }
+            },
+            "lru": {
+              "100": {
+                "mean_cold_page_misses": 94.21697802197804,
+                "mean_ndcg_at_10": 0.6255518852671627
+              },
+              "20": {
+                "mean_cold_page_misses": 18.07324175824176,
+                "mean_ndcg_at_10": 0.6240484530859675
+              },
+              "50": {
+                "mean_cold_page_misses": 46.081098901098905,
+                "mean_ndcg_at_10": 0.6250392120534349
+              }
+            }
+          },
+          "state_aware": [
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 18.07324175824176,
+                "mean_depth": 20.0,
+                "mean_ndcg_at_10": 0.6240484530859675
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 3.552713678800501e-15,
+                  "mean": -8.526512829121202e-16,
+                  "minimum": -7.105427357601002e-15,
+                  "order_q025": -3.552713678800501e-15,
+                  "order_q975": 3.552713678800501e-15
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 1.1102230246251565e-16,
+                  "mean": 6.439293542825907e-17,
+                  "minimum": 0.0,
+                  "order_q025": 0.0,
+                  "order_q975": 1.1102230246251565e-16
+                },
+                "orders_with_fewer_cold_misses_fraction": 0.26,
+                "orders_with_higher_ndcg_fraction": 0.58,
+                "relative_cold_miss_reduction": 0.0
+              },
+              "maximum_depth": 50,
+              "miss_budget": 10,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 18.07324175824176,
+                "mean_depth": 20.0,
+                "mean_ndcg_at_10": 0.6240484530859673
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 18.075769230769232,
+                "mean_depth": 20.006593406593407,
+                "mean_ndcg_at_10": 0.6240445868421839
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 0.05453296703296573,
+                  "mean": 0.0036675824175816983,
+                  "minimum": -7.105427357601002e-15,
+                  "order_q025": -3.552713678800501e-15,
+                  "order_q975": 0.04424107142857494
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 9.665609459141855e-06,
+                  "mean": -3.672931594373985e-06,
+                  "minimum": -0.0001933121891808387,
+                  "order_q025": 0.0,
+                  "order_q975": 1.1102230246251565e-16
+                },
+                "orders_with_fewer_cold_misses_fraction": 0.32,
+                "orders_with_higher_ndcg_fraction": 0.56,
+                "relative_cold_miss_reduction": 0.00020285932883184994
+              },
+              "maximum_depth": 50,
+              "miss_budget": 15,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 18.079436813186813,
+                "mean_depth": 20.006593406593407,
+                "mean_ndcg_at_10": 0.6240482597737782
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 18.09478021978022,
+                "mean_depth": 20.042857142857144,
+                "mean_ndcg_at_10": 0.6240501290109293
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 0.1641483516483504,
+                  "mean": 0.018681318681318403,
+                  "minimum": -0.0171703296703285,
+                  "order_q025": -6.306066779870889e-15,
+                  "order_q975": 0.09236607142857095
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0002933116318930562,
+                  "mean": 1.1096559599454992e-06,
+                  "minimum": -0.0001933121891808387,
+                  "order_q025": -6.872478506607382e-05,
+                  "order_q975": 1.1157737633041286e-05
+                },
+                "orders_with_fewer_cold_misses_fraction": 0.54,
+                "orders_with_higher_ndcg_fraction": 0.6,
+                "relative_cold_miss_reduction": 0.0010313500068252048
+              },
+              "maximum_depth": 50,
+              "miss_budget": 20,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 18.11346153846154,
+                "mean_depth": 20.042857142857144,
+                "mean_ndcg_at_10": 0.6240490193549693
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 18.199615384615385,
+                "mean_depth": 20.201098901098902,
+                "mean_ndcg_at_10": 0.6240483092881878
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 0.2465659340659343,
+                  "mean": 0.0644340659340655,
+                  "minimum": -0.004670329670332762,
+                  "order_q025": -3.552713678800501e-15,
+                  "order_q975": 0.22415521978021724
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0003057846190993585,
+                  "mean": -7.41847236711557e-06,
+                  "minimum": -0.00024165903650363862,
+                  "order_q025": -0.00020892993073731714,
+                  "order_q975": 0.0002194911986489741
+                },
+                "orders_with_fewer_cold_misses_fraction": 0.88,
+                "orders_with_higher_ndcg_fraction": 0.5,
+                "relative_cold_miss_reduction": 0.0035279178425640556
+              },
+              "maximum_depth": 50,
+              "miss_budget": 25,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 18.26404945054945,
+                "mean_depth": 20.201098901098902,
+                "mean_ndcg_at_10": 0.6240557277605548
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 18.789175824175825,
+                "mean_depth": 21.028571428571432,
+                "mean_ndcg_at_10": 0.6240464806959308
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 0.5263736263736263,
+                  "mean": 0.25734065934066025,
+                  "minimum": -0.014560439560440841,
+                  "order_q025": 0.07992445054945332,
+                  "order_q975": 0.4768750000000031
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0003841677914282471,
+                  "mean": -2.1701738080750487e-05,
+                  "minimum": -0.0004517577893518032,
+                  "order_q025": -0.0003468222242007268,
+                  "order_q975": 0.00030148368944659385
+                },
+                "orders_with_fewer_cold_misses_fraction": 0.98,
+                "orders_with_higher_ndcg_fraction": 0.3,
+                "relative_cold_miss_reduction": 0.013511166704072687
+              },
+              "maximum_depth": 50,
+              "miss_budget": 30,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 19.046516483516484,
+                "mean_depth": 21.028571428571432,
+                "mean_ndcg_at_10": 0.6240681824340114
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 21.86351648351648,
+                "mean_depth": 24.882417582417585,
+                "mean_ndcg_at_10": 0.6240978926829989
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 1.1251373626373642,
+                  "mean": 0.8144258241758243,
+                  "minimum": 0.43983516483516283,
+                  "order_q025": 0.5179601648351648,
+                  "order_q975": 1.1167994505494505
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0006706104495300957,
+                  "mean": -0.0001058664939275622,
+                  "minimum": -0.0005202484411530595,
+                  "order_q025": -0.0004787175327194165,
+                  "order_q975": 0.0005112801960154651
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.24,
+                "relative_cold_miss_reduction": 0.035912686130239124
+              },
+              "maximum_depth": 50,
+              "miss_budget": 40,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 22.677942307692305,
+                "mean_depth": 24.882417582417585,
+                "mean_ndcg_at_10": 0.6242037591769264
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 46.081098901098905,
+                "mean_depth": 50.0,
+                "mean_ndcg_at_10": 0.6250392120534349
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 1.4210854715202004e-14,
+                  "mean": -1.8474111129762605e-15,
+                  "minimum": -1.4210854715202004e-14,
+                  "order_q025": -1.2612133559741778e-14,
+                  "order_q975": 7.105427357601002e-15
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 2.220446049250313e-16,
+                  "mean": -7.771561172376095e-17,
+                  "minimum": -1.1102230246251565e-16,
+                  "order_q025": -1.1102230246251565e-16,
+                  "order_q975": 1.7208456881689895e-16
+                },
+                "orders_with_fewer_cold_misses_fraction": 0.22,
+                "orders_with_higher_ndcg_fraction": 0.04,
+                "relative_cold_miss_reduction": 0.0
+              },
+              "maximum_depth": 50,
+              "miss_budget": 50,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 46.081098901098905,
+                "mean_depth": 50.0,
+                "mean_ndcg_at_10": 0.6250392120534349
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 18.07324175824176,
+                "mean_depth": 20.0,
+                "mean_ndcg_at_10": 0.6240484530859675
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 3.552713678800501e-15,
+                  "mean": -8.526512829121202e-16,
+                  "minimum": -7.105427357601002e-15,
+                  "order_q025": -3.552713678800501e-15,
+                  "order_q975": 3.552713678800501e-15
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 1.1102230246251565e-16,
+                  "mean": 6.439293542825907e-17,
+                  "minimum": 0.0,
+                  "order_q025": 0.0,
+                  "order_q975": 1.1102230246251565e-16
+                },
+                "orders_with_fewer_cold_misses_fraction": 0.26,
+                "orders_with_higher_ndcg_fraction": 0.58,
+                "relative_cold_miss_reduction": 0.0
+              },
+              "maximum_depth": 100,
+              "miss_budget": 10,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 18.07324175824176,
+                "mean_depth": 20.0,
+                "mean_ndcg_at_10": 0.6240484530859673
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 18.075769230769232,
+                "mean_depth": 20.006593406593407,
+                "mean_ndcg_at_10": 0.6240445868421839
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 0.05453296703296573,
+                  "mean": 0.0036675824175816983,
+                  "minimum": -7.105427357601002e-15,
+                  "order_q025": -3.552713678800501e-15,
+                  "order_q975": 0.04424107142857494
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 9.665609459141855e-06,
+                  "mean": -3.672931594373985e-06,
+                  "minimum": -0.0001933121891808387,
+                  "order_q025": 0.0,
+                  "order_q975": 1.1102230246251565e-16
+                },
+                "orders_with_fewer_cold_misses_fraction": 0.32,
+                "orders_with_higher_ndcg_fraction": 0.56,
+                "relative_cold_miss_reduction": 0.00020285932883184994
+              },
+              "maximum_depth": 100,
+              "miss_budget": 15,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 18.079436813186813,
+                "mean_depth": 20.006593406593407,
+                "mean_ndcg_at_10": 0.6240482597737782
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 18.09478021978022,
+                "mean_depth": 20.042857142857144,
+                "mean_ndcg_at_10": 0.6240501290109293
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 0.1641483516483504,
+                  "mean": 0.018681318681318403,
+                  "minimum": -0.0171703296703285,
+                  "order_q025": -6.306066779870889e-15,
+                  "order_q975": 0.09236607142857095
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0002933116318930562,
+                  "mean": 1.1096559599454992e-06,
+                  "minimum": -0.0001933121891808387,
+                  "order_q025": -6.872478506607382e-05,
+                  "order_q975": 1.1157737633041286e-05
+                },
+                "orders_with_fewer_cold_misses_fraction": 0.54,
+                "orders_with_higher_ndcg_fraction": 0.6,
+                "relative_cold_miss_reduction": 0.0010313500068252048
+              },
+              "maximum_depth": 100,
+              "miss_budget": 20,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 18.11346153846154,
+                "mean_depth": 20.042857142857144,
+                "mean_ndcg_at_10": 0.6240490193549693
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 18.199615384615385,
+                "mean_depth": 20.201098901098902,
+                "mean_ndcg_at_10": 0.6240483092881878
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 0.2465659340659343,
+                  "mean": 0.0644340659340655,
+                  "minimum": -0.004670329670332762,
+                  "order_q025": -3.552713678800501e-15,
+                  "order_q975": 0.22415521978021724
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0003057846190993585,
+                  "mean": -7.41847236711557e-06,
+                  "minimum": -0.00024165903650363862,
+                  "order_q025": -0.00020892993073731714,
+                  "order_q975": 0.0002194911986489741
+                },
+                "orders_with_fewer_cold_misses_fraction": 0.88,
+                "orders_with_higher_ndcg_fraction": 0.5,
+                "relative_cold_miss_reduction": 0.0035279178425640556
+              },
+              "maximum_depth": 100,
+              "miss_budget": 25,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 18.26404945054945,
+                "mean_depth": 20.201098901098902,
+                "mean_ndcg_at_10": 0.6240557277605548
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 18.789175824175825,
+                "mean_depth": 21.028571428571432,
+                "mean_ndcg_at_10": 0.6240464806959308
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 0.5263736263736263,
+                  "mean": 0.25734065934066025,
+                  "minimum": -0.014560439560440841,
+                  "order_q025": 0.07992445054945332,
+                  "order_q975": 0.4768750000000031
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0003841677914282471,
+                  "mean": -2.1701738080750487e-05,
+                  "minimum": -0.0004517577893518032,
+                  "order_q025": -0.0003468222242007268,
+                  "order_q975": 0.00030148368944659385
+                },
+                "orders_with_fewer_cold_misses_fraction": 0.98,
+                "orders_with_higher_ndcg_fraction": 0.3,
+                "relative_cold_miss_reduction": 0.013511166704072687
+              },
+              "maximum_depth": 100,
+              "miss_budget": 30,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 19.046516483516484,
+                "mean_depth": 21.028571428571432,
+                "mean_ndcg_at_10": 0.6240681824340114
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 21.866923076923076,
+                "mean_depth": 24.887912087912092,
+                "mean_ndcg_at_10": 0.6240978926829989
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 1.1251373626373642,
+                  "mean": 0.8162417582417584,
+                  "minimum": 0.43983516483516283,
+                  "order_q025": 0.5179601648351648,
+                  "order_q975": 1.1167994505494505
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0006706104495300957,
+                  "mean": -0.0001058664939275622,
+                  "minimum": -0.0005202484411530595,
+                  "order_q025": -0.0004787175327194165,
+                  "order_q975": 0.0005112801960154651
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.24,
+                "relative_cold_miss_reduction": 0.035984474131950384
+              },
+              "maximum_depth": 100,
+              "miss_budget": 40,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 22.68316483516483,
+                "mean_depth": 24.887912087912092,
+                "mean_ndcg_at_10": 0.6242037591769264
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 46.38285714285714,
+                "mean_depth": 50.36263736263736,
+                "mean_ndcg_at_10": 0.6250553723752752
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 0.21030219780218573,
+                  "mean": 0.05084340659340654,
+                  "minimum": -0.08914835164834045,
+                  "order_q025": -0.06629464285714466,
+                  "order_q975": 0.15820741758242177
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.00025717197151942095,
+                  "mean": 1.0060251637418194e-05,
+                  "minimum": -3.780038650591511e-05,
+                  "order_q025": -2.664132269837305e-05,
+                  "order_q975": 0.0002568794244835526
+                },
+                "orders_with_fewer_cold_misses_fraction": 0.78,
+                "orders_with_higher_ndcg_fraction": 0.08,
+                "relative_cold_miss_reduction": 0.0010949677926115017
+              },
+              "maximum_depth": 100,
+              "miss_budget": 50,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 46.433700549450556,
+                "mean_depth": 50.36263736263736,
+                "mean_ndcg_at_10": 0.6250453121236377
+              }
+            }
+          ]
+        },
+        "0.1": {
+          "capacity_pages": 231,
+          "fixed": {
+            "belady_oracle": {
+              "100": {
+                "mean_cold_page_misses": 53.45472527472527,
+                "mean_ndcg_at_10": 0.6255518852671628
+              },
+              "20": {
+                "mean_cold_page_misses": 10.17510989010989,
+                "mean_ndcg_at_10": 0.6240484530859676
+              },
+              "50": {
+                "mean_cold_page_misses": 25.994615384615386,
+                "mean_ndcg_at_10": 0.6250392120534349
+              }
+            },
+            "lfu": {
+              "100": {
+                "mean_cold_page_misses": 71.06615384615384,
+                "mean_ndcg_at_10": 0.6255518852671627
+              },
+              "20": {
+                "mean_cold_page_misses": 14.262802197802198,
+                "mean_ndcg_at_10": 0.6240484530859675
+              },
+              "50": {
+                "mean_cold_page_misses": 35.53186813186814,
+                "mean_ndcg_at_10": 0.6250392120534349
+              }
+            },
+            "lru": {
+              "100": {
+                "mean_cold_page_misses": 85.28082417582416,
+                "mean_ndcg_at_10": 0.6255518852671627
+              },
+              "20": {
+                "mean_cold_page_misses": 16.171428571428574,
+                "mean_ndcg_at_10": 0.6240484530859675
+              },
+              "50": {
+                "mean_cold_page_misses": 41.58895604395605,
+                "mean_ndcg_at_10": 0.6250392120534349
+              }
+            }
+          },
+          "state_aware": [
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 16.172417582417584,
+                "mean_depth": 20.004945054945054,
+                "mean_ndcg_at_10": 0.6240484530859675
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 0.10947802197802403,
+                  "mean": 0.003310439560439633,
+                  "minimum": -7.105427357601002e-15,
+                  "order_q025": -4.929390229335695e-15,
+                  "order_q975": 0.04343406593406592
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 1.1102230246251565e-16,
+                  "mean": 6.439293542825907e-17,
+                  "minimum": 0.0,
+                  "order_q025": 0.0,
+                  "order_q975": 1.1102230246251565e-16
+                },
+                "orders_with_fewer_cold_misses_fraction": 0.42,
+                "orders_with_higher_ndcg_fraction": 0.58,
+                "relative_cold_miss_reduction": 0.00020465474913663903
+              },
+              "maximum_depth": 50,
+              "miss_budget": 10,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 16.175728021978024,
+                "mean_depth": 20.004945054945054,
+                "mean_ndcg_at_10": 0.6240484530859673
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 16.186153846153847,
+                "mean_depth": 20.041208791208792,
+                "mean_ndcg_at_10": 0.6240445868421839
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 0.16895604395604025,
+                  "mean": 0.02119780219780214,
+                  "minimum": -7.105427357601002e-15,
+                  "order_q025": -4.929390229335695e-15,
+                  "order_q975": 0.12226648351648353
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 9.665609459141855e-06,
+                  "mean": -3.666277100025095e-06,
+                  "minimum": -0.0001933121891808387,
+                  "order_q025": -7.2329856747294075e-06,
+                  "order_q975": 7.490847330773862e-06
+                },
+                "orders_with_fewer_cold_misses_fraction": 0.6,
+                "orders_with_higher_ndcg_fraction": 0.58,
+                "relative_cold_miss_reduction": 0.0013079127705578255
+              },
+              "maximum_depth": 50,
+              "miss_budget": 15,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 16.207351648351647,
+                "mean_depth": 20.041208791208792,
+                "mean_ndcg_at_10": 0.6240482531192839
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 16.342142857142857,
+                "mean_depth": 20.384065934065934,
+                "mean_ndcg_at_10": 0.6240520317341918
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 0.3796703296703292,
+                  "mean": 0.16516483516483543,
+                  "minimum": -7.105427357601002e-15,
+                  "order_q025": 7.99360577730113e-16,
+                  "order_q975": 0.3503193681318688
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.00028677404672916573,
+                  "mean": -5.415969213886651e-06,
+                  "minimum": -0.00022005851200812554,
+                  "order_q025": -0.00019486208815727436,
+                  "order_q975": 0.00028227176967728085
+                },
+                "orders_with_fewer_cold_misses_fraction": 0.96,
+                "orders_with_higher_ndcg_fraction": 0.46,
+                "relative_cold_miss_reduction": 0.010005558643690873
+              },
+              "maximum_depth": 50,
+              "miss_budget": 20,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 16.50730769230769,
+                "mean_depth": 20.384065934065934,
+                "mean_ndcg_at_10": 0.6240574477034055
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 16.948021978021977,
+                "mean_depth": 21.50164835164835,
+                "mean_ndcg_at_10": 0.6240074069426678
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 0.9862637362637372,
+                  "mean": 0.5253461538461537,
+                  "minimum": 0.14175824175824303,
+                  "order_q025": 0.19889079670329607,
+                  "order_q975": 0.8845707417582415
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0002859854388419514,
+                  "mean": -9.02683151945194e-05,
+                  "minimum": -0.0004994857609429415,
+                  "order_q025": -0.00048492967919662455,
+                  "order_q975": 0.0002653171785759689
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.24,
+                "relative_cold_miss_reduction": 0.030065534582770104
+              },
+              "maximum_depth": 50,
+              "miss_budget": 25,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 17.47336813186813,
+                "mean_depth": 21.50164835164835,
+                "mean_ndcg_at_10": 0.6240976752578622
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 18.35824175824176,
+                "mean_depth": 23.76978021978022,
+                "mean_ndcg_at_10": 0.624054402064635
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 1.5230769230769248,
+                  "mean": 1.071348901098901,
+                  "minimum": 0.47609890109889363,
+                  "order_q025": 0.5874141483516462,
+                  "order_q975": 1.5046222527472548
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0004430024455244208,
+                  "mean": -0.0001010467902117429,
+                  "minimum": -0.0005800037708794115,
+                  "order_q025": -0.0005326605025575915,
+                  "order_q975": 0.0003299999321852653
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.3,
+                "relative_cold_miss_reduction": 0.055140065474506166
+              },
+              "maximum_depth": 50,
+              "miss_budget": 30,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 19.429590659340658,
+                "mean_depth": 23.76978021978022,
+                "mean_ndcg_at_10": 0.6241554488548468
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 24.03912087912088,
+                "mean_depth": 31.4510989010989,
+                "mean_ndcg_at_10": 0.6242911634168954
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 2.3049450549450583,
+                  "mean": 1.945071428571428,
+                  "minimum": 1.4947802197802176,
+                  "order_q025": 1.6101304945054933,
+                  "order_q975": 2.274780219780216
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0013703822588994052,
+                  "mean": -0.00010718134837567117,
+                  "minimum": -0.0007983567556898441,
+                  "order_q025": -0.000751243550757516,
+                  "order_q975": 0.000996568268702169
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.34,
+                "relative_cold_miss_reduction": 0.07485595109283473
+              },
+              "maximum_depth": 50,
+              "miss_budget": 40,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 25.984192307692307,
+                "mean_depth": 31.4510989010989,
+                "mean_ndcg_at_10": 0.6243983447652712
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 41.58895604395605,
+                "mean_depth": 50.0,
+                "mean_ndcg_at_10": 0.6250392120534349
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 1.4210854715202004e-14,
+                  "mean": 4.263256414560601e-16,
+                  "minimum": -1.4210854715202004e-14,
+                  "order_q025": -1.2612133559741778e-14,
+                  "order_q975": 1.4210854715202004e-14
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 2.220446049250313e-16,
+                  "mean": -7.771561172376095e-17,
+                  "minimum": -1.1102230246251565e-16,
+                  "order_q025": -1.1102230246251565e-16,
+                  "order_q975": 1.7208456881689895e-16
+                },
+                "orders_with_fewer_cold_misses_fraction": 0.38,
+                "orders_with_higher_ndcg_fraction": 0.04,
+                "relative_cold_miss_reduction": -3.4169779833334414e-16
+              },
+              "maximum_depth": 50,
+              "miss_budget": 50,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 41.58895604395604,
+                "mean_depth": 50.0,
+                "mean_ndcg_at_10": 0.6250392120534349
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 16.172417582417584,
+                "mean_depth": 20.004945054945054,
+                "mean_ndcg_at_10": 0.6240484530859675
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 0.10947802197802403,
+                  "mean": 0.003310439560439633,
+                  "minimum": -7.105427357601002e-15,
+                  "order_q025": -4.929390229335695e-15,
+                  "order_q975": 0.04343406593406592
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 1.1102230246251565e-16,
+                  "mean": 6.439293542825907e-17,
+                  "minimum": 0.0,
+                  "order_q025": 0.0,
+                  "order_q975": 1.1102230246251565e-16
+                },
+                "orders_with_fewer_cold_misses_fraction": 0.42,
+                "orders_with_higher_ndcg_fraction": 0.58,
+                "relative_cold_miss_reduction": 0.00020465474913663903
+              },
+              "maximum_depth": 100,
+              "miss_budget": 10,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 16.175728021978024,
+                "mean_depth": 20.004945054945054,
+                "mean_ndcg_at_10": 0.6240484530859673
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 16.186153846153847,
+                "mean_depth": 20.041208791208792,
+                "mean_ndcg_at_10": 0.6240445868421839
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 0.16895604395604025,
+                  "mean": 0.02119780219780214,
+                  "minimum": -7.105427357601002e-15,
+                  "order_q025": -4.929390229335695e-15,
+                  "order_q975": 0.12226648351648353
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 9.665609459141855e-06,
+                  "mean": -3.666277100025095e-06,
+                  "minimum": -0.0001933121891808387,
+                  "order_q025": -7.2329856747294075e-06,
+                  "order_q975": 7.490847330773862e-06
+                },
+                "orders_with_fewer_cold_misses_fraction": 0.6,
+                "orders_with_higher_ndcg_fraction": 0.58,
+                "relative_cold_miss_reduction": 0.0013079127705578255
+              },
+              "maximum_depth": 100,
+              "miss_budget": 15,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 16.207351648351647,
+                "mean_depth": 20.041208791208792,
+                "mean_ndcg_at_10": 0.6240482531192839
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 16.342142857142857,
+                "mean_depth": 20.384065934065934,
+                "mean_ndcg_at_10": 0.6240520317341918
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 0.3796703296703292,
+                  "mean": 0.16516483516483543,
+                  "minimum": -7.105427357601002e-15,
+                  "order_q025": 7.99360577730113e-16,
+                  "order_q975": 0.3503193681318688
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.00028677404672916573,
+                  "mean": -5.415969213886651e-06,
+                  "minimum": -0.00022005851200812554,
+                  "order_q025": -0.00019486208815727436,
+                  "order_q975": 0.00028227176967728085
+                },
+                "orders_with_fewer_cold_misses_fraction": 0.96,
+                "orders_with_higher_ndcg_fraction": 0.46,
+                "relative_cold_miss_reduction": 0.010005558643690873
+              },
+              "maximum_depth": 100,
+              "miss_budget": 20,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 16.50730769230769,
+                "mean_depth": 20.384065934065934,
+                "mean_ndcg_at_10": 0.6240574477034055
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 16.948021978021977,
+                "mean_depth": 21.50164835164835,
+                "mean_ndcg_at_10": 0.6240074069426678
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 0.9862637362637372,
+                  "mean": 0.5253461538461537,
+                  "minimum": 0.14175824175824303,
+                  "order_q025": 0.19889079670329607,
+                  "order_q975": 0.8845707417582415
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0002859854388419514,
+                  "mean": -9.02683151945194e-05,
+                  "minimum": -0.0004994857609429415,
+                  "order_q025": -0.00048492967919662455,
+                  "order_q975": 0.0002653171785759689
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.24,
+                "relative_cold_miss_reduction": 0.030065534582770104
+              },
+              "maximum_depth": 100,
+              "miss_budget": 25,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 17.47336813186813,
+                "mean_depth": 21.50164835164835,
+                "mean_ndcg_at_10": 0.6240976752578622
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 18.382637362637364,
+                "mean_depth": 23.815934065934066,
+                "mean_ndcg_at_10": 0.624054402064635
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 1.5282967032967036,
+                  "mean": 1.088752747252747,
+                  "minimum": 0.47609890109889363,
+                  "order_q025": 0.5874141483516462,
+                  "order_q975": 1.5261641483516464
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0004430024455244208,
+                  "mean": -0.00010340337806894029,
+                  "minimum": -0.0006069376406131477,
+                  "order_q025": -0.0005326605025575915,
+                  "order_q975": 0.0003299999321852653
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.3,
+                "relative_cold_miss_reduction": 0.05591551199519823
+              },
+              "maximum_depth": 100,
+              "miss_budget": 30,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 19.47139010989011,
+                "mean_depth": 23.815934065934066,
+                "mean_ndcg_at_10": 0.6241578054427039
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 24.316703296703295,
+                "mean_depth": 31.987912087912086,
+                "mean_ndcg_at_10": 0.6242868002930798
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 2.7449175824175818,
+                  "mean": 2.149978021978022,
+                  "minimum": 1.6861263736263794,
+                  "order_q025": 1.6958276098901108,
+                  "order_q975": 2.660741758241761
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.001337190098350316,
+                  "mean": -0.00011088268176050908,
+                  "minimum": -0.0007983567556898441,
+                  "order_q025": -0.0007486861531210059,
+                  "order_q975": 0.0009986681677690008
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.32,
+                "relative_cold_miss_reduction": 0.08123338155209038
+              },
+              "maximum_depth": 100,
+              "miss_budget": 40,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 26.466681318681317,
+                "mean_depth": 31.987912087912086,
+                "mean_ndcg_at_10": 0.6243976829748403
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 42.943516483516476,
+                "mean_depth": 52.21978021978021,
+                "mean_ndcg_at_10": 0.625082306245009
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 1.0855769230769283,
+                  "mean": 0.6062857142857148,
+                  "minimum": 0.1600274725274744,
+                  "order_q025": 0.2669745879120848,
+                  "order_q975": 1.0666105769230723
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.00026933869733869464,
+                  "mean": 1.7347217276126868e-05,
+                  "minimum": -6.473425623976237e-05,
+                  "order_q025": -6.444170920409109e-05,
+                  "order_q975": 0.00025717197151928494
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.16,
+                "relative_cold_miss_reduction": 0.01392166401886258
+              },
+              "maximum_depth": 100,
+              "miss_budget": 50,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 43.5498021978022,
+                "mean_depth": 52.21978021978021,
+                "mean_ndcg_at_10": 0.6250649590277331
+              }
+            }
+          ]
+        },
+        "0.2": {
+          "capacity_pages": 463,
+          "fixed": {
+            "belady_oracle": {
+              "100": {
+                "mean_cold_page_misses": 36.417967032967034,
+                "mean_ndcg_at_10": 0.6255518852671628
+              },
+              "20": {
+                "mean_cold_page_misses": 7.406483516483516,
+                "mean_ndcg_at_10": 0.6240484530859676
+              },
+              "50": {
+                "mean_cold_page_misses": 18.027802197802195,
+                "mean_ndcg_at_10": 0.6250392120534349
+              }
+            },
+            "lfu": {
+              "100": {
+                "mean_cold_page_misses": 53.25027472527473,
+                "mean_ndcg_at_10": 0.6255518852671627
+              },
+              "20": {
+                "mean_cold_page_misses": 11.177802197802198,
+                "mean_ndcg_at_10": 0.6240484530859675
+              },
+              "50": {
+                "mean_cold_page_misses": 27.090109890109893,
+                "mean_ndcg_at_10": 0.6250392120534349
+              }
+            },
+            "lru": {
+              "100": {
+                "mean_cold_page_misses": 68.66873626373625,
+                "mean_ndcg_at_10": 0.6255518852671627
+              },
+              "20": {
+                "mean_cold_page_misses": 12.853791208791208,
+                "mean_ndcg_at_10": 0.6240484530859675
+              },
+              "50": {
+                "mean_cold_page_misses": 33.30675824175824,
+                "mean_ndcg_at_10": 0.6250392120534349
+              }
+            }
+          },
+          "state_aware": [
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 12.893516483516485,
+                "mean_depth": 20.23076923076923,
+                "mean_ndcg_at_10": 0.6240518049358911
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 0.43351648351648286,
+                  "mean": 0.126162087912088,
+                  "minimum": -1.7763568394002505e-15,
+                  "order_q025": 0.0,
+                  "order_q975": 0.2920604395604395
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0002501224887948572,
+                  "mean": 1.372040883187431e-06,
+                  "minimum": -0.00024197909245871063,
+                  "order_q025": -0.00015178402434782578,
+                  "order_q975": 0.00019914892376232644
+                },
+                "orders_with_fewer_cold_misses_fraction": 0.9,
+                "orders_with_higher_ndcg_fraction": 0.6,
+                "relative_cold_miss_reduction": 0.009690107725773332
+              },
+              "maximum_depth": 50,
+              "miss_budget": 10,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 13.019678571428571,
+                "mean_depth": 20.23076923076923,
+                "mean_ndcg_at_10": 0.6240504328950078
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 13.234945054945056,
+                "mean_depth": 21.38296703296703,
+                "mean_ndcg_at_10": 0.6240462019698869
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 1.1640109890109898,
+                  "mean": 0.6156263736263733,
+                  "minimum": 0.18612637362637408,
+                  "order_q025": 0.23972870879121025,
+                  "order_q975": 1.0248076923076919
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.00032274329949932845,
+                  "mean": -3.544947507218676e-05,
+                  "minimum": -0.000369918292841831,
+                  "order_q025": -0.0003475411956428504,
+                  "order_q975": 0.0002843253855942085
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.4,
+                "relative_cold_miss_reduction": 0.044447723821447405
+              },
+              "maximum_depth": 50,
+              "miss_budget": 15,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 13.85057142857143,
+                "mean_depth": 21.38296703296703,
+                "mean_ndcg_at_10": 0.6240816514449591
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 14.224175824175823,
+                "mean_depth": 24.07142857142857,
+                "mean_ndcg_at_10": 0.6240479740751179
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 2.1576923076923045,
+                  "mean": 1.5231565934065932,
+                  "minimum": 0.8467032967032964,
+                  "order_q025": 1.021116071428571,
+                  "order_q975": 1.9826270604395584
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.00035496055509454116,
+                  "mean": -0.0001219860124107064,
+                  "minimum": -0.0006176355667130151,
+                  "order_q025": -0.0005054101290934782,
+                  "order_q975": 0.00022244934780421276
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.26,
+                "relative_cold_miss_reduction": 0.0967247374359063
+              },
+              "maximum_depth": 50,
+              "miss_budget": 20,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 15.747332417582419,
+                "mean_depth": 24.07142857142857,
+                "mean_ndcg_at_10": 0.6241699600875286
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 15.905219780219781,
+                "mean_depth": 27.717582417582413,
+                "mean_ndcg_at_10": 0.624102629572336
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 2.7953296703296697,
+                  "mean": 2.3691318681318685,
+                  "minimum": 1.8390109890109905,
+                  "order_q025": 1.890295329670329,
+                  "order_q975": 2.7865247252747265
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.000532983995300107,
+                  "mean": -0.00019098251115117648,
+                  "minimum": -0.0007351966794670872,
+                  "order_q025": -0.0006729421768098432,
+                  "order_q975": 0.00040032692008152285
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.3,
+                "relative_cold_miss_reduction": 0.12964245811399622
+              },
+              "maximum_depth": 50,
+              "miss_budget": 25,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 18.274351648351647,
+                "mean_depth": 27.717582417582413,
+                "mean_ndcg_at_10": 0.6242936120834871
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 18.39137362637363,
+                "mean_depth": 32.14670329670329,
+                "mean_ndcg_at_10": 0.6242410980927697
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 3.648214285714282,
+                  "mean": 2.9114780219780214,
+                  "minimum": 2.36236263736264,
+                  "order_q025": 2.4671840659340627,
+                  "order_q975": 3.3911675824175784
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0005197311765355872,
+                  "mean": -0.00017264633224645999,
+                  "minimum": -0.0008613010336309124,
+                  "order_q025": -0.0007629027683843076,
+                  "order_q975": 0.0005033529475658493
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.32,
+                "relative_cold_miss_reduction": 0.13667081149688717
+              },
+              "maximum_depth": 50,
+              "miss_budget": 30,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 21.30285164835165,
+                "mean_depth": 32.14670329670329,
+                "mean_ndcg_at_10": 0.6244137444250161
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 24.77835164835165,
+                "mean_depth": 41.20934065934066,
+                "mean_ndcg_at_10": 0.624905003050457
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 3.2098901098901074,
+                  "mean": 2.6648021978021976,
+                  "minimum": 2.1817307692307715,
+                  "order_q025": 2.1958001373626352,
+                  "order_q975": 3.0314526098901085
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0012431519047109152,
+                  "mean": 0.0001934438414916384,
+                  "minimum": -0.0007186878870870661,
+                  "order_q025": -0.000706351758322557,
+                  "order_q975": 0.0011619392878016081
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.54,
+                "relative_cold_miss_reduction": 0.09710262212357446
+              },
+              "maximum_depth": 50,
+              "miss_budget": 40,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 27.443153846153844,
+                "mean_depth": 41.20934065934066,
+                "mean_ndcg_at_10": 0.6247115592089654
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 33.30675824175824,
+                "mean_depth": 50.0,
+                "mean_ndcg_at_10": 0.6250392120534349
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 1.4210854715202004e-14,
+                  "mean": -4.263256414560601e-16,
+                  "minimum": -1.4210854715202004e-14,
+                  "order_q025": -1.4210854715202004e-14,
+                  "order_q975": 1.2612133559741768e-14
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 2.220446049250313e-16,
+                  "mean": -7.771561172376095e-17,
+                  "minimum": -1.1102230246251565e-16,
+                  "order_q025": -1.1102230246251565e-16,
+                  "order_q975": 1.7208456881689895e-16
+                },
+                "orders_with_fewer_cold_misses_fraction": 0.32,
+                "orders_with_higher_ndcg_fraction": 0.04,
+                "relative_cold_miss_reduction": 0.0
+              },
+              "maximum_depth": 50,
+              "miss_budget": 50,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 33.30675824175824,
+                "mean_depth": 50.0,
+                "mean_ndcg_at_10": 0.6250392120534349
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 12.893516483516485,
+                "mean_depth": 20.23076923076923,
+                "mean_ndcg_at_10": 0.6240518049358911
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 0.43351648351648286,
+                  "mean": 0.126162087912088,
+                  "minimum": -1.7763568394002505e-15,
+                  "order_q025": 0.0,
+                  "order_q975": 0.2920604395604395
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0002501224887948572,
+                  "mean": 1.372040883187431e-06,
+                  "minimum": -0.00024197909245871063,
+                  "order_q025": -0.00015178402434782578,
+                  "order_q975": 0.00019914892376232644
+                },
+                "orders_with_fewer_cold_misses_fraction": 0.9,
+                "orders_with_higher_ndcg_fraction": 0.6,
+                "relative_cold_miss_reduction": 0.009690107725773332
+              },
+              "maximum_depth": 100,
+              "miss_budget": 10,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 13.019678571428571,
+                "mean_depth": 20.23076923076923,
+                "mean_ndcg_at_10": 0.6240504328950078
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 13.236648351648352,
+                "mean_depth": 21.391208791208793,
+                "mean_ndcg_at_10": 0.6240462019698869
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 1.1640109890109898,
+                  "mean": 0.6204972527472526,
+                  "minimum": 0.18612637362637408,
+                  "order_q025": 0.23972870879121025,
+                  "order_q975": 1.0267548076923083
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.00032274329949932845,
+                  "mean": -3.623148698325362e-05,
+                  "minimum": -0.000369918292841831,
+                  "order_q025": -0.0003475411956428504,
+                  "order_q975": 0.0002843253855942085
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.4,
+                "relative_cold_miss_reduction": 0.044778143382604406
+              },
+              "maximum_depth": 100,
+              "miss_budget": 15,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 13.857145604395605,
+                "mean_depth": 21.391208791208793,
+                "mean_ndcg_at_10": 0.6240824334568703
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 14.256868131868135,
+                "mean_depth": 24.2510989010989,
+                "mean_ndcg_at_10": 0.6240479740751179
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 2.697252747252749,
+                  "mean": 1.6274890109890106,
+                  "minimum": 0.8467032967032964,
+                  "order_q025": 1.0389182692307684,
+                  "order_q975": 2.329649725274727
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.00036265658127743183,
+                  "mean": -0.00012467246267405807,
+                  "minimum": -0.0006445694364469734,
+                  "order_q025": -0.0005127224654171786,
+                  "order_q975": 0.00022244934780421276
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.26,
+                "relative_cold_miss_reduction": 0.10245860102187725
+              },
+              "maximum_depth": 100,
+              "miss_budget": 20,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 15.88435714285714,
+                "mean_depth": 24.2510989010989,
+                "mean_ndcg_at_10": 0.624172646537792
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 16.205549450549448,
+                "mean_depth": 28.806593406593407,
+                "mean_ndcg_at_10": 0.6241045765021214
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 3.664560439560436,
+                  "mean": 2.875975274725275,
+                  "minimum": 1.9133241758241795,
+                  "order_q025": 2.0749347527472524,
+                  "order_q975": 3.5665590659340656
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0005428096635549107,
+                  "mean": -0.00019935186098530178,
+                  "minimum": -0.0007482067940264292,
+                  "order_q025": -0.0007040730882412388,
+                  "order_q975": 0.0004707370058425197
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.3,
+                "relative_cold_miss_reduction": 0.15072041234293299
+              },
+              "maximum_depth": 100,
+              "miss_budget": 25,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 19.081524725274726,
+                "mean_depth": 28.806593406593407,
+                "mean_ndcg_at_10": 0.6243039283631067
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 19.076428571428572,
+                "mean_depth": 34.43681318681318,
+                "mean_ndcg_at_10": 0.6242677614727697
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 5.1473901098901145,
+                  "mean": 3.9232884615384616,
+                  "minimum": 2.75782967032967,
+                  "order_q025": 3.0258001373626366,
+                  "order_q975": 4.665947802197804
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.000720811301838209,
+                  "mean": -0.00016660108768170367,
+                  "minimum": -0.0009122750724280815,
+                  "order_q025": -0.0007761902196990994,
+                  "order_q975": 0.00044297942089659696
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.3,
+                "relative_cold_miss_reduction": 0.17057985782672674
+              },
+              "maximum_depth": 100,
+              "miss_budget": 30,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 22.999717032967034,
+                "mean_depth": 34.43681318681318,
+                "mean_ndcg_at_10": 0.6244343625604514
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 27.050549450549447,
+                "mean_depth": 47.49120879120879,
+                "mean_ndcg_at_10": 0.6249841797918649
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 6.246016483516488,
+                  "mean": 4.959175824175825,
+                  "minimum": 3.7771978021978008,
+                  "order_q025": 4.319498626373624,
+                  "order_q975": 5.960054945054943
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.0012885372995480315,
+                  "mean": 0.00021635807260408368,
+                  "minimum": -0.00089872596557794,
+                  "order_q025": -0.0008617206674353478,
+                  "order_q975": 0.0012749244503174801
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.62,
+                "relative_cold_miss_reduction": 0.15492715984324837
+              },
+              "maximum_depth": 100,
+              "miss_budget": 40,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 32.00972527472528,
+                "mean_depth": 47.49120879120879,
+                "mean_ndcg_at_10": 0.6247678217192609
+              }
+            },
+            {
+              "adaptive": {
+                "mean_cold_page_misses": 38.28208791208792,
+                "mean_depth": 60.818681318681314,
+                "mean_ndcg_at_10": 0.6252115888197317
+              },
+              "adaptive_minus_random": {
+                "cold_miss_advantage_across_orders": {
+                  "maximum": 3.5626373626373606,
+                  "mean": 2.8360851648351644,
+                  "minimum": 2.035714285714292,
+                  "order_q025": 2.102960164835167,
+                  "order_q975": 3.5235267857142825
+                },
+                "ndcg_advantage_across_orders": {
+                  "maximum": 0.00023283851988042947,
+                  "mean": 5.772929257632509e-05,
+                  "minimum": -0.00017943562480482456,
+                  "order_q025": -0.0001558172881419184,
+                  "order_q975": 0.00021591895672805892
+                },
+                "orders_with_fewer_cold_misses_fraction": 1.0,
+                "orders_with_higher_ndcg_fraction": 0.64,
+                "relative_cold_miss_reduction": 0.06897400717511132
+              },
+              "maximum_depth": 100,
+              "miss_budget": 50,
+              "policy": "deepest_prefix_within_current_cold_miss_budget",
+              "policy_uses_qrels": false,
+              "same_action_multiset_random_assignment": {
+                "mean_cold_page_misses": 41.11817307692308,
+                "mean_depth": 60.818681318681314,
+                "mean_ndcg_at_10": 0.6251538595271555
+              }
+            }
+          ]
+        }
+      },
+      "corpus_pages": 2313,
+      "input_sha256": {
+        "failure_analysis": "24b6f6831fc9e96fcf526a637305819b280e715fa1a3a6f194b75a91cf5a7373",
+        "hpool_ranking": "0a1ede490a0779eac296fb254aec5c3fcc4af6fb13a01f775e277b23a0414afa"
+      },
+      "queries": 364
+    }
+  },
+  "protocol": "residency-aware-cascade-random-arrival-replay-v1",
+  "same_action_assignment_shuffles_per_order": 20,
+  "schema_version": 1,
+  "seed": 20260806
+}
