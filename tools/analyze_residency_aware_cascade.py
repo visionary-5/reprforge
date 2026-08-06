@@ -87,8 +87,8 @@ def _load_domain(name: str, failure_path: Path, ranking_path: Path) -> dict[str,
 
 class LruCache:
     def __init__(self, capacity: int):
-        if capacity < 100:
-            raise ValueError("capacity must hold at least one Top-100 cohort")
+        if capacity <= 0:
+            raise ValueError("capacity must be positive")
         self.capacity = capacity
         self._items: OrderedDict[str, None] = OrderedDict()
 
@@ -112,8 +112,8 @@ class LfuCache:
     """Online LFU with recency tie-breaking and global observed frequencies."""
 
     def __init__(self, capacity: int):
-        if capacity < 100:
-            raise ValueError("capacity must hold at least one Top-100 cohort")
+        if capacity <= 0:
+            raise ValueError("capacity must be positive")
         self.capacity = capacity
         self._resident: set[str] = set()
         self._frequency: Counter[str] = Counter()

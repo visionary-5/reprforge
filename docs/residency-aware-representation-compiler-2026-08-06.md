@@ -143,4 +143,12 @@ RBRC 的候选区别是**联合物理规划**：当前表示驻留状态直接�
 6. 若跨域平均质量损失超过 .001，或对强缓存的冷访问收益低于 10%，停止把 RBRC
    升格为核心方法。
 
+## 9. 跨表示转移后的修正
+
+冻结操作点随后转移到 BM25→ColPali。Finance 保持质量并减少 18.25% LRU 冷读取，
+HR 虽减少 15.92%，但质量损失 .001595，超过门槛。由此，`safe plan set` 不能固定为
+所有表示组合共享的 Top-20/50；它必须由离线 workload 校准，并在证据不足时输出
+`ABSTAIN`。完整数据与解释见
+`docs/residency-aware-transfer-boundary-2026-08-06.md`。
+
 机器可读结果：`results/compiler-feasibility/residency-aware-cascade-v1.json`。
