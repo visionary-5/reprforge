@@ -1,0 +1,224 @@
+{
+  "schema_version": 1,
+  "status": "completed",
+  "protocol": "omni-cross-domain-full-hpool-agc-sharded-cascade-p1-2026-08-06",
+  "environment": {
+    "gpu": "NVIDIA GeForce RTX 5090",
+    "gpu_memory_mib": 32607,
+    "python": "3.12.3",
+    "torch": "2.8.0+cu128",
+    "transformers": "4.57.1",
+    "attention_implementation": "sdpa",
+    "upstream_commit": "4a559677bbc8a3ea0c10322a721b52bb70d382ec",
+    "sharded_full_wrapper_revision": "af760ba8f722e2fbbdd3442a1a394520d437d3ad",
+    "sharded_cascade_revision": "74945442567e72f4fcc24b8bc889bbaa706bbcfd"
+  },
+  "domains": {
+    "pharmaceuticals": {
+      "dataset": {
+        "corpus_pages": 2313,
+        "queries": 364,
+        "corpus_sha256": "bcd5142ff1b93dde6883813f4e2831a0539164f5d116c128ff057c1c2060eaf6",
+        "queries_sha256": "8d39a6473efac2c41b35d3347e6124256aaa5e656bc6b4e1562b48dcef03203e",
+        "qrels_sha256": "522418ee034f6535bde4fdc1cde9d74ab64136f55c214b6a93dfbe65fda084e2"
+      },
+      "representations": {
+        "full": {
+          "execution": "two disjoint exact shards with global score merge",
+          "index_bytes": 26970573173,
+          "build_wall_seconds_total": 606.15,
+          "evaluate_wall_seconds_total": 67.45,
+          "metrics": {
+            "ndcg_at_10": 0.6255518852671628,
+            "recall_at_100": 0.9241889190961425,
+            "mrr": 0.7319820479555318
+          }
+        },
+        "hpool_64": {
+          "index_bytes": 1212736565,
+          "full_over_index_ratio": 22.2394,
+          "build_wall_seconds": 1550.12,
+          "evaluate_wall_seconds": 22.32,
+          "metrics": {
+            "ndcg_at_10": 0.6145032308511347,
+            "recall_at_100": 0.9163236221204489,
+            "mrr": 0.7236588034160765
+          }
+        },
+        "agc_64": {
+          "index_bytes": 1213922246,
+          "full_over_index_ratio": 22.2177,
+          "build_wall_seconds": 482.04,
+          "evaluate_wall_seconds": 15.45,
+          "metrics": {
+            "ndcg_at_10": 0.5978321313785281,
+            "recall_at_100": 0.9080798189032653,
+            "mrr": 0.7002718325074879
+          }
+        },
+        "bm25": {
+          "metrics": {
+            "ndcg_at_10": 0.5536972657253086,
+            "recall_at_100": 0.8164382695410167
+          }
+        }
+      },
+      "cascade": {
+        "candidate_locator": "hpool_64",
+        "cold_reranker": "full_sharded_mmap",
+        "quality_ndcg_at_10": {
+          "20": 0.6240484530859677,
+          "50": 0.625039212053435,
+          "100": 0.6255518852671628
+        },
+        "quality_preservation_depth_counts": {
+          "20": 357,
+          "50": 5,
+          "100": 2,
+          "full": 0
+        },
+        "full_candidate_scoring": {
+          "total_seconds": 239.18805182352662,
+          "mean_query_seconds": 0.6571086661398902,
+          "p95_query_seconds": 0.7373379586264488,
+          "query_encoding_excluded": true,
+          "os_page_cache_controlled": false
+        },
+        "logical_full_bytes_per_query": {
+          "20": 233208000.0,
+          "50": 583020000.0,
+          "100": 1166040000.0
+        }
+      },
+      "failure_boundary": {
+        "hpool_quality_harm_queries": 93,
+        "hpool_quality_harm_recovered_by_cascade100": 93,
+        "teacher_ranking_escape_queries": 2,
+        "teacher_evidence_escape_queries": 0,
+        "irreducible_quality_failure_queries": 0
+      },
+      "multi_locator_diagnostic": {
+        "hpool_recall_at_100": 0.9163236221204493,
+        "agc_recall_at_100": 0.9080798189032653,
+        "union_recall_at_100": 0.9324744836547316,
+        "queries_improved_by_union": 38,
+        "evidence_escape_documents_recovered_by_agc": 0,
+        "combined_over_hpool_index_ratio": 2.0009776904846603
+      }
+    },
+    "industrial": {
+      "dataset": {
+        "corpus_pages": 5244,
+        "queries": 283,
+        "corpus_sha256": "68fa4dc83f1f1ce39022bd7d041e6615dee1af3435cd0690a59cbe0a36b6ca3e",
+        "queries_sha256": "757d06855cf5f3ab51480d46b5795ab9fbe0f43483ee0584cd89738726f87736",
+        "qrels_sha256": "a97db5652f45589177dc3386cc082c86d44929e3ed5ea1e36ae8b2137c4a7b62"
+      },
+      "representations": {
+        "full": {
+          "execution": "five disjoint exact shards with global score merge",
+          "index_bytes": 59771303957,
+          "build_wall_seconds_total": 1339.67,
+          "evaluate_wall_seconds_total": 161.84,
+          "metrics": {
+            "ndcg_at_10": 0.530350670510584,
+            "recall_at_100": 0.8043490130949291,
+            "mrr": 0.6335865348049571
+          }
+        },
+        "hpool_64": {
+          "index_bytes": 2749492092,
+          "full_over_index_ratio": 21.7390,
+          "build_wall_seconds": 3475.13,
+          "evaluate_wall_seconds": 27.95,
+          "metrics": {
+            "ndcg_at_10": 0.500130326482047,
+            "recall_at_100": 0.7827390375440123,
+            "mrr": 0.5971728128712855
+          }
+        },
+        "agc_64": {
+          "index_bytes": 2752178445,
+          "full_over_index_ratio": 21.7178,
+          "build_wall_seconds": 1054.47,
+          "evaluate_wall_seconds": 16.39,
+          "metrics": {
+            "ndcg_at_10": 0.4988509957694124,
+            "recall_at_100": 0.7953642281805315,
+            "mrr": 0.5965270886277639
+          }
+        },
+        "bm25": {
+          "metrics": {
+            "ndcg_at_10": 0.46507582553949506,
+            "recall_at_100": 0.7238805112281502
+          }
+        }
+      },
+      "cascade": {
+        "candidate_locator": "hpool_64",
+        "cold_reranker": "full_sharded_mmap",
+        "quality_ndcg_at_10": {
+          "20": 0.5276936190554679,
+          "50": 0.5313362356284511,
+          "100": 0.5303684935736932
+        },
+        "quality_preservation_depth_counts": {
+          "20": 269,
+          "50": 11,
+          "100": 0,
+          "full": 3
+        },
+        "full_candidate_scoring": {
+          "total_seconds": 215.94835184887052,
+          "mean_query_seconds": 0.7630665337423344,
+          "p95_query_seconds": 0.9954105757176875,
+          "query_encoding_excluded": true,
+          "os_page_cache_controlled": false
+        },
+        "logical_full_bytes_per_query": {
+          "20": 228808395.75971732,
+          "50": 571788607.7738516,
+          "100": 1143118247.3498232
+        }
+      },
+      "failure_boundary": {
+        "hpool_quality_harm_queries": 92,
+        "hpool_quality_harm_recovered_by_cascade100": 89,
+        "teacher_ranking_escape_queries": 26,
+        "teacher_evidence_escape_queries": 3,
+        "irreducible_quality_failure_queries": 3,
+        "irreducible_query_ids": ["181", "217", "231"]
+      },
+      "multi_locator_diagnostic": {
+        "hpool_recall_at_100": 0.7827390375440122,
+        "agc_recall_at_100": 0.7953642281805312,
+        "union_recall_at_100": 0.8319342592645289,
+        "queries_improved_by_union": 57,
+        "evidence_escape_documents_recovered_by_agc": 2,
+        "combined_over_hpool_index_ratio": 2.0009770360888894
+      }
+    }
+  },
+  "interpretation": {
+    "supported": [
+      "H-Pool is a low-cost locator rather than a universal Full replacement.",
+      "Candidate reranking restores Full-level nDCG@10 for most queries while touching 20 to 100 Full rows.",
+      "The required representation depth is query- and domain-dependent.",
+      "A second locator can repair some evidence escapes, but doubles locator index storage and has uncharged model lifecycle costs."
+    ],
+    "not_supported_yet": [
+      "A deployable learned query-adaptive policy.",
+      "AGC as a universally superior locator.",
+      "End-to-end latency claims including query encoding, controlled cold-cache I/O, and generation."
+    ]
+  },
+  "artifacts": {
+    "local_archive": "/Users/aura/gpu-systems-incubator/reprforge-experiment-artifacts/20260806-omni-pharma-industrial-7494544/omni-pharma-industrial-20260806-7494544.tar.gz",
+    "local_archive_sha256": "9d85ce7376ecaf94a72953c60d4d245a200acd7869d994f88a458a573a933cb2",
+    "pharmaceuticals_failure_analysis_sha256": "24b6f6831fc9e96fcf526a637305819b280e715fa1a3a6f194b75a91cf5a7373",
+    "industrial_failure_analysis_sha256": "f3addc1eac8ce82b485895d59c387fc93a5ef8e6f99c0c658d309d05d0117777",
+    "pharmaceuticals_cascade_manifest_sha256": "06ebe62bbb1040754ce69ee8a69291538343a41491a690f83872eed5106e411f",
+    "industrial_cascade_manifest_sha256": "0225e012ba1f17086cd6b72f0441ab705548fdd94bd809cc1205508c12a20060"
+  }
+}
