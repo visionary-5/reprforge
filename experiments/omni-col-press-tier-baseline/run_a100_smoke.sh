@@ -223,6 +223,21 @@ for executable in git python sha256sum nvidia-smi /usr/bin/time; do
   fi
 done
 
+# OmniColPress imports its audio stack and the Qwen2.5-VL training helpers even
+# for image-only inference.  Fail before creating an output root when a fresh
+# machine is missing one of these otherwise implicit runtime dependencies.
+PYTHONPATH="${OMNI_SOURCE}" python - <<'PY'
+import audioread
+import av
+import einops
+import librosa
+import liger_kernel
+
+from src.models.qwen2_5_vl_embed.qwen2_5_vl_embed import Qwen2_5ForEmbedding
+
+assert Qwen2_5ForEmbedding.__name__ == "Qwen2_5ForEmbedding"
+PY
+
 if [[ ! "${CUDA_VISIBLE_DEVICES:-}" =~ ^[0-9]+$ ]]; then
   echo "CUDA_VISIBLE_DEVICES must name exactly one physical GPU index" >&2
   exit 2
@@ -444,8 +459,9 @@ def sha256(path):
 
 packages = {}
 for package in (
-    "accelerate", "datasets", "faiss-cpu", "huggingface-hub", "peft",
-    "qwen-vl-utils", "scipy", "torch", "torchvision", "transformers",
+    "accelerate", "audioread", "av", "datasets", "einops", "faiss-cpu",
+    "huggingface-hub", "librosa", "liger-kernel", "peft", "qwen-vl-utils",
+    "scipy", "torch", "torchvision", "transformers",
 ):
     packages[package] = importlib.metadata.version(package)
 
