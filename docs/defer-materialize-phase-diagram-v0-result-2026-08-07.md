@@ -1,8 +1,17 @@
 # Defer--Materialize Phase Diagram v0
 
+> **Scope correction (2026-08-07):** this is a preliminary accounting replay
+> over previously measured GPU summaries, not a physical defer--materialize
+> experiment and not a direction-level verdict. The `NO-GO` below applies only
+> to the measured `full-corpus ColSmol + oracle-size Omni` configuration and
+> the tested history selector. It does not establish that progressive visual
+> materialization is good or bad. The required physical protocol is now
+> [`progressive-materialization-experiment-matrix.md`](progressive-materialization-experiment-matrix.md).
+
 ## Decision
 
-**NO-GO for the current method; GO for the underlying research problem.**
+**Configuration-level NO-GO for the current measured stack; no direction-level
+decision.**
 
 The measured results support a non-empty *oracle* region in which a small
 persistent visual tier amortizes sooner than Full ingestion and sooner than

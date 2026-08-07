@@ -150,6 +150,25 @@ minimum comparison should contain one representative from every row below.
 | Progressive persistent index | Build visual state from workload and reuse it | ReprForge no-cache, resident, bounded-cache variants | cold-query wait, construction, resident growth, evictions and final quality |
 | Oracle | Separates representation headroom from policy failure | full-score per-query or future-aware optimum | label as undeployable and report its extra information |
 
+### Direct defer/materialize neighbors
+
+The following systems are closer to the current question than another visual
+retriever leaderboard entry, but they optimize different state transitions.
+
+| Work | Published transition | Assumption tested by ReprForge | Artifact status on 2026-08-07 |
+|---|---|---|---|
+| [EdgeRAG](https://arxiv.org/abs/2412.21023) | prune embeddings inside IVF clusters, regenerate the same representation on demand, and cache regenerated embeddings | representation capability is fixed; memory and regeneration are the main variables | paper contract available; no pinned official implementation is treated as runnable here |
+| [Deferred Visual Ingestion](https://arxiv.org/abs/2602.14162) | zero VLM calls at ingestion; structure/BM25 locates pages and a query-time VLM reads the originals | cheap location is sufficient and query-time visual work need not become a retrieval asset | paper available; its engineering-drawing HDNC protocol is dataset-specific, so generic runs are labeled DVI-like |
+| [AgenticOCR](https://arxiv.org/abs/2602.24134) | retrieve pages, then query-conditionally crop/rotate/OCR relevant regions for the reader | expensive parsing should be transient; it does not decide corpus-wide visual discoverability | [official code](https://github.com/OpenDataLab/AgenticOCR) is public, but requires several GPU/API services and separately downloaded benchmarks |
+| [LightSTAR](https://arxiv.org/abs/2606.23539) | LLM-free visual selection followed by expensive vision-adaptive refinement on candidates | high-quality refinement can remain transient if the cheap selector has adequate recall | the [official repository](https://github.com/bokufa/LightSTAR) currently says code and weights are forthcoming |
+| [MURE](https://arxiv.org/abs/2603.13349) | uniformly encode pages with hierarchical multi-resolution features and compress visual tokens | a stronger fixed compact representation may remove the need for heterogeneous states | paper available; no public implementation was found in this audit |
+
+These rows define required endpoints, not a promise that one system must win
+every cell. The experimental target is a measured region where persistent
+visual retrieval repairs discovery or amortizes repeated work after charging
+its construction, while DVI-like defer remains the expected winner when cheap
+location is reliable and reuse is low.
+
 ### Current method snapshots, not timeless rankings
 
 - The [ViDoRe v3 paper](https://arxiv.org/abs/2601.08620) reports that visual
@@ -176,6 +195,14 @@ minimum comparison should contain one representative from every row below.
   representation surpasses full-resource ColPali on ViDoRe v1/v2 while using
   50% of its visual token budget.  No public implementation was found in this
   audit.  It is a required conceptual baseline but not yet a runnable one.
+- [AgenticOCR's official repository](https://github.com/OpenDataLab/AgenticOCR)
+  now includes its retrieval, generation and evaluation pipeline. It is
+  service-heavy—OCR, evidence extraction, reranking and generation may be
+  separate GPU/API endpoints—so a small pinned smoke must precede any claim of
+  faithful reproduction.
+- The [M3DocRAG official repository](https://github.com/bloomberg/m3docrag)
+  remains usable under Apache-2.0 but was archived read-only on 2026-07-01.
+  Pinning its last commit is therefore part of the downstream protocol.
 - [IRPAPERS' current official
   leaderboard](https://github.com/weaviate/IRPAPERS) reports 61% Recall@1 for
   a text query-agent search, 59% for Mixedbread image retrieval, 58% for a

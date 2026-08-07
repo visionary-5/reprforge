@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "protocol_id": "progressive-visual-materialization-v0-2026-08-07",
+  "status": "IMPLEMENTATION_PROTOCOL_NO_PAPER_CLAIM",
+  "primary_question": "When should a multimodal RAG index defer visual processing, inspect a raw unit transiently, or persistently materialize a reusable visual retrieval representation?",
+  "unit": {
+    "primary": "page",
+    "extension": "layout_or_semantic_region_only_after_separate_granularity_gate"
+  },
+  "representation_states": [
+    "text_structure_persistent",
+    "compact_visual_persistent_optional",
+    "raw_page_transient",
+    "full_visual_persistent"
+  ],
+  "dataset_roles": {
+    "development": [
+      "vidore-v3-computer-science",
+      "vidore-v3-pharmaceuticals",
+      "vidore-v3-industrial"
+    ],
+    "sealed_transfer": [
+      "vidore-v3-energy",
+      "vidore-v3-physics",
+      "vidore-v3-finance-fr"
+    ],
+    "external_regression": ["irpapers"],
+    "granularity": ["mmdocir-layout"],
+    "downstream": ["m3docvqa"]
+  },
+  "static_page_budget_fractions": [0.0, 0.01, 0.02, 0.05, 0.1, 0.2, 0.4, 0.6, 1.0],
+  "direct_physical_build_fractions": [0.05, 0.2, 0.4, 1.0],
+  "dynamic_capacity_fractions": [0.05, 0.1, 0.2, 0.4],
+  "cheap_locator_depths": [20, 50, 100],
+  "transient_page_budgets": [5, 10, 20, 50],
+  "static_selectors": [
+    "sha256_random",
+    "document_uniform",
+    "text_scarcity",
+    "visual_complexity",
+    "cheap_locator_disagreement",
+    "history_candidate_frequency",
+    "risk_cover_plus_history_benefit",
+    "future_aware_marginal_quality_oracle"
+  ],
+  "online_policies": [
+    "never_promote",
+    "promote_first_touch",
+    "promote_second_touch",
+    "lfu_admission",
+    "residency_greedy_without_quality",
+    "reprforge_signed_value_cost",
+    "future_aware_belady_admission_oracle"
+  ],
+  "eviction_policies": ["lru", "lfu", "gdsf"],
+  "workloads": {
+    "dataset_order": 1,
+    "random_permutations": 5,
+    "seed": 20260807,
+    "horizon_multiplier": 5,
+    "zipf_exponents": [0.8, 1.0, 1.2],
+    "patterns": [
+      "document_clustered",
+      "broadening_working_set",
+      "mid_trace_distribution_drift"
+    ]
+  },
+  "quality": {
+    "primary": "ndcg_at_10",
+    "secondary": [
+      "ndcg_at_5",
+      "recall_at_5",
+      "recall_at_10",
+      "recall_at_20",
+      "recall_at_100",
+      "candidate_escape_rate",
+      "query_hit_at_transient_budget",
+      "gain_recovery",
+      "worst_5pct_query_loss"
+    ],
+    "gain_recovery_denominator": "full_hybrid_minus_text_only",
+    "warning": "Full is a fixed representation baseline, not a relevance oracle."
+  },
+  "physical_metrics": [
+    "ingestion_wall_seconds",
+    "ingestion_gpu_seconds",
+    "serialized_bytes",
+    "resident_bytes",
+    "peak_cpu_memory_bytes",
+    "peak_gpu_memory_bytes",
+    "raw_page_reads",
+    "decoded_pixels",
+    "h2d_bytes",
+    "query_vlm_gpu_seconds",
+    "maxsim_seconds",
+    "end_to_end_p50_seconds",
+    "end_to_end_p95_seconds",
+    "end_to_end_p99_seconds",
+    "promotion_stall_seconds",
+    "evicted_bytes",
+    "rebuilt_bytes"
+  ],
+  "information_boundary": {
+    "deployable_selector_forbidden": [
+      "future_test_qrels",
+      "future_test_query_order",
+      "complete_full_visual_score_surface",
+      "future_page_access_counts"
+    ],
+    "oracle_only": [
+      "future_qrels",
+      "complete_full_visual_score_surface",
+      "future_access_trace"
+    ]
+  },
+  "gpu_stage_gate": {
+    "requires_cpu_dry_run": true,
+    "requires_output_resume_test": true,
+    "requires_input_hash_manifest": true,
+    "requires_no_overwrite_check": true,
+    "requires_single_unoccupied_gpu": true
+  },
+  "interpretation": "A failed selector closes that selector, not the broad problem. Lack of future-aware oracle headroom closes partial materialization for the evaluated operating point."
+}

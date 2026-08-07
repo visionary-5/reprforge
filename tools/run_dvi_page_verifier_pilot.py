@@ -130,7 +130,10 @@ def _score_pairs(
     with output_path.open("a", encoding="utf-8") as output:
         for start in range(0, len(pending), batch_size):
             batch = pending[start : start + batch_size]
+            batch_began = time.perf_counter()
+            image_began = time.perf_counter()
             images = [Image.open(assets / f"{doc_id}.png").convert("RGB") for _, doc_id in batch]
+            image_seconds = time.perf_counter() - image_began
             prompts = []
             for query_id, _ in batch:
                 message = [{
@@ -145,16 +148,19 @@ def _score_pairs(
                         message, tokenize=False, add_generation_prompt=True
                     )
                 )
+            preprocess_began = time.perf_counter()
             inputs = processor(
                 text=prompts, images=images, padding=True, return_tensors="pt"
             ).to("cuda")
             torch.cuda.synchronize()
+            preprocess_h2d_seconds = time.perf_counter() - preprocess_began
             began = time.perf_counter()
             with torch.inference_mode():
                 logits = model(**inputs).logits
             torch.cuda.synchronize()
-            elapsed = time.perf_counter() - began
-            batch_latencies.append(elapsed)
+            forward_seconds = time.perf_counter() - began
+            batch_total_seconds = time.perf_counter() - batch_began
+            batch_latencies.append(batch_total_seconds)
             token_positions = torch.arange(
                 inputs.attention_mask.shape[1], device=inputs.attention_mask.device
             ).unsqueeze(0)
@@ -170,7 +176,10 @@ def _score_pairs(
                     "query_id": query_id,
                     "doc_id": doc_id,
                     "yes_minus_no": float(score),
-                    "batch_seconds": elapsed,
+                    "batch_seconds": forward_seconds,
+                    "batch_image_io_seconds": image_seconds,
+                    "batch_preprocess_h2d_seconds": preprocess_h2d_seconds,
+                    "batch_total_seconds": batch_total_seconds,
                     "batch_size": len(batch),
                 }
                 output.write(json.dumps(row, sort_keys=True) + "\n")
@@ -181,6 +190,22 @@ def _score_pairs(
         row["batch_seconds"] / row["batch_size"] for row in existing.values()
         if (row["query_id"], row["doc_id"]) in set(pairs)
     ]
+    complete_rows = [
+        row
+        for row in existing.values()
+        if (row["query_id"], row["doc_id"]) in set(pairs)
+        and "batch_total_seconds" in row
+    ]
+    page_total_seconds = [
+        row["batch_total_seconds"] / row["batch_size"] for row in complete_rows
+    ]
+    page_image_seconds = [
+        row["batch_image_io_seconds"] / row["batch_size"] for row in complete_rows
+    ]
+    page_preprocess_h2d_seconds = [
+        row["batch_preprocess_h2d_seconds"] / row["batch_size"]
+        for row in complete_rows
+    ]
     return existing, {
         "model_load_seconds": load_seconds,
         "new_pairs": len(pending),
@@ -188,6 +213,24 @@ def _score_pairs(
         "page_seconds_mean": float(np.mean(page_seconds)),
         "page_seconds_p50": float(np.percentile(page_seconds, 50)),
         "page_seconds_p95": float(np.percentile(page_seconds, 95)),
+        "complete_timing_pairs": len(complete_rows),
+        "page_end_to_end_seconds_mean": (
+            float(np.mean(page_total_seconds)) if page_total_seconds else None
+        ),
+        "page_end_to_end_seconds_p50": (
+            float(np.percentile(page_total_seconds, 50)) if page_total_seconds else None
+        ),
+        "page_end_to_end_seconds_p95": (
+            float(np.percentile(page_total_seconds, 95)) if page_total_seconds else None
+        ),
+        "page_image_io_seconds_mean": (
+            float(np.mean(page_image_seconds)) if page_image_seconds else None
+        ),
+        "page_preprocess_h2d_seconds_mean": (
+            float(np.mean(page_preprocess_h2d_seconds))
+            if page_preprocess_h2d_seconds
+            else None
+        ),
         "max_cuda_memory_mib": torch.cuda.max_memory_allocated() / 1024 / 1024,
     }
 
