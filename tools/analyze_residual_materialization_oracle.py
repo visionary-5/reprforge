@@ -21,6 +21,7 @@ from reprforge.residual_materialization_oracle import (
     evaluate,
     gain_recovery,
     global_label_rank_utility,
+    greedy_marginal_ndcg_oracle,
     hash_folds,
     omni_frequency_utility,
     projected_cost,
@@ -326,89 +327,129 @@ def main() -> None:
         surface, args.features, set(map(int, np.flatnonzero(residual_util > 0))), budgets
     )
 
-    curves: dict[str, Any] = {
-        policy: {}
-        for policy in (
-            "random",
-            "corpus_uniform",
-            "physical_risk",
-            "omni_frequency_oracle",
-            "residual_label_oracle",
-            "global_label_rank_oracle",
-        )
-    }
+    v1_greedy = config.get("greedy_oracle")
+    v0_policies = (
+        "random",
+        "corpus_uniform",
+        "physical_risk",
+        "omni_frequency_oracle",
+        "residual_label_oracle",
+        "global_label_rank_oracle",
+    )
+    policy_names = ("greedy_marginal_ndcg_oracle",) if v1_greedy else v0_policies
+    curves: dict[str, Any] = {policy: {} for policy in policy_names}
     random_repetitions = int(config["random_repetitions"])
     seed = int(config["cross_fit"]["seed"])
-    for budget in budgets:
-        count = 0 if budget == 0 else min(surface.pages, max(1, math.ceil(budget * surface.pages)))
-        selections: dict[str, list[np.ndarray]] = {
-            "random": [
-                np.sort(
-                    np.random.default_rng(seed + repetition + count * 1000).choice(
-                        surface.pages, count, replace=False
+    greedy_result = None
+    if v1_greedy:
+        maximum_pages = math.ceil(
+            float(v1_greedy["maximum_page_fraction"]) * surface.pages
+        )
+        greedy_result = greedy_marginal_ndcg_oracle(
+            surface,
+            all_queries,
+            rrf_constant=rrf_constant,
+            maximum_pages=maximum_pages,
+            minimum_marginal_mean_ndcg=float(
+                v1_greedy["minimum_marginal_mean_ndcg"]
+            ),
+        )
+        for budget in budgets:
+            count = (
+                0
+                if budget == 0
+                else min(surface.pages, max(1, math.ceil(budget * surface.pages)))
+            )
+            selected = np.asarray(
+                sorted(greedy_result["selected_order"][:count]), dtype=np.int32
+            )
+            row = evaluate(
+                surface,
+                all_queries,
+                rrf_constant=rrf_constant,
+                selected_omni_pages=selected,
+            )
+            curves["greedy_marginal_ndcg_oracle"][str(budget)] = _annotate(
+                row,
+                surface=surface,
+                residual_queries=residual_queries,
+                residual_depth=residual_depth,
+                base_ndcg=base_ndcg,
+                full_ndcg=full_ndcg,
+                full_residual_repair=full_residual_repair,
+                cost=cost,
+            )
+    else:
+        for budget in budgets:
+            count = 0 if budget == 0 else min(surface.pages, max(1, math.ceil(budget * surface.pages)))
+            selections: dict[str, list[np.ndarray]] = {
+                "random": [
+                    np.sort(
+                        np.random.default_rng(seed + repetition + count * 1000).choice(
+                            surface.pages, count, replace=False
+                        )
                     )
-                )
-                for repetition in range(random_repetitions)
-            ],
-            "corpus_uniform": [
-                np.unique(np.linspace(0, surface.pages - 1, count, dtype=np.int32))
-                if count
-                else np.empty(0, dtype=np.int32)
-            ],
-            "physical_risk": [np.asarray(sorted(physical_order[:count]), dtype=np.int32)],
-            "omni_frequency_oracle": [
-                top_utility(frequency_util, count, positive_only=False)
-            ],
-            "residual_label_oracle": [
-                top_utility(residual_util, count, positive_only=True)
-            ],
-            "global_label_rank_oracle": [
-                top_utility(global_util, count, positive_only=True)
-            ],
-        }
-        for policy, policy_selections in selections.items():
-            rows = []
-            for selected in policy_selections:
-                row = evaluate(
-                    surface,
-                    all_queries,
-                    rrf_constant=rrf_constant,
-                    selected_omni_pages=selected,
-                )
-                rows.append(
-                    _annotate(
-                        row,
-                        surface=surface,
-                        residual_queries=residual_queries,
-                        residual_depth=residual_depth,
-                        base_ndcg=base_ndcg,
-                        full_ndcg=full_ndcg,
-                        full_residual_repair=full_residual_repair,
-                        cost=cost,
+                    for repetition in range(random_repetitions)
+                ],
+                "corpus_uniform": [
+                    np.unique(np.linspace(0, surface.pages - 1, count, dtype=np.int32))
+                    if count
+                    else np.empty(0, dtype=np.int32)
+                ],
+                "physical_risk": [np.asarray(sorted(physical_order[:count]), dtype=np.int32)],
+                "omni_frequency_oracle": [
+                    top_utility(frequency_util, count, positive_only=False)
+                ],
+                "residual_label_oracle": [
+                    top_utility(residual_util, count, positive_only=True)
+                ],
+                "global_label_rank_oracle": [
+                    top_utility(global_util, count, positive_only=True)
+                ],
+            }
+            for policy, policy_selections in selections.items():
+                rows = []
+                for selected in policy_selections:
+                    row = evaluate(
+                        surface,
+                        all_queries,
+                        rrf_constant=rrf_constant,
+                        selected_omni_pages=selected,
                     )
-                )
-            if len(rows) == 1:
-                curves[policy][str(budget)] = rows[0]
-            else:
-                aggregate = aggregate_runs(rows)
-                mean_fraction = aggregate["selected_page_fraction"]["mean"]
-                aggregate["ndcg_gain_recovery"] = gain_recovery(
-                    aggregate["ndcg_at_10"]["mean"], base_ndcg, full_ndcg
-                )
-                aggregate["residual_repair_recovery_vs_full_stack"] = (
-                    aggregate["residual_repaired_fraction"]["mean"]
-                    / full_residual_repair
-                    if full_residual_repair > 0
-                    else None
-                )
-                aggregate["projected_cost_at_mean_fraction"] = projected_cost(
-                    mean_fraction,
-                    full_build_seconds=float(cost["full_omni_build_seconds"]),
-                    full_index_bytes=int(cost["full_omni_index_bytes"]),
-                    base_build_seconds=float(cost["base_colsmol_build_seconds"]),
-                    base_index_bytes=int(cost["base_colsmol_index_bytes"]),
-                )
-                curves[policy][str(budget)] = aggregate
+                    rows.append(
+                        _annotate(
+                            row,
+                            surface=surface,
+                            residual_queries=residual_queries,
+                            residual_depth=residual_depth,
+                            base_ndcg=base_ndcg,
+                            full_ndcg=full_ndcg,
+                            full_residual_repair=full_residual_repair,
+                            cost=cost,
+                        )
+                    )
+                if len(rows) == 1:
+                    curves[policy][str(budget)] = rows[0]
+                else:
+                    aggregate = aggregate_runs(rows)
+                    mean_fraction = aggregate["selected_page_fraction"]["mean"]
+                    aggregate["ndcg_gain_recovery"] = gain_recovery(
+                        aggregate["ndcg_at_10"]["mean"], base_ndcg, full_ndcg
+                    )
+                    aggregate["residual_repair_recovery_vs_full_stack"] = (
+                        aggregate["residual_repaired_fraction"]["mean"]
+                        / full_residual_repair
+                        if full_residual_repair > 0
+                        else None
+                    )
+                    aggregate["projected_cost_at_mean_fraction"] = projected_cost(
+                        mean_fraction,
+                        full_build_seconds=float(cost["full_omni_build_seconds"]),
+                        full_index_bytes=int(cost["full_omni_index_bytes"]),
+                        base_build_seconds=float(cost["base_colsmol_build_seconds"]),
+                        base_index_bytes=int(cost["base_colsmol_index_bytes"]),
+                    )
+                    curves[policy][str(budget)] = aggregate
 
     folds = int(config["cross_fit"]["folds"])
     assignments = hash_folds(surface.query_ids, folds, seed)
@@ -461,22 +502,27 @@ def main() -> None:
     )
     gate_budget = float(config["gate"]["maximum_oracle_page_fraction"])
     eligible_budgets = [budget for budget in budgets if budget <= gate_budget]
+    gate_policy = (
+        "greedy_marginal_ndcg_oracle"
+        if v1_greedy
+        else "global_label_rank_oracle"
+    )
     best_ndcg_recovery = max(
         (
-            curves["global_label_rank_oracle"][str(budget)]["ndcg_gain_recovery"]
+            curves[gate_policy][str(budget)]["ndcg_gain_recovery"]
             for budget in eligible_budgets
-            if curves["global_label_rank_oracle"][str(budget)]["ndcg_gain_recovery"]
+            if curves[gate_policy][str(budget)]["ndcg_gain_recovery"]
             is not None
         ),
         default=None,
     )
     best_repair_recovery = max(
         (
-            curves["residual_label_oracle"][str(budget)][
+            curves[gate_policy][str(budget)][
                 "residual_repair_recovery_vs_full_stack"
             ]
             for budget in eligible_budgets
-            if curves["residual_label_oracle"][str(budget)][
+            if curves[gate_policy][str(budget)][
                 "residual_repair_recovery_vs_full_stack"
             ]
             is not None
@@ -484,6 +530,11 @@ def main() -> None:
         default=None,
     )
     event_overlap = reuse["event_overlap_fraction_weighted"]
+    ndcg_target_key = (
+        "minimum_greedy_ndcg_gain_recovery"
+        if v1_greedy
+        else "minimum_oracle_ndcg_gain_recovery"
+    )
     checks = {
         "full_stack_absolute_ndcg_gain": (
             full_ndcg - base_ndcg
@@ -492,7 +543,7 @@ def main() -> None:
         "oracle_ndcg_gain_recovery": (
             best_ndcg_recovery is not None
             and best_ndcg_recovery
-            >= float(config["gate"]["minimum_oracle_ndcg_gain_recovery"])
+            >= float(config["gate"][ndcg_target_key])
         ),
         "oracle_residual_repair_recovery": (
             best_repair_recovery is not None
@@ -548,6 +599,7 @@ def main() -> None:
             ],
         },
         "curves": curves,
+        "greedy_oracle_trace": greedy_result,
         "history_residual_crossfit_curves": history_curves,
         "reuse": {
             "hash_crossfit": reuse,
@@ -561,10 +613,17 @@ def main() -> None:
         "observable_feature_diagnostics": feature_diagnostics,
         "measured_cost_reference": cost,
         "gate": {
+            "gate_policy": gate_policy,
             "best_oracle_ndcg_gain_recovery_at_or_below_budget": best_ndcg_recovery,
             "best_residual_repair_recovery_at_or_below_budget": best_repair_recovery,
             "crossfit_residual_event_overlap": event_overlap,
             "checks": checks,
+            "passes_static_headroom_gate": all(
+                value
+                for key, value in checks.items()
+                if key != "crossfit_residual_event_overlap"
+            ),
+            "passes_persistence_gate": checks["crossfit_residual_event_overlap"],
             "passes_domain_headroom_gate": all(checks.values()),
         },
         "warnings": [

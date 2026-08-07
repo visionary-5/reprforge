@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "protocol_id": "residual-materialization-oracle-v1-2026-08-07",
+  "status": "FROZEN_AFTER_V0_EXPOSED_CROSS_QUERY_INTERFERENCE",
+  "inherits": "residual-materialization-oracle-v0-2026-08-07",
+  "research_question": "When selected high-fidelity pages are charged for their ranking effect on every query, does any set of at most 5% Omni pages have positive marginal workload nDCG and recover most Full-stack gain above BM25 plus ColSmol?",
+  "retrieval": {
+    "rank_depth": 100,
+    "residual_depth": 20,
+    "rrf_constant": 60,
+    "base_sources": ["bm25", "colsmol"],
+    "incremental_source": "omni",
+    "partial_semantics": "Selected Omni pages retain complete-index Top-100 ranks before RRF. This remains non-deployable global-rank accounting.",
+    "full_reference": "Equal-weight RRF60 over BM25 Top-100, ColSmol Top-100, and complete Omni Top-100."
+  },
+  "budgets": [0.0, 0.001, 0.002, 0.005, 0.01, 0.02, 0.05],
+  "selection_policies": {
+    "greedy_marginal_ndcg_oracle": "Starting from BM25 plus ColSmol, iteratively add the Omni page with the largest positive mean nDCG@10 change over the complete future workload. Each candidate is evaluated on every query where it appears in Omni Top-100, including negative cross-query interference. Stops when no positive marginal page remains; forbidden to a deployable method.",
+    "v0_policies": "Random, uniform, physical risk, Omni frequency, residual-label, and global-label curves remain in the v0 artifact and are not overwritten."
+  },
+  "greedy_oracle": {
+    "maximum_page_fraction": 0.05,
+    "minimum_marginal_mean_ndcg": 1e-12,
+    "tie_break": "lowest stable corpus position",
+    "warning": "Greedy is a strong future-information lower bound, not a proof of globally optimal subset selection. Failure is evidence against easy headroom, not a mathematical impossibility proof."
+  },
+  "random_repetitions": 20,
+  "cross_fit": {
+    "folds": 5,
+    "seed": 2026080717,
+    "history_policy": "Unchanged from v0; v1 does not design an online policy.",
+    "natural_split_fraction": 0.5
+  },
+  "quality_metrics": ["nDCG@10", "candidate hit@20", "Recall@20", "Recall@100"],
+  "gain_recovery": "(Q_partial - Q_base) / (Q_full_stack - Q_base); undefined when Full-stack absolute gain is below 0.005.",
+  "cost_accounting": {
+    "semantics": "Measured-total linear projection from completed RTX 5090 builds.",
+    "pharmaceuticals": {
+      "full_omni_build_seconds": 606.15,
+      "full_omni_index_bytes": 26970573173,
+      "base_colsmol_build_seconds": 853.3165885582566,
+      "base_colsmol_index_bytes": 518410346
+    },
+    "industrial": {
+      "full_omni_build_seconds": 1339.67,
+      "full_omni_index_bytes": 59771303957,
+      "base_colsmol_build_seconds": 2523.7415548861027,
+      "base_colsmol_index_bytes": 1511142189
+    }
+  },
+  "gate": {
+    "maximum_oracle_page_fraction": 0.05,
+    "minimum_full_stack_absolute_ndcg_gain": 0.005,
+    "minimum_greedy_ndcg_gain_recovery": 0.7,
+    "minimum_residual_query_repair_recovery": 0.7,
+    "minimum_crossfit_residual_event_overlap": 0.2,
+    "domains_required_for_static_headroom": 2,
+    "decision": "Static oracle headroom requires both domains to recover at least 70% Full-stack gain and residual repair within 5%. Persistent online promotion additionally requires at least 20% history-to-future event overlap; report static and persistence gates separately."
+  },
+  "information_boundary": {
+    "test_domains": ["pharmaceuticals", "industrial"],
+    "opened_before_this_audit": true,
+    "warning": "v1 is a corrective exploratory audit prompted by v0's non-monotonic interference, not a held-out result.",
+    "forbidden_to_deployable_policy": ["future qrels", "future Omni ranks", "complete future workload"]
+  }
+}

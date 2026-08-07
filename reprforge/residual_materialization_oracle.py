@@ -456,3 +456,122 @@ def auc(values: Sequence[float], labels: Sequence[bool]) -> float | None:
         start = end
     rank_sum = float(np.sum(ranks[labels_array]))
     return (rank_sum - positives * (positives + 1) / 2.0) / (positives * negatives)
+
+
+def greedy_marginal_ndcg_oracle(
+    surface: ResidualRankSurface,
+    queries: Sequence[int],
+    *,
+    rrf_constant: int,
+    maximum_pages: int,
+    minimum_marginal_mean_ndcg: float = 1e-12,
+) -> dict[str, Any]:
+    """Greedily add Omni pages with positive net workload nDCG benefit.
+
+    The future workload and qrels are intentionally visible. A selected page is
+    evaluated on every query where it occurs in Omni Top-100, so its cross-query
+    ranking interference is included rather than approximated by positive labels.
+    This is a non-deployable greedy oracle, not a claim of global optimality.
+    """
+
+    query_positions = np.asarray(list(map(int, queries)), dtype=np.int32)
+    if query_positions.size == 0:
+        raise ValueError("at least one query is required")
+    maximum_pages = min(max(int(maximum_pages), 0), surface.pages)
+    scores = np.zeros((surface.queries, surface.pages), dtype=np.float64)
+    omni_increment = np.zeros_like(scores)
+    for query in query_positions:
+        for ranking in (surface.bm25[query], surface.colsmol[query]):
+            ranks = np.arange(1, len(ranking) + 1, dtype=np.float64)
+            scores[query, ranking] += 1.0 / (rrf_constant + ranks)
+        ranks = np.arange(1, len(surface.omni[query]) + 1, dtype=np.float64)
+        omni_increment[query, surface.omni[query]] = 1.0 / (rrf_constant + ranks)
+    idcg = np.asarray(
+        [_dcg(np.sort(surface.qrels[query])[::-1][:10]) for query in range(surface.queries)]
+    )
+    top10: dict[int, np.ndarray] = {}
+    ndcg = np.zeros(surface.queries, dtype=np.float64)
+    for query in query_positions:
+        observed = np.flatnonzero(scores[query] > 0)
+        ranking = observed[np.lexsort((observed, -scores[query, observed]))][:10]
+        top10[int(query)] = ranking
+        ndcg[query] = _dcg(surface.qrels[query, ranking]) / idcg[query] if idcg[query] else 0.0
+    occurrences = {
+        page: np.flatnonzero(omni_increment[:, page] > 0).astype(np.int32)
+        for page in np.flatnonzero(np.any(omni_increment > 0, axis=0))
+    }
+    selected: list[int] = []
+    selected_set: set[int] = set()
+    trace = []
+    for step in range(maximum_pages):
+        best_page = None
+        best_total_delta = -math.inf
+        for page, affected_queries in occurrences.items():
+            if page in selected_set:
+                continue
+            total_delta = 0.0
+            for query in affected_queries:
+                current = top10[int(query)]
+                candidates = (
+                    current
+                    if page in current
+                    else np.concatenate((current, np.asarray([page], dtype=np.int32)))
+                )
+                candidate_scores = scores[query, candidates].copy()
+                candidate_scores[candidates == page] += omni_increment[query, page]
+                ranking = candidates[
+                    np.lexsort((candidates, -candidate_scores))
+                ][:10]
+                new_ndcg = (
+                    _dcg(surface.qrels[query, ranking]) / idcg[query]
+                    if idcg[query]
+                    else 0.0
+                )
+                total_delta += new_ndcg - ndcg[query]
+            if total_delta > best_total_delta + 1e-15 or (
+                abs(total_delta - best_total_delta) <= 1e-15
+                and (best_page is None or page < best_page)
+            ):
+                best_page = int(page)
+                best_total_delta = total_delta
+        mean_delta = best_total_delta / len(query_positions)
+        if best_page is None or mean_delta <= minimum_marginal_mean_ndcg:
+            break
+        selected.append(best_page)
+        selected_set.add(best_page)
+        for query in occurrences[best_page]:
+            scores[query, best_page] += omni_increment[query, best_page]
+            current = top10[int(query)]
+            candidates = (
+                current
+                if best_page in current
+                else np.concatenate(
+                    (current, np.asarray([best_page], dtype=np.int32))
+                )
+            )
+            ranking = candidates[
+                np.lexsort((candidates, -scores[query, candidates]))
+            ][:10]
+            top10[int(query)] = ranking
+            ndcg[query] = (
+                _dcg(surface.qrels[query, ranking]) / idcg[query]
+                if idcg[query]
+                else 0.0
+            )
+        trace.append(
+            {
+                "step": step + 1,
+                "page": best_page,
+                "mean_ndcg_at_10": float(np.mean(ndcg[query_positions])),
+                "marginal_mean_ndcg_at_10": mean_delta,
+                "affected_queries": int(len(occurrences[best_page])),
+            }
+        )
+    return {
+        "selected_order": selected,
+        "trace": trace,
+        "stopped_before_maximum": len(selected) < maximum_pages,
+        "maximum_pages": maximum_pages,
+        "candidate_pages": len(occurrences),
+        "final_mean_ndcg_at_10": float(np.mean(ndcg[query_positions])),
+    }

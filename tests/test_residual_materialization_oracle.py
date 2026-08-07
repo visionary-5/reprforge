@@ -6,6 +6,7 @@ from reprforge.residual_materialization_oracle import (
     auc,
     evaluate,
     gain_recovery,
+    greedy_marginal_ndcg_oracle,
     global_label_rank_utility,
     hash_folds,
     projected_cost,
@@ -92,3 +93,16 @@ def test_global_oracle_cost_gain_auc_and_folds_are_deterministic():
     first = hash_folds(surface.query_ids, 2, 0)
     second = hash_folds(surface.query_ids, 2, 0)
     assert first.tolist() == second.tolist()
+
+
+def test_greedy_oracle_accounts_for_all_queries_and_stops_on_positive_gain():
+    surface = _surface()
+    result = greedy_marginal_ndcg_oracle(
+        surface,
+        range(4),
+        rrf_constant=60,
+        maximum_pages=5,
+    )
+    assert result["selected_order"][0] == 2
+    assert result["trace"][0]["marginal_mean_ndcg_at_10"] > 0
+    assert result["stopped_before_maximum"]
