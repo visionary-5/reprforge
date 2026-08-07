@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "protocol_id": "defer-materialize-phase-diagram-v0-2026-08-07",
+  "status": "FROZEN_BEFORE_PHASE_DIAGRAM_RESULTS",
+  "research_question": "Do measured build, storage, deferred page-verification, quality, and transfer results establish a non-empty operating region in which a realizable partial persistent visual index is preferable to both always-deferred DVI-style processing and a Full visual index?",
+  "scope": "CPU replay and analytic boundary audit using already measured RTX 5090 costs. It does not claim end-to-end DVI reproduction or natural temporal traces.",
+  "quality_gate": {
+    "oracle_minimum_full_gain_recovery": 0.9,
+    "oracle_maximum_query_hit_at_20_loss_vs_full": 0.01,
+    "realizable_history_policy_must_not_reduce_future_mean_ndcg_vs_base": true,
+    "warning": "The oracle is only a headroom bound. A paper method must pass the realizable history/future gate on held-out workload."
+  },
+  "cost_model": {
+    "common_answer_generation_cost": "cancelled because persistent retrieval representations do not replace final query-conditioned answer reasoning",
+    "dvi_incremental_gpu_seconds": "queries * avoided_page_checks_per_query * measured_verifier_seconds_per_query_page",
+    "partial_incremental_gpu_seconds": "selected_fraction * measured_full_omni_build_seconds",
+    "current_stack_incremental_gpu_seconds": "measured_full_corpus_colsmol_build_seconds + partial_incremental_gpu_seconds",
+    "full_incremental_gpu_seconds": "measured_full_omni_build_seconds",
+    "warning": "Measured verifier time covers GPU forward per query-page, not complete preprocessing, I/O, H2D, answer generation, or end-to-end latency. Boundaries are conservative diagnostics, not production latency claims."
+  },
+  "axes": {
+    "avoided_page_checks_per_query": [1, 2, 5, 10, 20, 40, 80],
+    "query_horizons": [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000],
+    "working_set_breadth_note": "A fixed partial set remains cheaper than Full at every horizon if it preserves quality and has the same query cost. Full becomes preferable only when useful visual coverage broadens toward the full corpus, current partial-stack overhead exceeds Full, or strict tail-latency constraints penalize online promotion."
+  },
+  "plans": {
+    "dvi_defer": "No persistent high-fidelity visual retrieval index; pay query-conditioned raw-page verification repeatedly.",
+    "oracle_partial": "Smallest future-aware Omni page set meeting the frozen quality gate; undeployable headroom only.",
+    "current_colsmol_partial": "Measured full-corpus ColSmol locator plus the oracle-size Omni tier; quality is optimistic and build cost is physically measured.",
+    "full_omni": "Complete persistent Omni visual retrieval index."
+  },
+  "domains": ["pharmaceuticals", "industrial"],
+  "input_artifacts": {
+    "oracle": "results/compiler-feasibility/residual-materialization-oracles/residual-materialization-oracle-v1/{domain}.json",
+    "verifier": "results/compiler-feasibility/dvi-page-verifier-v0/dvi-page-verifier-{domain_alias}-test-v0/result.json"
+  },
+  "decision_gate": {
+    "oracle_middle_region_required_each_domain": true,
+    "realizable_transfer_required_each_domain": true,
+    "current_stack_must_be_non_dominated_in_build_time_and_quality": true,
+    "interpretation": "If only the oracle passes, retain the research problem but do not claim a ReprForge solution. If the current stack is dominated by Full, replace or remove its corpus-wide visual locator before further GPU runs."
+  }
+}
