@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "protocol_id": "representation-granularity-audit-v0-2026-08-07",
+  "status": "FROZEN_BEFORE_REGION_ENCODING_RESULTS",
+  "research_question": "Is signed visual-representation value localized within pages, and can a deterministic sub-page organization preserve useful retrieval evidence while reducing cross-query interference at an acceptable physical cost?",
+  "scope": "Diagnostic headroom audit, not a deployable materialization policy.",
+  "cohort": {
+    "positive_pages": 24,
+    "negative_pages": 24,
+    "neutral_pages": 24,
+    "positive_order": "descending singleton net mean nDCG delta",
+    "negative_order": "ascending singleton net mean nDCG delta",
+    "neutral_order": "sha256(protocol_id, domain, doc_id)",
+    "warning": "The cohort intentionally uses oracle page-value labels to diagnose granularity. Labels are forbidden to the eventual compiler."
+  },
+  "organizations": {
+    "whole_page": {
+      "maximum_units_per_page": 1
+    },
+    "fixed_quadrants": {
+      "rows": 2,
+      "columns": 2,
+      "overlap_fraction": 0.1,
+      "maximum_units_per_page": 4,
+      "role": "model-free region control"
+    },
+    "xycut_regions": {
+      "maximum_units_per_page": 4,
+      "analysis_maximum_side": 768,
+      "ink_threshold": 245,
+      "minimum_region_fraction": 0.12,
+      "minimum_whitespace_gap_fraction": 0.015,
+      "crop_padding_fraction": 0.015,
+      "role": "deterministic structure-aware region proposal without learned layout labels"
+    }
+  },
+  "retrieval": {
+    "representation": "OmniColPress Full ColBERT_qwen2.5-vl_colpali",
+    "region_to_parent_aggregation": "maximum region score per parent page",
+    "evaluation_depth": 10,
+    "eligible_queries": "queries with at least one relevant parent in the frozen cohort",
+    "same_queries_and_parent_pages_across_organizations": true
+  },
+  "metrics": [
+    "eligible-query parent nDCG@10",
+    "eligible-query parent hit@10",
+    "positive relevant top-10 exposure",
+    "negative irrelevant top-10 exposure",
+    "encoded units per parent",
+    "build wall seconds",
+    "logical and physical index bytes"
+  ],
+  "interpretation_gate": {
+    "region_headroom": "At least one sub-page organization must preserve at least 95% of whole-page eligible-query nDCG while reducing negative-page irrelevant top-10 exposure by at least 10%.",
+    "physical_efficiency": "Report build seconds and bytes per parent. A region organization that improves quality but increases both cost measures is evidence for localization, not yet an index optimization.",
+    "stop_condition": "If neither fixed nor structure-aware regions improve the signed benefit-interference trade-off in either domain, retain page as the current visual unit and shift effort to cross-modal logical organization rather than finer visual crops."
+  },
+  "domains": ["pharmaceuticals", "industrial"],
+  "information_boundary": {
+    "opened_domains": true,
+    "future_use": "Any method chosen after this audit requires a new-domain blind test.",
+    "qrels": "Used only for diagnostic evaluation and cohort interpretation."
+  }
+}
