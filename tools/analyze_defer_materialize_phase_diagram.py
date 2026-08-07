@@ -79,10 +79,19 @@ def main() -> None:
             current_stack_build_seconds=current_build,
             full_build_seconds=full_build,
         )
+        for row in grid:
+            costs_row = row["costs_gpu_seconds"]
+            deployable_names = ("dvi_defer", "current_colsmol_partial", "full_omni")
+            row["current_stack_winner"] = min(
+                deployable_names, key=lambda name: (costs_row[name], name)
+            )
         history = history_policy_no_regression(oracle["history_residual_crossfit_curves"])
         oracle_wins = any(row["winner"] == "oracle_partial" for row in grid)
-        current_wins = any(row["winner"] == "current_colsmol_partial" for row in grid)
-        full_wins = any(row["winner"] == "full_omni" for row in grid)
+        current_wins = any(
+            row["current_stack_winner"] == "current_colsmol_partial" for row in grid
+        )
+        full_wins = any(row["current_stack_winner"] == "full_omni" for row in grid)
+        dvi_wins = any(row["current_stack_winner"] == "dvi_defer" for row in grid)
         full_bytes = float(costs["full_omni_index_bytes"])
         current_bytes = float(costs["base_colsmol_index_bytes"]) + float(
             plan["projected_cost"]["incremental_omni_index_bytes"]
@@ -106,9 +115,10 @@ def main() -> None:
             "break_even_queries": break_even,
             "grid": grid,
             "winner_presence": {
+                "dvi_defer_current_stack_comparison": dvi_wins,
                 "oracle_partial": oracle_wins,
                 "current_colsmol_partial": current_wins,
-                "full_omni": full_wins,
+                "full_omni_current_stack_comparison": full_wins,
             },
             "checks": {
                 "oracle_middle_region_exists": oracle_wins,
