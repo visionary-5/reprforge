@@ -1,0 +1,598 @@
+{
+  "organizations": {
+    "fixed_quadrants": {
+      "eligible_queries": 88,
+      "mean_units_per_parent": 4.0,
+      "ndcg_retention_vs_whole": 0.9686826466276153,
+      "negative_irrelevant_exposure_change_vs_whole": -0.04025423728813559,
+      "parent_hit_at_10": 0.9545454545454546,
+      "parent_ndcg_at_10": 0.7636604375223673,
+      "parents": 72,
+      "physical_cost": {
+        "build_wall_seconds": 97.07,
+        "evaluation_wall_seconds": 23.7,
+        "index_bytes": 3273197664,
+        "index_bytes_per_parent": 45461078.666666664
+      },
+      "runner_results": {
+        "configuration": {
+          "index_path": "/root/autodl-tmp/outputs/granularity-audit-v0-industrial/fixed_quadrants/full/index",
+          "model_name_or_path": "/root/autodl-tmp/models/colbert-qwen2.5-vl-colpali-14a7bb3328187705ff153e3511a47f9abb144054",
+          "query_modality_config": {
+            "audio": false,
+            "image": false,
+            "text": true,
+            "transcript": false,
+            "video": false
+          },
+          "query_path": "/root/autodl-tmp/datasets/granularity-audit-v0-industrial/fixed_quadrants/queries.jsonl",
+          "top_k": [
+            1,
+            5,
+            10,
+            100
+          ]
+        },
+        "evaluation_results": {
+          "MRR": 0.70407887574977,
+          "NDCG@1": 0.625,
+          "NDCG@10": 0.5828830847329439,
+          "NDCG@100": 0.7072675827836143,
+          "NDCG@5": 0.5422420690757147,
+          "Recall@1": 0.12452651515151515,
+          "Recall@10": 0.6067708333333333,
+          "Recall@100": 0.9642518939393938,
+          "Recall@5": 0.451467803030303,
+          "num_queries": 88
+        },
+        "index_stats": {
+          "build_config": {
+            "append_eos_token": false,
+            "batch_size": 1,
+            "corpus_path": "/root/autodl-tmp/datasets/granularity-audit-v0-industrial/fixed_quadrants/corpus.jsonl",
+            "data_args": {
+              "append_eos_token": false,
+              "assets_path": "/root/autodl-tmp/datasets/granularity-audit-v0-industrial/fixed_quadrants/assets",
+              "corpus_config": null,
+              "corpus_name": "json",
+              "corpus_path": "/root/autodl-tmp/datasets/granularity-audit-v0-industrial/fixed_quadrants/corpus.jsonl",
+              "corpus_split": "train",
+              "dataset_cache_dir": null,
+              "dataset_config": null,
+              "dataset_name": "json",
+              "dataset_number_of_shards": 1,
+              "dataset_path": null,
+              "dataset_shard_index": 0,
+              "dataset_split": "train",
+              "encode_audio": false,
+              "encode_image": false,
+              "encode_is_query": false,
+              "encode_modalities": {
+                "default": {
+                  "image": true,
+                  "text": true
+                },
+                "query": {
+                  "image": false
+                }
+              },
+              "encode_output_path": null,
+              "encode_text": false,
+              "encode_transcript": false,
+              "encode_video": false,
+              "negative_passage_no_shuffle": false,
+              "num_proc": 1,
+              "pad_to_multiple_of": 16,
+              "passage_max_len": 128,
+              "passage_prefix": "Passage: ",
+              "positive_passage_no_shuffle": false,
+              "qrels_path": null,
+              "query_max_len": 32,
+              "query_path": null,
+              "query_prefix": "",
+              "train_group_size": 8,
+              "train_yaml": null,
+              "use_dataset_labels": false,
+              "val_assets_path": null,
+              "val_corpus_config": null,
+              "val_corpus_name": null,
+              "val_corpus_path": null,
+              "val_corpus_split": "train",
+              "val_dataset_config": null,
+              "val_dataset_name": null,
+              "val_dataset_path": null,
+              "val_dataset_split": "train",
+              "validation_split_ratio": null,
+              "validation_split_seed": 42
+            },
+            "index_args": {
+              "batch_size": 1,
+              "device": "cuda",
+              "gpu_memory_utilization": 0.9,
+              "index_output_path": "/root/autodl-tmp/outputs/granularity-audit-v0-industrial/fixed_quadrants/full/index",
+              "index_type": "multivec",
+              "max_model_len": null,
+              "output_pickle": false,
+              "tensor_parallel_size": 1
+            },
+            "index_shape": [
+              288,
+              1386,
+              2048
+            ],
+            "index_type": "multivec",
+            "lora_name_or_path": null,
+            "modality_config": {
+              "audio": false,
+              "image": true,
+              "text": true,
+              "transcript": false,
+              "video": false
+            },
+            "model_args": {
+              "attn_implementation": "sdpa",
+              "cache_dir": null,
+              "cluster_centroid_weight": 1.0,
+              "config_name": null,
+              "dtype": "bfloat16",
+              "extra_state_path": null,
+              "lora": false,
+              "lora_alpha": 64,
+              "lora_dropout": 0.1,
+              "lora_name_or_path": null,
+              "lora_r": 16,
+              "lora_target_modules": "q_proj,k_proj,v_proj,o_proj,down_proj,up_proj,gate_proj",
+              "model_name_or_path": "/root/autodl-tmp/models/colbert-qwen2.5-vl-colpali-14a7bb3328187705ff153e3511a47f9abb144054",
+              "model_parallel": false,
+              "normalize": true,
+              "num_appending_token": 0,
+              "num_protected_tokens": 1,
+              "num_repr_vectors": 0,
+              "pooling": "colbert",
+              "processor_name_or_path": "/root/autodl-tmp/models/colbert-qwen2.5-vl-colpali-14a7bb3328187705ff153e3511a47f9abb144054",
+              "protected_tokens_position": "first",
+              "resizer_hidden_size": null,
+              "resizer_input_size": null,
+              "resizer_output_size": null,
+              "temperature": 1.0,
+              "tokenizer_name": null,
+              "use_attn_weight_cluster_pooling": true,
+              "use_cluster_pooling": true,
+              "use_parametric_appending_tokens": false
+            },
+            "model_name_or_path": "/root/autodl-tmp/models/colbert-qwen2.5-vl-colpali-14a7bb3328187705ff153e3511a47f9abb144054",
+            "normalize": true,
+            "num_appending_token": 0,
+            "num_ids": 288,
+            "num_repr_vectors": 0,
+            "passage_prefix": "Passage: ",
+            "pooling": "colbert"
+          },
+          "dim": [
+            288,
+            1386,
+            2048
+          ],
+          "has_masks": true,
+          "index_class": "MultiVecIndex",
+          "index_size_mb": 3118.5,
+          "index_type": "multivec",
+          "mask_size_mb": 1.522705078125,
+          "num_docs": 288
+        }
+      },
+      "top10_exposure": {
+        "negative": {
+          "irrelevant": 453,
+          "relevant": 27
+        },
+        "neutral": {
+          "irrelevant": 60,
+          "relevant": 3
+        },
+        "positive": {
+          "irrelevant": 259,
+          "relevant": 78
+        }
+      },
+      "units": 288
+    },
+    "whole_page": {
+      "eligible_queries": 88,
+      "mean_units_per_parent": 1.0,
+      "ndcg_retention_vs_whole": 1.0,
+      "negative_irrelevant_exposure_change_vs_whole": 0.0,
+      "parent_hit_at_10": 0.9545454545454546,
+      "parent_ndcg_at_10": 0.7883494560173913,
+      "parents": 72,
+      "physical_cost": {
+        "build_wall_seconds": 53.85,
+        "evaluation_wall_seconds": 23.78,
+        "index_bytes": 830113369,
+        "index_bytes_per_parent": 11529352.347222222
+      },
+      "runner_results": {
+        "configuration": {
+          "index_path": "/root/autodl-tmp/outputs/granularity-audit-v0-industrial/whole_page/full/index",
+          "model_name_or_path": "/root/autodl-tmp/models/colbert-qwen2.5-vl-colpali-14a7bb3328187705ff153e3511a47f9abb144054",
+          "query_modality_config": {
+            "audio": false,
+            "image": false,
+            "text": true,
+            "transcript": false,
+            "video": false
+          },
+          "query_path": "/root/autodl-tmp/datasets/granularity-audit-v0-industrial/whole_page/queries.jsonl",
+          "top_k": [
+            1,
+            5,
+            10,
+            100
+          ]
+        },
+        "evaluation_results": {
+          "MRR": 0.7832047156060313,
+          "NDCG@1": 0.6931818181818182,
+          "NDCG@10": 0.7878945822355182,
+          "NDCG@100": 0.8101240886291389,
+          "NDCG@5": 0.7593543047532787,
+          "Recall@1": 0.5606060606060607,
+          "Recall@10": 0.9195075757575757,
+          "Recall@100": 1.0,
+          "Recall@5": 0.8361742424242423,
+          "num_queries": 88
+        },
+        "index_stats": {
+          "build_config": {
+            "append_eos_token": false,
+            "batch_size": 1,
+            "corpus_path": "/root/autodl-tmp/datasets/granularity-audit-v0-industrial/whole_page/corpus.jsonl",
+            "data_args": {
+              "append_eos_token": false,
+              "assets_path": "/root/autodl-tmp/datasets/granularity-audit-v0-industrial/whole_page/assets",
+              "corpus_config": null,
+              "corpus_name": "json",
+              "corpus_path": "/root/autodl-tmp/datasets/granularity-audit-v0-industrial/whole_page/corpus.jsonl",
+              "corpus_split": "train",
+              "dataset_cache_dir": null,
+              "dataset_config": null,
+              "dataset_name": "json",
+              "dataset_number_of_shards": 1,
+              "dataset_path": null,
+              "dataset_shard_index": 0,
+              "dataset_split": "train",
+              "encode_audio": false,
+              "encode_image": false,
+              "encode_is_query": false,
+              "encode_modalities": {
+                "default": {
+                  "image": true,
+                  "text": true
+                },
+                "query": {
+                  "image": false
+                }
+              },
+              "encode_output_path": null,
+              "encode_text": false,
+              "encode_transcript": false,
+              "encode_video": false,
+              "negative_passage_no_shuffle": false,
+              "num_proc": 1,
+              "pad_to_multiple_of": 16,
+              "passage_max_len": 128,
+              "passage_prefix": "Passage: ",
+              "positive_passage_no_shuffle": false,
+              "qrels_path": null,
+              "query_max_len": 32,
+              "query_path": null,
+              "query_prefix": "",
+              "train_group_size": 8,
+              "train_yaml": null,
+              "use_dataset_labels": false,
+              "val_assets_path": null,
+              "val_corpus_config": null,
+              "val_corpus_name": null,
+              "val_corpus_path": null,
+              "val_corpus_split": "train",
+              "val_dataset_config": null,
+              "val_dataset_name": null,
+              "val_dataset_path": null,
+              "val_dataset_split": "train",
+              "validation_split_ratio": null,
+              "validation_split_seed": 42
+            },
+            "index_args": {
+              "batch_size": 1,
+              "device": "cuda",
+              "gpu_memory_utilization": 0.9,
+              "index_output_path": "/root/autodl-tmp/outputs/granularity-audit-v0-industrial/whole_page/full/index",
+              "index_type": "multivec",
+              "max_model_len": null,
+              "output_pickle": false,
+              "tensor_parallel_size": 1
+            },
+            "index_shape": [
+              72,
+              1406,
+              2048
+            ],
+            "index_type": "multivec",
+            "lora_name_or_path": null,
+            "modality_config": {
+              "audio": false,
+              "image": true,
+              "text": true,
+              "transcript": false,
+              "video": false
+            },
+            "model_args": {
+              "attn_implementation": "sdpa",
+              "cache_dir": null,
+              "cluster_centroid_weight": 1.0,
+              "config_name": null,
+              "dtype": "bfloat16",
+              "extra_state_path": null,
+              "lora": false,
+              "lora_alpha": 64,
+              "lora_dropout": 0.1,
+              "lora_name_or_path": null,
+              "lora_r": 16,
+              "lora_target_modules": "q_proj,k_proj,v_proj,o_proj,down_proj,up_proj,gate_proj",
+              "model_name_or_path": "/root/autodl-tmp/models/colbert-qwen2.5-vl-colpali-14a7bb3328187705ff153e3511a47f9abb144054",
+              "model_parallel": false,
+              "normalize": true,
+              "num_appending_token": 0,
+              "num_protected_tokens": 1,
+              "num_repr_vectors": 0,
+              "pooling": "colbert",
+              "processor_name_or_path": "/root/autodl-tmp/models/colbert-qwen2.5-vl-colpali-14a7bb3328187705ff153e3511a47f9abb144054",
+              "protected_tokens_position": "first",
+              "resizer_hidden_size": null,
+              "resizer_input_size": null,
+              "resizer_output_size": null,
+              "temperature": 1.0,
+              "tokenizer_name": null,
+              "use_attn_weight_cluster_pooling": true,
+              "use_cluster_pooling": true,
+              "use_parametric_appending_tokens": false
+            },
+            "model_name_or_path": "/root/autodl-tmp/models/colbert-qwen2.5-vl-colpali-14a7bb3328187705ff153e3511a47f9abb144054",
+            "normalize": true,
+            "num_appending_token": 0,
+            "num_ids": 72,
+            "num_repr_vectors": 0,
+            "passage_prefix": "Passage: ",
+            "pooling": "colbert"
+          },
+          "dim": [
+            72,
+            1406,
+            2048
+          ],
+          "has_masks": true,
+          "index_class": "MultiVecIndex",
+          "index_size_mb": 790.875,
+          "index_type": "multivec",
+          "mask_size_mb": 0.38616943359375,
+          "num_docs": 72
+        }
+      },
+      "top10_exposure": {
+        "negative": {
+          "irrelevant": 472,
+          "relevant": 27
+        },
+        "neutral": {
+          "irrelevant": 59,
+          "relevant": 3
+        },
+        "positive": {
+          "irrelevant": 240,
+          "relevant": 79
+        }
+      },
+      "units": 72
+    },
+    "xycut_regions": {
+      "eligible_queries": 88,
+      "mean_units_per_parent": 4.0,
+      "ndcg_retention_vs_whole": 0.9504233884613416,
+      "negative_irrelevant_exposure_change_vs_whole": 0.00211864406779661,
+      "parent_hit_at_10": 0.9431818181818182,
+      "parent_ndcg_at_10": 0.7492657612797043,
+      "parents": 72,
+      "physical_cost": {
+        "build_wall_seconds": 90.16,
+        "evaluation_wall_seconds": 24.48,
+        "index_bytes": 3346406674,
+        "index_bytes_per_parent": 46477870.472222224
+      },
+      "runner_results": {
+        "configuration": {
+          "index_path": "/root/autodl-tmp/outputs/granularity-audit-v0-industrial/xycut_regions/full/index",
+          "model_name_or_path": "/root/autodl-tmp/models/colbert-qwen2.5-vl-colpali-14a7bb3328187705ff153e3511a47f9abb144054",
+          "query_modality_config": {
+            "audio": false,
+            "image": false,
+            "text": true,
+            "transcript": false,
+            "video": false
+          },
+          "query_path": "/root/autodl-tmp/datasets/granularity-audit-v0-industrial/xycut_regions/queries.jsonl",
+          "top_k": [
+            1,
+            5,
+            10,
+            100
+          ]
+        },
+        "evaluation_results": {
+          "MRR": 0.6839422813969187,
+          "NDCG@1": 0.5795454545454546,
+          "NDCG@10": 0.5225286692788921,
+          "NDCG@100": 0.6602819518144111,
+          "NDCG@5": 0.49604393627752297,
+          "Recall@1": 0.11742424242424243,
+          "Recall@10": 0.5364583333333333,
+          "Recall@100": 0.9311079545454546,
+          "Recall@5": 0.40932765151515144,
+          "num_queries": 88
+        },
+        "index_stats": {
+          "build_config": {
+            "append_eos_token": false,
+            "batch_size": 1,
+            "corpus_path": "/root/autodl-tmp/datasets/granularity-audit-v0-industrial/xycut_regions/corpus.jsonl",
+            "data_args": {
+              "append_eos_token": false,
+              "assets_path": "/root/autodl-tmp/datasets/granularity-audit-v0-industrial/xycut_regions/assets",
+              "corpus_config": null,
+              "corpus_name": "json",
+              "corpus_path": "/root/autodl-tmp/datasets/granularity-audit-v0-industrial/xycut_regions/corpus.jsonl",
+              "corpus_split": "train",
+              "dataset_cache_dir": null,
+              "dataset_config": null,
+              "dataset_name": "json",
+              "dataset_number_of_shards": 1,
+              "dataset_path": null,
+              "dataset_shard_index": 0,
+              "dataset_split": "train",
+              "encode_audio": false,
+              "encode_image": false,
+              "encode_is_query": false,
+              "encode_modalities": {
+                "default": {
+                  "image": true,
+                  "text": true
+                },
+                "query": {
+                  "image": false
+                }
+              },
+              "encode_output_path": null,
+              "encode_text": false,
+              "encode_transcript": false,
+              "encode_video": false,
+              "negative_passage_no_shuffle": false,
+              "num_proc": 1,
+              "pad_to_multiple_of": 16,
+              "passage_max_len": 128,
+              "passage_prefix": "Passage: ",
+              "positive_passage_no_shuffle": false,
+              "qrels_path": null,
+              "query_max_len": 32,
+              "query_path": null,
+              "query_prefix": "",
+              "train_group_size": 8,
+              "train_yaml": null,
+              "use_dataset_labels": false,
+              "val_assets_path": null,
+              "val_corpus_config": null,
+              "val_corpus_name": null,
+              "val_corpus_path": null,
+              "val_corpus_split": "train",
+              "val_dataset_config": null,
+              "val_dataset_name": null,
+              "val_dataset_path": null,
+              "val_dataset_split": "train",
+              "validation_split_ratio": null,
+              "validation_split_seed": 42
+            },
+            "index_args": {
+              "batch_size": 1,
+              "device": "cuda",
+              "gpu_memory_utilization": 0.9,
+              "index_output_path": "/root/autodl-tmp/outputs/granularity-audit-v0-industrial/xycut_regions/full/index",
+              "index_type": "multivec",
+              "max_model_len": null,
+              "output_pickle": false,
+              "tensor_parallel_size": 1
+            },
+            "index_shape": [
+              288,
+              1417,
+              2048
+            ],
+            "index_type": "multivec",
+            "lora_name_or_path": null,
+            "modality_config": {
+              "audio": false,
+              "image": true,
+              "text": true,
+              "transcript": false,
+              "video": false
+            },
+            "model_args": {
+              "attn_implementation": "sdpa",
+              "cache_dir": null,
+              "cluster_centroid_weight": 1.0,
+              "config_name": null,
+              "dtype": "bfloat16",
+              "extra_state_path": null,
+              "lora": false,
+              "lora_alpha": 64,
+              "lora_dropout": 0.1,
+              "lora_name_or_path": null,
+              "lora_r": 16,
+              "lora_target_modules": "q_proj,k_proj,v_proj,o_proj,down_proj,up_proj,gate_proj",
+              "model_name_or_path": "/root/autodl-tmp/models/colbert-qwen2.5-vl-colpali-14a7bb3328187705ff153e3511a47f9abb144054",
+              "model_parallel": false,
+              "normalize": true,
+              "num_appending_token": 0,
+              "num_protected_tokens": 1,
+              "num_repr_vectors": 0,
+              "pooling": "colbert",
+              "processor_name_or_path": "/root/autodl-tmp/models/colbert-qwen2.5-vl-colpali-14a7bb3328187705ff153e3511a47f9abb144054",
+              "protected_tokens_position": "first",
+              "resizer_hidden_size": null,
+              "resizer_input_size": null,
+              "resizer_output_size": null,
+              "temperature": 1.0,
+              "tokenizer_name": null,
+              "use_attn_weight_cluster_pooling": true,
+              "use_cluster_pooling": true,
+              "use_parametric_appending_tokens": false
+            },
+            "model_name_or_path": "/root/autodl-tmp/models/colbert-qwen2.5-vl-colpali-14a7bb3328187705ff153e3511a47f9abb144054",
+            "normalize": true,
+            "num_appending_token": 0,
+            "num_ids": 288,
+            "num_repr_vectors": 0,
+            "passage_prefix": "Passage: ",
+            "pooling": "colbert"
+          },
+          "dim": [
+            288,
+            1417,
+            2048
+          ],
+          "has_masks": true,
+          "index_class": "MultiVecIndex",
+          "index_size_mb": 3188.25,
+          "index_type": "multivec",
+          "mask_size_mb": 1.5567626953125,
+          "num_docs": 288
+        }
+      },
+      "top10_exposure": {
+        "negative": {
+          "irrelevant": 473,
+          "relevant": 26
+        },
+        "neutral": {
+          "irrelevant": 65,
+          "relevant": 3
+        },
+        "positive": {
+          "irrelevant": 234,
+          "relevant": 79
+        }
+      },
+      "units": 288
+    }
+  },
+  "protocol_id": "representation-granularity-audit-v0-2026-08-07",
+  "schema_version": 1,
+  "status": "complete"
+}

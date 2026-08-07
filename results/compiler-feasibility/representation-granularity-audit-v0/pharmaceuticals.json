@@ -1,0 +1,598 @@
+{
+  "organizations": {
+    "fixed_quadrants": {
+      "eligible_queries": 85,
+      "mean_units_per_parent": 4.0,
+      "ndcg_retention_vs_whole": 1.001056447683712,
+      "negative_irrelevant_exposure_change_vs_whole": -0.014799154334038054,
+      "parent_hit_at_10": 0.9176470588235294,
+      "parent_ndcg_at_10": 0.7656328375497271,
+      "parents": 72,
+      "physical_cost": {
+        "build_wall_seconds": 90.7,
+        "evaluation_wall_seconds": 26.38,
+        "index_bytes": 3230688979,
+        "index_bytes_per_parent": 44870680.26388889
+      },
+      "runner_results": {
+        "configuration": {
+          "index_path": "/root/autodl-tmp/outputs/granularity-audit-v0-pharmaceuticals/fixed_quadrants/full/index",
+          "model_name_or_path": "/root/autodl-tmp/models/colbert-qwen2.5-vl-colpali-14a7bb3328187705ff153e3511a47f9abb144054",
+          "query_modality_config": {
+            "audio": false,
+            "image": false,
+            "text": true,
+            "transcript": false,
+            "video": false
+          },
+          "query_path": "/root/autodl-tmp/datasets/granularity-audit-v0-pharmaceuticals/fixed_quadrants/queries.jsonl",
+          "top_k": [
+            1,
+            5,
+            10,
+            100
+          ]
+        },
+        "evaluation_results": {
+          "MRR": 0.7036374201892324,
+          "NDCG@1": 0.6352941176470588,
+          "NDCG@10": 0.6823653097051592,
+          "NDCG@100": 0.7664253277066428,
+          "NDCG@5": 0.6242941699360136,
+          "Recall@1": 0.15,
+          "Recall@10": 0.7362745098039216,
+          "Recall@100": 0.9852941176470589,
+          "Recall@5": 0.600735294117647,
+          "num_queries": 85
+        },
+        "index_stats": {
+          "build_config": {
+            "append_eos_token": false,
+            "batch_size": 1,
+            "corpus_path": "/root/autodl-tmp/datasets/granularity-audit-v0-pharmaceuticals/fixed_quadrants/corpus.jsonl",
+            "data_args": {
+              "append_eos_token": false,
+              "assets_path": "/root/autodl-tmp/datasets/granularity-audit-v0-pharmaceuticals/fixed_quadrants/assets",
+              "corpus_config": null,
+              "corpus_name": "json",
+              "corpus_path": "/root/autodl-tmp/datasets/granularity-audit-v0-pharmaceuticals/fixed_quadrants/corpus.jsonl",
+              "corpus_split": "train",
+              "dataset_cache_dir": null,
+              "dataset_config": null,
+              "dataset_name": "json",
+              "dataset_number_of_shards": 1,
+              "dataset_path": null,
+              "dataset_shard_index": 0,
+              "dataset_split": "train",
+              "encode_audio": false,
+              "encode_image": false,
+              "encode_is_query": false,
+              "encode_modalities": {
+                "default": {
+                  "image": true,
+                  "text": true
+                },
+                "query": {
+                  "image": false
+                }
+              },
+              "encode_output_path": null,
+              "encode_text": false,
+              "encode_transcript": false,
+              "encode_video": false,
+              "negative_passage_no_shuffle": false,
+              "num_proc": 1,
+              "pad_to_multiple_of": 16,
+              "passage_max_len": 128,
+              "passage_prefix": "Passage: ",
+              "positive_passage_no_shuffle": false,
+              "qrels_path": null,
+              "query_max_len": 32,
+              "query_path": null,
+              "query_prefix": "",
+              "train_group_size": 8,
+              "train_yaml": null,
+              "use_dataset_labels": false,
+              "val_assets_path": null,
+              "val_corpus_config": null,
+              "val_corpus_name": null,
+              "val_corpus_path": null,
+              "val_corpus_split": "train",
+              "val_dataset_config": null,
+              "val_dataset_name": null,
+              "val_dataset_path": null,
+              "val_dataset_split": "train",
+              "validation_split_ratio": null,
+              "validation_split_seed": 42
+            },
+            "index_args": {
+              "batch_size": 1,
+              "device": "cuda",
+              "gpu_memory_utilization": 0.9,
+              "index_output_path": "/root/autodl-tmp/outputs/granularity-audit-v0-pharmaceuticals/fixed_quadrants/full/index",
+              "index_type": "multivec",
+              "max_model_len": null,
+              "output_pickle": false,
+              "tensor_parallel_size": 1
+            },
+            "index_shape": [
+              288,
+              1368,
+              2048
+            ],
+            "index_type": "multivec",
+            "lora_name_or_path": null,
+            "modality_config": {
+              "audio": false,
+              "image": true,
+              "text": true,
+              "transcript": false,
+              "video": false
+            },
+            "model_args": {
+              "attn_implementation": "sdpa",
+              "cache_dir": null,
+              "cluster_centroid_weight": 1.0,
+              "config_name": null,
+              "dtype": "bfloat16",
+              "extra_state_path": null,
+              "lora": false,
+              "lora_alpha": 64,
+              "lora_dropout": 0.1,
+              "lora_name_or_path": null,
+              "lora_r": 16,
+              "lora_target_modules": "q_proj,k_proj,v_proj,o_proj,down_proj,up_proj,gate_proj",
+              "model_name_or_path": "/root/autodl-tmp/models/colbert-qwen2.5-vl-colpali-14a7bb3328187705ff153e3511a47f9abb144054",
+              "model_parallel": false,
+              "normalize": true,
+              "num_appending_token": 0,
+              "num_protected_tokens": 1,
+              "num_repr_vectors": 0,
+              "pooling": "colbert",
+              "processor_name_or_path": "/root/autodl-tmp/models/colbert-qwen2.5-vl-colpali-14a7bb3328187705ff153e3511a47f9abb144054",
+              "protected_tokens_position": "first",
+              "resizer_hidden_size": null,
+              "resizer_input_size": null,
+              "resizer_output_size": null,
+              "temperature": 1.0,
+              "tokenizer_name": null,
+              "use_attn_weight_cluster_pooling": true,
+              "use_cluster_pooling": true,
+              "use_parametric_appending_tokens": false
+            },
+            "model_name_or_path": "/root/autodl-tmp/models/colbert-qwen2.5-vl-colpali-14a7bb3328187705ff153e3511a47f9abb144054",
+            "normalize": true,
+            "num_appending_token": 0,
+            "num_ids": 288,
+            "num_repr_vectors": 0,
+            "passage_prefix": "Passage: ",
+            "pooling": "colbert"
+          },
+          "dim": [
+            288,
+            1368,
+            2048
+          ],
+          "has_masks": true,
+          "index_class": "MultiVecIndex",
+          "index_size_mb": 3078.0,
+          "index_type": "multivec",
+          "mask_size_mb": 1.5029296875,
+          "num_docs": 288
+        }
+      },
+      "top10_exposure": {
+        "negative": {
+          "irrelevant": 466,
+          "relevant": 31
+        },
+        "neutral": {
+          "irrelevant": 119,
+          "relevant": 5
+        },
+        "positive": {
+          "irrelevant": 178,
+          "relevant": 51
+        }
+      },
+      "units": 288
+    },
+    "whole_page": {
+      "eligible_queries": 85,
+      "mean_units_per_parent": 1.0,
+      "ndcg_retention_vs_whole": 1.0,
+      "negative_irrelevant_exposure_change_vs_whole": 0.0,
+      "parent_hit_at_10": 0.9176470588235294,
+      "parent_ndcg_at_10": 0.764824840118938,
+      "parents": 72,
+      "physical_cost": {
+        "build_wall_seconds": 54.47,
+        "evaluation_wall_seconds": 22.78,
+        "index_bytes": 839559824,
+        "index_bytes_per_parent": 11660553.111111112
+      },
+      "runner_results": {
+        "configuration": {
+          "index_path": "/root/autodl-tmp/outputs/granularity-audit-v0-pharmaceuticals/whole_page/full/index",
+          "model_name_or_path": "/root/autodl-tmp/models/colbert-qwen2.5-vl-colpali-14a7bb3328187705ff153e3511a47f9abb144054",
+          "query_modality_config": {
+            "audio": false,
+            "image": false,
+            "text": true,
+            "transcript": false,
+            "video": false
+          },
+          "query_path": "/root/autodl-tmp/datasets/granularity-audit-v0-pharmaceuticals/whole_page/queries.jsonl",
+          "top_k": [
+            1,
+            5,
+            10,
+            100
+          ]
+        },
+        "evaluation_results": {
+          "MRR": 0.742200789406672,
+          "NDCG@1": 0.6470588235294118,
+          "NDCG@10": 0.7644726865474123,
+          "NDCG@100": 0.7898870718727325,
+          "NDCG@5": 0.7382914517848684,
+          "Recall@1": 0.611764705882353,
+          "Recall@10": 0.9039215686274509,
+          "Recall@100": 1.0,
+          "Recall@5": 0.8274509803921568,
+          "num_queries": 85
+        },
+        "index_stats": {
+          "build_config": {
+            "append_eos_token": false,
+            "batch_size": 1,
+            "corpus_path": "/root/autodl-tmp/datasets/granularity-audit-v0-pharmaceuticals/whole_page/corpus.jsonl",
+            "data_args": {
+              "append_eos_token": false,
+              "assets_path": "/root/autodl-tmp/datasets/granularity-audit-v0-pharmaceuticals/whole_page/assets",
+              "corpus_config": null,
+              "corpus_name": "json",
+              "corpus_path": "/root/autodl-tmp/datasets/granularity-audit-v0-pharmaceuticals/whole_page/corpus.jsonl",
+              "corpus_split": "train",
+              "dataset_cache_dir": null,
+              "dataset_config": null,
+              "dataset_name": "json",
+              "dataset_number_of_shards": 1,
+              "dataset_path": null,
+              "dataset_shard_index": 0,
+              "dataset_split": "train",
+              "encode_audio": false,
+              "encode_image": false,
+              "encode_is_query": false,
+              "encode_modalities": {
+                "default": {
+                  "image": true,
+                  "text": true
+                },
+                "query": {
+                  "image": false
+                }
+              },
+              "encode_output_path": null,
+              "encode_text": false,
+              "encode_transcript": false,
+              "encode_video": false,
+              "negative_passage_no_shuffle": false,
+              "num_proc": 1,
+              "pad_to_multiple_of": 16,
+              "passage_max_len": 128,
+              "passage_prefix": "Passage: ",
+              "positive_passage_no_shuffle": false,
+              "qrels_path": null,
+              "query_max_len": 32,
+              "query_path": null,
+              "query_prefix": "",
+              "train_group_size": 8,
+              "train_yaml": null,
+              "use_dataset_labels": false,
+              "val_assets_path": null,
+              "val_corpus_config": null,
+              "val_corpus_name": null,
+              "val_corpus_path": null,
+              "val_corpus_split": "train",
+              "val_dataset_config": null,
+              "val_dataset_name": null,
+              "val_dataset_path": null,
+              "val_dataset_split": "train",
+              "validation_split_ratio": null,
+              "validation_split_seed": 42
+            },
+            "index_args": {
+              "batch_size": 1,
+              "device": "cuda",
+              "gpu_memory_utilization": 0.9,
+              "index_output_path": "/root/autodl-tmp/outputs/granularity-audit-v0-pharmaceuticals/whole_page/full/index",
+              "index_type": "multivec",
+              "max_model_len": null,
+              "output_pickle": false,
+              "tensor_parallel_size": 1
+            },
+            "index_shape": [
+              72,
+              1422,
+              2048
+            ],
+            "index_type": "multivec",
+            "lora_name_or_path": null,
+            "modality_config": {
+              "audio": false,
+              "image": true,
+              "text": true,
+              "transcript": false,
+              "video": false
+            },
+            "model_args": {
+              "attn_implementation": "sdpa",
+              "cache_dir": null,
+              "cluster_centroid_weight": 1.0,
+              "config_name": null,
+              "dtype": "bfloat16",
+              "extra_state_path": null,
+              "lora": false,
+              "lora_alpha": 64,
+              "lora_dropout": 0.1,
+              "lora_name_or_path": null,
+              "lora_r": 16,
+              "lora_target_modules": "q_proj,k_proj,v_proj,o_proj,down_proj,up_proj,gate_proj",
+              "model_name_or_path": "/root/autodl-tmp/models/colbert-qwen2.5-vl-colpali-14a7bb3328187705ff153e3511a47f9abb144054",
+              "model_parallel": false,
+              "normalize": true,
+              "num_appending_token": 0,
+              "num_protected_tokens": 1,
+              "num_repr_vectors": 0,
+              "pooling": "colbert",
+              "processor_name_or_path": "/root/autodl-tmp/models/colbert-qwen2.5-vl-colpali-14a7bb3328187705ff153e3511a47f9abb144054",
+              "protected_tokens_position": "first",
+              "resizer_hidden_size": null,
+              "resizer_input_size": null,
+              "resizer_output_size": null,
+              "temperature": 1.0,
+              "tokenizer_name": null,
+              "use_attn_weight_cluster_pooling": true,
+              "use_cluster_pooling": true,
+              "use_parametric_appending_tokens": false
+            },
+            "model_name_or_path": "/root/autodl-tmp/models/colbert-qwen2.5-vl-colpali-14a7bb3328187705ff153e3511a47f9abb144054",
+            "normalize": true,
+            "num_appending_token": 0,
+            "num_ids": 72,
+            "num_repr_vectors": 0,
+            "passage_prefix": "Passage: ",
+            "pooling": "colbert"
+          },
+          "dim": [
+            72,
+            1422,
+            2048
+          ],
+          "has_masks": true,
+          "index_class": "MultiVecIndex",
+          "index_size_mb": 799.875,
+          "index_type": "multivec",
+          "mask_size_mb": 0.39056396484375,
+          "num_docs": 72
+        }
+      },
+      "top10_exposure": {
+        "negative": {
+          "irrelevant": 473,
+          "relevant": 30
+        },
+        "neutral": {
+          "irrelevant": 114,
+          "relevant": 5
+        },
+        "positive": {
+          "irrelevant": 177,
+          "relevant": 51
+        }
+      },
+      "units": 72
+    },
+    "xycut_regions": {
+      "eligible_queries": 85,
+      "mean_units_per_parent": 3.7916666666666665,
+      "ndcg_retention_vs_whole": 1.0130177658950807,
+      "negative_irrelevant_exposure_change_vs_whole": -0.02748414376321353,
+      "parent_hit_at_10": 0.9294117647058824,
+      "parent_ndcg_at_10": 0.774781150838349,
+      "parents": 72,
+      "physical_cost": {
+        "build_wall_seconds": 89.18,
+        "evaluation_wall_seconds": 26.92,
+        "index_bytes": 3181069598,
+        "index_bytes_per_parent": 44181522.19444445
+      },
+      "runner_results": {
+        "configuration": {
+          "index_path": "/root/autodl-tmp/outputs/granularity-audit-v0-pharmaceuticals/xycut_regions/full/index",
+          "model_name_or_path": "/root/autodl-tmp/models/colbert-qwen2.5-vl-colpali-14a7bb3328187705ff153e3511a47f9abb144054",
+          "query_modality_config": {
+            "audio": false,
+            "image": false,
+            "text": true,
+            "transcript": false,
+            "video": false
+          },
+          "query_path": "/root/autodl-tmp/datasets/granularity-audit-v0-pharmaceuticals/xycut_regions/queries.jsonl",
+          "top_k": [
+            1,
+            5,
+            10,
+            100
+          ]
+        },
+        "evaluation_results": {
+          "MRR": 0.7209708395067949,
+          "NDCG@1": 0.6588235294117647,
+          "NDCG@10": 0.6713599513131421,
+          "NDCG@100": 0.7622945397377716,
+          "NDCG@5": 0.6378166628499157,
+          "Recall@1": 0.1803921568627451,
+          "Recall@10": 0.7105392156862745,
+          "Recall@100": 0.9794117647058823,
+          "Recall@5": 0.6262254901960784,
+          "num_queries": 85
+        },
+        "index_stats": {
+          "build_config": {
+            "append_eos_token": false,
+            "batch_size": 1,
+            "corpus_path": "/root/autodl-tmp/datasets/granularity-audit-v0-pharmaceuticals/xycut_regions/corpus.jsonl",
+            "data_args": {
+              "append_eos_token": false,
+              "assets_path": "/root/autodl-tmp/datasets/granularity-audit-v0-pharmaceuticals/xycut_regions/assets",
+              "corpus_config": null,
+              "corpus_name": "json",
+              "corpus_path": "/root/autodl-tmp/datasets/granularity-audit-v0-pharmaceuticals/xycut_regions/corpus.jsonl",
+              "corpus_split": "train",
+              "dataset_cache_dir": null,
+              "dataset_config": null,
+              "dataset_name": "json",
+              "dataset_number_of_shards": 1,
+              "dataset_path": null,
+              "dataset_shard_index": 0,
+              "dataset_split": "train",
+              "encode_audio": false,
+              "encode_image": false,
+              "encode_is_query": false,
+              "encode_modalities": {
+                "default": {
+                  "image": true,
+                  "text": true
+                },
+                "query": {
+                  "image": false
+                }
+              },
+              "encode_output_path": null,
+              "encode_text": false,
+              "encode_transcript": false,
+              "encode_video": false,
+              "negative_passage_no_shuffle": false,
+              "num_proc": 1,
+              "pad_to_multiple_of": 16,
+              "passage_max_len": 128,
+              "passage_prefix": "Passage: ",
+              "positive_passage_no_shuffle": false,
+              "qrels_path": null,
+              "query_max_len": 32,
+              "query_path": null,
+              "query_prefix": "",
+              "train_group_size": 8,
+              "train_yaml": null,
+              "use_dataset_labels": false,
+              "val_assets_path": null,
+              "val_corpus_config": null,
+              "val_corpus_name": null,
+              "val_corpus_path": null,
+              "val_corpus_split": "train",
+              "val_dataset_config": null,
+              "val_dataset_name": null,
+              "val_dataset_path": null,
+              "val_dataset_split": "train",
+              "validation_split_ratio": null,
+              "validation_split_seed": 42
+            },
+            "index_args": {
+              "batch_size": 1,
+              "device": "cuda",
+              "gpu_memory_utilization": 0.9,
+              "index_output_path": "/root/autodl-tmp/outputs/granularity-audit-v0-pharmaceuticals/xycut_regions/full/index",
+              "index_type": "multivec",
+              "max_model_len": null,
+              "output_pickle": false,
+              "tensor_parallel_size": 1
+            },
+            "index_shape": [
+              273,
+              1421,
+              2048
+            ],
+            "index_type": "multivec",
+            "lora_name_or_path": null,
+            "modality_config": {
+              "audio": false,
+              "image": true,
+              "text": true,
+              "transcript": false,
+              "video": false
+            },
+            "model_args": {
+              "attn_implementation": "sdpa",
+              "cache_dir": null,
+              "cluster_centroid_weight": 1.0,
+              "config_name": null,
+              "dtype": "bfloat16",
+              "extra_state_path": null,
+              "lora": false,
+              "lora_alpha": 64,
+              "lora_dropout": 0.1,
+              "lora_name_or_path": null,
+              "lora_r": 16,
+              "lora_target_modules": "q_proj,k_proj,v_proj,o_proj,down_proj,up_proj,gate_proj",
+              "model_name_or_path": "/root/autodl-tmp/models/colbert-qwen2.5-vl-colpali-14a7bb3328187705ff153e3511a47f9abb144054",
+              "model_parallel": false,
+              "normalize": true,
+              "num_appending_token": 0,
+              "num_protected_tokens": 1,
+              "num_repr_vectors": 0,
+              "pooling": "colbert",
+              "processor_name_or_path": "/root/autodl-tmp/models/colbert-qwen2.5-vl-colpali-14a7bb3328187705ff153e3511a47f9abb144054",
+              "protected_tokens_position": "first",
+              "resizer_hidden_size": null,
+              "resizer_input_size": null,
+              "resizer_output_size": null,
+              "temperature": 1.0,
+              "tokenizer_name": null,
+              "use_attn_weight_cluster_pooling": true,
+              "use_cluster_pooling": true,
+              "use_parametric_appending_tokens": false
+            },
+            "model_name_or_path": "/root/autodl-tmp/models/colbert-qwen2.5-vl-colpali-14a7bb3328187705ff153e3511a47f9abb144054",
+            "normalize": true,
+            "num_appending_token": 0,
+            "num_ids": 273,
+            "num_repr_vectors": 0,
+            "passage_prefix": "Passage: ",
+            "pooling": "colbert"
+          },
+          "dim": [
+            273,
+            1421,
+            2048
+          ],
+          "has_masks": true,
+          "index_class": "MultiVecIndex",
+          "index_size_mb": 3030.7265625,
+          "index_type": "multivec",
+          "mask_size_mb": 1.4798469543457031,
+          "num_docs": 273
+        }
+      },
+      "top10_exposure": {
+        "negative": {
+          "irrelevant": 460,
+          "relevant": 32
+        },
+        "neutral": {
+          "irrelevant": 114,
+          "relevant": 5
+        },
+        "positive": {
+          "irrelevant": 187,
+          "relevant": 52
+        }
+      },
+      "units": 273
+    }
+  },
+  "protocol_id": "representation-granularity-audit-v0-2026-08-07",
+  "schema_version": 1,
+  "status": "complete"
+}
