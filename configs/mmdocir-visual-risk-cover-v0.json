@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "protocol_id": "mmdocir-visual-risk-cover-v0-2026-08-07",
+  "status": "FROZEN_BEFORE_RESULTS",
+  "scope": "CPU document-disjoint transfer diagnostic for cheap visual-risk coverage",
+  "candidate_depth": 20,
+  "train_role": "prior-development",
+  "test_role": "mechanism-design",
+  "sealed_roles": ["final-evaluation"],
+  "budgets": [0.05, 0.10, 0.20, 0.40],
+  "random_repetitions": 50,
+  "ridge_lambda": 1.0,
+  "features": [
+    "content_type_one_hot",
+    "native_text_chars",
+    "ocr_text_chars",
+    "has_image",
+    "page_id",
+    "grayscale_entropy",
+    "grayscale_std",
+    "edge_energy",
+    "nonwhite_fraction",
+    "image_aspect_log",
+    "image_height",
+    "image_width"
+  ],
+  "policies": [
+    "random",
+    "document_uniform",
+    "visual_type",
+    "text_scarcity",
+    "ridge_risk",
+    "repair_oracle"
+  ],
+  "gate": {
+    "budget": 0.20,
+    "minimum_repair_event_recall": 0.70,
+    "minimum_gain_over_best_simple_baseline": 0.15,
+    "minimum_domains_with_repair_queries": 3,
+    "minimum_domains_half_query_coverage": 3
+  },
+  "information_boundary": {
+    "train_labels": "repair events from prior-development qrels and complete visual ranks",
+    "test_labels": "evaluation only",
+    "runtime_features": "page/layout metadata and cheap image statistics only",
+    "forbidden_features": [
+      "test qrels",
+      "test visual scores",
+      "route distortion features requiring a visual embedding"
+    ],
+    "warning": "MMDocIR items are layouts within judged document pools, not global page retrieval; this is transfer evidence, not the final DVI comparison."
+  }
+}
