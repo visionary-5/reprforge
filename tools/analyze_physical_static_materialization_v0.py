@@ -150,6 +150,12 @@ def main() -> None:
     parser.add_argument("--dataset-root", type=Path, required=True)
     parser.add_argument("--matrix-root", type=Path, required=True)
     parser.add_argument(
+        "--compact-ranking",
+        type=Path,
+        required=True,
+        help="Complete Top-100 ranking from the always-present compact visual locator.",
+    )
+    parser.add_argument(
         "--query-splits",
         type=Path,
         required=True,
@@ -180,6 +186,7 @@ def main() -> None:
     if not evaluation_query_ids or not history_query_ids:
         raise ValueError("history and held-out evaluation splits must both be non-empty")
     text, text_index_bytes = _bm25(corpus, queries, max(config["cheap_locator_depths"]))
+    compact = _load_ranking(args.compact_ranking)
     full_root = args.full_case_root or args.matrix_root / "full-100"
     full = _case(full_root)
     cases = [
@@ -188,14 +195,28 @@ def main() -> None:
         if path.is_dir() and path.name != "full-100"
     ]
     query_ids = set(qrels)
+    if set(compact) != query_ids:
+        raise ValueError("compact visual ranking query IDs differ from qrels")
     for case in [full, *cases]:
         if set(case["rankings"]) != query_ids:
             raise ValueError(f"{case['name']} query IDs differ from qrels")
+    base = {
+        query_id: reciprocal_rank_fusion(text[query_id], compact[query_id])
+        for query_id in qrels
+    }
     text_primary, qrels_primary = _query_subset(text, qrels, evaluation_query_ids)
+    compact_primary, _ = _query_subset(compact, qrels, evaluation_query_ids)
+    base_primary, _ = _query_subset(base, qrels, evaluation_query_ids)
     text_eval = evaluate_rankings(text_primary, qrels_primary)
     text_all_eval = evaluate_rankings(text, qrels)
+    compact_eval = evaluate_rankings(compact_primary, qrels_primary)
+    compact_all_eval = evaluate_rankings(compact, qrels)
+    base_eval = evaluate_rankings(base_primary, qrels_primary)
+    base_all_eval = evaluate_rankings(base, qrels)
     full_hybrid = {
-        query_id: reciprocal_rank_fusion(text[query_id], full["rankings"][query_id])
+        query_id: reciprocal_rank_fusion(
+            text[query_id], compact[query_id], full["rankings"][query_id]
+        )
         for query_id in qrels
     }
     full_hybrid_primary, _ = _query_subset(full_hybrid, qrels, evaluation_query_ids)
@@ -206,12 +227,14 @@ def main() -> None:
     full_visual_eval = evaluate_rankings(full_visual_primary, qrels_primary)
     full_all_eval = evaluate_rankings(full_hybrid, qrels)
     full_visual_all_eval = evaluate_rankings(full["rankings"], qrels)
-    text_ndcg = float(text_eval["mean"]["ndcg_at_10"])
+    base_ndcg = float(base_eval["mean"]["ndcg_at_10"])
     full_ndcg = float(full_eval["mean"]["ndcg_at_10"])
     rows = []
     for case in cases:
         hybrid = {
-            query_id: reciprocal_rank_fusion(text[query_id], case["rankings"][query_id])
+            query_id: reciprocal_rank_fusion(
+                text[query_id], compact[query_id], case["rankings"][query_id]
+            )
             for query_id in qrels
         }
         hybrid_primary, _ = _query_subset(hybrid, qrels, evaluation_query_ids)
@@ -225,7 +248,7 @@ def main() -> None:
         escaped = [
             query_id
             for query_id in qrels_primary
-            if not set(text[query_id][:20]) & set(qrels[query_id])
+            if not set(base[query_id][:20]) & set(qrels[query_id])
         ]
         repaired = sum(
             bool(set(case["rankings"][query_id][:20]) & set(qrels[query_id]))
@@ -246,9 +269,9 @@ def main() -> None:
                 "hybrid": evaluation["mean"],
                 "visual_only": visual_evaluation["mean"],
                 "ndcg_gain_recovery": gain_recovery(
-                    float(evaluation["mean"]["ndcg_at_10"]), text_ndcg, full_ndcg
+                    float(evaluation["mean"]["ndcg_at_10"]), base_ndcg, full_ndcg
                 ),
-                "bm25_top20_escape_queries": len(escaped),
+                "base_top20_escape_queries": len(escaped),
                 "escape_queries_repaired_at_visual_top20": repaired,
                 "escape_repair_fraction": repaired / len(escaped) if escaped else None,
                 "all_queries_diagnostic": {
@@ -256,7 +279,7 @@ def main() -> None:
                     "visual_only": visual_evaluation_all["mean"],
                     "ndcg_gain_recovery": gain_recovery(
                         float(evaluation_all["mean"]["ndcg_at_10"]),
-                        float(text_all_eval["mean"]["ndcg_at_10"]),
+                        float(base_all_eval["mean"]["ndcg_at_10"]),
                         float(full_all_eval["mean"]["ndcg_at_10"]),
                     ),
                 },
@@ -274,13 +297,17 @@ def main() -> None:
         "status": "physical_static_matrix_complete",
         "baselines": {
             "text_only": text_eval["mean"],
+            "compact_visual_only": compact_eval["mean"],
+            "bm25_plus_compact_visual": base_eval["mean"],
             "full_visual_only": full_visual_eval["mean"],
-            "full_hybrid": full_eval["mean"],
+            "full_stack": full_eval["mean"],
         },
         "all_queries_diagnostic_baselines": {
             "text_only": text_all_eval["mean"],
+            "compact_visual_only": compact_all_eval["mean"],
+            "bm25_plus_compact_visual": base_all_eval["mean"],
             "full_visual_only": full_visual_all_eval["mean"],
-            "full_hybrid": full_all_eval["mean"],
+            "full_stack": full_all_eval["mean"],
         },
         "evaluation_split": {
             "primary": "held_out_evaluation_fold",
@@ -303,6 +330,8 @@ def main() -> None:
             "Partial visual rankings are produced by directly built subset indexes; their selected-set ranks are not masked ranks from a complete Full score surface.",
             "BM25 build wall time is not included by this analyzer and must be taken from the preparation/run manifest for complete ingestion accounting.",
             "RRF uses fixed constant 60 and Top-100 text/visual rankings for every case."
+            " The always-present base is BM25 plus the supplied compact visual locator;"
+            " Gain Recovery is measured above that base."
         ],
         "input_sha256": {
             "config": _sha(args.config),
@@ -310,6 +339,7 @@ def main() -> None:
             "queries": _sha(args.dataset_root / "queries.jsonl"),
             "qrels": _sha(args.dataset_root / "qrels.jsonl"),
             "query_splits": _sha(args.query_splits),
+            "compact_ranking": _sha(args.compact_ranking),
         },
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)

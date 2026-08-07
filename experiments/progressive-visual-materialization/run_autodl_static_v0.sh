@@ -14,6 +14,7 @@ readonly ANALYZE_MATRIX="${AUTODL_ANALYZE_MATRIX:-1}"
 readonly RELEASE_INDEX="${AUTODL_RELEASE_INDEX_AFTER_RECEIPT:-0}"
 readonly FULL_CASE_ROOT="${AUTODL_FULL_CASE_ROOT:-${OUTPUT_ROOT}/full-100}"
 readonly QUERY_SPLITS="${AUTODL_QUERY_SPLITS:-${PREP_ROOT}/query-splits.json}"
+readonly COMPACT_RANKING="${AUTODL_COMPACT_RANKING:-}"
 
 if [[ ! "${DOMAIN}" =~ ^[a-z0-9-]+$ ]]; then
   echo "invalid domain: ${DOMAIN}" >&2
@@ -145,12 +146,17 @@ if [[ "${ANALYZE_MATRIX}" != "1" ]]; then
 elif [[ -f "${OUTPUT_ROOT}/physical-static-summary.json" ]]; then
   echo "resume: physical static summary already exists"
 else
+  if [[ ! -f "${COMPACT_RANKING}" ]]; then
+    echo "AUTODL_COMPACT_RANKING must name the frozen compact visual ranking" >&2
+    exit 2
+  fi
   PYTHONPATH="${REPRFORGE_ROOT}" "${DATA_ROOT}/venvs/omni-cu128/bin/python" \
     "${REPRFORGE_ROOT}/tools/analyze_physical_static_materialization_v0.py" \
     --config "${REPRFORGE_ROOT}/configs/progressive-visual-materialization-v0.json" \
     --dataset-root "${DATASET_ROOT}" \
     --matrix-root "${OUTPUT_ROOT}" \
     --full-case-root "${FULL_CASE_ROOT}" \
+    --compact-ranking "${COMPACT_RANKING}" \
     --query-splits "${QUERY_SPLITS}" \
     --output "${OUTPUT_ROOT}/physical-static-summary.json"
 fi
