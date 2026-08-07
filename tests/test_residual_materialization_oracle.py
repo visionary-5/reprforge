@@ -58,7 +58,9 @@ def _surface() -> ResidualRankSurface:
 
 def test_residual_pages_are_sparse_and_selected_omni_repairs_them():
     surface = _surface()
-    boundary = residual_events(surface, range(4), rrf_constant=60, depth=2)
+    boundary = residual_events(
+        surface, np.arange(4), rrf_constant=60, depth=2
+    )
     assert boundary["queries"] == 2
     assert boundary["unique_pages"] == {2}
     utility = residual_utility(surface, range(4), rrf_constant=60, depth=2)

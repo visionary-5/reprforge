@@ -221,7 +221,7 @@ def residual_events(
         "events": events,
         "strict_events": strict_events,
         "queries": len(events),
-        "query_fraction": len(events) / len(queries) if queries else 0.0,
+        "query_fraction": len(events) / len(queries) if len(queries) else 0.0,
         "unique_pages": pages,
         "unique_page_fraction": len(pages) / surface.pages,
         "page_events": sum(len(pages) for _, pages in events),
