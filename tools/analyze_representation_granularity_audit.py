@@ -28,6 +28,20 @@ def load_ranking(path: Path) -> dict[str, list[tuple[str, float]]]:
     return result
 
 
+def load_elapsed(path: Path) -> float | None:
+    if not path.exists():
+        return None
+    for line in path.read_text(encoding="utf-8").splitlines():
+        key, value = line.split(maxsplit=1)
+        if key == "real":
+            return float(value)
+    return None
+
+
+def tree_bytes(path: Path) -> int:
+    return sum(item.stat().st_size for item in path.rglob("*") if item.is_file())
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=Path, required=True)
@@ -45,7 +59,10 @@ def main() -> None:
         manifest = json.loads((args.prepared_root / organization / "manifest.json").read_text())
         unit_to_parent = {row["unit_id"]: row["parent_id"] for row in manifest["units"]}
         parent_category = {row["parent_id"]: row["category"] for row in manifest["units"]}
-        ranking = load_ranking(args.run_root / organization / "ranking.txt")
+        organization_run = args.run_root / organization
+        result_root = organization_run / "full" / "result"
+        index_root = organization_run / "full" / "index"
+        ranking = load_ranking(result_root / "ranking.txt")
         selected = set(parent_category)
         eligible = [qid for qid in ranking if selected & set(qrels.get(qid, {}))]
         metrics = []
@@ -59,8 +76,10 @@ def main() -> None:
                 category = parent_category[parent]
                 key = "relevant" if selected_qrels.get(parent, 0) > 0 else "irrelevant"
                 category_exposure[category][key] += 1
-        results_path = args.run_root / organization / "results.json"
+        results_path = result_root / "results.json"
         physical = json.loads(results_path.read_text()) if results_path.exists() else {}
+        build_seconds = load_elapsed(organization_run / "timing" / "full-build.time")
+        evaluation_seconds = load_elapsed(organization_run / "timing" / "full-eval.time")
         organizations[organization] = {
             "parents": len(selected),
             "units": len(unit_to_parent),
@@ -69,6 +88,12 @@ def main() -> None:
             "parent_ndcg_at_10": float(np.mean([row["ndcg"] for row in metrics])) if metrics else None,
             "parent_hit_at_10": float(np.mean([row["hit"] for row in metrics])) if metrics else None,
             "top10_exposure": dict(category_exposure),
+            "physical_cost": {
+                "build_wall_seconds": build_seconds,
+                "evaluation_wall_seconds": evaluation_seconds,
+                "index_bytes": tree_bytes(index_root),
+                "index_bytes_per_parent": tree_bytes(index_root) / len(selected),
+            },
             "runner_results": physical,
         }
     whole = organizations["whole_page"]
