@@ -18,6 +18,10 @@
     "visual_20": {"bm25": 0, "visual": 20},
     "hybrid_10_10": {"bm25": 10, "visual": 10}
   },
+  "cheap_locator_depth_reference": {
+    "bm25_depths": [20, 50, 100],
+    "warning": "Candidate-hit reference only. A DVI-like verifier would inspect up to this many raw pages per query."
+  },
   "query_selection": {
     "main": "lowest 100 sha256(query_id + NUL + seed) values",
     "limit": 100,

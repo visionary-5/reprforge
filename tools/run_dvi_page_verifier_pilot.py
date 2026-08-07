@@ -206,7 +206,11 @@ def main() -> None:
     query_rows = _read_jsonl(args.dataset_root / "queries.jsonl")
     qrels = _load_qrels(args.dataset_root / "qrels.jsonl")
     query_text = {str(row["query_id"]): str(row["query"]) for row in query_rows}
-    bm25, bm25_cost = _bm25_rankings(corpus_rows, query_rows, 20)
+    bm25_depths = [
+        int(value)
+        for value in config["cheap_locator_depth_reference"]["bm25_depths"]
+    ]
+    bm25, bm25_cost = _bm25_rankings(corpus_rows, query_rows, max(bm25_depths))
     visual = _load_visual_ranking(args.visual_ranking, 20)
     all_query_ids = [str(row["query_id"]) for row in query_rows]
     limit = args.query_limit or int(config["query_selection"]["limit"])
@@ -271,6 +275,21 @@ def main() -> None:
             }
         cohort_results[cohort_name] = {
             "queries": len(cohort_queries),
+            "bm25_candidate_hit_depth_reference": {
+                str(depth): float(
+                    np.mean(
+                        [
+                            ranking_metrics(bm25[query_id][:depth], qrels[query_id])[
+                                "query_hit"
+                            ]
+                            for query_id in cohort_queries
+                        ]
+                    )
+                )
+                if cohort_queries
+                else None
+                for depth in bm25_depths
+            },
             "routes": route_results,
         }
     labels, pair_values = [], []
