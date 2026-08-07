@@ -15,6 +15,8 @@ readonly EXPECTED_QUERY_MASK_PATCH_SHA256="f844ed531c727c065f6165104e95eda006ad4
 readonly EXPECTED_EVALUATE_SHA256="e5bd7d82edd2871f8c72abe8ebb205e993850459732617b17e2715de46492259"
 readonly EXPECTED_BUILD_BUFFER_PATCH_SHA256="65340c79adf5ef47ad33f8c4a7ace75a6037f299a20eba7448e3615724e924df"
 readonly EXPECTED_BUILD_INDEX_SHA256="5ccacf56534f15926afdbfd04e270f807ee912d68f5b7a3f4a0e40e1020371d1"
+readonly EXPECTED_MAXSIM_PATCH_SHA256="c4b63b06e7704b892ad67d58b150bb0b1af0a1818a89376e1c9ee57a60fdde6d"
+readonly EXPECTED_MULTIVEC_INDEX_SHA256="a82c9c96db460f21bdd693f947688b2088de0e8b269df165f77e614e29709049"
 readonly FULL_MODEL_ID="hltcoe/ColBERT_qwen2.5-vl_colpali"
 readonly FULL_MODEL_REVISION="14a7bb3328187705ff153e3511a47f9abb144054"
 readonly FULL_CONFIG_SHA256="b4b7d8e29a63cbd33d30b761a4fa09f1bdb3126e07ace2af1280bc7ad2c69f7d"
@@ -42,6 +44,7 @@ readonly MASK_PATCH="${SCRIPT_DIR}/torch25_mask_device.patch"
 readonly ATTN_MASK_PATCH="${SCRIPT_DIR}/qwen25vl_attention_mask_device.patch"
 readonly QUERY_MASK_PATCH="${SCRIPT_DIR}/query_mask_export.patch"
 readonly BUILD_BUFFER_PATCH="${SCRIPT_DIR}/release_build_buffers_before_save.patch"
+readonly MAXSIM_PATCH="${SCRIPT_DIR}/chunk_document_maxsim.patch"
 
 IFS=',' read -r -a requested_cases <<< "${OMNI_CASES:-full,hpool,agc}"
 for case_name in "${requested_cases[@]}"; do
@@ -245,6 +248,29 @@ if [[ "${actual_build_index_sha256}" != "${EXPECTED_BUILD_INDEX_SHA256}" ]]; the
   echo "patched build_index.py SHA-256 mismatch: ${actual_build_index_sha256}" >&2
   exit 2
 fi
+if [[ ! -f "${MAXSIM_PATCH}" ]]; then
+  echo "missing document-chunked MaxSim patch: ${MAXSIM_PATCH}" >&2
+  exit 2
+fi
+actual_maxsim_patch_sha256="$(sha256sum "${MAXSIM_PATCH}" | awk '{print $1}')"
+if [[ "${actual_maxsim_patch_sha256}" != "${EXPECTED_MAXSIM_PATCH_SHA256}" ]]; then
+  echo "document-chunked MaxSim patch SHA-256 mismatch: ${actual_maxsim_patch_sha256}" >&2
+  exit 2
+fi
+multivec_index_file="${OMNI_SOURCE}/src/index/multivec_index.py"
+actual_multivec_index_sha256="$(sha256sum "${multivec_index_file}" | awk '{print $1}')"
+if [[ "${actual_multivec_index_sha256}" != "${EXPECTED_MULTIVEC_INDEX_SHA256}" ]]; then
+  if ! git -C "${OMNI_SOURCE}" diff --quiet -- src/index/multivec_index.py; then
+    echo "refusing to patch an unexpectedly modified multivec_index.py" >&2
+    exit 2
+  fi
+  git -C "${OMNI_SOURCE}" apply "${MAXSIM_PATCH}"
+  actual_multivec_index_sha256="$(sha256sum "${multivec_index_file}" | awk '{print $1}')"
+fi
+if [[ "${actual_multivec_index_sha256}" != "${EXPECTED_MULTIVEC_INDEX_SHA256}" ]]; then
+  echo "patched multivec_index.py SHA-256 mismatch: ${actual_multivec_index_sha256}" >&2
+  exit 2
+fi
 if [[ "${actual_factory_sha256}" != "${EXPECTED_COMPONENTS_FACTORY_SHA256}" ]]; then
   echo "patched components_factory.py SHA-256 mismatch: ${actual_factory_sha256}" >&2
   exit 2
@@ -438,6 +464,8 @@ python - \
   "${actual_evaluate_sha256}" \
   "${actual_build_buffer_patch_sha256}" \
   "${actual_build_index_sha256}" \
+  "${actual_maxsim_patch_sha256}" \
+  "${actual_multivec_index_sha256}" \
   "${FULL_MODEL_ID}" \
   "${FULL_MODEL_REVISION}" \
   "${needs_full}" \
@@ -450,6 +478,7 @@ python - \
   "${gpu_names}" \
   "${ATTN_IMPLEMENTATION}" \
   "${requested_cases[*]}" \
+  "${OMNI_MAXSIM_DOC_BATCH_SIZE:-0}" \
   "${OMNI_WRAPPER_REVISION:-unknown}" <<'PY'
 import hashlib
 import importlib.metadata
@@ -473,6 +502,8 @@ from pathlib import Path
     evaluate_sha256,
     build_buffer_patch_sha256,
     build_index_sha256,
+    maxsim_patch_sha256,
+    multivec_index_sha256,
     model_id,
     model_revision,
     needs_full,
@@ -485,6 +516,7 @@ from pathlib import Path
     gpu_names,
     attention_implementation,
     cases,
+    maxsim_doc_batch_size,
     wrapper_revision,
 ) = sys.argv[1:]
 
@@ -519,6 +551,8 @@ manifest = {
         "evaluate_sha256": evaluate_sha256,
         "build_buffer_release_patch_sha256": build_buffer_patch_sha256,
         "build_index_sha256": build_index_sha256,
+        "document_chunked_maxsim_patch_sha256": maxsim_patch_sha256,
+        "multivec_index_sha256": multivec_index_sha256,
     },
     "gpu_names": gpu_names.splitlines(),
     "physical_gpu_id": int(__import__("os").environ["CUDA_VISIBLE_DEVICES"]),
@@ -543,6 +577,7 @@ manifest = {
     "python": {"executable": sys.executable, "version": platform.python_version()},
     "upstream_commit": upstream_commit,
     "wrapper_revision": wrapper_revision,
+    "maxsim_doc_batch_size": int(maxsim_doc_batch_size),
 }
 Path(output_path).write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
 PY
