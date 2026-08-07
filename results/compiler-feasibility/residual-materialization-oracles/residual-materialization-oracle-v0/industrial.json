@@ -1,0 +1,2524 @@
+{
+  "baselines": {
+    "base_bm25_colsmol": {
+      "ndcg_at_10": 0.46717165671265537,
+      "queries": 283,
+      "query_hit_at_20": 0.833922261484099,
+      "recall_at_100": 0.7714661003604998,
+      "recall_at_20": 0.596648252341887,
+      "selected_page_fraction": 0.0,
+      "selected_pages": 0
+    },
+    "bm25_only": {
+      "ndcg_at_10": 0.4689420066699356,
+      "queries": 283,
+      "query_hit_at_20": 0.8021201413427562,
+      "recall_at_100": 0.7322773631867745,
+      "recall_at_20": 0.5763543068531886
+    },
+    "colsmol_only": {
+      "ndcg_at_10": 0.4217034595654771,
+      "queries": 283,
+      "query_hit_at_20": 0.7773851590106007,
+      "recall_at_100": 0.722417876282851,
+      "recall_at_20": 0.5506405356759498
+    },
+    "full_bm25_colsmol_omni": {
+      "ndcg_at_10": 0.5129808874057898,
+      "ndcg_gain_over_base": 0.04580923069313447,
+      "queries": 283,
+      "query_hit_at_20": 0.8692579505300353,
+      "recall_at_100": 0.8113895347867172,
+      "recall_at_20": 0.6388175629359663,
+      "residual_repaired_fraction": 0.4583333333333333,
+      "selected_page_fraction": 1.0,
+      "selected_pages": 5244
+    },
+    "omni_only": {
+      "ndcg_at_10": 0.5342334661445822,
+      "queries": 283,
+      "query_hit_at_20": 0.8869257950530035,
+      "recall_at_100": 0.810440729505241,
+      "recall_at_20": 0.6535025772787836
+    }
+  },
+  "bm25_cost": {
+    "build_seconds": 0.7758999951183796,
+    "logical_index_bytes": 6483457,
+    "score_all_queries_seconds": 3.285858318209648
+  },
+  "curves": {
+    "corpus_uniform": {
+      "0.0": {
+        "ndcg_at_10": 0.46717165671265537,
+        "ndcg_gain_recovery": 0.0,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.0,
+          "fraction_of_full_omni_index_bytes": 0.0,
+          "incremental_omni_build_seconds": 0.0,
+          "incremental_omni_index_bytes": 0.0,
+          "total_visual_build_seconds_including_colsmol": 2523.7415548861027,
+          "total_visual_index_bytes_including_colsmol": 1511142189.0
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.833922261484099,
+        "recall_at_100": 0.7714661003604998,
+        "recall_at_20": 0.596648252341887,
+        "residual_repair_recovery_vs_full_stack": 0.0,
+        "residual_repaired_fraction": 0.0,
+        "selected_page_fraction": 0.0,
+        "selected_pages": 0
+      },
+      "0.001": {
+        "ndcg_at_10": 0.46699018610965953,
+        "ndcg_gain_recovery": -0.003961441837158689,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.0011441647597254005,
+          "fraction_of_full_omni_index_bytes": 0.0011441647597254005,
+          "incremental_omni_build_seconds": 1.5328032036613273,
+          "incremental_omni_index_bytes": 68388219.63043478,
+          "total_visual_build_seconds_including_colsmol": 2525.274358089764,
+          "total_visual_index_bytes_including_colsmol": 1579530408.6304348
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.833922261484099,
+        "recall_at_100": 0.7714661003604998,
+        "recall_at_20": 0.596648252341887,
+        "residual_repair_recovery_vs_full_stack": 0.0,
+        "residual_repaired_fraction": 0.0,
+        "selected_page_fraction": 0.0011441647597254005,
+        "selected_pages": 6
+      },
+      "0.002": {
+        "ndcg_at_10": 0.4655940635912927,
+        "ndcg_gain_recovery": -0.03443832383762609,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.002097635392829901,
+          "fraction_of_full_omni_index_bytes": 0.002097635392829901,
+          "incremental_omni_build_seconds": 2.810139206712434,
+          "incremental_omni_index_bytes": 125378402.65579711,
+          "total_visual_build_seconds_including_colsmol": 2526.551694092815,
+          "total_visual_index_bytes_including_colsmol": 1636520591.655797
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.833922261484099,
+        "recall_at_100": 0.771907796473574,
+        "recall_at_20": 0.596648252341887,
+        "residual_repair_recovery_vs_full_stack": 0.0,
+        "residual_repaired_fraction": 0.0,
+        "selected_page_fraction": 0.002097635392829901,
+        "selected_pages": 11
+      },
+      "0.005": {
+        "ndcg_at_10": 0.4581253927162685,
+        "ndcg_gain_recovery": -0.19747688095846244,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.005148741418764302,
+          "fraction_of_full_omni_index_bytes": 0.005148741418764302,
+          "incremental_omni_build_seconds": 6.897614416475973,
+          "incremental_omni_index_bytes": 307746988.3369565,
+          "total_visual_build_seconds_including_colsmol": 2530.6391693025785,
+          "total_visual_index_bytes_including_colsmol": 1818889177.3369565
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.833922261484099,
+        "recall_at_100": 0.7717184981393993,
+        "recall_at_20": 0.5973549661228057,
+        "residual_repair_recovery_vs_full_stack": 0.0,
+        "residual_repaired_fraction": 0.0,
+        "selected_page_fraction": 0.005148741418764302,
+        "selected_pages": 27
+      },
+      "0.01": {
+        "ndcg_at_10": 0.4494113965525846,
+        "ndcg_gain_recovery": -0.38770046759882676,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.010106788710907704,
+          "fraction_of_full_omni_index_bytes": 0.010106788710907704,
+          "incremental_omni_build_seconds": 13.539761632341726,
+          "incremental_omni_index_bytes": 604095940.0688406,
+          "total_visual_build_seconds_including_colsmol": 2537.2813165184443,
+          "total_visual_index_bytes_including_colsmol": 2115238129.0688405
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.8303886925795053,
+        "recall_at_100": 0.7722232936971983,
+        "recall_at_20": 0.5960197519438368,
+        "residual_repair_recovery_vs_full_stack": 0.0,
+        "residual_repaired_fraction": 0.0,
+        "selected_page_fraction": 0.010106788710907704,
+        "selected_pages": 53
+      },
+      "0.02": {
+        "ndcg_at_10": 0.43533912734389524,
+        "ndcg_gain_recovery": -0.694893341082258,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.02002288329519451,
+          "fraction_of_full_omni_index_bytes": 0.02002288329519451,
+          "incremental_omni_build_seconds": 26.82405606407323,
+          "incremental_omni_index_bytes": 1196793843.5326087,
+          "total_visual_build_seconds_including_colsmol": 2550.565610950176,
+          "total_visual_index_bytes_including_colsmol": 2707936032.532609
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.8303886925795053,
+        "recall_at_100": 0.772726386166071,
+        "recall_at_20": 0.595750527646344,
+        "residual_repair_recovery_vs_full_stack": 0.0,
+        "residual_repaired_fraction": 0.0,
+        "selected_page_fraction": 0.02002288329519451,
+        "selected_pages": 105
+      },
+      "0.05": {
+        "ndcg_at_10": 0.4135070374162107,
+        "ndcg_gain_recovery": -1.1714804742286908,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.05015255530129672,
+          "fraction_of_full_omni_index_bytes": 0.05015255530129672,
+          "incremental_omni_build_seconds": 67.18787376048817,
+          "incremental_omni_index_bytes": 2997683627.134058,
+          "total_visual_build_seconds_including_colsmol": 2590.929428646591,
+          "total_visual_index_bytes_including_colsmol": 4508825816.134058
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.8409893992932862,
+        "recall_at_100": 0.7736300710762541,
+        "recall_at_20": 0.6001994096726526,
+        "residual_repair_recovery_vs_full_stack": 0.18181818181818182,
+        "residual_repaired_fraction": 0.08333333333333333,
+        "selected_page_fraction": 0.05015255530129672,
+        "selected_pages": 263
+      },
+      "0.1": {
+        "ndcg_at_10": 0.3793756951814121,
+        "ndcg_gain_recovery": -1.9165561220481577,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.10011441647597254,
+          "fraction_of_full_omni_index_bytes": 0.10011441647597254,
+          "incremental_omni_build_seconds": 134.12028032036613,
+          "incremental_omni_index_bytes": 5983969217.663043,
+          "total_visual_build_seconds_including_colsmol": 2657.8618352064686,
+          "total_visual_index_bytes_including_colsmol": 7495111406.663043
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.8480565371024735,
+        "recall_at_100": 0.7779353978243928,
+        "recall_at_20": 0.601919099026468,
+        "residual_repair_recovery_vs_full_stack": 0.36363636363636365,
+        "residual_repaired_fraction": 0.16666666666666666,
+        "selected_page_fraction": 0.10011441647597254,
+        "selected_pages": 525
+      },
+      "0.2": {
+        "ndcg_at_10": 0.34958468065417847,
+        "ndcg_gain_recovery": -2.5668838851751317,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.20003813882532417,
+          "fraction_of_full_omni_index_bytes": 0.20003813882532417,
+          "incremental_omni_build_seconds": 267.98509344012206,
+          "incremental_omni_index_bytes": 11956540398.721014,
+          "total_visual_build_seconds_including_colsmol": 2791.7266483262247,
+          "total_visual_index_bytes_including_colsmol": 13467682587.721014
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.8657243816254417,
+        "recall_at_100": 0.7822844821334648,
+        "recall_at_20": 0.6123410366949559,
+        "residual_repair_recovery_vs_full_stack": 0.8181818181818182,
+        "residual_repaired_fraction": 0.375,
+        "selected_page_fraction": 0.20003813882532417,
+        "selected_pages": 1049
+      },
+      "0.4": {
+        "ndcg_at_10": 0.35441844332306743,
+        "ndcg_gain_recovery": -2.461364482300431,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.40007627765064835,
+          "fraction_of_full_omni_index_bytes": 0.40007627765064835,
+          "incremental_omni_build_seconds": 535.9701868802441,
+          "incremental_omni_index_bytes": 23913080797.442028,
+          "total_visual_build_seconds_including_colsmol": 3059.7117417663467,
+          "total_visual_index_bytes_including_colsmol": 25424222986.442028
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.8763250883392226,
+        "recall_at_100": 0.787220946376179,
+        "recall_at_20": 0.6143421339221201,
+        "residual_repair_recovery_vs_full_stack": 1.0,
+        "residual_repaired_fraction": 0.4583333333333333,
+        "selected_page_fraction": 0.40007627765064835,
+        "selected_pages": 2098
+      },
+      "1.0": {
+        "ndcg_at_10": 0.5129808874057898,
+        "ndcg_gain_recovery": 1.0,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 1.0,
+          "fraction_of_full_omni_index_bytes": 1.0,
+          "incremental_omni_build_seconds": 1339.67,
+          "incremental_omni_index_bytes": 59771303957.0,
+          "total_visual_build_seconds_including_colsmol": 3863.4115548861027,
+          "total_visual_index_bytes_including_colsmol": 61282446146.0
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.8692579505300353,
+        "recall_at_100": 0.8113895347867172,
+        "recall_at_20": 0.6388175629359663,
+        "residual_repair_recovery_vs_full_stack": 1.0,
+        "residual_repaired_fraction": 0.4583333333333333,
+        "selected_page_fraction": 1.0,
+        "selected_pages": 5244
+      }
+    },
+    "global_label_rank_oracle": {
+      "0.0": {
+        "ndcg_at_10": 0.46717165671265537,
+        "ndcg_gain_recovery": 0.0,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.0,
+          "fraction_of_full_omni_index_bytes": 0.0,
+          "incremental_omni_build_seconds": 0.0,
+          "incremental_omni_index_bytes": 0.0,
+          "total_visual_build_seconds_including_colsmol": 2523.7415548861027,
+          "total_visual_index_bytes_including_colsmol": 1511142189.0
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.833922261484099,
+        "recall_at_100": 0.7714661003604998,
+        "recall_at_20": 0.596648252341887,
+        "residual_repair_recovery_vs_full_stack": 0.0,
+        "residual_repaired_fraction": 0.0,
+        "selected_page_fraction": 0.0,
+        "selected_pages": 0
+      },
+      "0.001": {
+        "ndcg_at_10": 0.48696600700342924,
+        "ndcg_gain_recovery": 0.4321039666300375,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.0011441647597254005,
+          "fraction_of_full_omni_index_bytes": 0.0011441647597254005,
+          "incremental_omni_build_seconds": 1.5328032036613273,
+          "incremental_omni_index_bytes": 68388219.63043478,
+          "total_visual_build_seconds_including_colsmol": 2525.274358089764,
+          "total_visual_index_bytes_including_colsmol": 1579530408.6304348
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.8445229681978799,
+        "recall_at_100": 0.7722208192091699,
+        "recall_at_20": 0.6044024729936343,
+        "residual_repair_recovery_vs_full_stack": 0.27272727272727276,
+        "residual_repaired_fraction": 0.125,
+        "selected_page_fraction": 0.0011441647597254005,
+        "selected_pages": 6
+      },
+      "0.002": {
+        "ndcg_at_10": 0.49417707993117826,
+        "ndcg_gain_recovery": 0.58951924775655,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.002097635392829901,
+          "fraction_of_full_omni_index_bytes": 0.002097635392829901,
+          "incremental_omni_build_seconds": 2.810139206712434,
+          "incremental_omni_index_bytes": 125378402.65579711,
+          "total_visual_build_seconds_including_colsmol": 2526.551694092815,
+          "total_visual_index_bytes_including_colsmol": 1636520591.655797
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.8515901060070671,
+        "recall_at_100": 0.7722208192091699,
+        "recall_at_20": 0.6123716007600467,
+        "residual_repair_recovery_vs_full_stack": 0.36363636363636365,
+        "residual_repaired_fraction": 0.16666666666666666,
+        "selected_page_fraction": 0.002097635392829901,
+        "selected_pages": 11
+      },
+      "0.005": {
+        "ndcg_at_10": 0.5115347950478314,
+        "ndcg_gain_recovery": 0.9684322933156094,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.005148741418764302,
+          "fraction_of_full_omni_index_bytes": 0.005148741418764302,
+          "incremental_omni_build_seconds": 6.897614416475973,
+          "incremental_omni_index_bytes": 307746988.3369565,
+          "total_visual_build_seconds_including_colsmol": 2530.6391693025785,
+          "total_visual_index_bytes_including_colsmol": 1818889177.3369565
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.8586572438162544,
+        "recall_at_100": 0.7729435946669276,
+        "recall_at_20": 0.6237655233574613,
+        "residual_repair_recovery_vs_full_stack": 0.5454545454545455,
+        "residual_repaired_fraction": 0.25,
+        "selected_page_fraction": 0.005148741418764302,
+        "selected_pages": 27
+      },
+      "0.01": {
+        "ndcg_at_10": 0.5093293595469172,
+        "ndcg_gain_recovery": 0.920288382851626,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.010106788710907704,
+          "fraction_of_full_omni_index_bytes": 0.010106788710907704,
+          "incremental_omni_build_seconds": 13.539761632341726,
+          "incremental_omni_index_bytes": 604095940.0688406,
+          "total_visual_build_seconds_including_colsmol": 2537.2813165184443,
+          "total_visual_index_bytes_including_colsmol": 2115238129.0688405
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.8621908127208481,
+        "recall_at_100": 0.777786992567902,
+        "recall_at_20": 0.6266524262948777,
+        "residual_repair_recovery_vs_full_stack": 0.6363636363636365,
+        "residual_repaired_fraction": 0.2916666666666667,
+        "selected_page_fraction": 0.010106788710907704,
+        "selected_pages": 53
+      },
+      "0.02": {
+        "ndcg_at_10": 0.5311900708295355,
+        "ndcg_gain_recovery": 1.3975003104881811,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.02002288329519451,
+          "fraction_of_full_omni_index_bytes": 0.02002288329519451,
+          "incremental_omni_build_seconds": 26.82405606407323,
+          "incremental_omni_index_bytes": 1196793843.5326087,
+          "total_visual_build_seconds_including_colsmol": 2550.565610950176,
+          "total_visual_index_bytes_including_colsmol": 2707936032.532609
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.8692579505300353,
+        "recall_at_100": 0.7829361601858911,
+        "recall_at_20": 0.6352946490383902,
+        "residual_repair_recovery_vs_full_stack": 0.8181818181818182,
+        "residual_repaired_fraction": 0.375,
+        "selected_page_fraction": 0.02002288329519451,
+        "selected_pages": 105
+      },
+      "0.05": {
+        "ndcg_at_10": 0.5428707869616975,
+        "ndcg_gain_recovery": 1.6524863898311954,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.05015255530129672,
+          "fraction_of_full_omni_index_bytes": 0.05015255530129672,
+          "incremental_omni_build_seconds": 67.18787376048817,
+          "incremental_omni_index_bytes": 2997683627.134058,
+          "total_visual_build_seconds_including_colsmol": 2590.929428646591,
+          "total_visual_index_bytes_including_colsmol": 4508825816.134058
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.8975265017667845,
+        "recall_at_100": 0.8146079054539691,
+        "recall_at_20": 0.6667298263147865,
+        "residual_repair_recovery_vs_full_stack": 1.5454545454545456,
+        "residual_repaired_fraction": 0.7083333333333334,
+        "selected_page_fraction": 0.05015255530129672,
+        "selected_pages": 263
+      },
+      "0.1": {
+        "ndcg_at_10": 0.5419373505166889,
+        "ndcg_gain_recovery": 1.6321097881968758,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.08543096872616324,
+          "fraction_of_full_omni_index_bytes": 0.08543096872616324,
+          "incremental_omni_build_seconds": 114.4493058733791,
+          "incremental_omni_index_bytes": 5106320399.072464,
+          "total_visual_build_seconds_including_colsmol": 2638.190860759482,
+          "total_visual_index_bytes_including_colsmol": 6617462588.072464
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.9045936395759717,
+        "recall_at_100": 0.8273455008301187,
+        "recall_at_20": 0.6916822672172969,
+        "residual_repair_recovery_vs_full_stack": 1.4545454545454546,
+        "residual_repaired_fraction": 0.6666666666666666,
+        "selected_page_fraction": 0.08543096872616324,
+        "selected_pages": 448
+      },
+      "0.2": {
+        "ndcg_at_10": 0.5419373505166889,
+        "ndcg_gain_recovery": 1.6321097881968758,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.08543096872616324,
+          "fraction_of_full_omni_index_bytes": 0.08543096872616324,
+          "incremental_omni_build_seconds": 114.4493058733791,
+          "incremental_omni_index_bytes": 5106320399.072464,
+          "total_visual_build_seconds_including_colsmol": 2638.190860759482,
+          "total_visual_index_bytes_including_colsmol": 6617462588.072464
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.9045936395759717,
+        "recall_at_100": 0.8273455008301187,
+        "recall_at_20": 0.6916822672172969,
+        "residual_repair_recovery_vs_full_stack": 1.4545454545454546,
+        "residual_repaired_fraction": 0.6666666666666666,
+        "selected_page_fraction": 0.08543096872616324,
+        "selected_pages": 448
+      },
+      "0.4": {
+        "ndcg_at_10": 0.5419373505166889,
+        "ndcg_gain_recovery": 1.6321097881968758,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.08543096872616324,
+          "fraction_of_full_omni_index_bytes": 0.08543096872616324,
+          "incremental_omni_build_seconds": 114.4493058733791,
+          "incremental_omni_index_bytes": 5106320399.072464,
+          "total_visual_build_seconds_including_colsmol": 2638.190860759482,
+          "total_visual_index_bytes_including_colsmol": 6617462588.072464
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.9045936395759717,
+        "recall_at_100": 0.8273455008301187,
+        "recall_at_20": 0.6916822672172969,
+        "residual_repair_recovery_vs_full_stack": 1.4545454545454546,
+        "residual_repaired_fraction": 0.6666666666666666,
+        "selected_page_fraction": 0.08543096872616324,
+        "selected_pages": 448
+      },
+      "1.0": {
+        "ndcg_at_10": 0.5419373505166889,
+        "ndcg_gain_recovery": 1.6321097881968758,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.08543096872616324,
+          "fraction_of_full_omni_index_bytes": 0.08543096872616324,
+          "incremental_omni_build_seconds": 114.4493058733791,
+          "incremental_omni_index_bytes": 5106320399.072464,
+          "total_visual_build_seconds_including_colsmol": 2638.190860759482,
+          "total_visual_index_bytes_including_colsmol": 6617462588.072464
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.9045936395759717,
+        "recall_at_100": 0.8273455008301187,
+        "recall_at_20": 0.6916822672172969,
+        "residual_repair_recovery_vs_full_stack": 1.4545454545454546,
+        "residual_repaired_fraction": 0.6666666666666666,
+        "selected_page_fraction": 0.08543096872616324,
+        "selected_pages": 448
+      }
+    },
+    "omni_frequency_oracle": {
+      "0.0": {
+        "ndcg_at_10": 0.46717165671265537,
+        "ndcg_gain_recovery": 0.0,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.0,
+          "fraction_of_full_omni_index_bytes": 0.0,
+          "incremental_omni_build_seconds": 0.0,
+          "incremental_omni_index_bytes": 0.0,
+          "total_visual_build_seconds_including_colsmol": 2523.7415548861027,
+          "total_visual_index_bytes_including_colsmol": 1511142189.0
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.833922261484099,
+        "recall_at_100": 0.7714661003604998,
+        "recall_at_20": 0.596648252341887,
+        "residual_repair_recovery_vs_full_stack": 0.0,
+        "residual_repaired_fraction": 0.0,
+        "selected_page_fraction": 0.0,
+        "selected_pages": 0
+      },
+      "0.001": {
+        "ndcg_at_10": 0.45688239384347634,
+        "ndcg_gain_recovery": -0.22461112560707336,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.0011441647597254005,
+          "fraction_of_full_omni_index_bytes": 0.0011441647597254005,
+          "incremental_omni_build_seconds": 1.5328032036613273,
+          "incremental_omni_index_bytes": 68388219.63043478,
+          "total_visual_build_seconds_including_colsmol": 2525.274358089764,
+          "total_visual_index_bytes_including_colsmol": 1579530408.6304348
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.8303886925795053,
+        "recall_at_100": 0.7714661003604998,
+        "recall_at_20": 0.5947496099536059,
+        "residual_repair_recovery_vs_full_stack": 0.0,
+        "residual_repaired_fraction": 0.0,
+        "selected_page_fraction": 0.0011441647597254005,
+        "selected_pages": 6
+      },
+      "0.002": {
+        "ndcg_at_10": 0.4509322521327568,
+        "ndcg_gain_recovery": -0.35450070508021914,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.002097635392829901,
+          "fraction_of_full_omni_index_bytes": 0.002097635392829901,
+          "incremental_omni_build_seconds": 2.810139206712434,
+          "incremental_omni_index_bytes": 125378402.65579711,
+          "total_visual_build_seconds_including_colsmol": 2526.551694092815,
+          "total_visual_index_bytes_including_colsmol": 1636520591.655797
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.8303886925795053,
+        "recall_at_100": 0.7718491095774312,
+        "recall_at_20": 0.5947628230350367,
+        "residual_repair_recovery_vs_full_stack": 0.0,
+        "residual_repaired_fraction": 0.0,
+        "selected_page_fraction": 0.002097635392829901,
+        "selected_pages": 11
+      },
+      "0.005": {
+        "ndcg_at_10": 0.4547110383575746,
+        "ndcg_gain_recovery": -0.27201108087912673,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.005148741418764302,
+          "fraction_of_full_omni_index_bytes": 0.005148741418764302,
+          "incremental_omni_build_seconds": 6.897614416475973,
+          "incremental_omni_index_bytes": 307746988.3369565,
+          "total_visual_build_seconds_including_colsmol": 2530.6391693025785,
+          "total_visual_index_bytes_including_colsmol": 1818889177.3369565
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.8445229681978799,
+        "recall_at_100": 0.7741632507816161,
+        "recall_at_20": 0.6013182012207772,
+        "residual_repair_recovery_vs_full_stack": 0.36363636363636365,
+        "residual_repaired_fraction": 0.16666666666666666,
+        "selected_page_fraction": 0.005148741418764302,
+        "selected_pages": 27
+      },
+      "0.01": {
+        "ndcg_at_10": 0.43987870381797967,
+        "ndcg_gain_recovery": -0.59579592326064,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.010106788710907704,
+          "fraction_of_full_omni_index_bytes": 0.010106788710907704,
+          "incremental_omni_build_seconds": 13.539761632341726,
+          "incremental_omni_index_bytes": 604095940.0688406,
+          "total_visual_build_seconds_including_colsmol": 2537.2813165184443,
+          "total_visual_index_bytes_including_colsmol": 2115238129.0688405
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.8409893992932862,
+        "recall_at_100": 0.7752780393626278,
+        "recall_at_20": 0.603309991645082,
+        "residual_repair_recovery_vs_full_stack": 0.36363636363636365,
+        "residual_repaired_fraction": 0.16666666666666666,
+        "selected_page_fraction": 0.010106788710907704,
+        "selected_pages": 53
+      },
+      "0.02": {
+        "ndcg_at_10": 0.4545361989242919,
+        "ndcg_gain_recovery": -0.275827766526041,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.02002288329519451,
+          "fraction_of_full_omni_index_bytes": 0.02002288329519451,
+          "incremental_omni_build_seconds": 26.82405606407323,
+          "incremental_omni_index_bytes": 1196793843.5326087,
+          "total_visual_build_seconds_including_colsmol": 2550.565610950176,
+          "total_visual_index_bytes_including_colsmol": 2707936032.532609
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.8586572438162544,
+        "recall_at_100": 0.7780122588044472,
+        "recall_at_20": 0.6123278788249938,
+        "residual_repair_recovery_vs_full_stack": 0.7272727272727273,
+        "residual_repaired_fraction": 0.3333333333333333,
+        "selected_page_fraction": 0.02002288329519451,
+        "selected_pages": 105
+      },
+      "0.05": {
+        "ndcg_at_10": 0.46169122706478305,
+        "ndcg_gain_recovery": -0.11963592413468939,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.05015255530129672,
+          "fraction_of_full_omni_index_bytes": 0.05015255530129672,
+          "incremental_omni_build_seconds": 67.18787376048817,
+          "incremental_omni_index_bytes": 2997683627.134058,
+          "total_visual_build_seconds_including_colsmol": 2590.929428646591,
+          "total_visual_index_bytes_including_colsmol": 4508825816.134058
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.8480565371024735,
+        "recall_at_100": 0.7858639992995817,
+        "recall_at_20": 0.6095510475814873,
+        "residual_repair_recovery_vs_full_stack": 0.8181818181818182,
+        "residual_repaired_fraction": 0.375,
+        "selected_page_fraction": 0.05015255530129672,
+        "selected_pages": 263
+      },
+      "0.1": {
+        "ndcg_at_10": 0.452974247880548,
+        "ndcg_gain_recovery": -0.309924629103958,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.10011441647597254,
+          "fraction_of_full_omni_index_bytes": 0.10011441647597254,
+          "incremental_omni_build_seconds": 134.12028032036613,
+          "incremental_omni_index_bytes": 5983969217.663043,
+          "total_visual_build_seconds_including_colsmol": 2657.8618352064686,
+          "total_visual_index_bytes_including_colsmol": 7495111406.663043
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.8445229681978799,
+        "recall_at_100": 0.789276976160522,
+        "recall_at_20": 0.6149181576322705,
+        "residual_repair_recovery_vs_full_stack": 0.9090909090909092,
+        "residual_repaired_fraction": 0.4166666666666667,
+        "selected_page_fraction": 0.10011441647597254,
+        "selected_pages": 525
+      },
+      "0.2": {
+        "ndcg_at_10": 0.4696345339608867,
+        "ndcg_gain_recovery": 0.05376377666609605,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.20003813882532417,
+          "fraction_of_full_omni_index_bytes": 0.20003813882532417,
+          "incremental_omni_build_seconds": 267.98509344012206,
+          "incremental_omni_index_bytes": 11956540398.721014,
+          "total_visual_build_seconds_including_colsmol": 2791.7266483262247,
+          "total_visual_index_bytes_including_colsmol": 13467682587.721014
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.8586572438162544,
+        "recall_at_100": 0.7959054443458391,
+        "recall_at_20": 0.6265337078866287,
+        "residual_repair_recovery_vs_full_stack": 1.090909090909091,
+        "residual_repaired_fraction": 0.5,
+        "selected_page_fraction": 0.20003813882532417,
+        "selected_pages": 1049
+      },
+      "0.4": {
+        "ndcg_at_10": 0.505323784704515,
+        "ndcg_gain_recovery": 0.8328480398946663,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.40007627765064835,
+          "fraction_of_full_omni_index_bytes": 0.40007627765064835,
+          "incremental_omni_build_seconds": 535.9701868802441,
+          "incremental_omni_index_bytes": 23913080797.442028,
+          "total_visual_build_seconds_including_colsmol": 3059.7117417663467,
+          "total_visual_index_bytes_including_colsmol": 25424222986.442028
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.8621908127208481,
+        "recall_at_100": 0.8019309659548919,
+        "recall_at_20": 0.6380946729067716,
+        "residual_repair_recovery_vs_full_stack": 0.9090909090909092,
+        "residual_repaired_fraction": 0.4166666666666667,
+        "selected_page_fraction": 0.40007627765064835,
+        "selected_pages": 2098
+      },
+      "1.0": {
+        "ndcg_at_10": 0.5129808874057898,
+        "ndcg_gain_recovery": 1.0,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 1.0,
+          "fraction_of_full_omni_index_bytes": 1.0,
+          "incremental_omni_build_seconds": 1339.67,
+          "incremental_omni_index_bytes": 59771303957.0,
+          "total_visual_build_seconds_including_colsmol": 3863.4115548861027,
+          "total_visual_index_bytes_including_colsmol": 61282446146.0
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.8692579505300353,
+        "recall_at_100": 0.8113895347867172,
+        "recall_at_20": 0.6388175629359663,
+        "residual_repair_recovery_vs_full_stack": 1.0,
+        "residual_repaired_fraction": 0.4583333333333333,
+        "selected_page_fraction": 1.0,
+        "selected_pages": 5244
+      }
+    },
+    "physical_risk": {
+      "0.0": {
+        "ndcg_at_10": 0.46717165671265537,
+        "ndcg_gain_recovery": 0.0,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.0,
+          "fraction_of_full_omni_index_bytes": 0.0,
+          "incremental_omni_build_seconds": 0.0,
+          "incremental_omni_index_bytes": 0.0,
+          "total_visual_build_seconds_including_colsmol": 2523.7415548861027,
+          "total_visual_index_bytes_including_colsmol": 1511142189.0
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.833922261484099,
+        "recall_at_100": 0.7714661003604998,
+        "recall_at_20": 0.596648252341887,
+        "residual_repair_recovery_vs_full_stack": 0.0,
+        "residual_repaired_fraction": 0.0,
+        "selected_page_fraction": 0.0,
+        "selected_pages": 0
+      },
+      "0.001": {
+        "ndcg_at_10": 0.46717165671265537,
+        "ndcg_gain_recovery": 0.0,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.0011441647597254005,
+          "fraction_of_full_omni_index_bytes": 0.0011441647597254005,
+          "incremental_omni_build_seconds": 1.5328032036613273,
+          "incremental_omni_index_bytes": 68388219.63043478,
+          "total_visual_build_seconds_including_colsmol": 2525.274358089764,
+          "total_visual_index_bytes_including_colsmol": 1579530408.6304348
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.833922261484099,
+        "recall_at_100": 0.7714661003604998,
+        "recall_at_20": 0.596648252341887,
+        "residual_repair_recovery_vs_full_stack": 0.0,
+        "residual_repaired_fraction": 0.0,
+        "selected_page_fraction": 0.0011441647597254005,
+        "selected_pages": 6
+      },
+      "0.002": {
+        "ndcg_at_10": 0.4671293769623159,
+        "ndcg_gain_recovery": -0.0009229526385787509,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.002097635392829901,
+          "fraction_of_full_omni_index_bytes": 0.002097635392829901,
+          "incremental_omni_build_seconds": 2.810139206712434,
+          "incremental_omni_index_bytes": 125378402.65579711,
+          "total_visual_build_seconds_including_colsmol": 2526.551694092815,
+          "total_visual_index_bytes_including_colsmol": 1636520591.655797
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.833922261484099,
+        "recall_at_100": 0.7714661003604998,
+        "recall_at_20": 0.596648252341887,
+        "residual_repair_recovery_vs_full_stack": 0.0,
+        "residual_repaired_fraction": 0.0,
+        "selected_page_fraction": 0.002097635392829901,
+        "selected_pages": 11
+      },
+      "0.005": {
+        "ndcg_at_10": 0.46583760576318134,
+        "ndcg_gain_recovery": -0.029121880662230103,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.005148741418764302,
+          "fraction_of_full_omni_index_bytes": 0.005148741418764302,
+          "incremental_omni_build_seconds": 6.897614416475973,
+          "incremental_omni_index_bytes": 307746988.3369565,
+          "total_visual_build_seconds_including_colsmol": 2530.6391693025785,
+          "total_visual_index_bytes_including_colsmol": 1818889177.3369565
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.833922261484099,
+        "recall_at_100": 0.7714661003604998,
+        "recall_at_20": 0.596648252341887,
+        "residual_repair_recovery_vs_full_stack": 0.0,
+        "residual_repaired_fraction": 0.0,
+        "selected_page_fraction": 0.005148741418764302,
+        "selected_pages": 27
+      },
+      "0.01": {
+        "ndcg_at_10": 0.46387949484595475,
+        "ndcg_gain_recovery": -0.07186677918155956,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.010106788710907704,
+          "fraction_of_full_omni_index_bytes": 0.010106788710907704,
+          "incremental_omni_build_seconds": 13.539761632341726,
+          "incremental_omni_index_bytes": 604095940.0688406,
+          "total_visual_build_seconds_including_colsmol": 2537.2813165184443,
+          "total_visual_index_bytes_including_colsmol": 2115238129.0688405
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.833922261484099,
+        "recall_at_100": 0.7714661003604998,
+        "recall_at_20": 0.5964946189112525,
+        "residual_repair_recovery_vs_full_stack": 0.0,
+        "residual_repaired_fraction": 0.0,
+        "selected_page_fraction": 0.010106788710907704,
+        "selected_pages": 53
+      },
+      "0.02": {
+        "ndcg_at_10": 0.4577378340332566,
+        "ndcg_gain_recovery": -0.2059371558233276,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.02002288329519451,
+          "fraction_of_full_omni_index_bytes": 0.02002288329519451,
+          "incremental_omni_build_seconds": 26.82405606407323,
+          "incremental_omni_index_bytes": 1196793843.5326087,
+          "total_visual_build_seconds_including_colsmol": 2550.565610950176,
+          "total_visual_index_bytes_including_colsmol": 2707936032.532609
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.8374558303886925,
+        "recall_at_100": 0.7716020068568303,
+        "recall_at_20": 0.5980915202431363,
+        "residual_repair_recovery_vs_full_stack": 0.0,
+        "residual_repaired_fraction": 0.0,
+        "selected_page_fraction": 0.02002288329519451,
+        "selected_pages": 105
+      },
+      "0.05": {
+        "ndcg_at_10": 0.4420741046965432,
+        "ndcg_gain_recovery": -0.5478710652059392,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.05015255530129672,
+          "fraction_of_full_omni_index_bytes": 0.05015255530129672,
+          "incremental_omni_build_seconds": 67.18787376048817,
+          "incremental_omni_index_bytes": 2997683627.134058,
+          "total_visual_build_seconds_including_colsmol": 2590.929428646591,
+          "total_visual_index_bytes_including_colsmol": 4508825816.134058
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.8374558303886925,
+        "recall_at_100": 0.7727677139412653,
+        "recall_at_20": 0.6004740023075971,
+        "residual_repair_recovery_vs_full_stack": 0.0,
+        "residual_repaired_fraction": 0.0,
+        "selected_page_fraction": 0.05015255530129672,
+        "selected_pages": 263
+      },
+      "0.1": {
+        "ndcg_at_10": 0.404026800667063,
+        "ndcg_gain_recovery": -1.3784308334838735,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.10011441647597254,
+          "fraction_of_full_omni_index_bytes": 0.10011441647597254,
+          "incremental_omni_build_seconds": 134.12028032036613,
+          "incremental_omni_index_bytes": 5983969217.663043,
+          "total_visual_build_seconds_including_colsmol": 2657.8618352064686,
+          "total_visual_index_bytes_including_colsmol": 7495111406.663043
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.8374558303886925,
+        "recall_at_100": 0.7759198621464171,
+        "recall_at_20": 0.6021962234800364,
+        "residual_repair_recovery_vs_full_stack": 0.0,
+        "residual_repaired_fraction": 0.0,
+        "selected_page_fraction": 0.10011441647597254,
+        "selected_pages": 525
+      },
+      "0.2": {
+        "ndcg_at_10": 0.37157569076301733,
+        "ndcg_gain_recovery": -2.0868275782672163,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.20003813882532417,
+          "fraction_of_full_omni_index_bytes": 0.20003813882532417,
+          "incremental_omni_build_seconds": 267.98509344012206,
+          "incremental_omni_index_bytes": 11956540398.721014,
+          "total_visual_build_seconds_including_colsmol": 2791.7266483262247,
+          "total_visual_index_bytes_including_colsmol": 13467682587.721014
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.833922261484099,
+        "recall_at_100": 0.7787359831650673,
+        "recall_at_20": 0.594615414495402,
+        "residual_repair_recovery_vs_full_stack": 0.09090909090909091,
+        "residual_repaired_fraction": 0.041666666666666664,
+        "selected_page_fraction": 0.20003813882532417,
+        "selected_pages": 1049
+      },
+      "0.4": {
+        "ndcg_at_10": 0.34046270714439963,
+        "ndcg_gain_recovery": -2.7660134791839206,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.40007627765064835,
+          "fraction_of_full_omni_index_bytes": 0.40007627765064835,
+          "incremental_omni_build_seconds": 535.9701868802441,
+          "incremental_omni_index_bytes": 23913080797.442028,
+          "total_visual_build_seconds_including_colsmol": 3059.7117417663467,
+          "total_visual_index_bytes_including_colsmol": 25424222986.442028
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.8197879858657244,
+        "recall_at_100": 0.785932006038704,
+        "recall_at_20": 0.5891760293175908,
+        "residual_repair_recovery_vs_full_stack": 0.18181818181818182,
+        "residual_repaired_fraction": 0.08333333333333333,
+        "selected_page_fraction": 0.40007627765064835,
+        "selected_pages": 2098
+      },
+      "1.0": {
+        "ndcg_at_10": 0.5129808874057898,
+        "ndcg_gain_recovery": 1.0,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 1.0,
+          "fraction_of_full_omni_index_bytes": 1.0,
+          "incremental_omni_build_seconds": 1339.67,
+          "incremental_omni_index_bytes": 59771303957.0,
+          "total_visual_build_seconds_including_colsmol": 3863.4115548861027,
+          "total_visual_index_bytes_including_colsmol": 61282446146.0
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.8692579505300353,
+        "recall_at_100": 0.8113895347867172,
+        "recall_at_20": 0.6388175629359663,
+        "residual_repair_recovery_vs_full_stack": 1.0,
+        "residual_repaired_fraction": 0.4583333333333333,
+        "selected_page_fraction": 1.0,
+        "selected_pages": 5244
+      }
+    },
+    "random": {
+      "0.0": {
+        "ndcg_at_10": {
+          "maximum": 0.46717165671265537,
+          "mean": 0.46717165671265537,
+          "minimum": 0.46717165671265537,
+          "standard_deviation": 0.0
+        },
+        "ndcg_gain_recovery": 0.0,
+        "projected_cost_at_mean_fraction": {
+          "fraction_of_full_omni_build_seconds": 0.0,
+          "fraction_of_full_omni_index_bytes": 0.0,
+          "incremental_omni_build_seconds": 0.0,
+          "incremental_omni_index_bytes": 0.0,
+          "total_visual_build_seconds_including_colsmol": 2523.7415548861027,
+          "total_visual_index_bytes_including_colsmol": 1511142189.0
+        },
+        "query_hit_at_20": {
+          "maximum": 0.833922261484099,
+          "mean": 0.833922261484099,
+          "minimum": 0.833922261484099,
+          "standard_deviation": 0.0
+        },
+        "recall_at_100": {
+          "maximum": 0.7714661003604998,
+          "mean": 0.7714661003604999,
+          "minimum": 0.7714661003604998,
+          "standard_deviation": 1.1102230246251565e-16
+        },
+        "recall_at_20": {
+          "maximum": 0.596648252341887,
+          "mean": 0.5966482523418868,
+          "minimum": 0.596648252341887,
+          "standard_deviation": 2.220446049250313e-16
+        },
+        "residual_repair_recovery_vs_full_stack": 0.0,
+        "residual_repaired_fraction": {
+          "maximum": 0.0,
+          "mean": 0.0,
+          "minimum": 0.0,
+          "standard_deviation": 0.0
+        },
+        "runs": 20,
+        "selected_page_fraction": {
+          "maximum": 0.0,
+          "mean": 0.0,
+          "minimum": 0.0,
+          "standard_deviation": 0.0
+        },
+        "selected_pages": {
+          "maximum": 0.0,
+          "mean": 0.0,
+          "minimum": 0.0,
+          "standard_deviation": 0.0
+        }
+      },
+      "0.001": {
+        "ndcg_at_10": {
+          "maximum": 0.4675780454281701,
+          "mean": 0.4654243049632785,
+          "minimum": 0.46093452055714207,
+          "standard_deviation": 0.0018538928835657071
+        },
+        "ndcg_gain_recovery": -0.03814409722533773,
+        "projected_cost_at_mean_fraction": {
+          "fraction_of_full_omni_build_seconds": 0.0011441647597254005,
+          "fraction_of_full_omni_index_bytes": 0.0011441647597254005,
+          "incremental_omni_build_seconds": 1.5328032036613273,
+          "incremental_omni_index_bytes": 68388219.63043478,
+          "total_visual_build_seconds_including_colsmol": 2525.274358089764,
+          "total_visual_index_bytes_including_colsmol": 1579530408.6304348
+        },
+        "query_hit_at_20": {
+          "maximum": 0.833922261484099,
+          "mean": 0.833922261484099,
+          "minimum": 0.833922261484099,
+          "standard_deviation": 0.0
+        },
+        "recall_at_100": {
+          "maximum": 0.7717184981393993,
+          "mean": 0.7714913401383898,
+          "minimum": 0.7714661003604998,
+          "standard_deviation": 7.571933366985474e-05
+        },
+        "recall_at_20": {
+          "maximum": 0.5980616799037245,
+          "mean": 0.5967565039254035,
+          "minimum": 0.5960593241911214,
+          "standard_deviation": 0.0004304626495002046
+        },
+        "residual_repair_recovery_vs_full_stack": 0.0,
+        "residual_repaired_fraction": {
+          "maximum": 0.0,
+          "mean": 0.0,
+          "minimum": 0.0,
+          "standard_deviation": 0.0
+        },
+        "runs": 20,
+        "selected_page_fraction": {
+          "maximum": 0.0011441647597254005,
+          "mean": 0.0011441647597254005,
+          "minimum": 0.0011441647597254005,
+          "standard_deviation": 0.0
+        },
+        "selected_pages": {
+          "maximum": 6.0,
+          "mean": 6.0,
+          "minimum": 6.0,
+          "standard_deviation": 0.0
+        }
+      },
+      "0.002": {
+        "ndcg_at_10": {
+          "maximum": 0.46724692854609917,
+          "mean": 0.46347033035547236,
+          "minimum": 0.457540122610736,
+          "standard_deviation": 0.002566342676489493
+        },
+        "ndcg_gain_recovery": -0.0807987015101246,
+        "projected_cost_at_mean_fraction": {
+          "fraction_of_full_omni_build_seconds": 0.002097635392829901,
+          "fraction_of_full_omni_index_bytes": 0.002097635392829901,
+          "incremental_omni_build_seconds": 2.810139206712434,
+          "incremental_omni_index_bytes": 125378402.65579711,
+          "total_visual_build_seconds_including_colsmol": 2526.551694092815,
+          "total_visual_index_bytes_including_colsmol": 1636520591.655797
+        },
+        "query_hit_at_20": {
+          "maximum": 0.8374558303886925,
+          "mean": 0.833922261484099,
+          "minimum": 0.8303886925795053,
+          "standard_deviation": 0.0015802600547701559
+        },
+        "recall_at_100": {
+          "maximum": 0.7719708959182988,
+          "mean": 0.771563536033802,
+          "minimum": 0.7713054835921092,
+          "standard_deviation": 0.00016301175196119276
+        },
+        "recall_at_20": {
+          "maximum": 0.598207179799796,
+          "mean": 0.5966304230688071,
+          "minimum": 0.5945199774645679,
+          "standard_deviation": 0.0007547312338680142
+        },
+        "residual_repair_recovery_vs_full_stack": 0.00909090909090909,
+        "residual_repaired_fraction": {
+          "maximum": 0.041666666666666664,
+          "mean": 0.004166666666666667,
+          "minimum": 0.0,
+          "standard_deviation": 0.0125
+        },
+        "runs": 20,
+        "selected_page_fraction": {
+          "maximum": 0.002097635392829901,
+          "mean": 0.002097635392829901,
+          "minimum": 0.002097635392829901,
+          "standard_deviation": 0.0
+        },
+        "selected_pages": {
+          "maximum": 11.0,
+          "mean": 11.0,
+          "minimum": 11.0,
+          "standard_deviation": 0.0
+        }
+      },
+      "0.005": {
+        "ndcg_at_10": {
+          "maximum": 0.4673234536240699,
+          "mean": 0.46005494680649833,
+          "minimum": 0.45301207256414505,
+          "standard_deviation": 0.0035312886834229524
+        },
+        "ndcg_gain_recovery": -0.15535536830623164,
+        "projected_cost_at_mean_fraction": {
+          "fraction_of_full_omni_build_seconds": 0.005148741418764301,
+          "fraction_of_full_omni_index_bytes": 0.005148741418764301,
+          "incremental_omni_build_seconds": 6.897614416475972,
+          "incremental_omni_index_bytes": 307746988.33695644,
+          "total_visual_build_seconds_including_colsmol": 2530.6391693025785,
+          "total_visual_index_bytes_including_colsmol": 1818889177.3369565
+        },
+        "query_hit_at_20": {
+          "maximum": 0.8409893992932862,
+          "mean": 0.834452296819788,
+          "minimum": 0.8303886925795053,
+          "standard_deviation": 0.0020221772336147495
+        },
+        "recall_at_100": {
+          "maximum": 0.7738218129635622,
+          "mean": 0.7718594371893612,
+          "minimum": 0.7714661003604998,
+          "standard_deviation": 0.0005348230058783907
+        },
+        "recall_at_20": {
+          "maximum": 0.5978261086434182,
+          "mean": 0.5968656471007876,
+          "minimum": 0.5961412620207931,
+          "standard_deviation": 0.000460580674009305
+        },
+        "residual_repair_recovery_vs_full_stack": 0.01818181818181818,
+        "residual_repaired_fraction": {
+          "maximum": 0.08333333333333333,
+          "mean": 0.008333333333333333,
+          "minimum": 0.0,
+          "standard_deviation": 0.021245914639969936
+        },
+        "runs": 20,
+        "selected_page_fraction": {
+          "maximum": 0.005148741418764302,
+          "mean": 0.005148741418764301,
+          "minimum": 0.005148741418764302,
+          "standard_deviation": 8.673617379884035e-19
+        },
+        "selected_pages": {
+          "maximum": 27.0,
+          "mean": 27.0,
+          "minimum": 27.0,
+          "standard_deviation": 0.0
+        }
+      },
+      "0.01": {
+        "ndcg_at_10": {
+          "maximum": 0.46418712025923203,
+          "mean": 0.453044825674234,
+          "minimum": 0.4384136290639071,
+          "standard_deviation": 0.006436765608455535
+        },
+        "ndcg_gain_recovery": -0.3083839397577703,
+        "projected_cost_at_mean_fraction": {
+          "fraction_of_full_omni_build_seconds": 0.010106788710907703,
+          "fraction_of_full_omni_index_bytes": 0.010106788710907703,
+          "incremental_omni_build_seconds": 13.539761632341722,
+          "incremental_omni_index_bytes": 604095940.0688405,
+          "total_visual_build_seconds_including_colsmol": 2537.2813165184443,
+          "total_visual_index_bytes_including_colsmol": 2115238129.0688405
+        },
+        "query_hit_at_20": {
+          "maximum": 0.8445229681978799,
+          "mean": 0.8348056537102474,
+          "minimum": 0.8268551236749117,
+          "standard_deviation": 0.0038506174412903356
+        },
+        "recall_at_100": {
+          "maximum": 0.7753819559594499,
+          "mean": 0.7723334690183213,
+          "minimum": 0.7714661003604998,
+          "standard_deviation": 0.0009879474408855562
+        },
+        "recall_at_20": {
+          "maximum": 0.5995531997698027,
+          "mean": 0.5969575067365094,
+          "minimum": 0.5949361540750184,
+          "standard_deviation": 0.0014228170922127284
+        },
+        "residual_repair_recovery_vs_full_stack": 0.04090909090909091,
+        "residual_repaired_fraction": {
+          "maximum": 0.125,
+          "mean": 0.01875,
+          "minimum": 0.0,
+          "standard_deviation": 0.03602420097039704
+        },
+        "runs": 20,
+        "selected_page_fraction": {
+          "maximum": 0.010106788710907704,
+          "mean": 0.010106788710907703,
+          "minimum": 0.010106788710907704,
+          "standard_deviation": 1.734723475976807e-18
+        },
+        "selected_pages": {
+          "maximum": 53.0,
+          "mean": 53.0,
+          "minimum": 53.0,
+          "standard_deviation": 0.0
+        }
+      },
+      "0.02": {
+        "ndcg_at_10": {
+          "maximum": 0.4521217383203943,
+          "mean": 0.4373124104589161,
+          "minimum": 0.4225335492212137,
+          "standard_deviation": 0.007993429442518223
+        },
+        "ndcg_gain_recovery": -0.6518172386207378,
+        "projected_cost_at_mean_fraction": {
+          "fraction_of_full_omni_build_seconds": 0.020022883295194513,
+          "fraction_of_full_omni_index_bytes": 0.020022883295194513,
+          "incremental_omni_build_seconds": 26.824056064073236,
+          "incremental_omni_index_bytes": 1196793843.532609,
+          "total_visual_build_seconds_including_colsmol": 2550.565610950176,
+          "total_visual_index_bytes_including_colsmol": 2707936032.532609
+        },
+        "query_hit_at_20": {
+          "maximum": 0.8445229681978799,
+          "mean": 0.8346289752650178,
+          "minimum": 0.8303886925795053,
+          "standard_deviation": 0.0048191454759667195
+        },
+        "recall_at_100": {
+          "maximum": 0.7764487894421287,
+          "mean": 0.7725258760751699,
+          "minimum": 0.7713301938641692,
+          "standard_deviation": 0.0011719882853304766
+        },
+        "recall_at_20": {
+          "maximum": 0.6032498564699929,
+          "mean": 0.597234582739125,
+          "minimum": 0.5942294402940997,
+          "standard_deviation": 0.002523009777762296
+        },
+        "residual_repair_recovery_vs_full_stack": 0.05454545454545454,
+        "residual_repaired_fraction": {
+          "maximum": 0.125,
+          "mean": 0.024999999999999998,
+          "minimum": 0.0,
+          "standard_deviation": 0.040397332145136085
+        },
+        "runs": 20,
+        "selected_page_fraction": {
+          "maximum": 0.02002288329519451,
+          "mean": 0.020022883295194513,
+          "minimum": 0.02002288329519451,
+          "standard_deviation": 3.469446951953614e-18
+        },
+        "selected_pages": {
+          "maximum": 105.0,
+          "mean": 105.0,
+          "minimum": 105.0,
+          "standard_deviation": 0.0
+        }
+      },
+      "0.05": {
+        "ndcg_at_10": {
+          "maximum": 0.42610006076665036,
+          "mean": 0.4097969272472318,
+          "minimum": 0.39448224537330845,
+          "standard_deviation": 0.008876992131176795
+        },
+        "ndcg_gain_recovery": -1.2524709233770743,
+        "projected_cost_at_mean_fraction": {
+          "fraction_of_full_omni_build_seconds": 0.05015255530129672,
+          "fraction_of_full_omni_index_bytes": 0.05015255530129672,
+          "incremental_omni_build_seconds": 67.18787376048817,
+          "incremental_omni_index_bytes": 2997683627.134058,
+          "total_visual_build_seconds_including_colsmol": 2590.929428646591,
+          "total_visual_index_bytes_including_colsmol": 4508825816.134058
+        },
+        "query_hit_at_20": {
+          "maximum": 0.8409893992932862,
+          "mean": 0.8363957597173146,
+          "minimum": 0.8303886925795053,
+          "standard_deviation": 0.0035511927989826247
+        },
+        "recall_at_100": {
+          "maximum": 0.7765103505512891,
+          "mean": 0.7736138770262245,
+          "minimum": 0.7718842888373039,
+          "standard_deviation": 0.0012370600004602502
+        },
+        "recall_at_20": {
+          "maximum": 0.6032980056885217,
+          "mean": 0.5979514590732488,
+          "minimum": 0.5944095830225693,
+          "standard_deviation": 0.002941890417357623
+        },
+        "residual_repair_recovery_vs_full_stack": 0.14545454545454545,
+        "residual_repaired_fraction": {
+          "maximum": 0.125,
+          "mean": 0.06666666666666667,
+          "minimum": 0.0,
+          "standard_deviation": 0.04039733214513608
+        },
+        "runs": 20,
+        "selected_page_fraction": {
+          "maximum": 0.05015255530129672,
+          "mean": 0.05015255530129672,
+          "minimum": 0.05015255530129672,
+          "standard_deviation": 0.0
+        },
+        "selected_pages": {
+          "maximum": 263.0,
+          "mean": 263.0,
+          "minimum": 263.0,
+          "standard_deviation": 0.0
+        }
+      },
+      "0.1": {
+        "ndcg_at_10": {
+          "maximum": 0.4119893004877323,
+          "mean": 0.3772407999233214,
+          "minimum": 0.35368151240982976,
+          "standard_deviation": 0.012209419959230394
+        },
+        "ndcg_gain_recovery": -1.9631601628885709,
+        "projected_cost_at_mean_fraction": {
+          "fraction_of_full_omni_build_seconds": 0.10011441647597255,
+          "fraction_of_full_omni_index_bytes": 0.10011441647597255,
+          "incremental_omni_build_seconds": 134.12028032036616,
+          "incremental_omni_index_bytes": 5983969217.663044,
+          "total_visual_build_seconds_including_colsmol": 2657.8618352064686,
+          "total_visual_index_bytes_including_colsmol": 7495111406.663044
+        },
+        "query_hit_at_20": {
+          "maximum": 0.8586572438162544,
+          "mean": 0.8471731448763251,
+          "minimum": 0.8374558303886925,
+          "standard_deviation": 0.005899578748079147
+        },
+        "recall_at_100": {
+          "maximum": 0.7821147071637522,
+          "mean": 0.776356325370736,
+          "minimum": 0.7729781219260718,
+          "standard_deviation": 0.0023572384637378803
+        },
+        "recall_at_20": {
+          "maximum": 0.6121390532065593,
+          "mean": 0.6032138842088933,
+          "minimum": 0.5964084650217854,
+          "standard_deviation": 0.004223996001186396
+        },
+        "residual_repair_recovery_vs_full_stack": 0.36818181818181817,
+        "residual_repaired_fraction": {
+          "maximum": 0.2916666666666667,
+          "mean": 0.16874999999999998,
+          "minimum": 0.041666666666666664,
+          "standard_deviation": 0.07847836750765569
+        },
+        "runs": 20,
+        "selected_page_fraction": {
+          "maximum": 0.10011441647597254,
+          "mean": 0.10011441647597255,
+          "minimum": 0.10011441647597254,
+          "standard_deviation": 1.3877787807814457e-17
+        },
+        "selected_pages": {
+          "maximum": 525.0,
+          "mean": 525.0,
+          "minimum": 525.0,
+          "standard_deviation": 0.0
+        }
+      },
+      "0.2": {
+        "ndcg_at_10": {
+          "maximum": 0.3822933994073302,
+          "mean": 0.35263337982159276,
+          "minimum": 0.3269373392162932,
+          "standard_deviation": 0.013134867236952836
+        },
+        "ndcg_gain_recovery": -2.50033181430896,
+        "projected_cost_at_mean_fraction": {
+          "fraction_of_full_omni_build_seconds": 0.2000381388253242,
+          "fraction_of_full_omni_index_bytes": 0.2000381388253242,
+          "incremental_omni_build_seconds": 267.9850934401221,
+          "incremental_omni_index_bytes": 11956540398.721016,
+          "total_visual_build_seconds_including_colsmol": 2791.7266483262247,
+          "total_visual_index_bytes_including_colsmol": 13467682587.721016
+        },
+        "query_hit_at_20": {
+          "maximum": 0.8621908127208481,
+          "mean": 0.850530035335689,
+          "minimum": 0.833922261484099,
+          "standard_deviation": 0.008218871625168192
+        },
+        "recall_at_100": {
+          "maximum": 0.7861968260146575,
+          "mean": 0.7808489799479454,
+          "minimum": 0.7756501094967018,
+          "standard_deviation": 0.0021105642960799207
+        },
+        "recall_at_20": {
+          "maximum": 0.61175017519904,
+          "mean": 0.6019940093939538,
+          "minimum": 0.5889188011716974,
+          "standard_deviation": 0.00647991712364979
+        },
+        "residual_repair_recovery_vs_full_stack": 0.6000000000000001,
+        "residual_repaired_fraction": {
+          "maximum": 0.4166666666666667,
+          "mean": 0.275,
+          "minimum": 0.08333333333333333,
+          "standard_deviation": 0.08779711460710615
+        },
+        "runs": 20,
+        "selected_page_fraction": {
+          "maximum": 0.20003813882532417,
+          "mean": 0.2000381388253242,
+          "minimum": 0.20003813882532417,
+          "standard_deviation": 2.7755575615628914e-17
+        },
+        "selected_pages": {
+          "maximum": 1049.0,
+          "mean": 1049.0,
+          "minimum": 1049.0,
+          "standard_deviation": 0.0
+        }
+      },
+      "0.4": {
+        "ndcg_at_10": {
+          "maximum": 0.3812861662017464,
+          "mean": 0.3566092019128323,
+          "minimum": 0.33644661993225533,
+          "standard_deviation": 0.01052819833494079
+        },
+        "ndcg_gain_recovery": -2.4135409638388294,
+        "projected_cost_at_mean_fraction": {
+          "fraction_of_full_omni_build_seconds": 0.4000762776506484,
+          "fraction_of_full_omni_index_bytes": 0.4000762776506484,
+          "incremental_omni_build_seconds": 535.9701868802442,
+          "incremental_omni_index_bytes": 23913080797.44203,
+          "total_visual_build_seconds_including_colsmol": 3059.7117417663467,
+          "total_visual_index_bytes_including_colsmol": 25424222986.44203
+        },
+        "query_hit_at_20": {
+          "maximum": 0.8692579505300353,
+          "mean": 0.850530035335689,
+          "minimum": 0.833922261484099,
+          "standard_deviation": 0.009422114223302745
+        },
+        "recall_at_100": {
+          "maximum": 0.7943244215806866,
+          "mean": 0.7871719006307122,
+          "minimum": 0.7819096068662102,
+          "standard_deviation": 0.004227278561424092
+        },
+        "recall_at_20": {
+          "maximum": 0.6148265216733821,
+          "mean": 0.6022315101597057,
+          "minimum": 0.5861959363133731,
+          "standard_deviation": 0.006927637092705007
+        },
+        "residual_repair_recovery_vs_full_stack": 0.8636363636363638,
+        "residual_repaired_fraction": {
+          "maximum": 0.5416666666666666,
+          "mean": 0.39583333333333337,
+          "minimum": 0.20833333333333334,
+          "standard_deviation": 0.09363418772601763
+        },
+        "runs": 20,
+        "selected_page_fraction": {
+          "maximum": 0.40007627765064835,
+          "mean": 0.4000762776506484,
+          "minimum": 0.40007627765064835,
+          "standard_deviation": 5.551115123125783e-17
+        },
+        "selected_pages": {
+          "maximum": 2098.0,
+          "mean": 2098.0,
+          "minimum": 2098.0,
+          "standard_deviation": 0.0
+        }
+      },
+      "1.0": {
+        "ndcg_at_10": {
+          "maximum": 0.5129808874057898,
+          "mean": 0.51298088740579,
+          "minimum": 0.5129808874057898,
+          "standard_deviation": 1.1102230246251565e-16
+        },
+        "ndcg_gain_recovery": 1.0000000000000024,
+        "projected_cost_at_mean_fraction": {
+          "fraction_of_full_omni_build_seconds": 1.0,
+          "fraction_of_full_omni_index_bytes": 1.0,
+          "incremental_omni_build_seconds": 1339.67,
+          "incremental_omni_index_bytes": 59771303957.0,
+          "total_visual_build_seconds_including_colsmol": 3863.4115548861027,
+          "total_visual_index_bytes_including_colsmol": 61282446146.0
+        },
+        "query_hit_at_20": {
+          "maximum": 0.8692579505300353,
+          "mean": 0.8692579505300351,
+          "minimum": 0.8692579505300353,
+          "standard_deviation": 2.220446049250313e-16
+        },
+        "recall_at_100": {
+          "maximum": 0.8113895347867172,
+          "mean": 0.811389534786717,
+          "minimum": 0.8113895347867172,
+          "standard_deviation": 1.1102230246251565e-16
+        },
+        "recall_at_20": {
+          "maximum": 0.6388175629359663,
+          "mean": 0.6388175629359661,
+          "minimum": 0.6388175629359663,
+          "standard_deviation": 1.1102230246251565e-16
+        },
+        "residual_repair_recovery_vs_full_stack": 1.0000000000000002,
+        "residual_repaired_fraction": {
+          "maximum": 0.4583333333333333,
+          "mean": 0.45833333333333337,
+          "minimum": 0.4583333333333333,
+          "standard_deviation": 5.551115123125783e-17
+        },
+        "runs": 20,
+        "selected_page_fraction": {
+          "maximum": 1.0,
+          "mean": 1.0,
+          "minimum": 1.0,
+          "standard_deviation": 0.0
+        },
+        "selected_pages": {
+          "maximum": 5244.0,
+          "mean": 5244.0,
+          "minimum": 5244.0,
+          "standard_deviation": 0.0
+        }
+      }
+    },
+    "residual_label_oracle": {
+      "0.0": {
+        "ndcg_at_10": 0.46717165671265537,
+        "ndcg_gain_recovery": 0.0,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.0,
+          "fraction_of_full_omni_index_bytes": 0.0,
+          "incremental_omni_build_seconds": 0.0,
+          "incremental_omni_index_bytes": 0.0,
+          "total_visual_build_seconds_including_colsmol": 2523.7415548861027,
+          "total_visual_index_bytes_including_colsmol": 1511142189.0
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.833922261484099,
+        "recall_at_100": 0.7714661003604998,
+        "recall_at_20": 0.596648252341887,
+        "residual_repair_recovery_vs_full_stack": 0.0,
+        "residual_repaired_fraction": 0.0,
+        "selected_page_fraction": 0.0,
+        "selected_pages": 0
+      },
+      "0.001": {
+        "ndcg_at_10": 0.4734298286887614,
+        "ndcg_gain_recovery": 0.13661377590093288,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.0011441647597254005,
+          "fraction_of_full_omni_index_bytes": 0.0011441647597254005,
+          "incremental_omni_build_seconds": 1.5328032036613273,
+          "incremental_omni_index_bytes": 68388219.63043478,
+          "total_visual_build_seconds_including_colsmol": 2525.274358089764,
+          "total_visual_index_bytes_including_colsmol": 1579530408.6304348
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.8515901060070671,
+        "recall_at_100": 0.7717605644358825,
+        "recall_at_20": 0.6096422013938282,
+        "residual_repair_recovery_vs_full_stack": 0.4545454545454546,
+        "residual_repaired_fraction": 0.20833333333333334,
+        "selected_page_fraction": 0.0011441647597254005,
+        "selected_pages": 6
+      },
+      "0.002": {
+        "ndcg_at_10": 0.4767573337764071,
+        "ndcg_gain_recovery": 0.2092520856323476,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.002097635392829901,
+          "fraction_of_full_omni_index_bytes": 0.002097635392829901,
+          "incremental_omni_build_seconds": 2.810139206712434,
+          "incremental_omni_index_bytes": 125378402.65579711,
+          "total_visual_build_seconds_including_colsmol": 2526.551694092815,
+          "total_visual_index_bytes_including_colsmol": 1636520591.655797
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.8621908127208481,
+        "recall_at_100": 0.7727256147669691,
+        "recall_at_20": 0.617298267353781,
+        "residual_repair_recovery_vs_full_stack": 0.7272727272727273,
+        "residual_repaired_fraction": 0.3333333333333333,
+        "selected_page_fraction": 0.002097635392829901,
+        "selected_pages": 11
+      },
+      "0.005": {
+        "ndcg_at_10": 0.4654387209610634,
+        "ndcg_gain_recovery": -0.03782940087338479,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.005148741418764302,
+          "fraction_of_full_omni_index_bytes": 0.005148741418764302,
+          "incremental_omni_build_seconds": 6.897614416475973,
+          "incremental_omni_index_bytes": 307746988.3369565,
+          "total_visual_build_seconds_including_colsmol": 2530.6391693025785,
+          "total_visual_index_bytes_including_colsmol": 1818889177.3369565
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.8904593639575972,
+        "recall_at_100": 0.7833306615896464,
+        "recall_at_20": 0.6258987344960767,
+        "residual_repair_recovery_vs_full_stack": 1.5454545454545456,
+        "residual_repaired_fraction": 0.7083333333333334,
+        "selected_page_fraction": 0.005148741418764302,
+        "selected_pages": 27
+      },
+      "0.01": {
+        "ndcg_at_10": 0.4639242781821601,
+        "ndcg_gain_recovery": -0.07088917411097177,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.008199847444698703,
+          "fraction_of_full_omni_index_bytes": 0.008199847444698703,
+          "incremental_omni_build_seconds": 10.985089626239512,
+          "incremental_omni_index_bytes": 490115574.01811594,
+          "total_visual_build_seconds_including_colsmol": 2534.7266445123423,
+          "total_visual_index_bytes_including_colsmol": 2001257763.018116
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.9045936395759717,
+        "recall_at_100": 0.7880321830756203,
+        "recall_at_20": 0.6284583589684779,
+        "residual_repair_recovery_vs_full_stack": 1.9090909090909092,
+        "residual_repaired_fraction": 0.875,
+        "selected_page_fraction": 0.008199847444698703,
+        "selected_pages": 43
+      },
+      "0.02": {
+        "ndcg_at_10": 0.4639242781821601,
+        "ndcg_gain_recovery": -0.07088917411097177,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.008199847444698703,
+          "fraction_of_full_omni_index_bytes": 0.008199847444698703,
+          "incremental_omni_build_seconds": 10.985089626239512,
+          "incremental_omni_index_bytes": 490115574.01811594,
+          "total_visual_build_seconds_including_colsmol": 2534.7266445123423,
+          "total_visual_index_bytes_including_colsmol": 2001257763.018116
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.9045936395759717,
+        "recall_at_100": 0.7880321830756203,
+        "recall_at_20": 0.6284583589684779,
+        "residual_repair_recovery_vs_full_stack": 1.9090909090909092,
+        "residual_repaired_fraction": 0.875,
+        "selected_page_fraction": 0.008199847444698703,
+        "selected_pages": 43
+      },
+      "0.05": {
+        "ndcg_at_10": 0.4639242781821601,
+        "ndcg_gain_recovery": -0.07088917411097177,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.008199847444698703,
+          "fraction_of_full_omni_index_bytes": 0.008199847444698703,
+          "incremental_omni_build_seconds": 10.985089626239512,
+          "incremental_omni_index_bytes": 490115574.01811594,
+          "total_visual_build_seconds_including_colsmol": 2534.7266445123423,
+          "total_visual_index_bytes_including_colsmol": 2001257763.018116
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.9045936395759717,
+        "recall_at_100": 0.7880321830756203,
+        "recall_at_20": 0.6284583589684779,
+        "residual_repair_recovery_vs_full_stack": 1.9090909090909092,
+        "residual_repaired_fraction": 0.875,
+        "selected_page_fraction": 0.008199847444698703,
+        "selected_pages": 43
+      },
+      "0.1": {
+        "ndcg_at_10": 0.4639242781821601,
+        "ndcg_gain_recovery": -0.07088917411097177,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.008199847444698703,
+          "fraction_of_full_omni_index_bytes": 0.008199847444698703,
+          "incremental_omni_build_seconds": 10.985089626239512,
+          "incremental_omni_index_bytes": 490115574.01811594,
+          "total_visual_build_seconds_including_colsmol": 2534.7266445123423,
+          "total_visual_index_bytes_including_colsmol": 2001257763.018116
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.9045936395759717,
+        "recall_at_100": 0.7880321830756203,
+        "recall_at_20": 0.6284583589684779,
+        "residual_repair_recovery_vs_full_stack": 1.9090909090909092,
+        "residual_repaired_fraction": 0.875,
+        "selected_page_fraction": 0.008199847444698703,
+        "selected_pages": 43
+      },
+      "0.2": {
+        "ndcg_at_10": 0.4639242781821601,
+        "ndcg_gain_recovery": -0.07088917411097177,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.008199847444698703,
+          "fraction_of_full_omni_index_bytes": 0.008199847444698703,
+          "incremental_omni_build_seconds": 10.985089626239512,
+          "incremental_omni_index_bytes": 490115574.01811594,
+          "total_visual_build_seconds_including_colsmol": 2534.7266445123423,
+          "total_visual_index_bytes_including_colsmol": 2001257763.018116
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.9045936395759717,
+        "recall_at_100": 0.7880321830756203,
+        "recall_at_20": 0.6284583589684779,
+        "residual_repair_recovery_vs_full_stack": 1.9090909090909092,
+        "residual_repaired_fraction": 0.875,
+        "selected_page_fraction": 0.008199847444698703,
+        "selected_pages": 43
+      },
+      "0.4": {
+        "ndcg_at_10": 0.4639242781821601,
+        "ndcg_gain_recovery": -0.07088917411097177,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.008199847444698703,
+          "fraction_of_full_omni_index_bytes": 0.008199847444698703,
+          "incremental_omni_build_seconds": 10.985089626239512,
+          "incremental_omni_index_bytes": 490115574.01811594,
+          "total_visual_build_seconds_including_colsmol": 2534.7266445123423,
+          "total_visual_index_bytes_including_colsmol": 2001257763.018116
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.9045936395759717,
+        "recall_at_100": 0.7880321830756203,
+        "recall_at_20": 0.6284583589684779,
+        "residual_repair_recovery_vs_full_stack": 1.9090909090909092,
+        "residual_repaired_fraction": 0.875,
+        "selected_page_fraction": 0.008199847444698703,
+        "selected_pages": 43
+      },
+      "1.0": {
+        "ndcg_at_10": 0.4639242781821601,
+        "ndcg_gain_recovery": -0.07088917411097177,
+        "projected_cost": {
+          "fraction_of_full_omni_build_seconds": 0.008199847444698703,
+          "fraction_of_full_omni_index_bytes": 0.008199847444698703,
+          "incremental_omni_build_seconds": 10.985089626239512,
+          "incremental_omni_index_bytes": 490115574.01811594,
+          "total_visual_build_seconds_including_colsmol": 2534.7266445123423,
+          "total_visual_index_bytes_including_colsmol": 2001257763.018116
+        },
+        "queries": 283,
+        "query_hit_at_20": 0.9045936395759717,
+        "recall_at_100": 0.7880321830756203,
+        "recall_at_20": 0.6284583589684779,
+        "residual_repair_recovery_vs_full_stack": 1.9090909090909092,
+        "residual_repaired_fraction": 0.875,
+        "selected_page_fraction": 0.008199847444698703,
+        "selected_pages": 43
+      }
+    }
+  },
+  "dataset": {
+    "pages": 5244,
+    "queries": 283,
+    "sha256": {
+      "colsmol_ranking": "7683bd618ded26bf7b302b0fc7ed2e1ad928879d4a40aa7b06ca41281a4499fb",
+      "corpus": "68fa4dc83f1f1ce39022bd7d041e6615dee1af3435cd0690a59cbe0a36b6ca3e",
+      "features": "5ff7a1083316081003be9d1f4d53282903c3f7b5f748acd56ab0e2cf84d0fedb",
+      "omni_ranking": "7b268cdaa129d5c5bb14f4e5dbf544a0f9b7180c570012238dc1201a175d0016",
+      "qrels": "a97db5652f45589177dc3386cc082c86d44929e3ed5ea1e36ae8b2137c4a7b62",
+      "queries": "757d06855cf5f3ab51480d46b5795ab9fbe0f43483ee0584cd89738726f87736"
+    }
+  },
+  "domain": "industrial",
+  "gate": {
+    "best_oracle_ndcg_gain_recovery_at_or_below_budget": 1.6524863898311954,
+    "best_residual_repair_recovery_at_or_below_budget": 1.9090909090909092,
+    "checks": {
+      "crossfit_residual_event_overlap": false,
+      "full_stack_absolute_ndcg_gain": true,
+      "oracle_ndcg_gain_recovery": true,
+      "oracle_residual_repair_recovery": true
+    },
+    "crossfit_residual_event_overlap": 0.08888888888888889,
+    "passes_domain_headroom_gate": false
+  },
+  "history_residual_crossfit_curves": {
+    "0.0": {
+      "ndcg_at_10": {
+        "maximum": 0.598417378704663,
+        "mean": 0.46622555397009036,
+        "minimum": 0.3813832976884414,
+        "standard_deviation": 0.08374330989735015
+      },
+      "query_hit_at_20": {
+        "maximum": 0.9107142857142857,
+        "mean": 0.8345050913447138,
+        "minimum": 0.7222222222222222,
+        "standard_deviation": 0.06947456822571352
+      },
+      "recall_at_100": {
+        "maximum": 0.8512114072879889,
+        "mean": 0.772772079379741,
+        "minimum": 0.7187735683865114,
+        "standard_deviation": 0.04381511724449158
+      },
+      "recall_at_20": {
+        "maximum": 0.6961800254253084,
+        "mean": 0.5961255172399739,
+        "minimum": 0.5286100870517608,
+        "standard_deviation": 0.0617172628780901
+      },
+      "residual_repaired_fraction": {
+        "maximum": 0.0,
+        "mean": 0.0,
+        "minimum": 0.0,
+        "standard_deviation": 0.0
+      },
+      "runs": 5,
+      "selected_page_fraction": {
+        "maximum": 0.0,
+        "mean": 0.0,
+        "minimum": 0.0,
+        "standard_deviation": 0.0
+      },
+      "selected_pages": {
+        "maximum": 0.0,
+        "mean": 0.0,
+        "minimum": 0.0,
+        "standard_deviation": 0.0
+      }
+    },
+    "0.001": {
+      "ndcg_at_10": {
+        "maximum": 0.5871447822806998,
+        "mean": 0.46546098238164957,
+        "minimum": 0.38282493741144064,
+        "standard_deviation": 0.08025455647433197
+      },
+      "query_hit_at_20": {
+        "maximum": 0.9107142857142857,
+        "mean": 0.8413337950484177,
+        "minimum": 0.7407407407407407,
+        "standard_deviation": 0.06267569615994005
+      },
+      "recall_at_100": {
+        "maximum": 0.8512114072879889,
+        "mean": 0.7732425800800212,
+        "minimum": 0.7198239885545786,
+        "standard_deviation": 0.04344268477484669
+      },
+      "recall_at_20": {
+        "maximum": 0.6961800254253084,
+        "mean": 0.598751999931816,
+        "minimum": 0.5368405397266579,
+        "standard_deviation": 0.06071606899202578
+      },
+      "residual_repaired_fraction": {
+        "maximum": 0.14285714285714285,
+        "mean": 0.05357142857142857,
+        "minimum": 0.0,
+        "standard_deviation": 0.06585388898066348
+      },
+      "runs": 5,
+      "selected_page_fraction": {
+        "maximum": 0.0011441647597254005,
+        "mean": 0.0011441647597254005,
+        "minimum": 0.0011441647597254005,
+        "standard_deviation": 0.0
+      },
+      "selected_pages": {
+        "maximum": 6.0,
+        "mean": 6.0,
+        "minimum": 6.0,
+        "standard_deviation": 0.0
+      }
+    },
+    "0.002": {
+      "ndcg_at_10": {
+        "maximum": 0.5799553175693845,
+        "mean": 0.4619467131947915,
+        "minimum": 0.3830269089570581,
+        "standard_deviation": 0.07713657962537555
+      },
+      "query_hit_at_20": {
+        "maximum": 0.9107142857142857,
+        "mean": 0.8449052236198463,
+        "minimum": 0.7407407407407407,
+        "standard_deviation": 0.06194419366319334
+      },
+      "recall_at_100": {
+        "maximum": 0.8512114072879889,
+        "mean": 0.7737527841616539,
+        "minimum": 0.722375008962742,
+        "standard_deviation": 0.042822883209840706
+      },
+      "recall_at_20": {
+        "maximum": 0.7003728975427089,
+        "mean": 0.601886492722643,
+        "minimum": 0.5368405397266579,
+        "standard_deviation": 0.060240434741629365
+      },
+      "residual_repaired_fraction": {
+        "maximum": 0.25,
+        "mean": 0.10357142857142856,
+        "minimum": 0.0,
+        "standard_deviation": 0.09476070829586856
+      },
+      "runs": 5,
+      "selected_page_fraction": {
+        "maximum": 0.002097635392829901,
+        "mean": 0.002097635392829901,
+        "minimum": 0.002097635392829901,
+        "standard_deviation": 0.0
+      },
+      "selected_pages": {
+        "maximum": 11.0,
+        "mean": 11.0,
+        "minimum": 11.0,
+        "standard_deviation": 0.0
+      }
+    },
+    "0.005": {
+      "ndcg_at_10": {
+        "maximum": 0.5623943288384963,
+        "mean": 0.4535126533756134,
+        "minimum": 0.3783957397139453,
+        "standard_deviation": 0.07159798953087838
+      },
+      "query_hit_at_20": {
+        "maximum": 0.9107142857142857,
+        "mean": 0.8413337950484177,
+        "minimum": 0.7407407407407407,
+        "standard_deviation": 0.06267569615994005
+      },
+      "recall_at_100": {
+        "maximum": 0.852469268923209,
+        "mean": 0.7747785483294659,
+        "minimum": 0.7231514064782699,
+        "standard_deviation": 0.04275355898670045
+      },
+      "recall_at_20": {
+        "maximum": 0.6991150359074887,
+        "mean": 0.599013713663748,
+        "minimum": 0.533590721280761,
+        "standard_deviation": 0.061866659876569044
+      },
+      "residual_repaired_fraction": {
+        "maximum": 0.25,
+        "mean": 0.10357142857142856,
+        "minimum": 0.0,
+        "standard_deviation": 0.09476070829586856
+      },
+      "runs": 5,
+      "selected_page_fraction": {
+        "maximum": 0.005148741418764302,
+        "mean": 0.005148741418764302,
+        "minimum": 0.005148741418764302,
+        "standard_deviation": 0.0
+      },
+      "selected_pages": {
+        "maximum": 27.0,
+        "mean": 27.0,
+        "minimum": 27.0,
+        "standard_deviation": 0.0
+      }
+    },
+    "0.01": {
+      "ndcg_at_10": {
+        "maximum": 0.5609066002892841,
+        "mean": 0.45542013858605845,
+        "minimum": 0.3854386026077408,
+        "standard_deviation": 0.06949573600036196
+      },
+      "query_hit_at_20": {
+        "maximum": 0.9107142857142857,
+        "mean": 0.8413337950484177,
+        "minimum": 0.7407407407407407,
+        "standard_deviation": 0.06267569615994005
+      },
+      "recall_at_100": {
+        "maximum": 0.852469268923209,
+        "mean": 0.7762936998446173,
+        "minimum": 0.7231514064782699,
+        "standard_deviation": 0.042967467930282784
+      },
+      "recall_at_20": {
+        "maximum": 0.6967565453414509,
+        "mean": 0.5981941491312455,
+        "minimum": 0.533590721280761,
+        "standard_deviation": 0.06144535359831485
+      },
+      "residual_repaired_fraction": {
+        "maximum": 0.25,
+        "mean": 0.10357142857142856,
+        "minimum": 0.0,
+        "standard_deviation": 0.09476070829586856
+      },
+      "runs": 5,
+      "selected_page_fraction": {
+        "maximum": 0.008009153318077803,
+        "mean": 0.006636155606407322,
+        "minimum": 0.005530129672006103,
+        "standard_deviation": 0.0008390541571319603
+      },
+      "selected_pages": {
+        "maximum": 42.0,
+        "mean": 34.8,
+        "minimum": 29.0,
+        "standard_deviation": 4.4
+      }
+    },
+    "0.02": {
+      "ndcg_at_10": {
+        "maximum": 0.5609066002892841,
+        "mean": 0.45542013858605845,
+        "minimum": 0.3854386026077408,
+        "standard_deviation": 0.06949573600036196
+      },
+      "query_hit_at_20": {
+        "maximum": 0.9107142857142857,
+        "mean": 0.8413337950484177,
+        "minimum": 0.7407407407407407,
+        "standard_deviation": 0.06267569615994005
+      },
+      "recall_at_100": {
+        "maximum": 0.852469268923209,
+        "mean": 0.7762936998446173,
+        "minimum": 0.7231514064782699,
+        "standard_deviation": 0.042967467930282784
+      },
+      "recall_at_20": {
+        "maximum": 0.6967565453414509,
+        "mean": 0.5981941491312455,
+        "minimum": 0.533590721280761,
+        "standard_deviation": 0.06144535359831485
+      },
+      "residual_repaired_fraction": {
+        "maximum": 0.25,
+        "mean": 0.10357142857142856,
+        "minimum": 0.0,
+        "standard_deviation": 0.09476070829586856
+      },
+      "runs": 5,
+      "selected_page_fraction": {
+        "maximum": 0.008009153318077803,
+        "mean": 0.006636155606407322,
+        "minimum": 0.005530129672006103,
+        "standard_deviation": 0.0008390541571319603
+      },
+      "selected_pages": {
+        "maximum": 42.0,
+        "mean": 34.8,
+        "minimum": 29.0,
+        "standard_deviation": 4.4
+      }
+    },
+    "0.05": {
+      "ndcg_at_10": {
+        "maximum": 0.5609066002892841,
+        "mean": 0.45542013858605845,
+        "minimum": 0.3854386026077408,
+        "standard_deviation": 0.06949573600036196
+      },
+      "query_hit_at_20": {
+        "maximum": 0.9107142857142857,
+        "mean": 0.8413337950484177,
+        "minimum": 0.7407407407407407,
+        "standard_deviation": 0.06267569615994005
+      },
+      "recall_at_100": {
+        "maximum": 0.852469268923209,
+        "mean": 0.7762936998446173,
+        "minimum": 0.7231514064782699,
+        "standard_deviation": 0.042967467930282784
+      },
+      "recall_at_20": {
+        "maximum": 0.6967565453414509,
+        "mean": 0.5981941491312455,
+        "minimum": 0.533590721280761,
+        "standard_deviation": 0.06144535359831485
+      },
+      "residual_repaired_fraction": {
+        "maximum": 0.25,
+        "mean": 0.10357142857142856,
+        "minimum": 0.0,
+        "standard_deviation": 0.09476070829586856
+      },
+      "runs": 5,
+      "selected_page_fraction": {
+        "maximum": 0.008009153318077803,
+        "mean": 0.006636155606407322,
+        "minimum": 0.005530129672006103,
+        "standard_deviation": 0.0008390541571319603
+      },
+      "selected_pages": {
+        "maximum": 42.0,
+        "mean": 34.8,
+        "minimum": 29.0,
+        "standard_deviation": 4.4
+      }
+    },
+    "0.1": {
+      "ndcg_at_10": {
+        "maximum": 0.5609066002892841,
+        "mean": 0.45542013858605845,
+        "minimum": 0.3854386026077408,
+        "standard_deviation": 0.06949573600036196
+      },
+      "query_hit_at_20": {
+        "maximum": 0.9107142857142857,
+        "mean": 0.8413337950484177,
+        "minimum": 0.7407407407407407,
+        "standard_deviation": 0.06267569615994005
+      },
+      "recall_at_100": {
+        "maximum": 0.852469268923209,
+        "mean": 0.7762936998446173,
+        "minimum": 0.7231514064782699,
+        "standard_deviation": 0.042967467930282784
+      },
+      "recall_at_20": {
+        "maximum": 0.6967565453414509,
+        "mean": 0.5981941491312455,
+        "minimum": 0.533590721280761,
+        "standard_deviation": 0.06144535359831485
+      },
+      "residual_repaired_fraction": {
+        "maximum": 0.25,
+        "mean": 0.10357142857142856,
+        "minimum": 0.0,
+        "standard_deviation": 0.09476070829586856
+      },
+      "runs": 5,
+      "selected_page_fraction": {
+        "maximum": 0.008009153318077803,
+        "mean": 0.006636155606407322,
+        "minimum": 0.005530129672006103,
+        "standard_deviation": 0.0008390541571319603
+      },
+      "selected_pages": {
+        "maximum": 42.0,
+        "mean": 34.8,
+        "minimum": 29.0,
+        "standard_deviation": 4.4
+      }
+    },
+    "0.2": {
+      "ndcg_at_10": {
+        "maximum": 0.5609066002892841,
+        "mean": 0.45542013858605845,
+        "minimum": 0.3854386026077408,
+        "standard_deviation": 0.06949573600036196
+      },
+      "query_hit_at_20": {
+        "maximum": 0.9107142857142857,
+        "mean": 0.8413337950484177,
+        "minimum": 0.7407407407407407,
+        "standard_deviation": 0.06267569615994005
+      },
+      "recall_at_100": {
+        "maximum": 0.852469268923209,
+        "mean": 0.7762936998446173,
+        "minimum": 0.7231514064782699,
+        "standard_deviation": 0.042967467930282784
+      },
+      "recall_at_20": {
+        "maximum": 0.6967565453414509,
+        "mean": 0.5981941491312455,
+        "minimum": 0.533590721280761,
+        "standard_deviation": 0.06144535359831485
+      },
+      "residual_repaired_fraction": {
+        "maximum": 0.25,
+        "mean": 0.10357142857142856,
+        "minimum": 0.0,
+        "standard_deviation": 0.09476070829586856
+      },
+      "runs": 5,
+      "selected_page_fraction": {
+        "maximum": 0.008009153318077803,
+        "mean": 0.006636155606407322,
+        "minimum": 0.005530129672006103,
+        "standard_deviation": 0.0008390541571319603
+      },
+      "selected_pages": {
+        "maximum": 42.0,
+        "mean": 34.8,
+        "minimum": 29.0,
+        "standard_deviation": 4.4
+      }
+    },
+    "0.4": {
+      "ndcg_at_10": {
+        "maximum": 0.5609066002892841,
+        "mean": 0.45542013858605845,
+        "minimum": 0.3854386026077408,
+        "standard_deviation": 0.06949573600036196
+      },
+      "query_hit_at_20": {
+        "maximum": 0.9107142857142857,
+        "mean": 0.8413337950484177,
+        "minimum": 0.7407407407407407,
+        "standard_deviation": 0.06267569615994005
+      },
+      "recall_at_100": {
+        "maximum": 0.852469268923209,
+        "mean": 0.7762936998446173,
+        "minimum": 0.7231514064782699,
+        "standard_deviation": 0.042967467930282784
+      },
+      "recall_at_20": {
+        "maximum": 0.6967565453414509,
+        "mean": 0.5981941491312455,
+        "minimum": 0.533590721280761,
+        "standard_deviation": 0.06144535359831485
+      },
+      "residual_repaired_fraction": {
+        "maximum": 0.25,
+        "mean": 0.10357142857142856,
+        "minimum": 0.0,
+        "standard_deviation": 0.09476070829586856
+      },
+      "runs": 5,
+      "selected_page_fraction": {
+        "maximum": 0.008009153318077803,
+        "mean": 0.006636155606407322,
+        "minimum": 0.005530129672006103,
+        "standard_deviation": 0.0008390541571319603
+      },
+      "selected_pages": {
+        "maximum": 42.0,
+        "mean": 34.8,
+        "minimum": 29.0,
+        "standard_deviation": 4.4
+      }
+    },
+    "1.0": {
+      "ndcg_at_10": {
+        "maximum": 0.5609066002892841,
+        "mean": 0.45542013858605845,
+        "minimum": 0.3854386026077408,
+        "standard_deviation": 0.06949573600036196
+      },
+      "query_hit_at_20": {
+        "maximum": 0.9107142857142857,
+        "mean": 0.8413337950484177,
+        "minimum": 0.7407407407407407,
+        "standard_deviation": 0.06267569615994005
+      },
+      "recall_at_100": {
+        "maximum": 0.852469268923209,
+        "mean": 0.7762936998446173,
+        "minimum": 0.7231514064782699,
+        "standard_deviation": 0.042967467930282784
+      },
+      "recall_at_20": {
+        "maximum": 0.6967565453414509,
+        "mean": 0.5981941491312455,
+        "minimum": 0.533590721280761,
+        "standard_deviation": 0.06144535359831485
+      },
+      "residual_repaired_fraction": {
+        "maximum": 0.25,
+        "mean": 0.10357142857142856,
+        "minimum": 0.0,
+        "standard_deviation": 0.09476070829586856
+      },
+      "runs": 5,
+      "selected_page_fraction": {
+        "maximum": 0.008009153318077803,
+        "mean": 0.006636155606407322,
+        "minimum": 0.005530129672006103,
+        "standard_deviation": 0.0008390541571319603
+      },
+      "selected_pages": {
+        "maximum": 42.0,
+        "mean": 34.8,
+        "minimum": 29.0,
+        "standard_deviation": 4.4
+      }
+    }
+  },
+  "measured_cost_reference": {
+    "base_colsmol_build_seconds": 2523.7415548861027,
+    "base_colsmol_index_bytes": 1511142189,
+    "full_omni_build_seconds": 1339.67,
+    "full_omni_index_bytes": 59771303957
+  },
+  "observable_feature_diagnostics": {
+    "feature_separation": {
+      "edge_energy": {
+        "auc_for_residual_page": 0.397204473200592,
+        "other_mean": 0.02209127205593564,
+        "other_median": 0.022505520842969418,
+        "residual_mean": 0.019424336845986545,
+        "residual_median": 0.01757656643167138
+      },
+      "grayscale_entropy": {
+        "auc_for_residual_page": 0.4037640346445004,
+        "other_mean": 0.284660085961119,
+        "other_median": 0.3010498519856899,
+        "residual_mean": 0.2569653450727333,
+        "residual_median": 0.23503593853112795
+      },
+      "nonwhite_fraction": {
+        "auc_for_residual_page": 0.4065541957494757,
+        "other_mean": 0.18124968191147556,
+        "other_median": 0.18517203282828282,
+        "residual_mean": 0.15887282706172198,
+        "residual_median": 0.13648378759398497
+      },
+      "text_scarcity": {
+        "auc_for_residual_page": 0.5305866939720895,
+        "other_mean": -1929.019419342434,
+        "other_median": -1694.0,
+        "residual_mean": -1745.3488372093022,
+        "residual_median": -1472.0
+      }
+    },
+    "physical_risk_coverage": {
+      "0.0": {
+        "residual_page_coverage": 0.0,
+        "selected_pages": 0
+      },
+      "0.001": {
+        "residual_page_coverage": 0.0,
+        "selected_pages": 6
+      },
+      "0.002": {
+        "residual_page_coverage": 0.0,
+        "selected_pages": 11
+      },
+      "0.005": {
+        "residual_page_coverage": 0.0,
+        "selected_pages": 27
+      },
+      "0.01": {
+        "residual_page_coverage": 0.0,
+        "selected_pages": 53
+      },
+      "0.02": {
+        "residual_page_coverage": 0.0,
+        "selected_pages": 105
+      },
+      "0.05": {
+        "residual_page_coverage": 0.0,
+        "selected_pages": 263
+      },
+      "0.1": {
+        "residual_page_coverage": 0.023255813953488372,
+        "selected_pages": 525
+      },
+      "0.2": {
+        "residual_page_coverage": 0.09302325581395349,
+        "selected_pages": 1049
+      },
+      "0.4": {
+        "residual_page_coverage": 0.18604651162790697,
+        "selected_pages": 2098
+      },
+      "1.0": {
+        "residual_page_coverage": 1.0,
+        "selected_pages": 5244
+      }
+    },
+    "residual_pages": 43
+  },
+  "protocol_config_sha256": "2ff49e1d768ce2899230251987a00534d609b2d1984752b55646c438ae9e2b0b",
+  "protocol_id": "residual-materialization-oracle-v0-2026-08-07",
+  "residual_boundary": {
+    "page_events": 45,
+    "queries": 24,
+    "query_fraction": 0.08480565371024736,
+    "strict_candidate_escape_queries": 16,
+    "strict_candidate_escape_unique_page_ids": [
+      "16",
+      "91",
+      "158",
+      "172",
+      "218",
+      "230",
+      "235",
+      "324",
+      "346",
+      "432",
+      "435",
+      "456",
+      "474",
+      "475",
+      "483",
+      "504",
+      "508",
+      "530",
+      "539",
+      "2288",
+      "2892",
+      "3394",
+      "3540",
+      "5015",
+      "5026",
+      "5035",
+      "5039",
+      "5041",
+      "5042",
+      "5050"
+    ],
+    "unique_page_fraction": 0.008199847444698703,
+    "unique_page_ids": [
+      "16",
+      "91",
+      "158",
+      "161",
+      "172",
+      "218",
+      "220",
+      "225",
+      "226",
+      "230",
+      "235",
+      "307",
+      "324",
+      "332",
+      "346",
+      "397",
+      "418",
+      "432",
+      "435",
+      "456",
+      "474",
+      "475",
+      "483",
+      "491",
+      "504",
+      "508",
+      "530",
+      "533",
+      "539",
+      "540",
+      "2288",
+      "2892",
+      "3394",
+      "3540",
+      "5015",
+      "5026",
+      "5035",
+      "5039",
+      "5041",
+      "5042",
+      "5050",
+      "5130",
+      "5153"
+    ]
+  },
+  "reuse": {
+    "hash_crossfit": {
+      "event_overlap_fraction_weighted": 0.08888888888888889,
+      "folds": [
+        {
+          "event_overlap_fraction": 0.16666666666666666,
+          "fold": 0,
+          "future_residual_queries": 7,
+          "future_unique_residual_pages": 12,
+          "history_residual_pages": 33,
+          "unique_page_overlap_fraction": 0.16666666666666666
+        },
+        {
+          "event_overlap_fraction": 0.0,
+          "fold": 1,
+          "future_residual_queries": 1,
+          "future_unique_residual_pages": 1,
+          "history_residual_pages": 42,
+          "unique_page_overlap_fraction": 0.0
+        },
+        {
+          "event_overlap_fraction": 0.0,
+          "fold": 2,
+          "future_residual_queries": 4,
+          "future_unique_residual_pages": 10,
+          "history_residual_pages": 33,
+          "unique_page_overlap_fraction": 0.0
+        },
+        {
+          "event_overlap_fraction": 0.06666666666666667,
+          "fold": 3,
+          "future_residual_queries": 8,
+          "future_unique_residual_pages": 15,
+          "history_residual_pages": 29,
+          "unique_page_overlap_fraction": 0.06666666666666667
+        },
+        {
+          "event_overlap_fraction": 0.14285714285714285,
+          "fold": 4,
+          "future_residual_queries": 4,
+          "future_unique_residual_pages": 7,
+          "history_residual_pages": 37,
+          "unique_page_overlap_fraction": 0.14285714285714285
+        }
+      ],
+      "unique_page_overlap_fraction_weighted": 0.08888888888888889
+    },
+    "natural_half_split": {
+      "future_event_overlap_fraction": 0.05263157894736842,
+      "future_residual_queries": 9,
+      "future_unique_page_overlap_fraction": 0.05263157894736842,
+      "history_residual_queries": 15,
+      "split_query_position": 141
+    }
+  },
+  "schema_version": 1,
+  "status": "complete",
+  "warnings": [
+    "Selected Omni pages retain their rank in the complete Omni Top-100 before RRF. This is a non-deployable global-rank oracle that isolates page-selection headroom.",
+    "These domains already shaped the problem and provide an exploratory headroom audit, not a final held-out claim.",
+    "RRF rank surfaces measure retrieval localization and ranking, not final answer quality."
+  ]
+}
