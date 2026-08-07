@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "protocol_id": "residual-materialization-oracle-v0-2026-08-07",
+  "status": "FROZEN_BEFORE_RESIDUAL_ORACLE_RESULTS",
+  "research_question": "Above an always-present BM25 plus ColSmol locator stack, can materializing a small set of Omni page representations recover most of the positive retrieval gain of a complete Omni tier?",
+  "retrieval": {
+    "rank_depth": 100,
+    "residual_depth": 20,
+    "rrf_constant": 60,
+    "base_sources": ["bm25", "colsmol"],
+    "incremental_source": "omni",
+    "partial_semantics": "Selected Omni pages retain their rank in the complete Omni Top-100 before RRF. This is a non-deployable global-rank oracle that isolates page-selection headroom.",
+    "full_reference": "Equal-weight RRF60 over BM25 Top-100, ColSmol Top-100, and complete Omni Top-100. Omni-only is reported separately."
+  },
+  "budgets": [0.0, 0.001, 0.002, 0.005, 0.01, 0.02, 0.05, 0.1, 0.2, 0.4, 1.0],
+  "selection_policies": {
+    "random": "Uniform corpus pages, 20 fixed repetitions; uses the full requested budget.",
+    "corpus_uniform": "Evenly spaced pages in stable corpus order; uses the full requested budget.",
+    "physical_risk": "Frozen qrel-free risk-cover order from OCR scarcity, entropy, and edge energy; uses the full requested budget.",
+    "omni_frequency_oracle": "Future-workload Omni rank frequency; forbidden to a deployable method.",
+    "residual_label_oracle": "Relevant Omni pages for queries missed by base Top-20 but hit by Omni Top-20; future qrels and ranks are forbidden.",
+    "global_label_rank_oracle": "Relevant pages whose Omni rank improves over their base rank; future qrels and ranks are forbidden. Selects at most the budget and never fills with zero-utility pages."
+  },
+  "random_repetitions": 20,
+  "cross_fit": {
+    "folds": 5,
+    "seed": 2026080717,
+    "history_policy": "Select pages from base-miss/Omni-repair events observed in four folds, evaluate the frozen set on the held-out fold.",
+    "natural_split_fraction": 0.5
+  },
+  "quality_metrics": ["nDCG@10", "candidate hit@20", "Recall@20", "Recall@100"],
+  "gain_recovery": "(Q_partial - Q_base) / (Q_full_stack - Q_base); undefined when Full-stack absolute gain is below 0.005.",
+  "cost_accounting": {
+    "semantics": "Project selected page fraction onto measured full Omni build seconds and physical index bytes from the completed RTX 5090 runs. This is measured-total linear accounting, not per-page latency measurement.",
+    "pharmaceuticals": {
+      "full_omni_build_seconds": 606.15,
+      "full_omni_index_bytes": 26970573173,
+      "base_colsmol_build_seconds": 853.3165885582566,
+      "base_colsmol_index_bytes": 518410346
+    },
+    "industrial": {
+      "full_omni_build_seconds": 1339.67,
+      "full_omni_index_bytes": 59771303957,
+      "base_colsmol_build_seconds": 2523.7415548861027,
+      "base_colsmol_index_bytes": 1511142189
+    }
+  },
+  "gate": {
+    "maximum_oracle_page_fraction": 0.05,
+    "minimum_full_stack_absolute_ndcg_gain": 0.005,
+    "minimum_oracle_ndcg_gain_recovery": 0.7,
+    "minimum_residual_query_repair_recovery": 0.7,
+    "minimum_crossfit_residual_event_overlap": 0.2,
+    "domains_required": 2,
+    "decision": "If the Full stack has no positive gain, or a 5% future-information oracle cannot recover 70% of it and 70% of residual repairs, stop. Oracle GO only establishes headroom; a deployable method still requires history-only transfer above random/risk baselines."
+  },
+  "information_boundary": {
+    "test_domains": ["pharmaceuticals", "industrial"],
+    "opened_before_this_audit": true,
+    "warning": "These domains already shaped the problem and provide an exploratory headroom audit, not a final held-out claim.",
+    "forbidden_to_deployable_policy": ["future qrels", "future Omni ranks", "complete Omni score distribution"]
+  }
+}
