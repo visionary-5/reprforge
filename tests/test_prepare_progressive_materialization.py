@@ -59,6 +59,7 @@ def test_prepare_progressive_materialization_is_leakage_audited(tmp_path):
     assert "prepared_cpu_no_gpu_results" in completed.stdout
     manifest = json.loads((output / "manifest.json").read_text())
     assert manifest["dataset"]["pages"] == 6
+    assert manifest["dataset"]["document_grouping_available"] is True
     assert "cheap_locator_disagreement" not in manifest["strategies"]
     assert manifest["traces"]["zipf_1p0"] == 30
     subset = json.loads(

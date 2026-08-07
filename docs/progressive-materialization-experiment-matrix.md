@@ -131,6 +131,9 @@ Every dynamic policy is tested at 5/10/20/40% capacity under:
 
 Synthetic replays are named synthetic. Their generator seed, page popularity,
 query repetition, and drift point are saved in the result manifest.
+Document-clustered replay and uniform document coverage are run only when the
+export retains an authenticated source-document identifier; they are omitted,
+not approximated from sequential page IDs, when that metadata is absent.
 
 ## 6. Metrics
 

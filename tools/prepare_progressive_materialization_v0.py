@@ -123,6 +123,7 @@ def main() -> None:
         document_id, source = _document_id(row)
         documents[str(row["docid"])] = document_id
         document_sources[source] += 1
+    document_grouping_available = len(set(documents.values())) < 0.9 * len(corpus)
     missing_assets = [
         str(row["image"])
         for row in corpus
@@ -195,7 +196,11 @@ def main() -> None:
     qrel_documents: dict[str, str] = {}
     for row in sorted(qrels, key=lambda value: (str(value["query_id"]), -float(value["relevance"]))):
         qrel_documents.setdefault(str(row["query_id"]), documents[str(row["doc_id"])])
-    groups = {query_id: qrel_documents.get(query_id, query_id) for query_id in query_ids}
+    groups = (
+        {query_id: qrel_documents.get(query_id, query_id) for query_id in query_ids}
+        if document_grouping_available
+        else None
+    )
     traces = trace_suite(
         query_ids,
         groups,
@@ -222,6 +227,8 @@ def main() -> None:
     ]
     if compact is None:
         strategies.remove("cheap_locator_disagreement")
+    if not document_grouping_available:
+        strategies.remove("document_uniform")
     subset_root = args.output_root / "subsets"
     subset_root.mkdir()
     subset_count = 0
@@ -277,6 +284,7 @@ def main() -> None:
             "queries": len(queries),
             "qrels": len(qrels),
             "documents": len(set(documents.values())),
+            "document_grouping_available": document_grouping_available,
             "document_id_sources": dict(document_sources),
         },
         "splits": {
@@ -291,6 +299,7 @@ def main() -> None:
             "Trace locality uses qrel document groups only to construct a shared synthetic workload; no selector receives qrel labels.",
             "Dataset order is deterministic serialization, not a natural temporal trace.",
             "Compact locator disagreement is omitted when no compact ranking is supplied.",
+            "Document-uniform selection and document-clustered replay are omitted when the export has no authenticated document grouping.",
         ],
         "sha256": {
             "config": _sha(args.config),

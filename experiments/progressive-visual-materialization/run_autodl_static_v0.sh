@@ -7,7 +7,7 @@ readonly PREP_ROOT="${AUTODL_PREP_ROOT:?set AUTODL_PREP_ROOT}"
 readonly OUTPUT_ROOT="${AUTODL_OUTPUT_ROOT:?set AUTODL_OUTPUT_ROOT}"
 readonly REPRFORGE_ROOT="${AUTODL_REPRFORGE_ROOT:-${DATA_ROOT}/reprforge/partial-vlm-audit}"
 readonly DATASET_ROOT="${AUTODL_DATASET_ROOT:-${DATA_ROOT}/datasets/vidore-v3-${DOMAIN}}"
-readonly STRATEGIES="${AUTODL_STRATEGIES:-sha256_random,document_uniform,text_scarcity,visual_complexity,history_candidate_frequency,risk_cover_plus_history_benefit}"
+readonly STRATEGIES="${AUTODL_STRATEGIES:-sha256_random,text_scarcity,visual_complexity,history_candidate_frequency,risk_cover_plus_history_benefit}"
 readonly BUDGETS="${AUTODL_BUDGETS:-005,020,040}"
 
 if [[ ! "${DOMAIN}" =~ ^[a-z0-9-]+$ ]]; then

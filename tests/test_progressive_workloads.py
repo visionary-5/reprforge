@@ -32,6 +32,18 @@ def test_trace_suite_is_deterministic_and_explicitly_synthetic():
     assert set(first["mid_trace_distribution_drift"]) == set(query_ids)
 
 
+def test_trace_suite_omits_document_trace_without_authenticated_groups():
+    traces = trace_suite(
+        ["q0", "q1"],
+        None,
+        seed=7,
+        random_permutations=0,
+        horizon_multiplier=2,
+        zipf_exponents=[1.0],
+    )
+    assert "document_clustered" not in traces
+
+
 def test_trace_helpers_validate_and_cover_expected_lengths():
     ids = ["a", "b", "c"]
     assert len(zipf_trace(ids, length=20, exponent=0.8, seed=1)) == 20

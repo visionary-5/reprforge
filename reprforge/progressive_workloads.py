@@ -116,7 +116,7 @@ def drift_trace(query_ids: Sequence[str], *, length: int, seed: int) -> list[str
 
 def trace_suite(
     query_ids: Sequence[str],
-    groups: Mapping[str, str],
+    groups: Mapping[str, str] | None,
     *,
     seed: int,
     random_permutations: int,
@@ -140,9 +140,10 @@ def trace_suite(
             exponent=float(exponent),
             seed=seed + 10_000 + int(round(100 * float(exponent))),
         )
-    traces["document_clustered"] = clustered_trace(
-        values, groups, repetitions=horizon_multiplier, seed=seed + 20_000
-    )
+    if groups is not None:
+        traces["document_clustered"] = clustered_trace(
+            values, groups, repetitions=horizon_multiplier, seed=seed + 20_000
+        )
     traces["broadening_working_set"] = broadening_trace(
         values, length=length, seed=seed + 30_000
     )
