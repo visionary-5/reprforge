@@ -89,13 +89,32 @@ def _tree_bytes(path: Path) -> int:
 
 
 def _case(root: Path) -> dict[str, Any]:
-    ranking = root / "full/result-ranking-top100/ranking.txt"
+    ranking_candidates = (
+        root / "full/result/ranking.txt",
+        root / "full/result-ranking-top100/ranking.txt",
+    )
+    ranking = next((path for path in ranking_candidates if path.is_file()), ranking_candidates[0])
     timing = root / "timing/full-build.time"
     index = root / "full/index"
     run_manifest = root / "run-manifest.json"
-    for path in (ranking, timing, index, run_manifest):
+    for path in (ranking, timing, run_manifest):
         if not path.exists():
             raise FileNotFoundError(path)
+    receipt_path = root / "case-receipt.json"
+    receipt = json.loads(receipt_path.read_text()) if receipt_path.exists() else None
+    if index.exists():
+        index_bytes = _tree_bytes(index)
+    elif receipt is not None:
+        if receipt.get("status") != "complete_and_safe_to_release_reproducible_index":
+            raise ValueError(f"invalid receipt status: {receipt_path}")
+        recorded_ranking = receipt["artifacts"]["ranking"]
+        if recorded_ranking["sha256"] != _sha(ranking):
+            raise ValueError(f"ranking changed after receipt: {ranking}")
+        if receipt["artifacts"]["run_manifest"]["sha256"] != _sha(run_manifest):
+            raise ValueError(f"run manifest changed after receipt: {run_manifest}")
+        index_bytes = int(receipt["physical_index"]["bytes"])
+    else:
+        raise FileNotFoundError(index)
     selection_manifest = root.parent / f"{root.name}-input-manifest.json"
     selected = json.loads(selection_manifest.read_text()) if selection_manifest.exists() else None
     return {
@@ -104,7 +123,8 @@ def _case(root: Path) -> dict[str, Any]:
         "ranking_path": ranking,
         "rankings": _load_ranking(ranking),
         "build_wall_seconds": _wall_seconds(timing),
-        "index_bytes": _tree_bytes(index),
+        "index_bytes": index_bytes,
+        "case_receipt_sha256": _sha(receipt_path) if receipt_path.exists() else None,
         "run_manifest_sha256": _sha(run_manifest),
         "selection_manifest": selected,
         "selection_manifest_sha256": _sha(selection_manifest)
@@ -187,6 +207,7 @@ def main() -> None:
                     "ranking_sha256": _sha(case["ranking_path"]),
                     "run_manifest_sha256": case["run_manifest_sha256"],
                     "selection_manifest_sha256": case["selection_manifest_sha256"],
+                    "case_receipt_sha256": case["case_receipt_sha256"],
                 },
             }
         )
