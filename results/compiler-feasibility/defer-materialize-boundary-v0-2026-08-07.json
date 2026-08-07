@@ -1,0 +1,1502 @@
+{
+  "domains": {
+    "irpapers": {
+      "corpus_pages": 3230,
+      "input_sha256": {
+        "queries": "a87d8263d8b498cdaceb6cb719abcd0a584ded3993910aad41edab1db8fa6ed3",
+        "run_manifest": "e30122c454101bfbd96ec63b3670bab93548f7b27cfe01e51d798eb15d07d32a",
+        "score_surface": "8a1553afbe257fc8590ac60a2b363a9672158b97957505925d9a36fa1d21718b"
+      },
+      "locator_curves": {
+        "1": {
+          "boundary": {
+            "both_hit_queries": 52,
+            "mean_first_relevant_rank_delta_visual_minus_text_on_both_hit": 0.0,
+            "text_miss_fraction": 0.5277777777777778,
+            "text_miss_queries": 95,
+            "visual_harm_queries": 33,
+            "visual_repair_queries": 18,
+            "visual_repairs_fraction_of_text_misses": 0.18947368421052632
+          },
+          "depth": 1,
+          "queries": 180,
+          "text": {
+            "optimistic_pages_analyzed_mean": 1.0,
+            "optimistic_pages_analyzed_p95": 1.0,
+            "query_hit_rate": 0.4722222222222222,
+            "weighted_recall": 0.4722222222222222
+          },
+          "visual": {
+            "optimistic_pages_analyzed_mean": 1.0,
+            "optimistic_pages_analyzed_p95": 1.0,
+            "query_hit_rate": 0.3888888888888889,
+            "weighted_recall": 0.3888888888888889
+          }
+        },
+        "10": {
+          "boundary": {
+            "both_hit_queries": 130,
+            "mean_first_relevant_rank_delta_visual_minus_text_on_both_hit": 0.2846153846153846,
+            "text_miss_fraction": 0.12777777777777777,
+            "text_miss_queries": 23,
+            "visual_harm_queries": 27,
+            "visual_repair_queries": 8,
+            "visual_repairs_fraction_of_text_misses": 0.34782608695652173
+          },
+          "depth": 10,
+          "queries": 180,
+          "text": {
+            "optimistic_pages_analyzed_mean": 3.283333333333333,
+            "optimistic_pages_analyzed_p95": 10.0,
+            "query_hit_rate": 0.8722222222222222,
+            "weighted_recall": 0.8722222222222222
+          },
+          "visual": {
+            "optimistic_pages_analyzed_mean": 4.277777777777778,
+            "optimistic_pages_analyzed_p95": 10.0,
+            "query_hit_rate": 0.7666666666666667,
+            "weighted_recall": 0.7666666666666667
+          }
+        },
+        "100": {
+          "boundary": {
+            "both_hit_queries": 164,
+            "mean_first_relevant_rank_delta_visual_minus_text_on_both_hit": 2.0121951219512195,
+            "text_miss_fraction": 0.027777777777777776,
+            "text_miss_queries": 5,
+            "visual_harm_queries": 11,
+            "visual_repair_queries": 3,
+            "visual_repairs_fraction_of_text_misses": 0.6
+          },
+          "depth": 100,
+          "queries": 180,
+          "text": {
+            "optimistic_pages_analyzed_mean": 7.805555555555555,
+            "optimistic_pages_analyzed_p95": 29.69999999999976,
+            "query_hit_rate": 0.9722222222222222,
+            "weighted_recall": 0.9722222222222222
+          },
+          "visual": {
+            "optimistic_pages_analyzed_mean": 14.25,
+            "optimistic_pages_analyzed_p95": 100.0,
+            "query_hit_rate": 0.9277777777777778,
+            "weighted_recall": 0.9277777777777778
+          }
+        },
+        "20": {
+          "boundary": {
+            "both_hit_queries": 145,
+            "mean_first_relevant_rank_delta_visual_minus_text_on_both_hit": 0.3793103448275862,
+            "text_miss_fraction": 0.07222222222222222,
+            "text_miss_queries": 13,
+            "visual_harm_queries": 22,
+            "visual_repair_queries": 6,
+            "visual_repairs_fraction_of_text_misses": 0.46153846153846156
+          },
+          "depth": 20,
+          "queries": 180,
+          "text": {
+            "optimistic_pages_analyzed_mean": 4.227777777777778,
+            "optimistic_pages_analyzed_p95": 20.0,
+            "query_hit_rate": 0.9277777777777778,
+            "weighted_recall": 0.9277777777777778
+          },
+          "visual": {
+            "optimistic_pages_analyzed_mean": 6.144444444444445,
+            "optimistic_pages_analyzed_p95": 20.0,
+            "query_hit_rate": 0.8388888888888889,
+            "weighted_recall": 0.8388888888888889
+          }
+        },
+        "5": {
+          "boundary": {
+            "both_hit_queries": 109,
+            "mean_first_relevant_rank_delta_visual_minus_text_on_both_hit": 0.24770642201834864,
+            "text_miss_fraction": 0.21666666666666667,
+            "text_miss_queries": 39,
+            "visual_harm_queries": 32,
+            "visual_repair_queries": 12,
+            "visual_repairs_fraction_of_text_misses": 0.3076923076923077
+          },
+          "depth": 5,
+          "queries": 180,
+          "text": {
+            "optimistic_pages_analyzed_mean": 2.45,
+            "optimistic_pages_analyzed_p95": 5.0,
+            "query_hit_rate": 0.7833333333333333,
+            "weighted_recall": 0.7833333333333333
+          },
+          "visual": {
+            "optimistic_pages_analyzed_mean": 2.8555555555555556,
+            "optimistic_pages_analyzed_p95": 5.0,
+            "query_hit_rate": 0.6722222222222223,
+            "weighted_recall": 0.6722222222222223
+          }
+        },
+        "50": {
+          "boundary": {
+            "both_hit_queries": 157,
+            "mean_first_relevant_rank_delta_visual_minus_text_on_both_hit": 1.4522292993630572,
+            "text_miss_fraction": 0.044444444444444446,
+            "text_miss_queries": 8,
+            "visual_harm_queries": 15,
+            "visual_repair_queries": 4,
+            "visual_repairs_fraction_of_text_misses": 0.5
+          },
+          "depth": 50,
+          "queries": 180,
+          "text": {
+            "optimistic_pages_analyzed_mean": 5.822222222222222,
+            "optimistic_pages_analyzed_p95": 29.69999999999976,
+            "query_hit_rate": 0.9555555555555556,
+            "weighted_recall": 0.9555555555555556
+          },
+          "visual": {
+            "optimistic_pages_analyzed_mean": 9.994444444444444,
+            "optimistic_pages_analyzed_p95": 50.0,
+            "query_hit_rate": 0.8944444444444445,
+            "weighted_recall": 0.8944444444444445
+          }
+        }
+      },
+      "queries": 180,
+      "repair_reuse_crossfit": {
+        "1": {
+          "depth": 1,
+          "event_overlap_fraction_weighted": 0.0,
+          "folds": [
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 0,
+              "future_repair_page_events": 2,
+              "future_repair_queries": 2,
+              "future_unique_repair_pages": 2,
+              "history_repair_pages": 16,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 1,
+              "future_repair_page_events": 2,
+              "future_repair_queries": 2,
+              "future_unique_repair_pages": 2,
+              "history_repair_pages": 16,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 2,
+              "future_repair_page_events": 2,
+              "future_repair_queries": 2,
+              "future_unique_repair_pages": 2,
+              "history_repair_pages": 16,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 3,
+              "future_repair_page_events": 3,
+              "future_repair_queries": 3,
+              "future_unique_repair_pages": 3,
+              "history_repair_pages": 15,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 4,
+              "future_repair_page_events": 9,
+              "future_repair_queries": 9,
+              "future_unique_repair_pages": 9,
+              "history_repair_pages": 9,
+              "unique_page_overlap_fraction": 0.0
+            }
+          ],
+          "future_repair_queries": 18,
+          "unique_page_overlap_fraction_weighted": 0.0
+        },
+        "10": {
+          "depth": 10,
+          "event_overlap_fraction_weighted": 0.0,
+          "folds": [
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 0,
+              "future_repair_page_events": 1,
+              "future_repair_queries": 1,
+              "future_unique_repair_pages": 1,
+              "history_repair_pages": 7,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 1,
+              "future_repair_page_events": 2,
+              "future_repair_queries": 2,
+              "future_unique_repair_pages": 2,
+              "history_repair_pages": 6,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 2,
+              "future_repair_page_events": 1,
+              "future_repair_queries": 1,
+              "future_unique_repair_pages": 1,
+              "history_repair_pages": 7,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 3,
+              "future_repair_page_events": 3,
+              "future_repair_queries": 3,
+              "future_unique_repair_pages": 3,
+              "history_repair_pages": 5,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 4,
+              "future_repair_page_events": 1,
+              "future_repair_queries": 1,
+              "future_unique_repair_pages": 1,
+              "history_repair_pages": 7,
+              "unique_page_overlap_fraction": 0.0
+            }
+          ],
+          "future_repair_queries": 8,
+          "unique_page_overlap_fraction_weighted": 0.0
+        },
+        "100": {
+          "depth": 100,
+          "event_overlap_fraction_weighted": 0.0,
+          "folds": [
+            {
+              "event_overlap_fraction": null,
+              "fold": 0,
+              "future_repair_page_events": 0,
+              "future_repair_queries": 0,
+              "future_unique_repair_pages": 0,
+              "history_repair_pages": 3,
+              "unique_page_overlap_fraction": null
+            },
+            {
+              "event_overlap_fraction": null,
+              "fold": 1,
+              "future_repair_page_events": 0,
+              "future_repair_queries": 0,
+              "future_unique_repair_pages": 0,
+              "history_repair_pages": 3,
+              "unique_page_overlap_fraction": null
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 2,
+              "future_repair_page_events": 1,
+              "future_repair_queries": 1,
+              "future_unique_repair_pages": 1,
+              "history_repair_pages": 2,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 3,
+              "future_repair_page_events": 2,
+              "future_repair_queries": 2,
+              "future_unique_repair_pages": 2,
+              "history_repair_pages": 1,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": null,
+              "fold": 4,
+              "future_repair_page_events": 0,
+              "future_repair_queries": 0,
+              "future_unique_repair_pages": 0,
+              "history_repair_pages": 3,
+              "unique_page_overlap_fraction": null
+            }
+          ],
+          "future_repair_queries": 3,
+          "unique_page_overlap_fraction_weighted": 0.0
+        },
+        "20": {
+          "depth": 20,
+          "event_overlap_fraction_weighted": 0.0,
+          "folds": [
+            {
+              "event_overlap_fraction": null,
+              "fold": 0,
+              "future_repair_page_events": 0,
+              "future_repair_queries": 0,
+              "future_unique_repair_pages": 0,
+              "history_repair_pages": 6,
+              "unique_page_overlap_fraction": null
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 1,
+              "future_repair_page_events": 1,
+              "future_repair_queries": 1,
+              "future_unique_repair_pages": 1,
+              "history_repair_pages": 5,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 2,
+              "future_repair_page_events": 2,
+              "future_repair_queries": 2,
+              "future_unique_repair_pages": 2,
+              "history_repair_pages": 4,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 3,
+              "future_repair_page_events": 3,
+              "future_repair_queries": 3,
+              "future_unique_repair_pages": 3,
+              "history_repair_pages": 3,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": null,
+              "fold": 4,
+              "future_repair_page_events": 0,
+              "future_repair_queries": 0,
+              "future_unique_repair_pages": 0,
+              "history_repair_pages": 6,
+              "unique_page_overlap_fraction": null
+            }
+          ],
+          "future_repair_queries": 6,
+          "unique_page_overlap_fraction_weighted": 0.0
+        },
+        "5": {
+          "depth": 5,
+          "event_overlap_fraction_weighted": 0.0,
+          "folds": [
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 0,
+              "future_repair_page_events": 1,
+              "future_repair_queries": 1,
+              "future_unique_repair_pages": 1,
+              "history_repair_pages": 11,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 1,
+              "future_repair_page_events": 2,
+              "future_repair_queries": 2,
+              "future_unique_repair_pages": 2,
+              "history_repair_pages": 10,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 2,
+              "future_repair_page_events": 3,
+              "future_repair_queries": 3,
+              "future_unique_repair_pages": 3,
+              "history_repair_pages": 9,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 3,
+              "future_repair_page_events": 3,
+              "future_repair_queries": 3,
+              "future_unique_repair_pages": 3,
+              "history_repair_pages": 9,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 4,
+              "future_repair_page_events": 3,
+              "future_repair_queries": 3,
+              "future_unique_repair_pages": 3,
+              "history_repair_pages": 9,
+              "unique_page_overlap_fraction": 0.0
+            }
+          ],
+          "future_repair_queries": 12,
+          "unique_page_overlap_fraction_weighted": 0.0
+        },
+        "50": {
+          "depth": 50,
+          "event_overlap_fraction_weighted": 0.0,
+          "folds": [
+            {
+              "event_overlap_fraction": null,
+              "fold": 0,
+              "future_repair_page_events": 0,
+              "future_repair_queries": 0,
+              "future_unique_repair_pages": 0,
+              "history_repair_pages": 4,
+              "unique_page_overlap_fraction": null
+            },
+            {
+              "event_overlap_fraction": null,
+              "fold": 1,
+              "future_repair_page_events": 0,
+              "future_repair_queries": 0,
+              "future_unique_repair_pages": 0,
+              "history_repair_pages": 4,
+              "unique_page_overlap_fraction": null
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 2,
+              "future_repair_page_events": 1,
+              "future_repair_queries": 1,
+              "future_unique_repair_pages": 1,
+              "history_repair_pages": 3,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 3,
+              "future_repair_page_events": 3,
+              "future_repair_queries": 3,
+              "future_unique_repair_pages": 3,
+              "history_repair_pages": 1,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": null,
+              "fold": 4,
+              "future_repair_page_events": 0,
+              "future_repair_queries": 0,
+              "future_unique_repair_pages": 0,
+              "history_repair_pages": 4,
+              "unique_page_overlap_fraction": null
+            }
+          ],
+          "future_repair_queries": 4,
+          "unique_page_overlap_fraction_weighted": 0.0
+        }
+      }
+    },
+    "vidore_v3_finance_en": {
+      "corpus_pages": 2942,
+      "input_sha256": {
+        "qrels": "8fa8613e7244c60332584b4a64186da31d979b4fb0c0d4cc6be10ad86d6b0336",
+        "text_runtime": "55bf5d9921a5df5151d346db394fbf4e0069b1751ec787117853fc4f1b67fa65",
+        "visual_runtime": "a6bbbf5bb26dadd4d060df40b225d9511b05a8470b574b71463ca4eadb635944"
+      },
+      "locator_curves": {
+        "1": {
+          "boundary": {
+            "both_hit_queries": 106,
+            "mean_first_relevant_rank_delta_visual_minus_text_on_both_hit": 0.0,
+            "text_miss_fraction": 0.4692556634304207,
+            "text_miss_queries": 145,
+            "visual_harm_queries": 58,
+            "visual_repair_queries": 43,
+            "visual_repairs_fraction_of_text_misses": 0.296551724137931
+          },
+          "depth": 1,
+          "queries": 309,
+          "text": {
+            "optimistic_pages_analyzed_mean": 1.0,
+            "optimistic_pages_analyzed_p95": 1.0,
+            "query_hit_rate": 0.5307443365695793,
+            "weighted_recall": 0.14239656098871575
+          },
+          "visual": {
+            "optimistic_pages_analyzed_mean": 1.0,
+            "optimistic_pages_analyzed_p95": 1.0,
+            "query_hit_rate": 0.48220064724919093,
+            "weighted_recall": 0.12842557764642665
+          }
+        },
+        "10": {
+          "boundary": {
+            "both_hit_queries": 243,
+            "mean_first_relevant_rank_delta_visual_minus_text_on_both_hit": 0.04938271604938271,
+            "text_miss_fraction": 0.10355987055016182,
+            "text_miss_queries": 32,
+            "visual_harm_queries": 34,
+            "visual_repair_queries": 22,
+            "visual_repairs_fraction_of_text_misses": 0.6875
+          },
+          "depth": 10,
+          "queries": 309,
+          "text": {
+            "optimistic_pages_analyzed_mean": 3.0323624595469254,
+            "optimistic_pages_analyzed_p95": 10.0,
+            "query_hit_rate": 0.8964401294498382,
+            "weighted_recall": 0.4411606663084363
+          },
+          "visual": {
+            "optimistic_pages_analyzed_mean": 3.3980582524271843,
+            "optimistic_pages_analyzed_p95": 10.0,
+            "query_hit_rate": 0.8576051779935275,
+            "weighted_recall": 0.4078452444922085
+          }
+        },
+        "100": {
+          "boundary": {
+            "both_hit_queries": 299,
+            "mean_first_relevant_rank_delta_visual_minus_text_on_both_hit": 0.8528428093645485,
+            "text_miss_fraction": 0.003236245954692557,
+            "text_miss_queries": 1,
+            "visual_harm_queries": 9,
+            "visual_repair_queries": 1,
+            "visual_repairs_fraction_of_text_misses": 1.0
+          },
+          "depth": 100,
+          "queries": 309,
+          "text": {
+            "optimistic_pages_analyzed_mean": 5.485436893203883,
+            "optimistic_pages_analyzed_p95": 28.799999999999898,
+            "query_hit_rate": 0.9967637540453075,
+            "weighted_recall": 0.799570123589468
+          },
+          "visual": {
+            "optimistic_pages_analyzed_mean": 8.553398058252426,
+            "optimistic_pages_analyzed_p95": 49.599999999999966,
+            "query_hit_rate": 0.970873786407767,
+            "weighted_recall": 0.7528210639441161
+          }
+        },
+        "20": {
+          "boundary": {
+            "both_hit_queries": 262,
+            "mean_first_relevant_rank_delta_visual_minus_text_on_both_hit": 0.2786259541984733,
+            "text_miss_fraction": 0.06796116504854369,
+            "text_miss_queries": 21,
+            "visual_harm_queries": 26,
+            "visual_repair_queries": 17,
+            "visual_repairs_fraction_of_text_misses": 0.8095238095238095
+          },
+          "depth": 20,
+          "queries": 309,
+          "text": {
+            "optimistic_pages_analyzed_mean": 3.8576051779935274,
+            "optimistic_pages_analyzed_p95": 20.0,
+            "query_hit_rate": 0.9320388349514563,
+            "weighted_recall": 0.5507791509940893
+          },
+          "visual": {
+            "optimistic_pages_analyzed_mean": 4.524271844660194,
+            "optimistic_pages_analyzed_p95": 20.0,
+            "query_hit_rate": 0.9029126213592233,
+            "weighted_recall": 0.5104782375067168
+          }
+        },
+        "5": {
+          "boundary": {
+            "both_hit_queries": 206,
+            "mean_first_relevant_rank_delta_visual_minus_text_on_both_hit": 0.08737864077669903,
+            "text_miss_fraction": 0.20388349514563106,
+            "text_miss_queries": 63,
+            "visual_harm_queries": 40,
+            "visual_repair_queries": 33,
+            "visual_repairs_fraction_of_text_misses": 0.5238095238095238
+          },
+          "depth": 5,
+          "queries": 309,
+          "text": {
+            "optimistic_pages_analyzed_mean": 2.2750809061488675,
+            "optimistic_pages_analyzed_p95": 5.0,
+            "query_hit_rate": 0.7961165048543689,
+            "weighted_recall": 0.3358409457281032
+          },
+          "visual": {
+            "optimistic_pages_analyzed_mean": 2.469255663430421,
+            "optimistic_pages_analyzed_p95": 5.0,
+            "query_hit_rate": 0.7734627831715211,
+            "weighted_recall": 0.307898979043525
+          }
+        },
+        "50": {
+          "boundary": {
+            "both_hit_queries": 287,
+            "mean_first_relevant_rank_delta_visual_minus_text_on_both_hit": 0.6236933797909407,
+            "text_miss_fraction": 0.022653721682847898,
+            "text_miss_queries": 7,
+            "visual_harm_queries": 15,
+            "visual_repair_queries": 7,
+            "visual_repairs_fraction_of_text_misses": 1.0
+          },
+          "depth": 50,
+          "queries": 309,
+          "text": {
+            "optimistic_pages_analyzed_mean": 5.207119741100324,
+            "optimistic_pages_analyzed_p95": 28.799999999999898,
+            "query_hit_rate": 0.9773462783171522,
+            "weighted_recall": 0.6904889844169801
+          },
+          "visual": {
+            "optimistic_pages_analyzed_mean": 6.605177993527508,
+            "optimistic_pages_analyzed_p95": 49.599999999999966,
+            "query_hit_rate": 0.9514563106796117,
+            "weighted_recall": 0.6432025792584632
+          }
+        }
+      },
+      "queries": 309,
+      "repair_reuse_crossfit": {
+        "1": {
+          "depth": 1,
+          "event_overlap_fraction_weighted": 0.09302325581395349,
+          "folds": [
+            {
+              "event_overlap_fraction": 0.14285714285714285,
+              "fold": 0,
+              "future_repair_page_events": 7,
+              "future_repair_queries": 7,
+              "future_unique_repair_pages": 7,
+              "history_repair_pages": 35,
+              "unique_page_overlap_fraction": 0.14285714285714285
+            },
+            {
+              "event_overlap_fraction": 0.2222222222222222,
+              "fold": 1,
+              "future_repair_page_events": 9,
+              "future_repair_queries": 9,
+              "future_unique_repair_pages": 9,
+              "history_repair_pages": 34,
+              "unique_page_overlap_fraction": 0.2222222222222222
+            },
+            {
+              "event_overlap_fraction": 0.09090909090909091,
+              "fold": 2,
+              "future_repair_page_events": 11,
+              "future_repair_queries": 11,
+              "future_unique_repair_pages": 11,
+              "history_repair_pages": 31,
+              "unique_page_overlap_fraction": 0.09090909090909091
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 3,
+              "future_repair_page_events": 8,
+              "future_repair_queries": 8,
+              "future_unique_repair_pages": 8,
+              "history_repair_pages": 33,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 4,
+              "future_repair_page_events": 8,
+              "future_repair_queries": 8,
+              "future_unique_repair_pages": 8,
+              "history_repair_pages": 33,
+              "unique_page_overlap_fraction": 0.0
+            }
+          ],
+          "future_repair_queries": 43,
+          "unique_page_overlap_fraction_weighted": 0.09302325581395349
+        },
+        "10": {
+          "depth": 10,
+          "event_overlap_fraction_weighted": 0.0,
+          "folds": [
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 0,
+              "future_repair_page_events": 5,
+              "future_repair_queries": 4,
+              "future_unique_repair_pages": 5,
+              "history_repair_pages": 27,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 1,
+              "future_repair_page_events": 3,
+              "future_repair_queries": 3,
+              "future_unique_repair_pages": 3,
+              "history_repair_pages": 29,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 2,
+              "future_repair_page_events": 8,
+              "future_repair_queries": 6,
+              "future_unique_repair_pages": 7,
+              "history_repair_pages": 25,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 3,
+              "future_repair_page_events": 3,
+              "future_repair_queries": 3,
+              "future_unique_repair_pages": 3,
+              "history_repair_pages": 29,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 4,
+              "future_repair_page_events": 14,
+              "future_repair_queries": 6,
+              "future_unique_repair_pages": 14,
+              "history_repair_pages": 18,
+              "unique_page_overlap_fraction": 0.0
+            }
+          ],
+          "future_repair_queries": 22,
+          "unique_page_overlap_fraction_weighted": 0.0
+        },
+        "100": {
+          "depth": 100,
+          "event_overlap_fraction_weighted": 0.0,
+          "folds": [
+            {
+              "event_overlap_fraction": null,
+              "fold": 0,
+              "future_repair_page_events": 0,
+              "future_repair_queries": 0,
+              "future_unique_repair_pages": 0,
+              "history_repair_pages": 1,
+              "unique_page_overlap_fraction": null
+            },
+            {
+              "event_overlap_fraction": null,
+              "fold": 1,
+              "future_repair_page_events": 0,
+              "future_repair_queries": 0,
+              "future_unique_repair_pages": 0,
+              "history_repair_pages": 1,
+              "unique_page_overlap_fraction": null
+            },
+            {
+              "event_overlap_fraction": null,
+              "fold": 2,
+              "future_repair_page_events": 0,
+              "future_repair_queries": 0,
+              "future_unique_repair_pages": 0,
+              "history_repair_pages": 1,
+              "unique_page_overlap_fraction": null
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 3,
+              "future_repair_page_events": 1,
+              "future_repair_queries": 1,
+              "future_unique_repair_pages": 1,
+              "history_repair_pages": 0,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": null,
+              "fold": 4,
+              "future_repair_page_events": 0,
+              "future_repair_queries": 0,
+              "future_unique_repair_pages": 0,
+              "history_repair_pages": 1,
+              "unique_page_overlap_fraction": null
+            }
+          ],
+          "future_repair_queries": 1,
+          "unique_page_overlap_fraction_weighted": 0.0
+        },
+        "20": {
+          "depth": 20,
+          "event_overlap_fraction_weighted": 0.0625,
+          "folds": [
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 0,
+              "future_repair_page_events": 6,
+              "future_repair_queries": 3,
+              "future_unique_repair_pages": 6,
+              "history_repair_pages": 24,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": 0.3333333333333333,
+              "fold": 1,
+              "future_repair_page_events": 3,
+              "future_repair_queries": 3,
+              "future_unique_repair_pages": 3,
+              "history_repair_pages": 28,
+              "unique_page_overlap_fraction": 0.3333333333333333
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 2,
+              "future_repair_page_events": 9,
+              "future_repair_queries": 6,
+              "future_unique_repair_pages": 8,
+              "history_repair_pages": 22,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 3,
+              "future_repair_page_events": 2,
+              "future_repair_queries": 2,
+              "future_unique_repair_pages": 2,
+              "history_repair_pages": 28,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": 0.08333333333333333,
+              "fold": 4,
+              "future_repair_page_events": 12,
+              "future_repair_queries": 3,
+              "future_unique_repair_pages": 12,
+              "history_repair_pages": 19,
+              "unique_page_overlap_fraction": 0.08333333333333333
+            }
+          ],
+          "future_repair_queries": 17,
+          "unique_page_overlap_fraction_weighted": 0.06451612903225806
+        },
+        "5": {
+          "depth": 5,
+          "event_overlap_fraction_weighted": 0.09090909090909091,
+          "folds": [
+            {
+              "event_overlap_fraction": 0.2,
+              "fold": 0,
+              "future_repair_page_events": 5,
+              "future_repair_queries": 4,
+              "future_unique_repair_pages": 5,
+              "history_repair_pages": 38,
+              "unique_page_overlap_fraction": 0.2
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 1,
+              "future_repair_page_events": 5,
+              "future_repair_queries": 5,
+              "future_unique_repair_pages": 5,
+              "history_repair_pages": 37,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": 0.2,
+              "fold": 2,
+              "future_repair_page_events": 10,
+              "future_repair_queries": 7,
+              "future_unique_repair_pages": 10,
+              "history_repair_pages": 34,
+              "unique_page_overlap_fraction": 0.2
+            },
+            {
+              "event_overlap_fraction": 0.16666666666666666,
+              "fold": 3,
+              "future_repair_page_events": 6,
+              "future_repair_queries": 5,
+              "future_unique_repair_pages": 6,
+              "history_repair_pages": 37,
+              "unique_page_overlap_fraction": 0.16666666666666666
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 4,
+              "future_repair_page_events": 18,
+              "future_repair_queries": 12,
+              "future_unique_repair_pages": 18,
+              "history_repair_pages": 24,
+              "unique_page_overlap_fraction": 0.0
+            }
+          ],
+          "future_repair_queries": 33,
+          "unique_page_overlap_fraction_weighted": 0.09090909090909091
+        },
+        "50": {
+          "depth": 50,
+          "event_overlap_fraction_weighted": 0.0,
+          "folds": [
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 0,
+              "future_repair_page_events": 3,
+              "future_repair_queries": 2,
+              "future_unique_repair_pages": 3,
+              "history_repair_pages": 18,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 1,
+              "future_repair_page_events": 1,
+              "future_repair_queries": 1,
+              "future_unique_repair_pages": 1,
+              "history_repair_pages": 20,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 2,
+              "future_repair_page_events": 2,
+              "future_repair_queries": 1,
+              "future_unique_repair_pages": 2,
+              "history_repair_pages": 19,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 3,
+              "future_repair_page_events": 1,
+              "future_repair_queries": 1,
+              "future_unique_repair_pages": 1,
+              "history_repair_pages": 20,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 4,
+              "future_repair_page_events": 14,
+              "future_repair_queries": 2,
+              "future_unique_repair_pages": 14,
+              "history_repair_pages": 7,
+              "unique_page_overlap_fraction": 0.0
+            }
+          ],
+          "future_repair_queries": 7,
+          "unique_page_overlap_fraction_weighted": 0.0
+        }
+      }
+    },
+    "vidore_v3_hr": {
+      "corpus_pages": 1110,
+      "input_sha256": {
+        "qrels": "5557a6d1f641b3db01a839b67cb52a6a6a8e87a60d2f3642110034414bc5511d",
+        "text_runtime": "f057d766ab4d50e2cab00f3ecb63d15de0bf0b2b4840ec29330a38d045a1bc84",
+        "visual_runtime": "8a6e8ec222a446c2499c89b3fc92294ab641f1b338b4c789c90e4917025c7eef"
+      },
+      "locator_curves": {
+        "1": {
+          "boundary": {
+            "both_hit_queries": 98,
+            "mean_first_relevant_rank_delta_visual_minus_text_on_both_hit": 0.0,
+            "text_miss_fraction": 0.5408805031446541,
+            "text_miss_queries": 172,
+            "visual_harm_queries": 48,
+            "visual_repair_queries": 65,
+            "visual_repairs_fraction_of_text_misses": 0.37790697674418605
+          },
+          "depth": 1,
+          "queries": 318,
+          "text": {
+            "optimistic_pages_analyzed_mean": 1.0,
+            "optimistic_pages_analyzed_p95": 1.0,
+            "query_hit_rate": 0.4591194968553459,
+            "weighted_recall": 0.1058648111332008
+          },
+          "visual": {
+            "optimistic_pages_analyzed_mean": 1.0,
+            "optimistic_pages_analyzed_p95": 1.0,
+            "query_hit_rate": 0.5125786163522013,
+            "weighted_recall": 0.12326043737574553
+          }
+        },
+        "10": {
+          "boundary": {
+            "both_hit_queries": 256,
+            "mean_first_relevant_rank_delta_visual_minus_text_on_both_hit": -0.0234375,
+            "text_miss_fraction": 0.13836477987421383,
+            "text_miss_queries": 44,
+            "visual_harm_queries": 18,
+            "visual_repair_queries": 28,
+            "visual_repairs_fraction_of_text_misses": 0.6363636363636364
+          },
+          "depth": 10,
+          "queries": 318,
+          "text": {
+            "optimistic_pages_analyzed_mean": 3.4213836477987423,
+            "optimistic_pages_analyzed_p95": 10.0,
+            "query_hit_rate": 0.8616352201257862,
+            "weighted_recall": 0.4085487077534791
+          },
+          "visual": {
+            "optimistic_pages_analyzed_mean": 3.138364779874214,
+            "optimistic_pages_analyzed_p95": 10.0,
+            "query_hit_rate": 0.8930817610062893,
+            "weighted_recall": 0.43389662027833004
+          }
+        },
+        "100": {
+          "boundary": {
+            "both_hit_queries": 302,
+            "mean_first_relevant_rank_delta_visual_minus_text_on_both_hit": -0.4900662251655629,
+            "text_miss_fraction": 0.03773584905660377,
+            "text_miss_queries": 12,
+            "visual_harm_queries": 4,
+            "visual_repair_queries": 10,
+            "visual_repairs_fraction_of_text_misses": 0.8333333333333334
+          },
+          "depth": 100,
+          "queries": 318,
+          "text": {
+            "optimistic_pages_analyzed_mean": 8.930817610062894,
+            "optimistic_pages_analyzed_p95": 61.44999999999993,
+            "query_hit_rate": 0.9622641509433962,
+            "weighted_recall": 0.7957256461232605
+          },
+          "visual": {
+            "optimistic_pages_analyzed_mean": 7.386792452830188,
+            "optimistic_pages_analyzed_p95": 41.0,
+            "query_hit_rate": 0.9811320754716981,
+            "weighted_recall": 0.827037773359841
+          }
+        },
+        "20": {
+          "boundary": {
+            "both_hit_queries": 275,
+            "mean_first_relevant_rank_delta_visual_minus_text_on_both_hit": -0.21454545454545454,
+            "text_miss_fraction": 0.09748427672955975,
+            "text_miss_queries": 31,
+            "visual_harm_queries": 12,
+            "visual_repair_queries": 19,
+            "visual_repairs_fraction_of_text_misses": 0.6129032258064516
+          },
+          "depth": 20,
+          "queries": 318,
+          "text": {
+            "optimistic_pages_analyzed_mean": 4.562893081761007,
+            "optimistic_pages_analyzed_p95": 20.0,
+            "query_hit_rate": 0.9025157232704403,
+            "weighted_recall": 0.5382703777335984
+          },
+          "visual": {
+            "optimistic_pages_analyzed_mean": 3.99685534591195,
+            "optimistic_pages_analyzed_p95": 20.0,
+            "query_hit_rate": 0.9245283018867925,
+            "weighted_recall": 0.5745526838966203
+          }
+        },
+        "5": {
+          "boundary": {
+            "both_hit_queries": 215,
+            "mean_first_relevant_rank_delta_visual_minus_text_on_both_hit": -0.12093023255813953,
+            "text_miss_fraction": 0.22955974842767296,
+            "text_miss_queries": 73,
+            "visual_harm_queries": 30,
+            "visual_repair_queries": 37,
+            "visual_repairs_fraction_of_text_misses": 0.5068493150684932
+          },
+          "depth": 5,
+          "queries": 318,
+          "text": {
+            "optimistic_pages_analyzed_mean": 2.4779874213836477,
+            "optimistic_pages_analyzed_p95": 5.0,
+            "query_hit_rate": 0.7704402515723271,
+            "weighted_recall": 0.297713717693837
+          },
+          "visual": {
+            "optimistic_pages_analyzed_mean": 2.330188679245283,
+            "optimistic_pages_analyzed_p95": 5.0,
+            "query_hit_rate": 0.7924528301886793,
+            "weighted_recall": 0.31610337972166996
+          }
+        },
+        "50": {
+          "boundary": {
+            "both_hit_queries": 294,
+            "mean_first_relevant_rank_delta_visual_minus_text_on_both_hit": -0.6802721088435374,
+            "text_miss_fraction": 0.05345911949685535,
+            "text_miss_queries": 17,
+            "visual_harm_queries": 7,
+            "visual_repair_queries": 11,
+            "visual_repairs_fraction_of_text_misses": 0.6470588235294118
+          },
+          "depth": 50,
+          "queries": 318,
+          "text": {
+            "optimistic_pages_analyzed_mean": 6.644654088050315,
+            "optimistic_pages_analyzed_p95": 50.0,
+            "query_hit_rate": 0.9465408805031447,
+            "weighted_recall": 0.6978131212723658
+          },
+          "visual": {
+            "optimistic_pages_analyzed_mean": 5.720125786163522,
+            "optimistic_pages_analyzed_p95": 41.0,
+            "query_hit_rate": 0.9591194968553459,
+            "weighted_recall": 0.7365805168986084
+          }
+        }
+      },
+      "queries": 318,
+      "repair_reuse_crossfit": {
+        "1": {
+          "depth": 1,
+          "event_overlap_fraction_weighted": 0.15384615384615385,
+          "folds": [
+            {
+              "event_overlap_fraction": 0.15384615384615385,
+              "fold": 0,
+              "future_repair_page_events": 13,
+              "future_repair_queries": 13,
+              "future_unique_repair_pages": 13,
+              "history_repair_pages": 48,
+              "unique_page_overlap_fraction": 0.15384615384615385
+            },
+            {
+              "event_overlap_fraction": 0.23076923076923078,
+              "fold": 1,
+              "future_repair_page_events": 13,
+              "future_repair_queries": 13,
+              "future_unique_repair_pages": 13,
+              "history_repair_pages": 49,
+              "unique_page_overlap_fraction": 0.23076923076923078
+            },
+            {
+              "event_overlap_fraction": 0.14285714285714285,
+              "fold": 2,
+              "future_repair_page_events": 14,
+              "future_repair_queries": 14,
+              "future_unique_repair_pages": 14,
+              "history_repair_pages": 47,
+              "unique_page_overlap_fraction": 0.14285714285714285
+            },
+            {
+              "event_overlap_fraction": 0.125,
+              "fold": 3,
+              "future_repair_page_events": 8,
+              "future_repair_queries": 8,
+              "future_unique_repair_pages": 8,
+              "history_repair_pages": 52,
+              "unique_page_overlap_fraction": 0.125
+            },
+            {
+              "event_overlap_fraction": 0.11764705882352941,
+              "fold": 4,
+              "future_repair_page_events": 17,
+              "future_repair_queries": 17,
+              "future_unique_repair_pages": 17,
+              "history_repair_pages": 44,
+              "unique_page_overlap_fraction": 0.11764705882352941
+            }
+          ],
+          "future_repair_queries": 65,
+          "unique_page_overlap_fraction_weighted": 0.15384615384615385
+        },
+        "10": {
+          "depth": 10,
+          "event_overlap_fraction_weighted": 0.0425531914893617,
+          "folds": [
+            {
+              "event_overlap_fraction": 0.2,
+              "fold": 0,
+              "future_repair_page_events": 5,
+              "future_repair_queries": 5,
+              "future_unique_repair_pages": 5,
+              "history_repair_pages": 42,
+              "unique_page_overlap_fraction": 0.2
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 1,
+              "future_repair_page_events": 12,
+              "future_repair_queries": 7,
+              "future_unique_repair_pages": 12,
+              "history_repair_pages": 34,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": 0.08333333333333333,
+              "fold": 2,
+              "future_repair_page_events": 12,
+              "future_repair_queries": 7,
+              "future_unique_repair_pages": 12,
+              "history_repair_pages": 35,
+              "unique_page_overlap_fraction": 0.08333333333333333
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 3,
+              "future_repair_page_events": 11,
+              "future_repair_queries": 6,
+              "future_unique_repair_pages": 11,
+              "history_repair_pages": 35,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 4,
+              "future_repair_page_events": 7,
+              "future_repair_queries": 3,
+              "future_unique_repair_pages": 7,
+              "history_repair_pages": 39,
+              "unique_page_overlap_fraction": 0.0
+            }
+          ],
+          "future_repair_queries": 28,
+          "unique_page_overlap_fraction_weighted": 0.0425531914893617
+        },
+        "100": {
+          "depth": 100,
+          "event_overlap_fraction_weighted": 0.11764705882352941,
+          "folds": [
+            {
+              "event_overlap_fraction": 0.16666666666666666,
+              "fold": 0,
+              "future_repair_page_events": 6,
+              "future_repair_queries": 5,
+              "future_unique_repair_pages": 6,
+              "history_repair_pages": 11,
+              "unique_page_overlap_fraction": 0.16666666666666666
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 1,
+              "future_repair_page_events": 2,
+              "future_repair_queries": 1,
+              "future_unique_repair_pages": 2,
+              "history_repair_pages": 14,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 2,
+              "future_repair_page_events": 6,
+              "future_repair_queries": 2,
+              "future_unique_repair_pages": 6,
+              "history_repair_pages": 10,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": 0.3333333333333333,
+              "fold": 3,
+              "future_repair_page_events": 3,
+              "future_repair_queries": 2,
+              "future_unique_repair_pages": 3,
+              "history_repair_pages": 14,
+              "unique_page_overlap_fraction": 0.3333333333333333
+            },
+            {
+              "event_overlap_fraction": null,
+              "fold": 4,
+              "future_repair_page_events": 0,
+              "future_repair_queries": 0,
+              "future_unique_repair_pages": 0,
+              "history_repair_pages": 16,
+              "unique_page_overlap_fraction": null
+            }
+          ],
+          "future_repair_queries": 10,
+          "unique_page_overlap_fraction_weighted": 0.11764705882352941
+        },
+        "20": {
+          "depth": 20,
+          "event_overlap_fraction_weighted": 0.07142857142857142,
+          "folds": [
+            {
+              "event_overlap_fraction": 0.2,
+              "fold": 0,
+              "future_repair_page_events": 5,
+              "future_repair_queries": 5,
+              "future_unique_repair_pages": 5,
+              "history_repair_pages": 23,
+              "unique_page_overlap_fraction": 0.2
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 1,
+              "future_repair_page_events": 4,
+              "future_repair_queries": 4,
+              "future_unique_repair_pages": 4,
+              "history_repair_pages": 23,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": 0.14285714285714285,
+              "fold": 2,
+              "future_repair_page_events": 7,
+              "future_repair_queries": 5,
+              "future_unique_repair_pages": 7,
+              "history_repair_pages": 21,
+              "unique_page_overlap_fraction": 0.14285714285714285
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 3,
+              "future_repair_page_events": 5,
+              "future_repair_queries": 3,
+              "future_unique_repair_pages": 5,
+              "history_repair_pages": 22,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 4,
+              "future_repair_page_events": 7,
+              "future_repair_queries": 2,
+              "future_unique_repair_pages": 7,
+              "history_repair_pages": 20,
+              "unique_page_overlap_fraction": 0.0
+            }
+          ],
+          "future_repair_queries": 19,
+          "unique_page_overlap_fraction_weighted": 0.07142857142857142
+        },
+        "5": {
+          "depth": 5,
+          "event_overlap_fraction_weighted": 0.04081632653061224,
+          "folds": [
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 0,
+              "future_repair_page_events": 5,
+              "future_repair_queries": 4,
+              "future_unique_repair_pages": 5,
+              "history_repair_pages": 43,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": 0.09090909090909091,
+              "fold": 1,
+              "future_repair_page_events": 11,
+              "future_repair_queries": 9,
+              "future_unique_repair_pages": 11,
+              "history_repair_pages": 38,
+              "unique_page_overlap_fraction": 0.09090909090909091
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 2,
+              "future_repair_page_events": 10,
+              "future_repair_queries": 8,
+              "future_unique_repair_pages": 10,
+              "history_repair_pages": 38,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 3,
+              "future_repair_page_events": 12,
+              "future_repair_queries": 9,
+              "future_unique_repair_pages": 12,
+              "history_repair_pages": 36,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": 0.09090909090909091,
+              "fold": 4,
+              "future_repair_page_events": 11,
+              "future_repair_queries": 7,
+              "future_unique_repair_pages": 11,
+              "history_repair_pages": 38,
+              "unique_page_overlap_fraction": 0.09090909090909091
+            }
+          ],
+          "future_repair_queries": 37,
+          "unique_page_overlap_fraction_weighted": 0.04081632653061224
+        },
+        "50": {
+          "depth": 50,
+          "event_overlap_fraction_weighted": 0.15384615384615385,
+          "folds": [
+            {
+              "event_overlap_fraction": 0.2,
+              "fold": 0,
+              "future_repair_page_events": 5,
+              "future_repair_queries": 5,
+              "future_unique_repair_pages": 5,
+              "history_repair_pages": 8,
+              "unique_page_overlap_fraction": 0.2
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 1,
+              "future_repair_page_events": 2,
+              "future_repair_queries": 2,
+              "future_unique_repair_pages": 2,
+              "history_repair_pages": 10,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": 0.25,
+              "fold": 2,
+              "future_repair_page_events": 4,
+              "future_repair_queries": 3,
+              "future_unique_repair_pages": 4,
+              "history_repair_pages": 9,
+              "unique_page_overlap_fraction": 0.25
+            },
+            {
+              "event_overlap_fraction": 0.0,
+              "fold": 3,
+              "future_repair_page_events": 2,
+              "future_repair_queries": 1,
+              "future_unique_repair_pages": 2,
+              "history_repair_pages": 10,
+              "unique_page_overlap_fraction": 0.0
+            },
+            {
+              "event_overlap_fraction": null,
+              "fold": 4,
+              "future_repair_page_events": 0,
+              "future_repair_queries": 0,
+              "future_unique_repair_pages": 0,
+              "history_repair_pages": 12,
+              "unique_page_overlap_fraction": null
+            }
+          ],
+          "future_repair_queries": 11,
+          "unique_page_overlap_fraction_weighted": 0.15384615384615385
+        }
+      }
+    }
+  },
+  "gate": {
+    "depth": 20,
+    "domains": {
+      "irpapers": {
+        "checks": {
+          "enough_text_misses": true,
+          "repair_events_recur": false,
+          "visual_repairs_enough_misses": true
+        },
+        "depth": 20,
+        "passes": false,
+        "repair_event_overlap_fraction": 0.0,
+        "text_miss_fraction": 0.07222222222222222,
+        "text_miss_queries": 13,
+        "visual_repair_queries": 6,
+        "visual_repairs_fraction_of_text_misses": 0.46153846153846156
+      },
+      "vidore_v3_finance_en": {
+        "checks": {
+          "enough_text_misses": true,
+          "repair_events_recur": false,
+          "visual_repairs_enough_misses": true
+        },
+        "depth": 20,
+        "passes": false,
+        "repair_event_overlap_fraction": 0.0625,
+        "text_miss_fraction": 0.06796116504854369,
+        "text_miss_queries": 21,
+        "visual_repair_queries": 17,
+        "visual_repairs_fraction_of_text_misses": 0.8095238095238095
+      },
+      "vidore_v3_hr": {
+        "checks": {
+          "enough_text_misses": true,
+          "repair_events_recur": false,
+          "visual_repairs_enough_misses": true
+        },
+        "depth": 20,
+        "passes": false,
+        "repair_event_overlap_fraction": 0.07142857142857142,
+        "text_miss_fraction": 0.09748427672955975,
+        "text_miss_queries": 31,
+        "visual_repair_queries": 19,
+        "visual_repairs_fraction_of_text_misses": 0.6129032258064516
+      }
+    },
+    "passes_phase_diagram_gate": false,
+    "passing_domains": 0,
+    "required_domains": 2
+  },
+  "protocol_config_sha256": "d2490ef118b5df93b42f68c494f7ad7b9a01876931249dba632629c8286a100a",
+  "protocol_id": "defer-materialize-boundary-v0-2026-08-07",
+  "schema_version": 1,
+  "status": "complete",
+  "warning": "Retrieval surfaces measure localization only; they do not stand in for query-conditioned VLM answer quality or latency."
+}
