@@ -13,12 +13,13 @@ readonly INCLUDE_FULL="${AUTODL_INCLUDE_FULL:-1}"
 readonly ANALYZE_MATRIX="${AUTODL_ANALYZE_MATRIX:-1}"
 readonly RELEASE_INDEX="${AUTODL_RELEASE_INDEX_AFTER_RECEIPT:-0}"
 readonly FULL_CASE_ROOT="${AUTODL_FULL_CASE_ROOT:-${OUTPUT_ROOT}/full-100}"
+readonly QUERY_SPLITS="${AUTODL_QUERY_SPLITS:-${PREP_ROOT}/query-splits.json}"
 
 if [[ ! "${DOMAIN}" =~ ^[a-z0-9-]+$ ]]; then
   echo "invalid domain: ${DOMAIN}" >&2
   exit 2
 fi
-for path in "${PREP_ROOT}/manifest.json" "${DATASET_ROOT}/corpus.jsonl" \
+for path in "${PREP_ROOT}/manifest.json" "${QUERY_SPLITS}" "${DATASET_ROOT}/corpus.jsonl" \
   "${DATASET_ROOT}/queries.jsonl" "${DATASET_ROOT}/qrels.jsonl"; do
   if [[ ! -f "${path}" ]]; then
     echo "missing required file: ${path}" >&2
@@ -150,6 +151,7 @@ else
     --dataset-root "${DATASET_ROOT}" \
     --matrix-root "${OUTPUT_ROOT}" \
     --full-case-root "${FULL_CASE_ROOT}" \
+    --query-splits "${QUERY_SPLITS}" \
     --output "${OUTPUT_ROOT}/physical-static-summary.json"
 fi
 

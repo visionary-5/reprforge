@@ -73,6 +73,17 @@ def _qrels(rows: list[dict[str, Any]]) -> dict[str, dict[str, float]]:
     return result
 
 
+def _query_subset(
+    rankings: dict[str, list[str]],
+    qrels: dict[str, dict[str, float]],
+    query_ids: set[str],
+) -> tuple[dict[str, list[str]], dict[str, dict[str, float]]]:
+    return (
+        {query_id: rankings[query_id] for query_id in sorted(query_ids)},
+        {query_id: qrels[query_id] for query_id in sorted(query_ids)},
+    )
+
+
 def _wall_seconds(path: Path) -> float:
     values = {}
     for line in path.read_text().splitlines():
@@ -139,6 +150,12 @@ def main() -> None:
     parser.add_argument("--dataset-root", type=Path, required=True)
     parser.add_argument("--matrix-root", type=Path, required=True)
     parser.add_argument(
+        "--query-splits",
+        type=Path,
+        required=True,
+        help="Frozen history/evaluation assignment produced by CPU preparation.",
+    )
+    parser.add_argument(
         "--full-case-root",
         type=Path,
         help="Optional independently measured Full case; defaults to MATRIX_ROOT/full-100.",
@@ -151,6 +168,17 @@ def main() -> None:
     corpus = _read_jsonl(args.dataset_root / "corpus.jsonl")
     queries = _read_jsonl(args.dataset_root / "queries.jsonl")
     qrels = _qrels(_read_jsonl(args.dataset_root / "qrels.jsonl"))
+    query_splits = json.loads(args.query_splits.read_text())
+    split = {str(key): int(value) for key, value in query_splits["queries"].items()}
+    if set(split) != set(qrels):
+        raise ValueError("frozen query split IDs differ from qrels")
+    evaluation_fold = int(query_splits["evaluation_fold"])
+    evaluation_query_ids = {
+        query_id for query_id, fold in split.items() if fold == evaluation_fold
+    }
+    history_query_ids = set(qrels) - evaluation_query_ids
+    if not evaluation_query_ids or not history_query_ids:
+        raise ValueError("history and held-out evaluation splits must both be non-empty")
     text, text_index_bytes = _bm25(corpus, queries, max(config["cheap_locator_depths"]))
     full_root = args.full_case_root or args.matrix_root / "full-100"
     full = _case(full_root)
@@ -163,13 +191,21 @@ def main() -> None:
     for case in [full, *cases]:
         if set(case["rankings"]) != query_ids:
             raise ValueError(f"{case['name']} query IDs differ from qrels")
-    text_eval = evaluate_rankings(text, qrels)
+    text_primary, qrels_primary = _query_subset(text, qrels, evaluation_query_ids)
+    text_eval = evaluate_rankings(text_primary, qrels_primary)
+    text_all_eval = evaluate_rankings(text, qrels)
     full_hybrid = {
         query_id: reciprocal_rank_fusion(text[query_id], full["rankings"][query_id])
         for query_id in qrels
     }
-    full_eval = evaluate_rankings(full_hybrid, qrels)
-    full_visual_eval = evaluate_rankings(full["rankings"], qrels)
+    full_hybrid_primary, _ = _query_subset(full_hybrid, qrels, evaluation_query_ids)
+    full_visual_primary, _ = _query_subset(
+        full["rankings"], qrels, evaluation_query_ids
+    )
+    full_eval = evaluate_rankings(full_hybrid_primary, qrels_primary)
+    full_visual_eval = evaluate_rankings(full_visual_primary, qrels_primary)
+    full_all_eval = evaluate_rankings(full_hybrid, qrels)
+    full_visual_all_eval = evaluate_rankings(full["rankings"], qrels)
     text_ndcg = float(text_eval["mean"]["ndcg_at_10"])
     full_ndcg = float(full_eval["mean"]["ndcg_at_10"])
     rows = []
@@ -178,11 +214,17 @@ def main() -> None:
             query_id: reciprocal_rank_fusion(text[query_id], case["rankings"][query_id])
             for query_id in qrels
         }
-        evaluation = evaluate_rankings(hybrid, qrels)
-        visual_evaluation = evaluate_rankings(case["rankings"], qrels)
+        hybrid_primary, _ = _query_subset(hybrid, qrels, evaluation_query_ids)
+        visual_primary, _ = _query_subset(
+            case["rankings"], qrels, evaluation_query_ids
+        )
+        evaluation = evaluate_rankings(hybrid_primary, qrels_primary)
+        visual_evaluation = evaluate_rankings(visual_primary, qrels_primary)
+        evaluation_all = evaluate_rankings(hybrid, qrels)
+        visual_evaluation_all = evaluate_rankings(case["rankings"], qrels)
         escaped = [
             query_id
-            for query_id in qrels
+            for query_id in qrels_primary
             if not set(text[query_id][:20]) & set(qrels[query_id])
         ]
         repaired = sum(
@@ -209,6 +251,15 @@ def main() -> None:
                 "bm25_top20_escape_queries": len(escaped),
                 "escape_queries_repaired_at_visual_top20": repaired,
                 "escape_repair_fraction": repaired / len(escaped) if escaped else None,
+                "all_queries_diagnostic": {
+                    "hybrid": evaluation_all["mean"],
+                    "visual_only": visual_evaluation_all["mean"],
+                    "ndcg_gain_recovery": gain_recovery(
+                        float(evaluation_all["mean"]["ndcg_at_10"]),
+                        float(text_all_eval["mean"]["ndcg_at_10"]),
+                        float(full_all_eval["mean"]["ndcg_at_10"]),
+                    ),
+                },
                 "artifacts": {
                     "ranking_sha256": _sha(case["ranking_path"]),
                     "run_manifest_sha256": case["run_manifest_sha256"],
@@ -225,6 +276,18 @@ def main() -> None:
             "text_only": text_eval["mean"],
             "full_visual_only": full_visual_eval["mean"],
             "full_hybrid": full_eval["mean"],
+        },
+        "all_queries_diagnostic_baselines": {
+            "text_only": text_all_eval["mean"],
+            "full_visual_only": full_visual_all_eval["mean"],
+            "full_hybrid": full_all_eval["mean"],
+        },
+        "evaluation_split": {
+            "primary": "held_out_evaluation_fold",
+            "history_queries": len(history_query_ids),
+            "evaluation_queries": len(evaluation_query_ids),
+            "evaluation_fold": evaluation_fold,
+            "query_splits_sha256": _sha(args.query_splits),
         },
         "full_physical": {
             "case_root": str(full_root.resolve()),
@@ -246,6 +309,7 @@ def main() -> None:
             "corpus": _sha(args.dataset_root / "corpus.jsonl"),
             "queries": _sha(args.dataset_root / "queries.jsonl"),
             "qrels": _sha(args.dataset_root / "qrels.jsonl"),
+            "query_splits": _sha(args.query_splits),
         },
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
