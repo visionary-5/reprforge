@@ -12,6 +12,7 @@ readonly BUDGETS="${AUTODL_BUDGETS:-005,020,040}"
 readonly INCLUDE_FULL="${AUTODL_INCLUDE_FULL:-1}"
 readonly ANALYZE_MATRIX="${AUTODL_ANALYZE_MATRIX:-1}"
 readonly RELEASE_INDEX="${AUTODL_RELEASE_INDEX_AFTER_RECEIPT:-0}"
+readonly FULL_CASE_ROOT="${AUTODL_FULL_CASE_ROOT:-${OUTPUT_ROOT}/full-100}"
 
 if [[ ! "${DOMAIN}" =~ ^[a-z0-9-]+$ ]]; then
   echo "invalid domain: ${DOMAIN}" >&2
@@ -148,6 +149,7 @@ else
     --config "${REPRFORGE_ROOT}/configs/progressive-visual-materialization-v0.json" \
     --dataset-root "${DATASET_ROOT}" \
     --matrix-root "${OUTPUT_ROOT}" \
+    --full-case-root "${FULL_CASE_ROOT}" \
     --output "${OUTPUT_ROOT}/physical-static-summary.json"
 fi
 

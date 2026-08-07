@@ -138,6 +138,11 @@ def main() -> None:
     parser.add_argument("--config", type=Path, required=True)
     parser.add_argument("--dataset-root", type=Path, required=True)
     parser.add_argument("--matrix-root", type=Path, required=True)
+    parser.add_argument(
+        "--full-case-root",
+        type=Path,
+        help="Optional independently measured Full case; defaults to MATRIX_ROOT/full-100.",
+    )
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     if args.output.exists():
@@ -147,7 +152,8 @@ def main() -> None:
     queries = _read_jsonl(args.dataset_root / "queries.jsonl")
     qrels = _qrels(_read_jsonl(args.dataset_root / "qrels.jsonl"))
     text, text_index_bytes = _bm25(corpus, queries, max(config["cheap_locator_depths"]))
-    full = _case(args.matrix_root / "full-100")
+    full_root = args.full_case_root or args.matrix_root / "full-100"
+    full = _case(full_root)
     cases = [
         _case(path)
         for path in sorted(args.matrix_root.iterdir())
@@ -221,8 +227,12 @@ def main() -> None:
             "full_hybrid": full_eval["mean"],
         },
         "full_physical": {
+            "case_root": str(full_root.resolve()),
             "build_wall_seconds": full["build_wall_seconds"],
             "index_bytes": full["index_bytes"],
+            "ranking_sha256": _sha(full["ranking_path"]),
+            "run_manifest_sha256": full["run_manifest_sha256"],
+            "case_receipt_sha256": full["case_receipt_sha256"],
         },
         "text_logical_index_bytes": text_index_bytes,
         "cases": rows,
