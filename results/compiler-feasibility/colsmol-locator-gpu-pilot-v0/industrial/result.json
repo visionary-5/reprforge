@@ -1,0 +1,110 @@
+{
+  "artifacts": {
+    "index_shards": 53,
+    "ranking": {
+      "path": "/root/autodl-tmp/outputs/colsmol-locator-industrial-v0/ranking.txt",
+      "sha256": "7683bd618ded26bf7b302b0fc7ed2e1ad928879d4a40aa7b06ca41281a4499fb"
+    }
+  },
+  "cohorts": {
+    "full_visual_repair_stress": {
+      "bm25_candidate_hit": {
+        "10": 0.0,
+        "100": 0.7878787878787878,
+        "20": 0.0,
+        "50": 0.48484848484848486
+      },
+      "colsmol_candidate_hit": {
+        "10": 0.45454545454545453,
+        "100": 0.9090909090909091,
+        "20": 0.48484848484848486,
+        "50": 0.6363636363636364
+      },
+      "colsmol_top100_metrics": {
+        "ndcg_at_10": 0.11266845593714447,
+        "query_hit": 0.9090909090909091,
+        "recall_at_20": 0.2151816741388934,
+        "recall_at_5": 0.09193404634581107
+      },
+      "hybrid_10_10": {
+        "candidate_hit": 0.45454545454545453,
+        "metrics": {
+          "ndcg_at_10": 0.0,
+          "query_hit": 0.45454545454545453,
+          "recall_at_20": 0.1741042330614523,
+          "recall_at_5": 0.0
+        }
+      },
+      "queries": 33
+    },
+    "main": {
+      "bm25_candidate_hit": {
+        "10": 0.73,
+        "100": 0.91,
+        "20": 0.78,
+        "50": 0.84
+      },
+      "colsmol_candidate_hit": {
+        "10": 0.71,
+        "100": 0.91,
+        "20": 0.78,
+        "50": 0.87
+      },
+      "colsmol_top100_metrics": {
+        "ndcg_at_10": 0.36899974527931745,
+        "query_hit": 0.91,
+        "recall_at_20": 0.5067316289138539,
+        "recall_at_5": 0.34239913560437857
+      },
+      "hybrid_10_10": {
+        "candidate_hit": 0.83,
+        "metrics": {
+          "ndcg_at_10": 0.4166874726418198,
+          "query_hit": 0.83,
+          "recall_at_20": 0.558363459359623,
+          "recall_at_5": 0.396666281785847
+        }
+      },
+      "queries": 100
+    }
+  },
+  "cost": {
+    "bm25": {
+      "build_seconds": 0.9359259270131588,
+      "logical_index_bytes": 6483457,
+      "score_all_queries_seconds": 3.5575173646211624
+    },
+    "logical_index_bytes": 1509602304,
+    "max_cuda_memory_mib": 2405.13427734375,
+    "mean_document_encode_seconds": 0.4812626916258777,
+    "mean_physical_index_bytes_per_page": 288165.9399313501,
+    "mean_score_seconds_per_query": 0.06210561537647837,
+    "new_document_encode_seconds": 2523.7415548861027,
+    "physical_index_bytes": 1511142189,
+    "query_encode_seconds": 0.5570655278861523,
+    "score_all_queries_seconds": 17.57588915154338
+  },
+  "dataset": {
+    "pages": 5244,
+    "queries": 283,
+    "root": "/root/autodl-tmp/datasets/vidore-v3-industrial",
+    "sha256": {
+      "config": "7aa9a848aa7a22d81f82d61542ce6e6a47b435978fe2e9ae1cfe8557099514d7",
+      "corpus": "68fa4dc83f1f1ce39022bd7d041e6615dee1af3435cd0690a59cbe0a36b6ca3e",
+      "full_visual_ranking": "7b268cdaa129d5c5bb14f4e5dbf544a0f9b7180c570012238dc1201a175d0016",
+      "qrels": "a97db5652f45589177dc3386cc082c86d44929e3ed5ea1e36ae8b2137c4a7b62",
+      "queries": "757d06855cf5f3ab51480d46b5795ab9fbe0f43483ee0584cd89738726f87736"
+    }
+  },
+  "model": {
+    "adapter_bytes": 44042137,
+    "adapter_path": "/root/autodl-tmp/models/colsmol-256m-adapter",
+    "base_bytes": 461286332,
+    "base_path": "/root/autodl-tmp/models/colsmol-256m-base",
+    "model_load_seconds": 1.0351903848350048
+  },
+  "protocol_id": "colsmol-locator-gpu-pilot-v0-2026-08-07",
+  "schema_version": 1,
+  "status": "complete",
+  "warning": "A lightweight visual locator plus refinement overlaps LightSTAR; two-stage retrieval alone is not a ReprForge contribution. The remaining claim must concern persistent heterogeneous representation state and lifecycle decisions."
+}
