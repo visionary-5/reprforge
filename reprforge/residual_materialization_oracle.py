@@ -575,3 +575,141 @@ def greedy_marginal_ndcg_oracle(
         "candidate_pages": len(occurrences),
         "final_mean_ndcg_at_10": float(np.mean(ndcg[query_positions])),
     }
+
+
+def singleton_page_value_atlas(
+    surface: ResidualRankSurface,
+    queries: Sequence[int],
+    *,
+    rrf_constant: int,
+    candidate_escape_depth: int,
+    tolerance: float = 1e-12,
+) -> dict[str, Any]:
+    """Measure the signed first-order workload value of every Omni page."""
+
+    query_positions = np.asarray(list(map(int, queries)), dtype=np.int32)
+    if query_positions.size == 0:
+        raise ValueError("at least one query is required")
+    scores = np.zeros((surface.queries, surface.pages), dtype=np.float64)
+    omni_increment = np.zeros_like(scores)
+    idcg = np.asarray(
+        [_dcg(np.sort(surface.qrels[q])[::-1][:10]) for q in range(surface.queries)]
+    )
+    base_top10: dict[int, np.ndarray] = {}
+    base_top20: dict[int, np.ndarray] = {}
+    base_ndcg = np.zeros(surface.queries, dtype=np.float64)
+    base_hit20 = np.zeros(surface.queries, dtype=bool)
+    for query in query_positions:
+        for ranking in (surface.bm25[query], surface.colsmol[query]):
+            ranks = np.arange(1, len(ranking) + 1, dtype=np.float64)
+            scores[query, ranking] += 1.0 / (rrf_constant + ranks)
+        ranks = np.arange(1, len(surface.omni[query]) + 1, dtype=np.float64)
+        omni_increment[query, surface.omni[query]] = 1.0 / (rrf_constant + ranks)
+        observed = np.flatnonzero(scores[query] > 0)
+        ranking = observed[np.lexsort((observed, -scores[query, observed]))]
+        base_top10[int(query)] = ranking[:10]
+        base_top20[int(query)] = ranking[:candidate_escape_depth]
+        base_ndcg[query] = (
+            _dcg(surface.qrels[query, ranking[:10]]) / idcg[query]
+            if idcg[query]
+            else 0.0
+        )
+        base_hit20[query] = bool(
+            np.any(surface.qrels[query, ranking[:candidate_escape_depth]] > 0)
+        )
+    page_rows = []
+    query_positive_options = np.zeros(surface.queries, dtype=np.int32)
+    query_negative_options = np.zeros(surface.queries, dtype=np.int32)
+    for page in range(surface.pages):
+        affected = np.flatnonzero(omni_increment[:, page] > 0)
+        positive_sum = 0.0
+        negative_sum = 0.0
+        positive_queries = 0
+        negative_queries = 0
+        repairs = 0
+        relevant_appearances = 0
+        for query in affected:
+            current10 = base_top10[int(query)]
+            candidates10 = (
+                current10
+                if page in current10
+                else np.concatenate((current10, np.asarray([page], dtype=np.int32)))
+            )
+            candidate_scores10 = scores[query, candidates10].copy()
+            candidate_scores10[candidates10 == page] += omni_increment[query, page]
+            ranking10 = candidates10[
+                np.lexsort((candidates10, -candidate_scores10))
+            ][:10]
+            new_ndcg = (
+                _dcg(surface.qrels[query, ranking10]) / idcg[query]
+                if idcg[query]
+                else 0.0
+            )
+            delta = new_ndcg - base_ndcg[query]
+            if delta > tolerance:
+                positive_sum += delta
+                positive_queries += 1
+                query_positive_options[query] += 1
+            elif delta < -tolerance:
+                negative_sum += delta
+                negative_queries += 1
+                query_negative_options[query] += 1
+            relevant_appearances += int(surface.qrels[query, page] > 0)
+            if not base_hit20[query]:
+                current20 = base_top20[int(query)]
+                candidates20 = (
+                    current20
+                    if page in current20
+                    else np.concatenate(
+                        (current20, np.asarray([page], dtype=np.int32))
+                    )
+                )
+                candidate_scores20 = scores[query, candidates20].copy()
+                candidate_scores20[candidates20 == page] += omni_increment[query, page]
+                ranking20 = candidates20[
+                    np.lexsort((candidates20, -candidate_scores20))
+                ][:candidate_escape_depth]
+                repairs += int(np.any(surface.qrels[query, ranking20] > 0))
+        net_sum = positive_sum + negative_sum
+        category = (
+            "positive"
+            if net_sum / len(query_positions) > tolerance
+            else "negative"
+            if net_sum / len(query_positions) < -tolerance
+            else "neutral"
+        )
+        page_rows.append(
+            {
+                "page": page,
+                "category": category,
+                "net_mean_ndcg_delta": net_sum / len(query_positions),
+                "positive_mean_ndcg_delta": positive_sum / len(query_positions),
+                "negative_mean_ndcg_delta": negative_sum / len(query_positions),
+                "omni_top100_appearances": int(len(affected)),
+                "positive_queries": positive_queries,
+                "negative_queries": negative_queries,
+                "relevant_appearances": relevant_appearances,
+                "base_miss_queries_repaired_at_20": repairs,
+            }
+        )
+    positive_rows = [row for row in page_rows if row["category"] == "positive"]
+    negative_rows = [row for row in page_rows if row["category"] == "negative"]
+    positive_rows.sort(key=lambda row: (-row["net_mean_ndcg_delta"], row["page"]))
+    positive_mass = sum(row["net_mean_ndcg_delta"] for row in positive_rows)
+    negative_mass = -sum(row["net_mean_ndcg_delta"] for row in negative_rows)
+    return {
+        "page_values": page_rows,
+        "summary": {
+            "pages": surface.pages,
+            "positive_pages": len(positive_rows),
+            "positive_page_fraction": len(positive_rows) / surface.pages,
+            "negative_pages": len(negative_rows),
+            "negative_page_fraction": len(negative_rows) / surface.pages,
+            "neutral_pages": surface.pages - len(positive_rows) - len(negative_rows),
+            "positive_singleton_value_mass": positive_mass,
+            "negative_singleton_value_mass": negative_mass,
+            "queries_with_positive_page_option": int(np.sum(query_positive_options > 0)),
+            "queries_with_negative_page_option": int(np.sum(query_negative_options > 0)),
+        },
+        "positive_order": [int(row["page"]) for row in positive_rows],
+    }

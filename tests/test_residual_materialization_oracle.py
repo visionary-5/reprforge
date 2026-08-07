@@ -12,6 +12,7 @@ from reprforge.residual_materialization_oracle import (
     projected_cost,
     residual_events,
     residual_utility,
+    singleton_page_value_atlas,
     top_utility,
 )
 
@@ -106,3 +107,16 @@ def test_greedy_oracle_accounts_for_all_queries_and_stops_on_positive_gain():
     assert result["selected_order"][0] == 2
     assert result["trace"][0]["marginal_mean_ndcg_at_10"] > 0
     assert result["stopped_before_maximum"]
+
+
+def test_singleton_atlas_records_positive_and_signed_query_effects():
+    result = singleton_page_value_atlas(
+        _surface(),
+        range(4),
+        rrf_constant=60,
+        candidate_escape_depth=2,
+    )
+    by_page = {row["page"]: row for row in result["page_values"]}
+    assert by_page[2]["category"] == "positive"
+    assert by_page[2]["positive_queries"] >= 1
+    assert result["summary"]["positive_pages"] >= 1

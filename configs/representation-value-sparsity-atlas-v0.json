@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "protocol_id": "representation-value-sparsity-atlas-v0-2026-08-07",
+  "status": "FROZEN_BEFORE_SINGLETON_PAGE_VALUE_RESULTS",
+  "research_question": "Is the net retrieval value of materializing a high-fidelity Omni representation sparse, signed, and predictable from build-time or historical-workload signals above a BM25 plus ColSmol base index?",
+  "unit": {
+    "primary": "page",
+    "reason": "The current ViDoRe artifacts provide page images and page OCR text but no original PDF, layout boxes, or region labels.",
+    "next_granularities_if_page_sparsity_passes": ["fixed tile control", "OCR/layout region", "logical text chunk"]
+  },
+  "retrieval": {
+    "rank_depth": 100,
+    "evaluation_depth": 10,
+    "candidate_escape_depth": 20,
+    "rrf_constant": 60,
+    "base": ["bm25", "colsmol"],
+    "materialized_representation": "omni",
+    "singleton_value": "Mean workload nDCG@10 change when exactly one page's complete-index Omni rank contribution is added to the frozen base RRF route.",
+    "warning": "Singleton values identify first-order benefit and harm; they do not assume additivity and do not replace the interference-aware greedy oracle."
+  },
+  "value_categories": {
+    "positive": "net mean nDCG delta > 1e-12",
+    "negative": "net mean nDCG delta < -1e-12",
+    "neutral": "absolute net mean nDCG delta <= 1e-12"
+  },
+  "concentration_budgets": [0.001, 0.002, 0.005, 0.01, 0.02, 0.05, 0.1, 0.2],
+  "observable_signals": {
+    "content": ["ocr_text_scarcity", "grayscale_entropy", "edge_energy", "nonwhite_fraction"],
+    "base_workload": ["bm25_top100_frequency", "colsmol_top100_frequency", "bm25_colsmol_rank_disagreement"],
+    "oracle_only_diagnostic": ["omni_top100_frequency", "qrel_frequency"]
+  },
+  "gate": {
+    "maximum_positive_page_fraction": 0.2,
+    "minimum_positive_value_mass_in_top_5pct_pages": 0.7,
+    "minimum_negative_page_fraction": 0.01,
+    "domains_required_for_value_sparsity": 2,
+    "predictability_is_diagnostic_only": "Do not stop before multivariate cross-domain prediction merely because a single feature AUC is weak."
+  },
+  "information_boundary": {
+    "domains": ["pharmaceuticals", "industrial"],
+    "opened_before_protocol": true,
+    "future_qrels_and_omni_ranks": "Used only to construct oracle labels and evaluate headroom; forbidden to a deployable build-time selector.",
+    "held_out_requirement": "Any learned materialization policy must later be frozen and tested on a new domain or time-aligned workload."
+  }
+}
