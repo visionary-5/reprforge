@@ -1,12 +1,13 @@
 # Documentation map
 
-Only five documents define the active ReprForge direction:
+Only six documents define the active ReprForge direction:
 
 1. [`HANDOFF.md`](HANDOFF.md)
 2. [`current-research-spec.md`](current-research-spec.md)
 3. [`progressive-materialization-experiment-matrix.md`](progressive-materialization-experiment-matrix.md)
 4. [`evidence-registry.md`](evidence-registry.md)
 5. [`benchmark-landscape.md`](benchmark-landscape.md)
+6. [`ARCHITECTURE.md`](ARCHITECTURE.md)
 
 The remaining files record earlier hypotheses, preregistrations, negative
 results, and infrastructure. They are retained for scientific auditability,

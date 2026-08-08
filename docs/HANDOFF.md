@@ -113,6 +113,7 @@ simple union, the realizable joint policy, and a future-aware oracle.
 3. `docs/progressive-materialization-experiment-matrix.md` -- evaluation plan;
 4. `docs/evidence-registry.md` -- active, negative, and historical evidence;
 5. `docs/benchmark-landscape.md` -- benchmark and prior-work map.
+6. `docs/ARCHITECTURE.md` -- active modules and historical code boundary.
 
 All other documents are historical evidence unless the registry explicitly
 promotes them. Do not continue an older method merely because it has more code

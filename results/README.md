@@ -1,5 +1,9 @@
 # Frozen result summaries
 
+Start with [`CURRENT.md`](CURRENT.md). It identifies the one compact summary
+that supports the active materialization direction; the catalog below is an
+audit record and includes many historical or negative experiments.
+
 This directory contains compact, reviewable summaries used by the current
 documentation. Raw datasets, score banks, embeddings, and physical indexes are
 not committed.
