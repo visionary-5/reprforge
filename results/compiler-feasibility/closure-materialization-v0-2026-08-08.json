@@ -12,6 +12,8 @@
       "After charging a DVI-like raw-page verifier for image I/O, preprocessing, H2D, and model forward, history-frequency closure materialization has a non-empty visual-compute cost-winning region in both domains.",
       "On identical H-Pool Top-20 candidates, the query-conditioned raw-page verifier beats persistent Omni reranking in both domains, exposing a quality-versus-reuse trade-off rather than equivalent representations.",
       "Caching query-independent Qwen2.5-VL vision-tower output preserves verifier scores exactly on the 1024-pair pilots while reducing the query-side GPU path by about 77% end to end in both domains.",
+      "The exact feature-cache timing transfers to the Computer Science calibration domain: 232.70 ms raw versus 52.37 ms from host-resident features, with zero score error over 1024 pairs.",
+      "On 256-pair pilots in three domains, serialized feature reads with a best-effort cold-page hint take 4.57-4.69 ms, and the complete NVMe-read-to-score path takes 56.76-56.93 ms versus 226.39-237.26 ms from raw pages with zero score error.",
       "Increasing the optimized DVI-like verifier from batch size four to eight changes mean end-to-end cost by only +0.04% on Pharmaceuticals and -0.10% on Industrial, so the measured raw-page cost is not an artifact of the earlier batch size.",
       "At a 5% persistent-page budget, the exact-quality raw-partial-full feature-cache phase is stable over the real order and five random query orders in both domains."
     ],
@@ -22,6 +24,7 @@
       "DVI-like timing remains representative under production concurrency, shared-prefix caching, request scheduling, and alternative verifier architectures; the current sensitivity covers last-token computation and batch sizes four and eight.",
       "The exact score-equivalence and timing gains hold over complete benchmark query sets and production-like concurrent serving rather than the current 1024-pair pilots.",
       "The visual-feature cache remains advantageous after optimized batching, storage I/O, invalidation, and an unseen-domain transfer.",
+      "The NVMe result survives strict direct-I/O or system-wide cold-cache measurement, concurrency, larger corpora, and an unseen-domain transfer; POSIX_FADV_DONTNEED is only a best-effort eviction hint.",
       "The method is novel relative to current multimodal prefix/vision-feature caching and deferred-ingestion systems after a dedicated literature audit."
     ]
   },
@@ -260,6 +263,43 @@
     },
     "interpretation": "Batch eight does not materially lower per-pair raw-page verification cost relative to batch four in either domain. The exact feature-cache phase is therefore not explained by an artificially weak batch-four DVI implementation, although a production serving-system comparison remains necessary."
   },
+  "persistent_disk_visual_feature_materialization": {
+    "scope": "RTX 5090 and platform NVMe; 256 query-page pairs per domain; feature files are serialized with torch.save and fsync, then read after a best-effort POSIX_FADV_DONTNEED hint before H2D and the same query-conditioned language layers",
+    "pharmaceuticals": {
+      "raw_page_end_to_end_ms_mean": 226.38562903739512,
+      "host_feature_h2d_and_language_ms_mean": 52.51449075876735,
+      "disk_feature_read_ms_mean": 4.600743675837293,
+      "disk_feature_read_ms_p95": 6.015462800860405,
+      "disk_read_h2d_and_language_ms_mean": 56.93185163545422,
+      "disk_read_h2d_and_language_ms_p95": 64.71079774200916,
+      "relative_reduction_vs_raw": 0.7485182611743875,
+      "write_and_fsync_ms_mean": 20.8279087981011,
+      "maximum_score_absolute_difference": 0.0
+    },
+    "industrial": {
+      "raw_page_end_to_end_ms_mean": 234.0305048855953,
+      "host_feature_h2d_and_language_ms_mean": 52.39388233167119,
+      "disk_feature_read_ms_mean": 4.566329458612017,
+      "disk_feature_read_ms_p95": 5.652834661304951,
+      "disk_read_h2d_and_language_ms_mean": 56.763168482575566,
+      "disk_read_h2d_and_language_ms_p95": 57.94891994446516,
+      "relative_reduction_vs_raw": 0.7574539758809478,
+      "write_and_fsync_ms_mean": 21.09719836684667,
+      "maximum_score_absolute_difference": 0.0
+    },
+    "computer_science_calibration_domain": {
+      "raw_page_end_to_end_ms_mean": 237.26155832991935,
+      "host_feature_h2d_and_language_ms_mean": 52.275108042522334,
+      "disk_feature_read_ms_mean": 4.689412729931064,
+      "disk_feature_read_ms_p95": 5.833165720105171,
+      "disk_read_h2d_and_language_ms_mean": 56.87944339297246,
+      "disk_read_h2d_and_language_ms_p95": 58.07259678840637,
+      "relative_reduction_vs_raw": 0.7602669231655308,
+      "write_and_fsync_ms_mean": 18.56910899026781,
+      "maximum_score_absolute_difference": 0.0
+    },
+    "interpretation": "The persistent feature state remains materially cheaper than reprocessing the raw page even when it is fetched from NVMe rather than retained in host memory. The result strengthens the defer-versus-materialize premise but is not yet a production cold-I/O or concurrent-serving claim."
+  },
   "nearest_prior_work_boundary": {
     "MPIC": "Already stores multimodal KV caches on local disks and combines reuse with recomputation for position-independent MLLM serving; therefore persistent multimodal cache storage is not itself novel.",
     "VLCache": "Already combines encoder and KV cache reuse for repeated multimodal inputs with layer-aware recomputation; therefore vision-feature reuse is not itself novel.",
@@ -301,6 +341,10 @@
     "pharmaceuticals_visual_feature_cache_phase_v4_sha256": "688d864ee185c27dc39c9f90192889681cf40d21b5ecece662032b853075f913",
     "industrial_visual_feature_cache_phase_v4_sha256": "69ac113b0cc60009e89ed03e173a16d6da460011d147bf2494e38b20c5003462",
     "pharmaceuticals_dvi_nexttoken_batch8_v0_sha256": "139185c0b5cbc3edcadea24dcb0a65e704148a2ec14c3adc02510aedfd901ec1",
-    "industrial_dvi_nexttoken_batch8_v0_sha256": "e01a27af975c0e88f1d425cf8aa157b6b486d44f5028ad6f03984a00f98f3664"
+    "industrial_dvi_nexttoken_batch8_v0_sha256": "e01a27af975c0e88f1d425cf8aa157b6b486d44f5028ad6f03984a00f98f3664",
+    "computer_science_qwen_visual_feature_cache_v3_sha256": "fd7b3a85c5a5f4e9cc56f1c8081caa670956a9d67c0467ea9a502e72c9be7567",
+    "pharmaceuticals_qwen_visual_feature_disk_cache_v1_sha256": "04c10c452a5bd46d22d1ca75183276d5aa5dfd19404b5402a51ad1b658fd00f9",
+    "industrial_qwen_visual_feature_disk_cache_v1_sha256": "2952e3b8f172f075d352f06f2477620865ac6ec8bb7450d77fd3865bfe5fe62b",
+    "computer_science_qwen_visual_feature_disk_cache_v1_sha256": "14a2e6ffd14d224464d470fdf3b9766850aa2fbdc61b38540c1193c68bc36c1d"
   }
 }

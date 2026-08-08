@@ -4,7 +4,9 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
+import os
 import time
 from pathlib import Path
 from typing import Any, Sequence
@@ -33,6 +35,7 @@ def run(
     *,
     sample_pairs: int,
     warmup_pairs: int,
+    disk_cache_dir: Path | None = None,
 ) -> dict[str, Any]:
     import torch
     from PIL import Image
@@ -60,9 +63,23 @@ def run(
     torch.cuda.synchronize()
     model_load_seconds = time.perf_counter() - load_started
 
+    if disk_cache_dir is not None:
+        if disk_cache_dir.exists() and any(disk_cache_dir.iterdir()):
+            raise FileExistsError(
+                f"refusing to reuse non-empty disk cache: {disk_cache_dir}"
+            )
+        disk_cache_dir.mkdir(parents=True, exist_ok=True)
+
+    def disk_path(doc_id: str) -> Path:
+        assert disk_cache_dir is not None
+        name = hashlib.sha256(doc_id.encode("utf-8")).hexdigest()
+        return disk_cache_dir / f"{name}.pt"
+
     cached_host: dict[str, torch.Tensor] = {}
     cache_build_ms: dict[str, float] = {}
     cache_build_end_to_end_ms: dict[str, float] = {}
+    disk_write_ms: dict[str, float] = {}
+    serialized_feature_bytes: dict[str, int] = {}
     rows = []
     for pair_index, (query_id, doc_id) in enumerate(pairs):
         prepare_started = time.perf_counter()
@@ -113,6 +130,17 @@ def run(
             torch.cuda.synchronize()
             cache_build_ms[doc_id] = (time.perf_counter() - build_started) * 1000.0
             cache_build_end_to_end_ms[doc_id] = prepare_ms + cache_build_ms[doc_id]
+            if disk_cache_dir is not None:
+                write_started = time.perf_counter()
+                path = disk_path(doc_id)
+                with path.open("wb") as handle:
+                    torch.save(cached_host[doc_id], handle)
+                    handle.flush()
+                    os.fsync(handle.fileno())
+                disk_write_ms[doc_id] = (
+                    time.perf_counter() - write_started
+                ) * 1000.0
+                serialized_feature_bytes[doc_id] = path.stat().st_size
             del features
 
         cached_started = time.perf_counter()
@@ -137,6 +165,52 @@ def run(
         cached_score = float(
             (cached_logits[0, -1, yes_id] - cached_logits[0, -1, no_id]).float()
         )
+        disk_read_ms = None
+        disk_cached_ms = None
+        disk_cached_score_difference = None
+        if disk_cache_dir is not None:
+            path = disk_path(doc_id)
+            if hasattr(os, "posix_fadvise") and hasattr(os, "POSIX_FADV_DONTNEED"):
+                descriptor = os.open(path, os.O_RDONLY)
+                try:
+                    os.posix_fadvise(descriptor, 0, 0, os.POSIX_FADV_DONTNEED)
+                finally:
+                    os.close(descriptor)
+            disk_cached_started = time.perf_counter()
+            disk_read_started = time.perf_counter()
+            disk_host_features = torch.load(
+                path, map_location="cpu", weights_only=True
+            )
+            disk_read_ms = (time.perf_counter() - disk_read_started) * 1000.0
+            disk_image_features = disk_host_features.to("cuda")
+            with torch.inference_mode():
+                disk_embeddings = model.model.get_input_embeddings()(inputs.input_ids)
+                disk_image_mask, _ = model.model.get_placeholder_mask(
+                    inputs.input_ids,
+                    inputs_embeds=disk_embeddings,
+                    image_features=disk_image_features,
+                )
+                disk_embeddings = disk_embeddings.masked_scatter(
+                    disk_image_mask, disk_image_features
+                )
+                disk_cached_logits = model(
+                    input_ids=inputs.input_ids,
+                    attention_mask=inputs.attention_mask,
+                    inputs_embeds=disk_embeddings,
+                    image_grid_thw=inputs.image_grid_thw,
+                    logits_to_keep=1,
+                ).logits
+            torch.cuda.synchronize()
+            disk_cached_ms = (
+                time.perf_counter() - disk_cached_started
+            ) * 1000.0
+            disk_cached_score = float(
+                (
+                    disk_cached_logits[0, -1, yes_id]
+                    - disk_cached_logits[0, -1, no_id]
+                ).float()
+            )
+            disk_cached_score_difference = abs(full_score - disk_cached_score)
         row = {
             "pair_index": pair_index,
             "query_id": query_id,
@@ -145,7 +219,10 @@ def run(
             "full_optimized_forward_ms": full_ms,
             "full_end_to_end_ms": prepare_ms + full_ms,
             "cached_feature_h2d_and_language_ms": cached_ms,
+            "disk_feature_read_ms": disk_read_ms,
+            "disk_feature_read_h2d_and_language_ms": disk_cached_ms,
             "score_absolute_difference": abs(full_score - cached_score),
+            "disk_score_absolute_difference": disk_cached_score_difference,
             "cached_feature_bytes": int(
                 cached_host[doc_id].numel() * cached_host[doc_id].element_size()
             ),
@@ -154,7 +231,14 @@ def run(
         if pair_index >= warmup_pairs:
             rows.append(row)
         del inputs, full_logits, cached_logits, embeddings, image_features
-    return {
+        if disk_cache_dir is not None:
+            del (
+                disk_host_features,
+                disk_image_features,
+                disk_embeddings,
+                disk_cached_logits,
+            )
+    result = {
         "schema_version": 1,
         "protocol": "qwen-visual-feature-cache-v0",
         "model_load_seconds": model_load_seconds,
@@ -190,6 +274,38 @@ def run(
             "starts from host-resident query-independent vision-tower output"
         ),
     }
+    if disk_cache_dir is not None:
+        result["disk_cache"] = {
+            "directory": str(disk_cache_dir),
+            "page_cache_evict_hint": (
+                "POSIX_FADV_DONTNEED before every measured read"
+                if hasattr(os, "posix_fadvise")
+                and hasattr(os, "POSIX_FADV_DONTNEED")
+                else "unavailable"
+            ),
+            "write_and_fsync_ms": _summary(list(disk_write_ms.values())),
+            "read_ms": _summary(
+                [float(row["disk_feature_read_ms"]) for row in rows]
+            ),
+            "read_h2d_and_language_ms": _summary(
+                [
+                    float(row["disk_feature_read_h2d_and_language_ms"])
+                    for row in rows
+                ]
+            ),
+            "mean_serialized_feature_bytes": (
+                sum(serialized_feature_bytes.values())
+                / len(serialized_feature_bytes)
+            ),
+            "maximum_score_absolute_difference": max(
+                float(row["disk_score_absolute_difference"]) for row in rows
+            ),
+        }
+        result["scope"] += (
+            "; disk path includes torch serialization, fsync at materialization, "
+            "a best-effort POSIX_FADV_DONTNEED hint, read, H2D, and language layers"
+        )
+    return result
 
 
 def main() -> None:
@@ -200,6 +316,7 @@ def main() -> None:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--sample-pairs", type=int, default=16)
     parser.add_argument("--warmup-pairs", type=int, default=2)
+    parser.add_argument("--disk-cache-dir", type=Path)
     args = parser.parse_args()
     if args.output.exists():
         raise FileExistsError(f"refusing to overwrite output: {args.output}")
@@ -209,6 +326,7 @@ def main() -> None:
         args.model,
         sample_pairs=args.sample_pairs,
         warmup_pairs=args.warmup_pairs,
+        disk_cache_dir=args.disk_cache_dir,
     )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n")
