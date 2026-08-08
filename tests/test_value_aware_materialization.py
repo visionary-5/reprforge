@@ -3,9 +3,11 @@ import numpy as np
 from reprforge.partial_vlm_materialization import ScoreSurface
 from reprforge.value_aware_materialization import (
     CompilerConfig,
+    anchor_rank_ranking,
     calibrated_ranking,
     cheap_history_features,
     compile_value_aware_index,
+    typed_materialization_ranking,
 )
 
 
@@ -77,6 +79,59 @@ def test_below_background_visual_score_abstains() -> None:
         visual_weight=10.0,
     )
     assert ranking.tolist() == surface.text_order[0].tolist()
+
+
+def test_anchor_rank_does_not_treat_subset_rank_as_global_rank() -> None:
+    surface = _surface(
+        text_scores=np.asarray([[4.0, 3.0, 2.0, 1.0]]),
+        visual_scores=np.asarray([[0.0, 0.5, 0.0, 1.0]]),
+        qrels=np.asarray([[1.0, 0.0, 0.0, 0.0]]),
+    )
+    ranking = anchor_rank_ranking(
+        surface,
+        0,
+        admitted_pages=[1],
+        anchor_pages=[2, 3],
+        visual_top_k=1,
+    )
+    assert ranking.tolist() == surface.text_order[0].tolist()
+
+
+def test_benefit_page_cannot_escape_text_candidate_scope() -> None:
+    surface = _surface(
+        text_scores=np.asarray([[4.0, 3.0, 2.0, 1.0, 0.0]]),
+        visual_scores=np.asarray([[0.0, 0.0, 0.0, 1.0, 100.0]]),
+        qrels=np.asarray([[1.0, 0.0, 0.0, 0.0, 0.0]]),
+    )
+    ranking = typed_materialization_ranking(
+        surface,
+        0,
+        benefit_pages=[4],
+        coverage_pages=[],
+        anchor_pages=[2, 3],
+        candidate_k=2,
+        benefit_weight=100.0,
+    )
+    assert ranking.tolist() == surface.text_order[0].tolist()
+
+
+def test_coverage_page_can_repair_candidate_escape() -> None:
+    surface = _surface(
+        text_scores=np.asarray([[4.0, 3.0, 2.0, 1.0, 0.0]]),
+        visual_scores=np.asarray([[0.0, 0.0, 0.0, 1.0, 100.0]]),
+        qrels=np.asarray([[0.0, 0.0, 0.0, 0.0, 1.0]]),
+    )
+    ranking = typed_materialization_ranking(
+        surface,
+        0,
+        benefit_pages=[],
+        coverage_pages=[4],
+        anchor_pages=[2, 3],
+        candidate_k=2,
+        coverage_quantile=0.99,
+        coverage_weight=1.0,
+    )
+    assert ranking[0] == 4
 
 
 def test_cheap_features_do_not_read_visual_scores_or_qrels() -> None:
@@ -165,4 +220,3 @@ def test_compiler_selection_is_independent_of_future_rows() -> None:
     second = compile_value_aware_index(changed, **kwargs)
     for key in ("anchor_pages", "probed_pages", "admitted_pages", "rejected_pages"):
         assert first[key] == second[key]
-
