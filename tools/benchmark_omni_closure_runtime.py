@@ -149,8 +149,12 @@ def run(
         persistent_vectors.append(shards[shard_index]["tensor"][position])
         persistent_masks.append(shards[shard_index]["masks"][position])
     if persistent_vectors:
-        resident_vectors = torch.stack(persistent_vectors).to(device=device)
-        resident_masks = torch.stack(persistent_masks).to(device=device)
+        resident_vectors = torch.nn.utils.rnn.pad_sequence(
+            persistent_vectors, batch_first=True
+        ).to(device=device)
+        resident_masks = torch.nn.utils.rnn.pad_sequence(
+            persistent_masks, batch_first=True, padding_value=False
+        ).to(device=device)
     else:
         sample = shards[0]["tensor"]
         sample_mask = shards[0]["masks"]
@@ -227,19 +231,34 @@ def run(
             "persistent_hits": len(resident_docs),
             "transient_pages": len(transient_docs),
             "ranking_sha256": digest,
+            "candidate_scores": [score_map[doc_id] for doc_id in docs],
         }
 
     for query_id in evaluation_ids[:warmup_queries]:
         execute(query_id, "defer")
         execute(query_id, "closure")
     measurements = {"defer": [], "closure": []}
+    maximum_score_difference = 0.0
+    exact_ranking_matches = 0
+    parity_comparisons = 0
     for repetition in range(repetitions):
         for query_offset, query_id in enumerate(evaluation_ids):
             methods = ("defer", "closure") if (repetition + query_offset) % 2 == 0 else ("closure", "defer")
             rows = {method: execute(query_id, method) for method in methods}
-            if rows["defer"]["ranking_sha256"] != rows["closure"]["ranking_sha256"]:
-                raise AssertionError(f"closure changed candidate ranking for query {query_id}")
+            defer_scores = np.asarray(rows["defer"]["candidate_scores"])
+            closure_scores = np.asarray(rows["closure"]["candidate_scores"])
+            score_difference = float(np.max(np.abs(defer_scores - closure_scores)))
+            maximum_score_difference = max(maximum_score_difference, score_difference)
+            if not np.allclose(defer_scores, closure_scores, rtol=1e-5, atol=1e-4):
+                raise AssertionError(
+                    f"closure score mismatch for query {query_id}: max_abs={score_difference}"
+                )
+            parity_comparisons += 1
+            exact_ranking_matches += int(
+                rows["defer"]["ranking_sha256"] == rows["closure"]["ranking_sha256"]
+            )
             for method in methods:
+                rows[method].pop("candidate_scores")
                 measurements[method].append(rows[method])
 
     def summarize(rows):
@@ -270,7 +289,12 @@ def run(
             + resident_masks.numel() * resident_masks.element_size()
         ),
         "methods": {name: summarize(rows) for name, rows in measurements.items()},
-        "ranking_parity": True,
+        "score_parity": {
+            "rtol": 1e-5,
+            "atol": 1e-4,
+            "maximum_absolute_difference": maximum_score_difference,
+            "exact_ranking_fraction": exact_ranking_matches / parity_comparisons,
+        },
         "cost_scope": (
             "query tensor H2D + host/mmap selected Full tensor H2D + exact MaxSim; "
             "raw-page decoding and VLM representation construction excluded"

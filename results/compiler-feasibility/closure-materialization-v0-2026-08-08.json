@@ -6,10 +6,11 @@
     "established": [
       "Arbitrary sparse global visual fusion is unsafe because an incomplete visual support is not a complete-corpus ranking.",
       "A query-scope closed high-fidelity cohort preserves the selected cascade quality regardless of whether cohort pages are persistent or transient.",
-      "Both held-out domains contain a stable defer-partial-full cumulative-work phase under history-frequency materialization."
+      "Both held-out domains contain a stable defer-partial-full cumulative-work phase under history-frequency materialization.",
+      "On an RTX 5090, persistent closure pages reduce mean high-fidelity candidate execution latency by 31.0% and 34.0% in the two evaluated domains."
     ],
     "not_yet_established": [
-      "Logical page-build reductions translate to wall-clock GPU latency reductions.",
+      "Whether the measured latency reduction extends to raw-page decoding, VLM representation construction, or controlled cold-NVMe behavior.",
       "The phase transfers unchanged to an unseen domain or a natural production trace.",
       "The current quality beats the strongest complete hybrid index on every domain."
     ]
@@ -87,6 +88,62 @@
       }
     }
   },
+  "physical_gpu_runtime": {
+    "scope": "RTX 5090; query H2D, selected Full tensor H2D, and exact MaxSim; raw-page decode and VLM construction excluded",
+    "pharmaceuticals_top20_10_percent": {
+      "persistent_pages": 232,
+      "persistent_resident_bytes": 2705212800,
+      "persistent_initial_h2d_seconds": 0.7926837764680386,
+      "defer_end_to_end_ms": {
+        "mean": 74.57485591371854,
+        "p50": 74.07844811677933,
+        "p95": 78.60226891934872,
+        "p99": 79.94286827743053
+      },
+      "closure_end_to_end_ms": {
+        "mean": 51.44394660989443,
+        "p50": 54.60137128829956,
+        "p95": 75.63164085149765,
+        "p99": 76.78939290344715
+      },
+      "relative_latency_reduction": {
+        "mean": 0.310170351929155,
+        "p50": 0.2629250115738867,
+        "p95": 0.03779315926489524,
+        "p99": 0.039446612836553374
+      },
+      "mean_persistent_hits_per_query": 6.293333333333333,
+      "maximum_absolute_score_difference": 0.000003814697265625,
+      "exact_ranking_fraction": 0.9866666666666667
+    },
+    "industrial_top50_5_percent": {
+      "persistent_pages": 263,
+      "persistent_resident_bytes": 3032179600,
+      "persistent_initial_h2d_seconds": 1.8756332397460938,
+      "defer_end_to_end_ms": {
+        "mean": 194.8122148486701,
+        "p50": 185.9649121761322,
+        "p95": 220.85174694657326,
+        "p99": 265.2093144506216
+      },
+      "closure_end_to_end_ms": {
+        "mean": 128.6302082917907,
+        "p50": 143.17328855395317,
+        "p95": 208.73799994587898,
+        "p99": 240.06997853517535
+      },
+      "relative_latency_reduction": {
+        "mean": 0.33972205802541444,
+        "p50": 0.230105900739221,
+        "p95": 0.05485012986392512,
+        "p99": 0.09479054673295362
+      },
+      "mean_persistent_hits_per_query": 17.30909090909091,
+      "maximum_absolute_score_difference": 0.0000057220458984375,
+      "exact_ranking_fraction": 1.0
+    },
+    "interpretation": "H2D dominates exact candidate MaxSim. Mean and median improve strongly, while smaller p95 gains expose low-hit queries as the next bottleneck."
+  },
   "protocol": {
     "history_evaluation_split": "frozen 4/5 history and 1/5 evaluation query hash split",
     "persistent_selector": "top page incidence frequency on history candidate closures only",
@@ -101,6 +158,8 @@
     "pharmaceuticals_closure_v2_sha256": "42acfa3810d2d6ddc171b9d91799820610dfef911c1ec542dc6e7d5657df566b",
     "industrial_closure_v2_sha256": "9d2239e88271994d3d5d7d1cc0d57f6d0a3e26861704afbb7c9f0e6bd1dcdab3",
     "pharmaceuticals_typed_v1_sha256": "cf0173a8f5bde2dd969ec1a7095a8f51a1bad4ac397eeff2fd9bcdc331750b20",
-    "industrial_global_sparse_v0_sha256": "9a42af681739e2c5e6dd28ab8413c23a341b073629679eb8c31311d1877f794f"
+    "industrial_global_sparse_v0_sha256": "9a42af681739e2c5e6dd28ab8413c23a341b073629679eb8c31311d1877f794f",
+    "pharmaceuticals_physical_runtime_v0_sha256": "9b6b1441183f8fcaf45e6863719eed5de74269f3d54b9b173d1743d5d0453b00",
+    "industrial_physical_runtime_v0_sha256": "90c8f4cfb60a29f10e659916b0f0c01d057fea35c1452f02322d6bfc184a31cc"
   }
 }
