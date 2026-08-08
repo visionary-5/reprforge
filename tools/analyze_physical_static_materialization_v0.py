@@ -144,6 +144,37 @@ def _case(root: Path) -> dict[str, Any]:
     }
 
 
+def _external_full_case(
+    ranking: Path,
+    *,
+    build_wall_seconds: float,
+    index_bytes: int,
+    evidence: list[Path],
+) -> dict[str, Any]:
+    if build_wall_seconds <= 0 or index_bytes <= 0:
+        raise ValueError("external Full build time and index bytes must be positive")
+    if not ranking.is_file():
+        raise FileNotFoundError(ranking)
+    if not evidence:
+        raise ValueError("external Full requires at least one provenance artifact")
+    for path in evidence:
+        if not path.is_file():
+            raise FileNotFoundError(path)
+    return {
+        "name": "external-full-reference",
+        "root": None,
+        "ranking_path": ranking,
+        "rankings": _load_ranking(ranking),
+        "build_wall_seconds": build_wall_seconds,
+        "index_bytes": index_bytes,
+        "case_receipt_sha256": None,
+        "run_manifest_sha256": None,
+        "evidence_sha256": {str(path.resolve()): _sha(path) for path in evidence},
+        "selection_manifest": None,
+        "selection_manifest_sha256": None,
+    }
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=Path, required=True)
@@ -166,6 +197,20 @@ def main() -> None:
         type=Path,
         help="Optional independently measured Full case; defaults to MATRIX_ROOT/full-100.",
     )
+    parser.add_argument(
+        "--full-ranking",
+        type=Path,
+        help="Merged Full ranking when the physical reference was built in shards.",
+    )
+    parser.add_argument("--full-build-wall-seconds", type=float)
+    parser.add_argument("--full-index-bytes", type=int)
+    parser.add_argument(
+        "--full-evidence",
+        type=Path,
+        action="append",
+        default=[],
+        help="Repeat for every shard manifest/timing artifact that binds an external Full run.",
+    )
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     if args.output.exists():
@@ -187,8 +232,23 @@ def main() -> None:
         raise ValueError("history and held-out evaluation splits must both be non-empty")
     text, text_index_bytes = _bm25(corpus, queries, max(config["cheap_locator_depths"]))
     compact = _load_ranking(args.compact_ranking)
-    full_root = args.full_case_root or args.matrix_root / "full-100"
-    full = _case(full_root)
+    if args.full_ranking is not None:
+        if args.full_case_root is not None:
+            raise ValueError("choose either --full-case-root or --full-ranking")
+        if args.full_build_wall_seconds is None or args.full_index_bytes is None:
+            raise ValueError(
+                "--full-ranking requires --full-build-wall-seconds and --full-index-bytes"
+            )
+        full_root = None
+        full = _external_full_case(
+            args.full_ranking,
+            build_wall_seconds=args.full_build_wall_seconds,
+            index_bytes=args.full_index_bytes,
+            evidence=args.full_evidence,
+        )
+    else:
+        full_root = args.full_case_root or args.matrix_root / "full-100"
+        full = _case(full_root)
     cases = [
         _case(path)
         for path in sorted(args.matrix_root.iterdir())
@@ -317,12 +377,13 @@ def main() -> None:
             "query_splits_sha256": _sha(args.query_splits),
         },
         "full_physical": {
-            "case_root": str(full_root.resolve()),
+            "case_root": str(full_root.resolve()) if full_root is not None else None,
             "build_wall_seconds": full["build_wall_seconds"],
             "index_bytes": full["index_bytes"],
             "ranking_sha256": _sha(full["ranking_path"]),
             "run_manifest_sha256": full["run_manifest_sha256"],
             "case_receipt_sha256": full["case_receipt_sha256"],
+            "external_evidence_sha256": full.get("evidence_sha256"),
         },
         "text_logical_index_bytes": text_index_bytes,
         "cases": rows,
