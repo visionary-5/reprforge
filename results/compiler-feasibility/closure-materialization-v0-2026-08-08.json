@@ -1,18 +1,27 @@
 {
   "schema_version": 1,
-  "stage": "exact-score logical cost feasibility",
+  "stage": "real VLM construction and heterogeneous-cost feasibility",
   "date": "2026-08-08",
   "claim_boundary": {
     "established": [
       "Arbitrary sparse global visual fusion is unsafe because an incomplete visual support is not a complete-corpus ranking.",
       "A query-scope closed high-fidelity cohort preserves the selected cascade quality regardless of whether cohort pages are persistent or transient.",
       "Both held-out domains contain a stable defer-partial-full cumulative-work phase under history-frequency materialization.",
-      "On an RTX 5090, persistent closure pages reduce mean high-fidelity candidate execution latency by 31.0% and 34.0% in the two evaluated domains."
+      "On an RTX 5090, persistent closure pages reduce mean high-fidelity candidate execution latency by 31.0% and 34.0% in the two evaluated domains.",
+      "Real Omni page construction costs 0.247 seconds/page on Pharmaceuticals and 0.261 seconds/page on Industrial in sampled end-to-end runs; the estimates agree with complete build time within 5.8%.",
+      "After charging a DVI-like raw-page verifier for image I/O, preprocessing, H2D, and model forward, history-frequency closure materialization has a non-empty visual-compute cost-winning region in both domains.",
+      "On identical H-Pool Top-20 candidates, the query-conditioned raw-page verifier beats persistent Omni reranking in both domains, exposing a quality-versus-reuse trade-off rather than equivalent representations.",
+      "Caching query-independent Qwen2.5-VL vision-tower output preserves verifier scores exactly on the 256-pair pilots while reducing the query-side GPU path by about 77% end to end in both domains.",
+      "At a 5% persistent-page budget, the exact-quality raw-partial-full feature-cache phase is stable over the real order and five random query orders in both domains."
     ],
     "not_yet_established": [
-      "Whether the measured latency reduction extends to raw-page decoding, VLM representation construction, or controlled cold-NVMe behavior.",
       "The phase transfers unchanged to an unseen domain or a natural production trace.",
-      "The current quality beats the strongest complete hybrid index on every domain."
+      "The current quality beats the strongest complete hybrid index on every domain.",
+      "A deployable page-value predictor closes the substantial future-frequency oracle gap, especially on Pharmaceuticals.",
+      "DVI-like timing is fully optimized over batch size and last-token computation; the current complete-chain measurement uses batch size four and computes full sequence logits.",
+      "The exact score-equivalence and timing gains hold over complete benchmark query sets and production-like concurrent serving rather than the current 256-pair pilots.",
+      "The visual-feature cache remains advantageous after optimized batching, storage I/O, invalidation, and an unseen-domain transfer.",
+      "The method is novel relative to current multimodal prefix/vision-feature caching and deferred-ingestion systems after a dedicated literature audit."
     ]
   },
   "global_sparse_fusion_failure": {
@@ -144,6 +153,101 @@
     },
     "interpretation": "H2D dominates exact candidate MaxSim. Mean and median improve strongly, while smaller p95 gains expose low-hit queries as the next bottleneck."
   },
+  "real_vlm_construction_and_dvi_cost": {
+    "scope": "RTX 5090; real raw-page pipelines. Omni includes image decode, upstream processor, input H2D, encode_passage, and output D2H. DVI-like includes image decode, query-image preprocessing, H2D, and Qwen2.5-VL-3B forward.",
+    "pharmaceuticals": {
+      "omni_sample_end_to_end_seconds_per_page": 0.24700118203957878,
+      "complete_omni_build_seconds": 606.15,
+      "complete_omni_build_seconds_per_page": 0.26206225680933854,
+      "sample_relative_error_vs_complete_build": -0.05747136177918721,
+      "dvi_like_end_to_end_seconds_per_query_page_pair": 0.21720866625756025,
+      "dvi_like_forward_only_seconds_per_pair": 0.16018345813080667,
+      "top20_history_frequency_phase_by_persistent_fraction": {
+        "0.10": {"dvi_trace_replays": [1, 1], "closure_trace_replays": [2, 2], "full_trace_replays": [3, 16]},
+        "0.20": {"closure_trace_replays": [1, 2], "full_trace_replays": [3, 16]},
+        "0.40": {"dvi_trace_replays": [1, 1], "closure_trace_replays": [2, 3], "full_trace_replays": [4, 16]}
+      }
+    },
+    "industrial": {
+      "omni_sample_end_to_end_seconds_per_page": 0.26071092784404754,
+      "complete_omni_build_seconds": 1339.67,
+      "complete_omni_build_seconds_per_page": 0.2554672006102212,
+      "sample_relative_error_vs_complete_build": 0.020526029256596967,
+      "dvi_like_end_to_end_seconds_per_query_page_pair": 0.23046560539244276,
+      "dvi_like_forward_only_seconds_per_pair": 0.15749974450214202,
+      "top20_history_frequency_phase_by_persistent_fraction": {
+        "0.02": {"closure_trace_replays": [1, 6], "full_trace_replays": [7, 16]},
+        "0.05": {"closure_trace_replays": [1, 7], "full_trace_replays": [8, 16]},
+        "0.10": {"dvi_trace_replays": [1, 1], "closure_trace_replays": [2, 7], "full_trace_replays": [8, 16]},
+        "0.20": {"dvi_trace_replays": [1, 1], "closure_trace_replays": [2, 9], "full_trace_replays": [10, 16]},
+        "0.40": {"dvi_trace_replays": [1, 2], "closure_trace_replays": [3, 11], "full_trace_replays": [12, 16]}
+      }
+    },
+    "interpretation": "The defer-partial-full visual-compute phase survives measured heterogeneous costs and is stronger than the forward-only lower-bound calculation. It is not yet an equal-quality Pareto claim because query-time raw-page verification ranks better than persistent Omni on identical candidates. Selection quality controls the width of the partial region: the future-frequency oracle creates a Pharmaceuticals Top-20 region at 5% pages, while history frequency needs 10%."
+  },
+  "paired_quality_boundary": {
+    "scope": "same deterministic 100-query cohort per domain; H-Pool routes use identical Top-20 candidate sets but different scoring semantics",
+    "pharmaceuticals": {
+      "dvi_like_bm25_top20_raw_page_verifier_ndcg_at_10": 0.6293198544094439,
+      "dvi_like_hpool_top20_raw_page_verifier_ndcg_at_10": 0.6573452403470526,
+      "dvi_like_bm25_hpool_10_10_raw_page_verifier_ndcg_at_10": 0.6655013686064474,
+      "hpool_top20_full_omni_rerank_ndcg_at_10": 0.6279771292587999,
+      "full_visual_index_ndcg_at_10": 0.6270480566334173
+    },
+    "industrial": {
+      "dvi_like_bm25_top20_raw_page_verifier_ndcg_at_10": 0.5082849753764518,
+      "dvi_like_hpool_top20_raw_page_verifier_ndcg_at_10": 0.5282932413045346,
+      "dvi_like_bm25_hpool_10_10_raw_page_verifier_ndcg_at_10": 0.5367400260218433,
+      "hpool_top20_full_omni_rerank_ndcg_at_10": 0.515059121222911,
+      "full_visual_index_ndcg_at_10": 0.5169304205324946
+    },
+    "interpretation": "A raw-page verifier behind BM25 is already quality-competitive with persistent Full representations. On the exact same H-Pool Top-20 candidates it improves nDCG@10 by 0.0294 on Pharmaceuticals and 0.0132 on Industrial relative to Full Omni reranking. ReprForge therefore needs a persistent state that retains query-conditioned visual judgment, or must explicitly optimize the quality-latency trade-off; persistence cannot be claimed to universally preserve quality."
+  },
+  "query_conditioned_visual_feature_materialization": {
+    "representation": "host-resident Qwen2.5-VL vision-tower output after the multimodal projector; the query-conditioned language model still executes online",
+    "quality_contract": "raw and cached paths execute the same verifier language layers; maximum YES-minus-NO score difference was 0.0 on each 256-pair domain pilot",
+    "pharmaceuticals": {
+      "raw_optimized_end_to_end_ms_per_pair_batch1": 225.5773219949333,
+      "cached_feature_h2d_and_language_ms_per_pair_batch1": 52.39601037465036,
+      "relative_end_to_end_reduction": 0.7677248319499633,
+      "feature_materialization_end_to_end_ms_per_page": 173.72766729999097,
+      "mean_feature_bytes_per_page": 5049897.39574468,
+      "top20_five_percent_real_order": {
+        "raw_query_interval": [1, 31],
+        "partial_feature_cache_query_interval": [32, 144],
+        "full_feature_cache_starts": 145
+      },
+      "random_order_boundary_ranges": {
+        "partial_starts": [28, 42],
+        "full_starts": [143, 144]
+      }
+    },
+    "industrial": {
+      "raw_optimized_end_to_end_ms_per_pair_batch1": 235.28787778923288,
+      "cached_feature_h2d_and_language_ms_per_pair_batch1": 52.44938486430328,
+      "relative_end_to_end_reduction": 0.7770842027344622,
+      "feature_materialization_end_to_end_ms_per_page": 183.83307319525716,
+      "mean_feature_bytes_per_page": 5071371.689497717,
+      "top20_five_percent_real_order": {
+        "raw_query_interval": [1, 34],
+        "partial_feature_cache_query_interval": [35, 427],
+        "full_feature_cache_starts": 428
+      },
+      "random_order_boundary_ranges": {
+        "partial_starts": [37, 43],
+        "full_starts": [424, 427]
+      }
+    },
+    "comparison_to_omni_storage": "The measured cached feature is about 5.05-5.08 MB/page versus about 11.3 MB/page for the current Full Omni multivector output, but the cached feature is a verifier intermediate rather than a standalone retrieval index.",
+    "interpretation": "This is the first equal-quality materialization result in the current study. It supports a representation state machine: complete cheap locator, deferred raw page, selectively materialized visual feature, and optionally an approximate low-latency retrieval representation. The current result is a small physical pilot, not yet a paper-scale method claim."
+  },
+  "nearest_prior_work_boundary": {
+    "MPIC": "Already stores multimodal KV caches on local disks and combines reuse with recomputation for position-independent MLLM serving; therefore persistent multimodal cache storage is not itself novel.",
+    "VLCache": "Already combines encoder and KV cache reuse for repeated multimodal inputs with layer-aware recomputation; therefore vision-feature reuse is not itself novel.",
+    "DVI": "Already defers raw-page visual understanding until a query after cheap page localization; therefore zero visual pre-ingestion is not itself novel.",
+    "EdgeRAG": "Already selects and adaptively caches regenerable embeddings under edge memory constraints; therefore online embedding materialization is not itself novel.",
+    "reprforge_required_delta": "The publishable unit must be the multimodal RAG compiler problem and method: jointly choose locator coverage and per-page representation state under ingestion, storage, repeated-query latency, and retrieval-quality constraints, with workload transfer evidence. The current exact-quality phase is enabling evidence, not yet sufficient novelty."
+  },
   "protocol": {
     "history_evaluation_split": "frozen 4/5 history and 1/5 evaluation query hash split",
     "persistent_selector": "top page incidence frequency on history candidate closures only",
@@ -160,6 +264,22 @@
     "pharmaceuticals_typed_v1_sha256": "cf0173a8f5bde2dd969ec1a7095a8f51a1bad4ac397eeff2fd9bcdc331750b20",
     "industrial_global_sparse_v0_sha256": "9a42af681739e2c5e6dd28ab8413c23a341b073629679eb8c31311d1877f794f",
     "pharmaceuticals_physical_runtime_v0_sha256": "9b6b1441183f8fcaf45e6863719eed5de74269f3d54b9b173d1743d5d0453b00",
-    "industrial_physical_runtime_v0_sha256": "90c8f4cfb60a29f10e659916b0f0c01d057fea35c1452f02322d6bfc184a31cc"
+    "industrial_physical_runtime_v0_sha256": "90c8f4cfb60a29f10e659916b0f0c01d057fea35c1452f02322d6bfc184a31cc",
+    "pharmaceuticals_page_construction_v0_sha256": "b48d7e94a1a584735f856033ef3ad14d7f3806f4a444875a9ac5941aa8160086",
+    "industrial_page_construction_v0_sha256": "59d219809dc7de5ff1424e620b26f49805edcc3d4d6563fa3a34e62e4c172475",
+    "pharmaceuticals_dvi_e2e_timing_v1_sha256": "a32b84aaf2fdfc0de5123ea08612f5cc2e7e23cb010771a80cf4f54926647ba1",
+    "industrial_dvi_e2e_timing_v1_sha256": "87ecf56400f34021663db21b463ae0d7f851c8e80344f405e854dc77ec8e1234",
+    "pharmaceuticals_heterogeneous_phase_e2e_v1_sha256": "0faa7d3dc1ee4f2572b17b7f3fb24cf2bc8d5d0957c8d1eb2c75a7e08a52ece3",
+    "industrial_heterogeneous_phase_e2e_v1_sha256": "4e6fd4f0613ec09de8cd02134e91735b7bf47816923c5ac014550e677fe71db5",
+    "pharmaceuticals_dvi_hpool_v1_sha256": "a0af5df9be16c493255a44c661f7b6bef59e5e2690601e59afc7d2e302fbdb91",
+    "industrial_dvi_hpool_v1_sha256": "0ec3b2c0143c4e03876c28b2dcc87f02b3430cc91722b548b509d838145ed976",
+    "pharmaceuticals_paired_hpool_dvi_closure_v1_sha256": "661baf1e9031c9772be26e15a70019994ecbc8e60edb5111de2855a2b58f853c",
+    "industrial_paired_hpool_dvi_closure_v1_sha256": "90a7c32582e98f0f99de18063549fa631b35e9a5f817ac3928cf27a5848c7e9e",
+    "pharmaceuticals_closure_v4_sha256": "0f6828c045b1a0b4fb77b59dc1c454907b867c6546f799367868d18446d1a265",
+    "industrial_closure_v4_sha256": "3aeee2c482e48c7b548dc5bada3c4e733aae4de4a43445ad63b4aaf474a26568",
+    "pharmaceuticals_qwen_visual_feature_cache_v2_sha256": "b66173eb6c52d1699595da323d682f8420c19811c6b50c89b82c203e2cc6a6b6",
+    "industrial_qwen_visual_feature_cache_v2_sha256": "e7997f0c8373876926feac081808f02f3b3ec923ec56436b147a40b56799f1fd",
+    "pharmaceuticals_visual_feature_cache_phase_v3_sha256": "c2550fa6166002451cd5a905ae0cb2a2a39d241ab771a6aeaf62efa279b9ae36",
+    "industrial_visual_feature_cache_phase_v3_sha256": "6d54984e5b40fcd37900e96640ddf9f3fe7eb0b3c5c4354e0e469c478a9661db"
   }
 }

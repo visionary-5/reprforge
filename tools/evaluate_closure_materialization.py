@@ -187,6 +187,7 @@ def _cost(
         "persistent_pages": len(selected),
         "candidate_events_per_trace": candidate_events,
         "transient_build_events_per_trace": int(misses.sum()),
+        "transient_build_events_per_query": misses.tolist(),
         "persistent_hit_fraction": (
             1.0 - float(misses.sum()) / candidate_events if candidate_events else 0.0
         ),

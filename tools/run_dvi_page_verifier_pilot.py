@@ -115,6 +115,7 @@ def _score_pairs(
     processor.image_processor.min_pixels = int(model_config["min_pixels"])
     processor.image_processor.max_pixels = int(model_config["max_pixels"])
     tokenizer = processor.tokenizer
+    tokenizer.padding_side = "left"
     yes_ids = tokenizer.encode("YES", add_special_tokens=False)
     no_ids = tokenizer.encode("NO", add_special_tokens=False)
     if len(yes_ids) != 1 or len(no_ids) != 1:
@@ -154,22 +155,26 @@ def _score_pairs(
             ).to("cuda")
             torch.cuda.synchronize()
             preprocess_h2d_seconds = time.perf_counter() - preprocess_began
-            began = time.perf_counter()
-            with torch.inference_mode():
-                logits = model(**inputs).logits
-            torch.cuda.synchronize()
-            forward_seconds = time.perf_counter() - began
-            batch_total_seconds = time.perf_counter() - batch_began
-            batch_latencies.append(batch_total_seconds)
             token_positions = torch.arange(
                 inputs.attention_mask.shape[1], device=inputs.attention_mask.device
             ).unsqueeze(0)
             positions = token_positions.masked_fill(
                 inputs.attention_mask == 0, -1
             ).max(dim=1).values
+            if not torch.all(positions == inputs.attention_mask.shape[1] - 1):
+                raise ValueError(
+                    "next-token optimization requires left-padded verifier inputs"
+                )
+            began = time.perf_counter()
+            with torch.inference_mode():
+                logits = model(**inputs, logits_to_keep=1).logits
+            torch.cuda.synchronize()
+            forward_seconds = time.perf_counter() - began
+            batch_total_seconds = time.perf_counter() - batch_began
+            batch_latencies.append(batch_total_seconds)
             rows = torch.arange(len(batch), device=logits.device)
             pair_scores = (
-                logits[rows, positions, yes_ids[0]] - logits[rows, positions, no_ids[0]]
+                logits[rows, -1, yes_ids[0]] - logits[rows, -1, no_ids[0]]
             ).float().cpu().numpy()
             for (query_id, doc_id), score in zip(batch, pair_scores, strict=True):
                 row = {
