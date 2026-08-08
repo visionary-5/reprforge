@@ -71,6 +71,16 @@ Raw artifacts are under the workspace-level
 - At a 5% persistent-page budget, history-frequency replay produces a stable
   defer--partial--full cumulative-cost phase under the real benchmark order and
   five random orders in Pharma and Industrial.
+- The frozen two-action v0 separates exact verifier-feature reuse from
+  corpus-searchable retrieval materialization. The measured feature break-even
+  is about 1.15 future candidate uses per page in both domains.
+- A future-label oracle using only 5% of pages reaches nDCG@10 0.6824 on Pharma
+  and 0.5816 on Industrial, above the corresponding complete z-score hybrids
+  (0.6351 and 0.5033). Visual retrieval value is therefore sparse and signed,
+  rather than a monotone function of page coverage.
+- Naive Top-100 RRF over a sparse visual support fails badly because pages rank
+  highly merely inside the incomplete subset. Sparse materialization needs an
+  explicit missing-score or query-scope contract.
 
 ## What is not established
 
@@ -86,11 +96,15 @@ Raw artifacts are under the workspace-level
   exact feature materialization.
 - Visual-feature reuse itself is not the novelty; the compiler decision and
   its quality/cost transfer evidence must carry the contribution.
+- The v0 qrel-free risk/reuse selector does not close the retrieval oracle gap:
+  at 5% pages it scores 0.5530 on Pharma and 0.4451 on Industrial under the
+  mean-prior audit, versus text-only 0.5736 and 0.4349.
 
 ## Next implementation milestone
 
-Freeze temporal and domain splits, then implement the simplest realizable
-two-action page-value policy. For page `d`, estimate separately:
+The split and two-action substrate are now frozen. Replace the v0 static
+retrieval heuristic with the simplest realizable signed-value learner. For
+page `d`, continue to estimate separately:
 
 ```text
 reuse_value(d) = predicted_future_uses(d) * (raw_cost - feature_cost)
@@ -101,10 +115,13 @@ discovery_value(d) = predicted_escape_repair(d)
                       - retrieval_build_and_storage_cost
 ```
 
-Select feature and retrieval states under independent build/storage budgets.
-The first comparison must include never materialize (DVI-like), materialize
-all, first-touch, second-touch, history frequency, visual-risk-only, their
-simple union, the realizable joint policy, and a future-aware oracle.
+Feature admission should retain never/all/first-touch/second-touch/history and
+future-frequency oracle baselines. Retrieval admission must predict both
+escape repair and ranking interference, use only fit-fold feedback and cheap
+signals, and be evaluated unchanged on the sealed test fold. Do not tune the
+fixed v0 weights on Pharma or Industrial test results. Before another GPU run,
+test whether query-scope high-fidelity scoring or a calibrated missing-score
+model closes a meaningful fraction of the 1/2/5/10/20/40% oracle gap.
 
 ## Reading order
 

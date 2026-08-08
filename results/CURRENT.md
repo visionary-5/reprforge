@@ -3,10 +3,12 @@
 The authoritative compact result is:
 
 - `compiler-feasibility/closure-materialization-v0-2026-08-08.json`
+- `compiler-feasibility/materialization-compiler-v0-2026-08-08.json`
 
-It records the active claim boundary, paired DVI/Omni quality, real page-build
-costs, host and NVMe visual-feature timings, batch-size sensitivity, phase
-boundaries, protocol rules, and hashes of external raw artifacts.
+Together they record the active claim boundary, paired DVI/Omni quality, real
+page-build costs, host and NVMe visual-feature timings, batch-size sensitivity,
+phase boundaries, the frozen two-action v0 result, protocol rules, and hashes
+of external raw artifacts.
 
 The current external artifact root is:
 

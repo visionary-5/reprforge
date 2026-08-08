@@ -27,6 +27,7 @@ the current paper claim.
 | `docs/defer-materialize-phase-diagram-v0-result-2026-08-07.md` | awaiting physical reproduction | A preliminary cost-accounting boundary and several missing variables. | Direction-level GO/NO-GO, real DVI latency, or a realizable middle region. |
 | `docs/omni-col-press-full-domain-cascade-result-2026-08-05.md` | active evidence | Compact locator plus Full reranking repairs mainly candidate-internal ranking errors across four domains. | That query Top-k routing is the paper contribution. |
 | `results/compiler-feasibility/closure-materialization-v0-2026-08-08.json` | active evidence | Exact query-conditioned feature reuse, measured host/NVMe cost, batch-size sensitivity, and stable defer--partial--full crossover in Pharma and Industrial; physical transfer of feature reuse to the CS calibration domain. | A realizable selector, unseen-domain method transfer, natural workload trace, or production concurrent-I/O claim. |
+| `results/compiler-feasibility/materialization-compiler-v0-2026-08-08.json` | active evidence and valid negative | Separates exact feature reuse from retrieval materialization; freezes fit/calibration/test; shows a ~1.15-use feature break-even, strong 5% signed-value oracle headroom, and failure of naive sparse RRF and the v0 cheap selector. | A deployable page-value predictor, unseen-domain transfer, or end-to-end quality claim. |
 
 ## Closed or limited method branches
 
@@ -54,7 +55,8 @@ the current paper claim.
 The following cells are intentionally empty and are the reason no final method
 claim is made yet:
 
-1. physical partial-index curves at 1/2/5/10/20/40% page budgets;
+1. a realizable signed-value selector that closes a meaningful part of the
+   1/2/5/10/20/40% oracle gap without tuning on the test domains;
 2. strong text/structure/dense locator comparison, not BM25 alone;
 3. realized selectors evaluated document/query-disjoint and on sealed domains;
 4. realizable defer versus persistent admission under frozen locality, breadth,

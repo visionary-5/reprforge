@@ -30,6 +30,11 @@ does not add pages to the candidate cohort.
 | `reprforge/defer_materialize_phase.py` | Pure cumulative-cost and crossover calculations. |
 | `reprforge/dvi_page_verifier.py` | Deterministic query sampling, ranking metrics, reranking, and verifier helpers. |
 | `reprforge/visual_page_features.py` | Cheap page-image features used only by realizable selectors or diagnostics. |
+| `reprforge/materialization/states.py` | Orthogonal feature and retrieval state, rather than one overloaded "visual" bit. |
+| `reprforge/materialization/costs.py` | Measured build, storage, raw-query, and cached-query cost catalog. |
+| `reprforge/materialization/split.py` | Frozen fit/calibration/test split and deterministic query-order permutations. |
+| `reprforge/materialization/policy.py` | Leakage-safe v0 feature-reuse and retrieval-value plan compiler. |
+| `reprforge/materialization/replay.py` | Exact-quality feature-state replay for static and touch-based baselines. |
 
 These modules are measurement substrate, not the final paper algorithm.
 
@@ -43,6 +48,7 @@ These modules are measurement substrate, not the final paper algorithm.
 | `tools/analyze_visual_feature_cache_phase.py` | Exact-quality defer--partial--full phase analysis. |
 | `tools/benchmark_omni_page_construction.py` | Real Full Omni build cost. |
 | `tools/benchmark_omni_closure_runtime.py` | Physical candidate-cohort execution. |
+| `tools/evaluate_materialization_compiler_v0.py` | Two-action v0, core baselines, query-order repeats, and sparse-support fusion audit. |
 
 Each GPU tool writes a new output and refuses to overwrite an existing result.
 Paper-facing summaries bind raw outputs by SHA-256.
@@ -61,13 +67,14 @@ package with explicit boundaries rather than adding another monolithic module:
 
 ```text
 reprforge/materialization/
-    states.py       # raw, feature, retrieval state and transitions
-    catalog.py      # measured per-operator costs and page metadata
+    states.py       # independent feature/retrieval state and transitions
+    costs.py        # measured per-operator costs
+    split.py        # frozen workload splits and query orders
     policy.py       # realizable feature/retrieval admission
-    workload.py     # frozen temporal/domain splits
-    evaluation.py   # baselines, oracle, quality and cumulative cost
+    replay.py       # exact-quality feature cost replay
 ```
 
-Only after this package passes the frozen evaluation should obsolete modules
-and tests be physically moved into a release archive. Prematurely moving them
-now would create import churn without strengthening the method.
+The package now exists and v0 has passed implementation tests, but not the
+method gate: its static retrieval selector leaves a large oracle gap. Only
+after a replacement passes frozen cross-domain evaluation should obsolete
+modules and tests be physically moved into a release archive.
