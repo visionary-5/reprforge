@@ -9,16 +9,18 @@ question is:
 > and which should be persistently materialized as reusable visual retrieval
 > state?
 
-The project does **not** currently claim a finished paper method. Existing GPU
-results establish two useful facts: text and visual locators have complementary
-candidate failures, and a future-aware oracle can concentrate much of the
-visual retrieval gain on a small page set. They do not yet establish that an
-online, realizable selector can predict that set or that logical savings become
-end-to-end latency savings.
+The project does **not** currently claim a finished paper method. Current GPU
+and NVMe results establish that retrieval and query-conditioned visual states
+have different quality roles, and that reusable query-independent visual
+features can preserve verifier scores while removing about three quarters of
+the repeated raw-page execution cost. They do not yet establish a realizable
+policy that jointly predicts discovery benefit, reuse, and ranking harm on an
+unseen domain.
 
 ## Current research state
 
-The authoritative documents are deliberately small:
+Start with [the active handoff](docs/HANDOFF.md). The authoritative documents
+are deliberately small:
 
 - [Current research specification](docs/current-research-spec.md): problem,
   method hypothesis, contribution boundary, and decision gates;
@@ -28,6 +30,7 @@ The authoritative documents are deliberately small:
   evidence, negative evidence, infrastructure, or historical exploration;
 - [Public benchmark landscape](docs/benchmark-landscape.md): adjacent papers
   and public artifact audit.
+- [Documentation map](docs/README.md): what is current and what is historical.
 
 Older documents and results remain in Git for auditability. Unless an older
 file is explicitly promoted in the evidence registry, it is not a current

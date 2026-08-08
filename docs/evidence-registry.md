@@ -26,6 +26,7 @@ the current paper claim.
 | `docs/representation-granularity-audit-v0-result-2026-08-07.md` | valid negative | Mechanical fixed/XY-cut sub-page regions increase representation work without consistent benefit. | That all layout-aware or semantic region organization is unhelpful. |
 | `docs/defer-materialize-phase-diagram-v0-result-2026-08-07.md` | awaiting physical reproduction | A preliminary cost-accounting boundary and several missing variables. | Direction-level GO/NO-GO, real DVI latency, or a realizable middle region. |
 | `docs/omni-col-press-full-domain-cascade-result-2026-08-05.md` | active evidence | Compact locator plus Full reranking repairs mainly candidate-internal ranking errors across four domains. | That query Top-k routing is the paper contribution. |
+| `results/compiler-feasibility/closure-materialization-v0-2026-08-08.json` | active evidence | Exact query-conditioned feature reuse, measured host/NVMe cost, batch-size sensitivity, and stable defer--partial--full crossover in Pharma and Industrial; physical transfer of feature reuse to the CS calibration domain. | A realizable selector, unseen-domain method transfer, natural workload trace, or production concurrent-I/O claim. |
 
 ## Closed or limited method branches
 
@@ -56,8 +57,12 @@ claim is made yet:
 1. physical partial-index curves at 1/2/5/10/20/40% page budgets;
 2. strong text/structure/dense locator comparison, not BM25 alone;
 3. realized selectors evaluated document/query-disjoint and on sealed domains;
-4. defer versus persistent cumulative cost under locality, breadth, and drift;
-5. complete raw-page I/O, preprocessing, H2D, VLM, search, and end-to-end p95/p99;
+4. realizable defer versus persistent admission under frozen locality, breadth,
+   and drift traces; controlled oracle and history-frequency crossovers now
+   establish headroom only;
+5. strict cold/concurrent raw-page and feature I/O, preprocessing, H2D, VLM,
+   search, and end-to-end p95/p99; current RTX 5090 pilots establish mean and
+   p95 component costs only;
 6. an external benchmark family and downstream answer/citation validation.
 
 When a result is added, this registry must be updated in the same commit. Raw
