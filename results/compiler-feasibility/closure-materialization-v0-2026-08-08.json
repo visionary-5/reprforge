@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "stage": "exact-score logical cost feasibility",
+  "date": "2026-08-08",
+  "claim_boundary": {
+    "established": [
+      "Arbitrary sparse global visual fusion is unsafe because an incomplete visual support is not a complete-corpus ranking.",
+      "A query-scope closed high-fidelity cohort preserves the selected cascade quality regardless of whether cohort pages are persistent or transient.",
+      "Both held-out domains contain a stable defer-partial-full cumulative-work phase under history-frequency materialization."
+    ],
+    "not_yet_established": [
+      "Logical page-build reductions translate to wall-clock GPU latency reductions.",
+      "The phase transfers unchanged to an unseen domain or a natural production trace.",
+      "The current quality beats the strongest complete hybrid index on every domain."
+    ]
+  },
+  "global_sparse_fusion_failure": {
+    "pharmaceuticals": {
+      "text_ndcg_at_10": 0.573556900534614,
+      "full_calibrated_hybrid_ndcg_at_10": 0.6483921087288377,
+      "random_10_percent_sparse_ndcg_at_10": 0.42631317976982136,
+      "history_verified_typed_10_percent_ndcg_at_10": 0.487998885914794,
+      "future_qrel_oracle_typed_10_percent_ndcg_at_10": 0.7539108749852885
+    },
+    "industrial": {
+      "text_ndcg_at_10": 0.43494273136512146,
+      "full_calibrated_hybrid_ndcg_at_10": 0.5222833092676218,
+      "random_10_percent_sparse_ndcg_at_10": 0.36656455939711025
+    },
+    "interpretation": "The future oracle proves headroom, while history/static selectors fail because page value is query-conditional and sparse columns create ranking interference."
+  },
+  "closure_materialization": {
+    "industrial": {
+      "corpus_pages": 5244,
+      "candidate_depth": 50,
+      "persistent_budget_fraction": 0.05,
+      "persistent_pages": 263,
+      "quality": {
+        "text_only_ndcg_at_10": 0.43494273136512146,
+        "hpool_only_ndcg_at_10": 0.46112050078670097,
+        "hpool_plus_full_cohort_rerank_ndcg_at_10": 0.5066937262462491,
+        "bm25_plus_full_cohort_rerank_ndcg_at_10": 0.47137408228299993,
+        "complete_calibrated_hybrid_ndcg_at_10": 0.5222833092676218
+      },
+      "one_trace_logical_page_builds": {
+        "always_defer": 2750,
+        "closure_materialization": 2061,
+        "full_ingestion": 5244
+      },
+      "history_future_candidate_page_overlap": 0.8517110266159695,
+      "phase_queries_real_order": {
+        "defer": [1, 11],
+        "closure_materialization": [12, 154],
+        "full_ingestion": [155, 880]
+      },
+      "phase_random_order_boundary_ranges": {
+        "closure_starts": [13, 20],
+        "full_starts": [151, 154]
+      }
+    },
+    "pharmaceuticals": {
+      "corpus_pages": 2313,
+      "candidate_depth": 20,
+      "persistent_budget_fraction": 0.1,
+      "persistent_pages": 232,
+      "quality": {
+        "text_only_ndcg_at_10": 0.573556900534614,
+        "hpool_only_ndcg_at_10": 0.5974549042722744,
+        "hpool_plus_full_cohort_rerank_ndcg_at_10": 0.6071445586849429,
+        "bm25_plus_full_cohort_rerank_ndcg_at_10": 0.6026328752733895,
+        "complete_calibrated_hybrid_ndcg_at_10": 0.6483921087288377
+      },
+      "one_trace_logical_page_builds": {
+        "always_defer": 1500,
+        "closure_materialization": 1260,
+        "full_ingestion": 2313
+      },
+      "history_future_candidate_page_overlap": 0.8686210640608035,
+      "phase_queries_real_order": {
+        "defer": [1, 37],
+        "closure_materialization": [38, 151],
+        "full_ingestion": [152, 1200]
+      },
+      "phase_random_order_boundary_ranges": {
+        "closure_starts": [31, 43],
+        "full_starts": [152, 153]
+      }
+    }
+  },
+  "protocol": {
+    "history_evaluation_split": "frozen 4/5 history and 1/5 evaluation query hash split",
+    "persistent_selector": "top page incidence frequency on history candidate closures only",
+    "future_labels_visible": false,
+    "future_frequency_oracle_reported_separately": true,
+    "base_locator": "complete-corpus H-Pool visual locator",
+    "high_fidelity_operation": "exact Full Omni MaxSim over the complete query candidate cohort",
+    "cost_unit": "one high-fidelity page representation construction",
+    "random_order_repetitions": 5
+  },
+  "raw_artifacts": {
+    "pharmaceuticals_closure_v2_sha256": "42acfa3810d2d6ddc171b9d91799820610dfef911c1ec542dc6e7d5657df566b",
+    "industrial_closure_v2_sha256": "9d2239e88271994d3d5d7d1cc0d57f6d0a3e26861704afbb7c9f0e6bd1dcdab3",
+    "pharmaceuticals_typed_v1_sha256": "cf0173a8f5bde2dd969ec1a7095a8f51a1bad4ac397eeff2fd9bcdc331750b20",
+    "industrial_global_sparse_v0_sha256": "9a42af681739e2c5e6dd28ab8413c23a341b073629679eb8c31311d1877f794f"
+  }
+}
