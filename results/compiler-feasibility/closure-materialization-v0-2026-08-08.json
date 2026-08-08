@@ -11,15 +11,16 @@
       "Real Omni page construction costs 0.247 seconds/page on Pharmaceuticals and 0.261 seconds/page on Industrial in sampled end-to-end runs; the estimates agree with complete build time within 5.8%.",
       "After charging a DVI-like raw-page verifier for image I/O, preprocessing, H2D, and model forward, history-frequency closure materialization has a non-empty visual-compute cost-winning region in both domains.",
       "On identical H-Pool Top-20 candidates, the query-conditioned raw-page verifier beats persistent Omni reranking in both domains, exposing a quality-versus-reuse trade-off rather than equivalent representations.",
-      "Caching query-independent Qwen2.5-VL vision-tower output preserves verifier scores exactly on the 256-pair pilots while reducing the query-side GPU path by about 77% end to end in both domains.",
+      "Caching query-independent Qwen2.5-VL vision-tower output preserves verifier scores exactly on the 1024-pair pilots while reducing the query-side GPU path by about 77% end to end in both domains.",
+      "Increasing the optimized DVI-like verifier from batch size four to eight changes mean end-to-end cost by only +0.04% on Pharmaceuticals and -0.10% on Industrial, so the measured raw-page cost is not an artifact of the earlier batch size.",
       "At a 5% persistent-page budget, the exact-quality raw-partial-full feature-cache phase is stable over the real order and five random query orders in both domains."
     ],
     "not_yet_established": [
       "The phase transfers unchanged to an unseen domain or a natural production trace.",
       "The current quality beats the strongest complete hybrid index on every domain.",
       "A deployable page-value predictor closes the substantial future-frequency oracle gap, especially on Pharmaceuticals.",
-      "DVI-like timing is fully optimized over batch size and last-token computation; the current complete-chain measurement uses batch size four and computes full sequence logits.",
-      "The exact score-equivalence and timing gains hold over complete benchmark query sets and production-like concurrent serving rather than the current 256-pair pilots.",
+      "DVI-like timing remains representative under production concurrency, shared-prefix caching, request scheduling, and alternative verifier architectures; the current sensitivity covers last-token computation and batch sizes four and eight.",
+      "The exact score-equivalence and timing gains hold over complete benchmark query sets and production-like concurrent serving rather than the current 1024-pair pilots.",
       "The visual-feature cache remains advantageous after optimized batching, storage I/O, invalidation, and an unseen-domain transfer.",
       "The method is novel relative to current multimodal prefix/vision-feature caching and deferred-ingestion systems after a dedicated literature audit."
     ]
@@ -205,41 +206,59 @@
   },
   "query_conditioned_visual_feature_materialization": {
     "representation": "host-resident Qwen2.5-VL vision-tower output after the multimodal projector; the query-conditioned language model still executes online",
-    "quality_contract": "raw and cached paths execute the same verifier language layers; maximum YES-minus-NO score difference was 0.0 on each 256-pair domain pilot",
+    "quality_contract": "raw and cached paths execute the same verifier language layers; maximum YES-minus-NO score difference was 0.0 on each 1024-pair domain pilot",
     "pharmaceuticals": {
-      "raw_optimized_end_to_end_ms_per_pair_batch1": 225.5773219949333,
-      "cached_feature_h2d_and_language_ms_per_pair_batch1": 52.39601037465036,
-      "relative_end_to_end_reduction": 0.7677248319499633,
-      "feature_materialization_end_to_end_ms_per_page": 173.72766729999097,
-      "mean_feature_bytes_per_page": 5049897.39574468,
+      "raw_optimized_end_to_end_ms_per_pair_batch1": 228.97989404009422,
+      "cached_feature_h2d_and_language_ms_per_pair_batch1": 52.70886580547085,
+      "relative_end_to_end_reduction": 0.769810069890933,
+      "feature_materialization_end_to_end_ms_per_page": 175.6916591493331,
+      "mean_feature_bytes_per_page": 5062437.837549933,
       "top20_five_percent_real_order": {
         "raw_query_interval": [1, 31],
-        "partial_feature_cache_query_interval": [32, 144],
-        "full_feature_cache_starts": 145
+        "partial_feature_cache_query_interval": [32, 145],
+        "full_feature_cache_starts": 146
       },
       "random_order_boundary_ranges": {
-        "partial_starts": [28, 42],
-        "full_starts": [143, 144]
+        "partial_starts": [30, 42],
+        "full_starts": [145, 146]
       }
     },
     "industrial": {
-      "raw_optimized_end_to_end_ms_per_pair_batch1": 235.28787778923288,
-      "cached_feature_h2d_and_language_ms_per_pair_batch1": 52.44938486430328,
-      "relative_end_to_end_reduction": 0.7770842027344622,
-      "feature_materialization_end_to_end_ms_per_page": 183.83307319525716,
-      "mean_feature_bytes_per_page": 5071371.689497717,
+      "raw_optimized_end_to_end_ms_per_pair_batch1": 234.55605651179212,
+      "cached_feature_h2d_and_language_ms_per_pair_batch1": 52.34568441665033,
+      "relative_end_to_end_reduction": 0.7768308130895836,
+      "feature_materialization_end_to_end_ms_per_page": 182.46367533415153,
+      "mean_feature_bytes_per_page": 5073649.200492005,
       "top20_five_percent_real_order": {
         "raw_query_interval": [1, 34],
-        "partial_feature_cache_query_interval": [35, 427],
-        "full_feature_cache_starts": 428
+        "partial_feature_cache_query_interval": [35, 424],
+        "full_feature_cache_starts": 425
       },
       "random_order_boundary_ranges": {
-        "partial_starts": [37, 43],
-        "full_starts": [424, 427]
+        "partial_starts": [37, 42],
+        "full_starts": [422, 424]
       }
     },
     "comparison_to_omni_storage": "The measured cached feature is about 5.05-5.08 MB/page versus about 11.3 MB/page for the current Full Omni multivector output, but the cached feature is a verifier intermediate rather than a standalone retrieval index.",
-    "interpretation": "This is the first equal-quality materialization result in the current study. It supports a representation state machine: complete cheap locator, deferred raw page, selectively materialized visual feature, and optionally an approximate low-latency retrieval representation. The current result is a small physical pilot, not yet a paper-scale method claim."
+    "interpretation": "This is the first equal-quality materialization result in the current study. It supports a representation state machine: complete cheap locator, deferred raw page, selectively materialized visual feature, and optionally an approximate low-latency retrieval representation. The current result is a 1024-pair physical pilot per domain, not yet a complete-benchmark or paper-scale method claim."
+  },
+  "dvi_batch_size_sensitivity": {
+    "scope": "optimized last-token Qwen2.5-VL-3B verifier on RTX 5090; batch-eight pilots include every cheap-locator escape-stress query plus five deterministically selected main queries",
+    "pharmaceuticals": {
+      "query_page_pairs": 1007,
+      "batch4_end_to_end_ms_per_pair": 215.31216208679674,
+      "batch8_end_to_end_ms_per_pair": 215.38925201603412,
+      "batch8_relative_change": 0.0003580379691059399,
+      "batch8_peak_cuda_memory_mib": 9339.26708984375
+    },
+    "industrial": {
+      "query_page_pairs": 1176,
+      "batch4_end_to_end_ms_per_pair": 221.8311655138727,
+      "batch8_end_to_end_ms_per_pair": 221.60061777309598,
+      "batch8_relative_change": -0.0010392937360386156,
+      "batch8_peak_cuda_memory_mib": 9288.28076171875
+    },
+    "interpretation": "Batch eight does not materially lower per-pair raw-page verification cost relative to batch four in either domain. The exact feature-cache phase is therefore not explained by an artificially weak batch-four DVI implementation, although a production serving-system comparison remains necessary."
   },
   "nearest_prior_work_boundary": {
     "MPIC": "Already stores multimodal KV caches on local disks and combines reuse with recomputation for position-independent MLLM serving; therefore persistent multimodal cache storage is not itself novel.",
@@ -277,9 +296,11 @@
     "industrial_paired_hpool_dvi_closure_v1_sha256": "90a7c32582e98f0f99de18063549fa631b35e9a5f817ac3928cf27a5848c7e9e",
     "pharmaceuticals_closure_v4_sha256": "0f6828c045b1a0b4fb77b59dc1c454907b867c6546f799367868d18446d1a265",
     "industrial_closure_v4_sha256": "3aeee2c482e48c7b548dc5bada3c4e733aae4de4a43445ad63b4aaf474a26568",
-    "pharmaceuticals_qwen_visual_feature_cache_v2_sha256": "b66173eb6c52d1699595da323d682f8420c19811c6b50c89b82c203e2cc6a6b6",
-    "industrial_qwen_visual_feature_cache_v2_sha256": "e7997f0c8373876926feac081808f02f3b3ec923ec56436b147a40b56799f1fd",
-    "pharmaceuticals_visual_feature_cache_phase_v3_sha256": "c2550fa6166002451cd5a905ae0cb2a2a39d241ab771a6aeaf62efa279b9ae36",
-    "industrial_visual_feature_cache_phase_v3_sha256": "6d54984e5b40fcd37900e96640ddf9f3fe7eb0b3c5c4354e0e469c478a9661db"
+    "pharmaceuticals_qwen_visual_feature_cache_v3_sha256": "c5d3dddc959129db0b51d0e8d7d25e6322925b6b098b653871fee0b307addd18",
+    "industrial_qwen_visual_feature_cache_v3_sha256": "d29b24895686c4c8275422d66a198ae050ce4090f5d30eb91fb88af6c48b6ad5",
+    "pharmaceuticals_visual_feature_cache_phase_v4_sha256": "688d864ee185c27dc39c9f90192889681cf40d21b5ecece662032b853075f913",
+    "industrial_visual_feature_cache_phase_v4_sha256": "69ac113b0cc60009e89ed03e173a16d6da460011d147bf2494e38b20c5003462",
+    "pharmaceuticals_dvi_nexttoken_batch8_v0_sha256": "139185c0b5cbc3edcadea24dcb0a65e704148a2ec14c3adc02510aedfd901ec1",
+    "industrial_dvi_nexttoken_batch8_v0_sha256": "e01a27af975c0e88f1d425cf8aa157b6b486d44f5028ad6f03984a00f98f3664"
   }
 }
