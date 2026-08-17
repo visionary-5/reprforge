@@ -6,6 +6,8 @@ dist/
 .pytest_cache/
 .ruff_cache/
 .mypy_cache/
+.coverage
+htmlcov/
 
 .env
 .venv/
@@ -19,6 +21,7 @@ outputs/
 logs/
 *.tmp
 *.log
+*.tgz
 
 # Large generated artifacts are reconstructed from explicit inputs.
 **/embedding-bank/

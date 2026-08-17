@@ -1,4 +1,0 @@
-{"content_type":"text","item_id":"layout:0","route_costs":{"image":{"encode_ms":3.0,"index_bytes":4},"text":{"encode_ms":1.0,"index_bytes":1}}}
-{"content_type":"table","item_id":"layout:1","route_costs":{"image":{"encode_ms":3.0,"index_bytes":4},"text":{"encode_ms":1.0,"index_bytes":1}}}
-{"content_type":"image","item_id":"layout:2","route_costs":{"image":{"encode_ms":3.0,"index_bytes":4},"text":{"encode_ms":1.0,"index_bytes":1}}}
-{"content_type":"text","item_id":"layout:3","route_costs":{"image":{"encode_ms":3.0,"index_bytes":4},"text":{"encode_ms":1.0,"index_bytes":1}}}

@@ -1,39 +1,43 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools>=69"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "reprforge"
 version = "0.1.0"
-description = "Budgeted heterogeneous representations for multimodal document retrieval"
+description = "Lifecycle compilation for multimodal late-interaction indexes"
 readme = "README.md"
-requires-python = ">=3.11"
-dependencies = [
-    "numpy>=2.0",
+license = {text = "Apache-2.0"}
+requires-python = ">=3.10"
+authors = [{name = "ReprForge Authors"}]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "License :: OSI Approved :: Apache Software License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
+dependencies = ["numpy>=1.26"]
 
 [project.optional-dependencies]
-gpu = [
-    "colpali-engine",
-    "pillow",
-    "pyarrow",
-    "torch>=2.5",
-    "transformers",
-]
-vidore = [
-    "colpali-engine==0.3.12",
-    "huggingface-hub>=0.34",
-    "pytrec-eval-terrier==0.5.10",
-    "transformers==4.53.2",
-    "vidore-benchmark @ git+https://github.com/illuin-tech/vidore-benchmark.git@a70f23af8bb3b33efe8a4a6c6c15a6e2d978035e",
-]
-dev = [
-    "pytest>=8",
-]
+dev = ["pytest>=8", "ruff>=0.9"]
+
+[project.urls]
+Repository = "https://github.com/visionary-5/reprforge"
+Issues = "https://github.com/visionary-5/reprforge/issues"
 
 [tool.setuptools.packages.find]
-include = ["reprforge*"]
+where = ["src"]
 
 [tool.pytest.ini_options]
-pythonpath = ["."]
 testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
