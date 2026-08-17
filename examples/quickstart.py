@@ -4,7 +4,6 @@ import numpy as np
 
 from reprforge import BackboneProfile, CompilerConfig, ReprForgeCompiler
 
-
 rng = np.random.default_rng(0)
 compact_canary = [rng.normal(size=(8, 16)) for _ in range(4)]
 full_canary_in_compact_slots = [page + 0.05 for page in compact_canary]
