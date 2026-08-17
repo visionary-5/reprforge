@@ -28,7 +28,7 @@ Full-level quality.
 ## Install
 
 ```bash
-git clone git@github.com:visionary-5/reprforge.git
+git clone https://github.com/visionary-5/reprforge.git
 cd reprforge
 python -m pip install -e .
 ```
