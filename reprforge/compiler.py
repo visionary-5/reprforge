@@ -1,4 +1,4 @@
-"""A small public API for compiling compact multimodal indexes."""
+"""Public compiler API for compact multimodal index lifecycles."""
 
 from __future__ import annotations
 

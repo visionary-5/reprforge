@@ -29,11 +29,12 @@ Repository = "https://github.com/visionary-5/reprforge"
 Issues = "https://github.com/visionary-5/reprforge/issues"
 
 [tool.setuptools.packages.find]
-where = ["src"]
+include = ["reprforge", "reprforge.*"]
+exclude = ["tests*"]
+namespaces = false
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-pythonpath = ["src"]
 
 [tool.ruff]
 line-length = 88

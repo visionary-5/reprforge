@@ -120,16 +120,21 @@ ColPali-style encoders. ColModernVBERT currently supports a storage-only plan,
 and ColQwen2 is an observed abstention case at the useful physical boundary.
 
 The repository is a compact research preview. Model hooks, concurrent
-candidate materialization, and additional complete benchmark integrations are
-still being stabilized.
+candidate materialization, and complete benchmark integrations are promoted
+here only after they reproduce a frozen result outside the public tree.
 
 ## Repository
 
 ```text
-src/reprforge/   compiler, alignment, index, and lifecycle policy
-examples/        small executable examples
-tests/           public API and invariant tests
+reprforge/   compiler, alignment, index, and lifecycle policy
+examples/    small executable examples
+tests/       public API and invariant tests
 ```
+
+Raw datasets, checkpoints, experiment logs, result bundles, and paper drafts
+are deliberately outside this repository. This keeps the public tree focused
+on the method that a reader can inspect and reuse; validated backbone and
+benchmark integrations will enter as code, not as archived experiment state.
 
 The design builds on late-interaction retrieval and visual document retrieval,
 especially [ColBERT](https://github.com/stanford-futuredata/ColBERT) and

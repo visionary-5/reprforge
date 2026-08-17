@@ -19,6 +19,16 @@ models/
 external/
 outputs/
 logs/
+artifacts/
+results/
+runs/
+checkpoints/
+wandb/
+mlruns/
+docs/
+experiments/
+notebooks/
+paper/
 *.tmp
 *.log
 *.tgz

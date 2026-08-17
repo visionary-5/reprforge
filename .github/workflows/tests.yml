@@ -19,5 +19,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - run: python -m pip install -e '.[dev]'
-      - run: ruff check .
-      - run: pytest -q
+      - run: python -m ruff check .
+      - run: python -m pytest -q
+      - run: python examples/quickstart.py
+      - run: python -m pip wheel . --no-deps --wheel-dir /tmp/reprforge-wheel
