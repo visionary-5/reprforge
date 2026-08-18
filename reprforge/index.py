@@ -8,39 +8,19 @@ from dataclasses import dataclass
 import numpy as np
 from numpy.typing import ArrayLike
 
-from .alignment import Matrix, normalize_rows
+Matrix = np.ndarray
 
 
-def coalesce_visual_tokens(
-    vectors: ArrayLike,
-    *,
-    grid_shape: tuple[int, int],
-    auxiliary_tokens: int = 0,
-) -> Matrix:
-    """Merge adjacent visual columns while preserving local slot identity.
+def normalize_rows(value: ArrayLike) -> Matrix:
+    """Return a finite rank-2 matrix with unit-length rows."""
 
-    Visual tokens must come first and form an even two-dimensional grid.
-    Auxiliary tokens (for example BOS/EOS states) are appended unchanged.
-    """
-
-    matrix = normalize_rows(vectors)
-    rows, columns = grid_shape
-    if rows <= 0 or columns <= 0 or rows % 2 or columns % 2:
-        raise ValueError("grid dimensions must be positive and even")
-    if auxiliary_tokens < 0:
-        raise ValueError("auxiliary token count cannot be negative")
-    visual_tokens = rows * columns
-    if visual_tokens + auxiliary_tokens != len(matrix):
-        raise ValueError("grid and auxiliary token counts do not match the vectors")
-
-    visual = matrix[:visual_tokens]
-    dimension = visual.shape[1]
-    blocks = visual.reshape(rows // 2, 2, columns // 2, 2, dimension)
-    pooled = blocks.transpose(0, 2, 1, 3, 4).mean(axis=3).reshape(-1, dimension)
-    pooled = normalize_rows(pooled)
-    if not auxiliary_tokens:
-        return pooled
-    return np.concatenate((pooled, matrix[visual_tokens:]), axis=0)
+    matrix = np.asarray(value, dtype=np.float64)
+    if matrix.ndim != 2 or 0 in matrix.shape:
+        raise ValueError("expected a non-empty rank-2 matrix")
+    if not np.isfinite(matrix).all():
+        raise ValueError("vectors must be finite")
+    norms = np.linalg.norm(matrix, axis=1, keepdims=True)
+    return matrix / np.maximum(norms, 1e-12)
 
 
 def maxsim_score(query: ArrayLike, document: ArrayLike) -> float:

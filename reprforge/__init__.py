@@ -1,12 +1,15 @@
 """ReprForge: lifecycle compilation for multimodal late-interaction indexes."""
 
-from .alignment import (
-    TrajectoryAlignment,
-    fit_trajectory_alignment,
-    normalize_rows,
+from .coalescing import (
+    CoalescedState,
+    TopologyAnchoredPlan,
+    apply_coalescing_plan,
+    topology_anchor_indices,
+    topology_anchored_coalesce,
+    topology_anchored_plan,
 )
 from .compiler import CompilerConfig, ReprForgeCompiler
-from .index import CompactIndex, SearchResult, coalesce_visual_tokens, maxsim_score
+from .index import CompactIndex, SearchResult, maxsim_score, normalize_rows
 from .policy import (
     BackboneProfile,
     Lifecycle,
@@ -18,18 +21,21 @@ from .policy import (
 __all__ = [
     "BackboneProfile",
     "CompactIndex",
+    "CoalescedState",
     "CompilerConfig",
     "Lifecycle",
     "LifecycleDecision",
     "ReprForgeCompiler",
     "SearchResult",
-    "TrajectoryAlignment",
+    "TopologyAnchoredPlan",
     "WorkloadProfile",
     "choose_lifecycle",
-    "coalesce_visual_tokens",
-    "fit_trajectory_alignment",
+    "apply_coalescing_plan",
     "maxsim_score",
     "normalize_rows",
+    "topology_anchor_indices",
+    "topology_anchored_coalesce",
+    "topology_anchored_plan",
 ]
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
