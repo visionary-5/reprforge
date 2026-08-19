@@ -1,47 +1,83 @@
 # ReprForge
 
-**Compile multimodal document encoders into smaller long-lived indexes.**
+**A physical-plan compiler for multimodal RAG indexes.**
 
 [![Tests](https://github.com/visionary-5/reprforge/actions/workflows/tests.yml/badge.svg)](https://github.com/visionary-5/reprforge/actions/workflows/tests.yml)
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/)
 [![License](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 
-Late-interaction retrievers build hundreds or thousands of vectors for every
-page. Those vectors are costly during document encoding and remain costly for
-the lifetime of the index. ReprForge asks a systems question: **must every
-intermediate visual representation remain active through the entire index
-construction pipeline?**
+## Why an index compiler?
 
-ReprForge shortens that lifecycle inside the document encoder:
+A conventional database index has explicit source fields, update semantics,
+and an exact operator contract. A multimodal RAG index is different: it is a
+lossy, model-compiled view of unstructured evidence. The stored vectors mean
+something only together with the document encoder, query encoder, adapter,
+visual resolution, retrieval granularity, and score function. Change that
+contract and the collection may need to be compiled again.
+
+ReprForge treats that repeated indexing work as a compilation problem:
 
 ```text
-page → full prefix → topology-anchored coalescing → compact suffix → index
-                         1024 visual states              512 states
-
-query → unchanged query encoder → unchanged MaxSim search
+logical evidence       physical plan        model lowering       artifact
+page / layout / chart → boundary + workers → prefix / coalesce / suffix → index
+                              │                                        │
+                              └──── workload and quality contract ─────┘
 ```
 
-This is index construction, not generic Transformer acceleration. The query
-path and retrieval score do not change.
+This learned semantic view is precisely what RAG contributes beyond ordinary
+lookup: a query can retrieve relevant text, layout, tables, and figures without
+an exact schema or key. It also creates the systems problem. The goal is not to
+make one Transformer forward pass look cheaper, but to reduce the total cost
+of constructing, storing, refreshing, and using that model-dependent view.
 
-## Method
+## Current physical operator
 
-At a model boundary where visual tokens still form a grid, ReprForge:
+For a ColPali-style visual late-interaction encoder, the current plan:
 
-1. reserves two fixed suffix positions from every spatial 2×2 cell;
-2. assigns every visual hidden state to its most similar reserved anchor;
-3. averages raw hidden states within each cluster;
-4. continues all remaining frozen encoder layers at the compact positions;
-5. persists only the resulting compact retrieval endpoints.
+1. runs the Full document prefix to a frozen hidden-state boundary;
+2. reserves two stable suffix positions from every visual 2×2 cell;
+3. assigns every visual hidden state to its most similar reserved anchor;
+4. averages the raw states owned by each variable-size cluster;
+5. continues the original frozen suffix with half as many visual workers;
+6. stores only the compact retrieval endpoints and their plan manifest.
 
-The fixed anchors preserve the execution layout expected by the suffix. Global
-assignment lets each slot gather semantically similar evidence beyond its local
-2×2 cell. The implementation is query-free and training-free.
+The fixed anchors preserve positional identity for the suffix. Global semantic
+assignment decides which evidence each worker owns. Query encoding and MaxSim
+remain unchanged. No query, qrel, answer, or task-specific training is used by
+the operator.
 
-`TopologyAnchoredPlan` exposes the assignments, anchors, cluster sizes, and
-compact positions needed by a PyTorch/JAX model hook. Empty clusters fall back
-to their fixed anchor state, so output capacity and suffix positions never
-change.
+## Architecture
+
+The repository root is the project boundary; the inner `reprforge/` directory
+is the installable Python namespace. Keeping that namespace is conventional
+Python packaging. The meaningful architecture is inside it:
+
+```text
+reprforge/
+├── planning/    backbone admission and serializable physical CompilePlan
+├── execution/   evidence assignment, hidden-state coalescing, build compiler
+├── adapters/    contract for lowering a plan into a real model prefix/suffix
+├── indexing/    MaxSim index plus checksummed, plan-aware persistent artifacts
+└── runtime/     optional Full refinement and workload lifecycle decisions
+
+examples/        executable reference pipeline
+tests/           subsystem and end-to-end contract tests
+```
+
+These boundaries follow the index lifecycle rather than arbitrary file size:
+
+- `planning` decides what representation should exist;
+- `execution` changes which states remain active during index construction;
+- `adapters` isolate model-specific attention, position, and layer APIs;
+- `indexing` makes the compiled representation durable and reproducible;
+- `runtime` decides when the compact view is sufficient or should defer to Full.
+
+This follows the same separation of indexing, search, infrastructure, and model
+integration used by mature late-interaction projects such as
+[ColBERT](https://github.com/stanford-futuredata/ColBERT),
+[ColPali](https://github.com/nomic-ai/colpali), and
+[RAGatouille](https://github.com/AnswerDotAI/RAGatouille), while keeping raw
+experiments and paper drafts outside the public package.
 
 ## Install
 
@@ -60,41 +96,55 @@ python -m pytest -q
 python examples/quickstart.py
 ```
 
-## Quick start
+## API walkthrough
+
+First freeze a physical plan for one backbone and collection:
 
 ```python
-import numpy as np
-
 from reprforge import BackboneProfile, CompilerConfig, ReprForgeCompiler
 
+profile = BackboneProfile(
+    name="colpali-v1.1",
+    total_layers=18,
+    split_after_layer=6,
+    full_visual_tokens=1024,
+    compact_visual_tokens=512,
+)
 compiler = ReprForgeCompiler(
-    CompilerConfig(
-        profile=BackboneProfile(
-            name="colpali-style-encoder",
-            total_layers=18,
-            split_after_layer=6,
-            full_visual_tokens=1024,
-            compact_visual_tokens=512,
-        )
-    )
+    CompilerConfig(profile=profile, grid_shape=(32, 32))
 )
 
-# Hidden states at the selected boundary: visual states first, auxiliaries last.
-hidden = np.random.default_rng(0).normal(size=(1030, 2048))
-state = compiler.compile_hidden_state(
-    hidden,
-    grid_shape=(32, 32),
-    auxiliary_tokens=6,
+print(compiler.plan.fingerprint)
+```
+
+A model adapter implements `run_prefix` and `run_suffix`. The compiler then
+owns the collection build rather than accepting unexplained endpoint arrays:
+
+```python
+index = compiler.build_documents(
+    adapter,
+    [(page_id, image) for page_id, image in pages],
 )
-
-# A model adapter continues the original suffix using both values below.
-compact_hidden = state.hidden_states
-compact_positions = state.plan.compact_positions(auxiliary_tokens=6)
-
-# Persist normalized retrieval endpoints produced by that compact suffix.
-index = compiler.build(compact_page_endpoints)
 candidates = index.search(query_vectors, top_k=20)
-ranking = index.refine(
+```
+
+The compiled artifact records both vectors and the exact physical plan:
+
+```python
+from reprforge import load_index, save_index
+
+manifest = save_index("indexes/my-collection", index, compiler.plan)
+reloaded, observed_manifest = load_index("indexes/my-collection")
+assert observed_manifest.plan.fingerprint == manifest.plan.fingerprint
+```
+
+Optional query-time recovery is a separate runtime decision:
+
+```python
+from reprforge import refine_candidates
+
+ranking = refine_candidates(
+    index,
     query_vectors,
     candidates,
     materialize_full_page,
@@ -102,62 +152,44 @@ ranking = index.refine(
 )
 ```
 
-[`examples/quickstart.py`](examples/quickstart.py) is executable and uses small
-synthetic arrays. Framework-specific hooks remain model-owned because attention
-masks, rotary positions, and layer APIs differ across backbone families.
+[`examples/quickstart.py`](examples/quickstart.py) runs the complete contract
+with a synthetic adapter. A production adapter must update the model's attention
+mask, position state, and suffix inputs using the returned compact positions.
 
-## Evidence
+## Evidence and limits
 
-The current frozen operating point uses a ColPali v1.1 document encoder,
-coalesces after layer 6, and retains 50.29% of persistent tokens.
+The frozen ColPali v1.1 operating point uses layer 6 and retains 50.29% of Full
+index vectors. Across six complete ViDoRe-v3 domains—15,194 pages and 10,782
+queries—topology-anchored global assignment improves capacity-matched local
+pooling on all six tasks: **+0.0049 macro nDCG@10**, task-bootstrap 95% CI
+**[+0.0031, +0.0066]**. Measured raw-image document-build savings are
+**7.48%–10.95%**.
 
-Across six complete ViDoRe-v3 domains (15,194 pages and 10,782 queries), the
-topology-anchored global operator improved over capacity-matched local pooling
-on all six tasks: **+0.0049 macro nDCG@10**, task-bootstrap 95% CI
-**[+0.0031, +0.0066]**. Measured document-build savings were **7.48%–10.95%**.
+The remaining gap is also explicit: −0.0132 macro nDCG@10 versus equal-capacity
+post-hoc pooling and −0.0275 versus Full. Current evidence supports task/domain
+transfer within one benchmark suite, not cross-backbone or cross-benchmark
+generality.
 
-The remaining quality gap is explicit: global compilation is −0.0132 macro
-nDCG@10 versus same-capacity post-hoc pooling and −0.0275 versus Full. On an
-opened 9-document MMDocIR mechanism set, it reached 0.6076 nDCG@10 versus
-0.5787 for local in-flight pooling and 0.6084 for post-hoc pooling, with 22.1%
-measured build saving. MMDocIR is algorithm-development evidence, not a held-out
-generalization claim.
+Controls have ruled out several tempting patches at this operating point:
+diverse anchors, exact cluster balance, endpoint-only low-rank correction,
+tail-conditioned correction, and simple spatial assignment penalties. The next
+scientific step is a model-aware lowering that preserves the physical-plan
+abstraction—not another endpoint mapping or pooling sweep.
 
-Recent controls narrowed the method rather than adding unsupported machinery:
+## Research status
 
-- diverse anchors and exact balance both reduced retrieval quality;
-- assignment-aligned rank-8 endpoint correction recovered only +0.0014 macro
-  nDCG@10 across two domains;
-- geometry-only tail prediction reached 0.647 held-out-document AUROC, below
-  its frozen 0.70 gate;
-- tail-conditioned correction reduced held-out p95 endpoint error by only
-  2.32%, and spatial assignment penalties did not improve aggregate nDCG.
+The repository now contains a coherent project-level system skeleton and the
+validated reference operator. A paper-level artifact still requires:
 
-The public default is therefore the simplest operator supported by the current
-evidence: fixed topology anchors, global semantic assignment, no learned
-correction.
+- at least one maintained real-model adapter;
+- reproducible complete benchmark entry points;
+- cross-benchmark validation of the unchanged physical plan;
+- repeated build, memory, serialized-size, and query-runtime measurements;
+- comparison with post-hoc pruning, local in-flight pooling, Full, and a
+  compact-native smaller model.
 
-## Scope
-
-ReprForge currently demonstrates task/domain generalization within one
-benchmark family. It does **not** yet establish cross-backbone or
-cross-benchmark generalization. ColPali-style encoders satisfy the execution
-contract; other multi-vector VLMs require a verified hidden boundary, visual
-topology, and compact suffix path.
-
-The repository contains the reusable algorithm, reference index, lifecycle
-policy, tests, and one example. Datasets, checkpoints, raw result bundles,
-paper drafts, and research logs stay outside the public tree.
-
-```text
-reprforge/   coalescing algorithm, compiler, index, and lifecycle policy
-examples/    executable synthetic integration
-tests/       API and invariant tests
-```
-
-ReprForge builds on late-interaction retrieval and visual document retrieval,
-especially [ColBERT](https://github.com/stanford-futuredata/ColBERT) and
-[ColPali](https://github.com/illuin-tech/colpali).
+Large datasets, checkpoints, raw result bundles, research logs, and paper
+drafts are deliberately excluded from this repository.
 
 ## License
 

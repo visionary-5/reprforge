@@ -1,19 +1,6 @@
 import pytest
 
-from reprforge import BackboneProfile, Lifecycle, WorkloadProfile, choose_lifecycle
-
-
-def test_backbone_admission_is_capability_based() -> None:
-    profile = BackboneProfile(
-        name="late-interaction-vlm",
-        total_layers=18,
-        split_after_layer=12,
-        full_visual_tokens=1024,
-        compact_visual_tokens=512,
-    )
-
-    profile.validate()
-    assert profile.persistent_fraction == pytest.approx(0.5)
+from reprforge import Lifecycle, WorkloadProfile, choose_lifecycle
 
 
 def test_workload_policy_selects_refinement_only_for_cold_index() -> None:

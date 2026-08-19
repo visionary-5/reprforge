@@ -1,17 +1,17 @@
-"""Compact multi-vector indexes and query-conditioned refinement."""
+"""Reference multi-vector index with ColBERT-style MaxSim."""
 
 from __future__ import annotations
 
-from collections.abc import Callable, Iterable
+from collections.abc import Iterable
 from dataclasses import dataclass
 
 import numpy as np
-from numpy.typing import ArrayLike
+from numpy.typing import ArrayLike, NDArray
 
-Matrix = np.ndarray
+FloatMatrix = NDArray[np.float64]
 
 
-def normalize_rows(value: ArrayLike) -> Matrix:
+def normalize_rows(value: ArrayLike) -> FloatMatrix:
     """Return a finite rank-2 matrix with unit-length rows."""
 
     matrix = np.asarray(value, dtype=np.float64)
@@ -24,7 +24,7 @@ def normalize_rows(value: ArrayLike) -> Matrix:
 
 
 def maxsim_score(query: ArrayLike, document: ArrayLike) -> float:
-    """Score one late-interaction document with ColBERT-style MaxSim."""
+    """Score one late-interaction document with MaxSim."""
 
     query_matrix = normalize_rows(query)
     document_matrix = normalize_rows(document)
@@ -40,7 +40,7 @@ class SearchResult:
 
 
 class CompactIndex:
-    """A small in-memory reference index for compiled page vectors."""
+    """Small in-memory reference index for compiled page endpoints."""
 
     def __init__(self, items: Iterable[tuple[str, ArrayLike]]) -> None:
         records = [
@@ -64,6 +64,24 @@ class CompactIndex:
     def item_ids(self) -> tuple[str, ...]:
         return tuple(item_id for item_id, _ in self._items)
 
+    @property
+    def dimension(self) -> int:
+        return int(self._items[0][1].shape[1])
+
+    @property
+    def vector_count(self) -> int:
+        return sum(len(vectors) for _, vectors in self._items)
+
+    def records(self) -> tuple[tuple[str, FloatMatrix], ...]:
+        """Return defensive copies for durable storage backends."""
+
+        return tuple(
+            (item_id, vectors.copy()) for item_id, vectors in self._items
+        )
+
+    def contains(self, item_id: str) -> bool:
+        return item_id in self._by_id
+
     def search(self, query: ArrayLike, *, top_k: int = 10) -> list[SearchResult]:
         if top_k <= 0:
             raise ValueError("top_k must be positive")
@@ -73,35 +91,3 @@ class CompactIndex:
         ]
         ranking.sort(key=lambda row: (-row.score, row.item_id))
         return ranking[: min(top_k, len(ranking))]
-
-    def refine(
-        self,
-        query: ArrayLike,
-        candidates: Iterable[str | SearchResult],
-        materialize_full: Callable[[str], ArrayLike],
-        *,
-        top_k: int | None = None,
-    ) -> list[SearchResult]:
-        """Materialize Full vectors only for compact-selected candidates."""
-
-        candidate_ids = tuple(
-            candidate.item_id if isinstance(candidate, SearchResult) else str(candidate)
-            for candidate in candidates
-        )
-        if not candidate_ids:
-            raise ValueError("refinement requires at least one candidate")
-        if len(candidate_ids) != len(set(candidate_ids)):
-            raise ValueError("refinement candidates must be unique")
-        unknown = [item_id for item_id in candidate_ids if item_id not in self._by_id]
-        if unknown:
-            raise KeyError(f"candidate is outside the compact index: {unknown[0]}")
-        limit = len(candidate_ids) if top_k is None else top_k
-        if limit <= 0:
-            raise ValueError("top_k must be positive")
-
-        ranking = [
-            SearchResult(item_id, maxsim_score(query, materialize_full(item_id)))
-            for item_id in candidate_ids
-        ]
-        ranking.sort(key=lambda row: (-row.score, row.item_id))
-        return ranking[: min(limit, len(ranking))]

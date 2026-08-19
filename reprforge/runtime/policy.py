@@ -1,4 +1,4 @@
-"""Model and workload admission for representation lifecycles."""
+"""Measured workload admission for compiled representation lifecycles."""
 
 from __future__ import annotations
 
@@ -11,45 +11,6 @@ class Lifecycle(str, Enum):
     FULL = "full"
     COMPACT = "compact"
     COMPACT_REFINE = "compact_refine"
-
-
-@dataclass(frozen=True)
-class BackboneProfile:
-    """Model properties required by an index-side compiler."""
-
-    name: str
-    total_layers: int
-    split_after_layer: int
-    full_visual_tokens: int
-    compact_visual_tokens: int
-    exposes_hidden_boundary: bool = True
-    exposes_visual_topology: bool = True
-    query_independent_documents: bool = True
-
-    @property
-    def persistent_fraction(self) -> float:
-        return self.compact_visual_tokens / self.full_visual_tokens
-
-    def admission_failures(self) -> tuple[str, ...]:
-        failures: list[str] = []
-        if self.total_layers < 2:
-            failures.append("the backbone has no separable prefix and suffix")
-        if not 0 < self.split_after_layer < self.total_layers:
-            failures.append("the split must leave both prefix and suffix layers")
-        if not 0 < self.compact_visual_tokens < self.full_visual_tokens:
-            failures.append("compact visual capacity must be smaller than Full")
-        if not self.exposes_hidden_boundary:
-            failures.append("no stable hidden-state boundary is exposed")
-        if not self.exposes_visual_topology:
-            failures.append("visual token topology is unavailable")
-        if not self.query_independent_documents:
-            failures.append("document encoding depends on a live query")
-        return tuple(failures)
-
-    def validate(self) -> None:
-        failures = self.admission_failures()
-        if failures:
-            raise ValueError("; ".join(failures))
 
 
 @dataclass(frozen=True)
@@ -114,7 +75,6 @@ def choose_lifecycle(
         raise ValueError("minimum quality fraction must be in (0, 1]")
     if not 0 < maximum_storage_fraction <= 1:
         raise ValueError("maximum storage fraction must be in (0, 1]")
-
     candidates = (
         LifecycleDecision(Lifecycle.FULL, workload.full_build_seconds, 1.0, 1.0),
         LifecycleDecision(
