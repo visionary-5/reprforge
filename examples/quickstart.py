@@ -44,7 +44,7 @@ rng = np.random.default_rng(0)
 profile = BackboneProfile(
     name="synthetic-multi-vector-vlm",
     total_layers=18,
-    split_after_layer=6,
+    split_after_layer=9,
     full_visual_tokens=16,
     compact_visual_tokens=8,
 )

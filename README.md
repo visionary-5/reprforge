@@ -34,7 +34,7 @@ of constructing, storing, refreshing, and using that model-dependent view.
 
 For a ColPali-style visual late-interaction encoder, the current plan:
 
-1. runs the Full document prefix to a frozen hidden-state boundary;
+1. lets the Full visual state evolve to an evidence-maturation boundary;
 2. reserves two stable suffix positions from every visual 2×2 cell;
 3. assigns every visual hidden state to its most similar reserved anchor;
 4. averages the raw states owned by each variable-size cluster;
@@ -44,7 +44,9 @@ For a ColPali-style visual late-interaction encoder, the current plan:
 The fixed anchors preserve positional identity for the suffix. Global semantic
 assignment decides which evidence each worker owns. Query encoding and MaxSim
 remain unchanged. No query, qrel, answer, or task-specific training is used by
-the operator.
+the operator. The boundary and persistent capacity are separate physical-plan
+choices: a vector can remain transiently active long enough to mature without
+being written to the long-lived index.
 
 ## Architecture
 
@@ -106,7 +108,7 @@ from reprforge import BackboneProfile, CompilerConfig, ReprForgeCompiler
 profile = BackboneProfile(
     name="colpali-v1.1",
     total_layers=18,
-    split_after_layer=6,
+    split_after_layer=9,
     full_visual_tokens=1024,
     compact_visual_tokens=512,
 )
@@ -158,33 +160,46 @@ mask, position state, and suffix inputs using the returned compact positions.
 
 ## Evidence and limits
 
-The frozen ColPali v1.1 operating point uses layer 6 and retains 50.29% of Full
-index vectors. Across six complete ViDoRe-v3 domains—15,194 pages and 10,782
-queries—topology-anchored global assignment improves capacity-matched local
-pooling on all six tasks: **+0.0049 macro nDCG@10**, task-bootstrap 95% CI
-**[+0.0031, +0.0066]**. Measured raw-image document-build savings are
-**7.48%–10.95%**.
+The frozen ColPali v1.1 operating point compiles after layer 9 of 18 and retains
+50.29% of Full index vectors. It was selected by a preregistered split-depth
+frontier: layers 3/6 were too early, layer 8 missed the cross-task quality gate,
+and layers 10/11/12 did not dominate layer 9 on quality and construction cost.
 
-The remaining gap is also explicit: −0.0132 macro nDCG@10 versus equal-capacity
-post-hoc pooling and −0.0275 versus Full. Current evidence supports task/domain
-transfer within one benchmark suite, not cross-backbone or cross-benchmark
-generality.
+Across six complete ViDoRe-v3 domains—15,194 pages and 10,782 queries—moving the
+unchanged topology-global compiler from layer 6 to layer 9 improves every task.
+Macro nDCG@10 rises from **0.42503 to 0.43414**: **+0.00911**, exact task
+bootstrap 95% interval **[+0.00620, +0.01172]**. The equal-capacity post-hoc and
+Full references are 0.43824 and 0.45253. Layer 9 therefore recovers about 69% of
+the former layer-6-to-post-hoc gap while keeping the same half-size index.
 
-Controls have ruled out several tempting patches at this operating point:
-diverse anchors, exact cluster balance, endpoint-only low-rank correction,
-tail-conditioned correction, and simple spatial assignment penalties. The next
-scientific step is a model-aware lowering that preserves the physical-plan
-abstraction—not another endpoint mapping or pooling sweep.
+The unchanged point also transfers to complete MP-DocVQA (741 pages, 591
+queries): nDCG@10 rises from **0.85134 to 0.86148**, paired-query bootstrap 95%
+interval for the gain **[+0.00178, +0.01872]**. Post-hoc and Full score 0.86722
+and 0.87001.
+
+Three uncontended, order-alternated MP-DocVQA measurements give **6.82% mean
+document-build saving** versus Full (sample SD 0.54 percentage points; all three
+runs positive), **49.71% tensor-storage saving**, and a 3.2% lower peak allocated
+GPU-memory point. The build result did not pass the experiment's stricter 8%
+promotion gate, so it is reported as a modest but repeatable payoff rather than
+a large systems speedup.
+
+The boundary remains explicit. Evidence covers two benchmark families but only
+one backbone family. A storage-matched compact-native model dominates this
+backbone on ViDoSeek and MP-DocVQA, while the compiled large model remains much
+stronger across most ViDoRe domains. ReprForge is useful when the chosen large
+backbone has a real capability premium; it is not a reason to use a large model
+when a smaller one is already better.
 
 ## Research status
 
-The repository now contains a coherent project-level system skeleton and the
-validated reference operator. A paper-level artifact still requires:
+The repository contains the validated reference operator and its physical-plan
+contracts. A paper-level artifact still requires:
 
 - at least one maintained real-model adapter;
 - reproducible complete benchmark entry points;
-- cross-benchmark validation of the unchanged physical plan;
-- repeated build, memory, serialized-size, and query-runtime measurements;
+- a second backbone family and adapter;
+- repeated measurements beyond one A100 host, plus query-runtime accounting;
 - comparison with post-hoc pruning, local in-flight pooling, Full, and a
   compact-native smaller model.
 
