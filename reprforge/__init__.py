@@ -28,6 +28,7 @@ from .planning import (
     UpdateRoute,
     UpdateScenario,
     choose_materializations,
+    evaluate_materializations,
     plan_topology_anchored,
 )
 from .runtime import (
@@ -62,6 +63,7 @@ __all__ = [
     "choose_lifecycle",
     "choose_materializations",
     "coalesce_hidden_states",
+    "evaluate_materializations",
     "load_index",
     "maxsim_score",
     "normalize_rows",

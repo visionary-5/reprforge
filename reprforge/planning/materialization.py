@@ -95,6 +95,81 @@ class MaterializationDecision:
         return 1.0 - self.expected_seconds / self.raw_baseline_seconds
 
 
+def evaluate_materializations(
+    selected_names: tuple[str, ...],
+    options: tuple[MaterializationOption, ...],
+    updates: tuple[UpdateScenario, ...],
+    *,
+    raw_rebuild_seconds: float,
+    minimum_quality_fraction: float = 0.99,
+) -> MaterializationDecision:
+    """Evaluate a fixed portfolio using measured costs.
+
+    This separates *planning* measurements from held-out *execution*
+    measurements: callers can select a portfolio with one profile and score
+    that unchanged decision with another profile that uses the same artifact
+    names and dependency contracts.
+    """
+
+    if not math.isfinite(raw_rebuild_seconds) or raw_rebuild_seconds < 0:
+        raise ValueError("raw rebuild time must be finite and non-negative")
+    if not 0 < minimum_quality_fraction <= 1:
+        raise ValueError("minimum quality fraction must be in (0, 1]")
+    names = [option.name for option in options]
+    if len(names) != len(set(names)):
+        raise ValueError("materialization option names must be unique")
+    if len(selected_names) != len(set(selected_names)):
+        raise ValueError("selected materialization names must be unique")
+    by_name = {option.name: option for option in options}
+    unknown = sorted(set(selected_names) - set(by_name))
+    if unknown:
+        raise ValueError(f"unknown materialization options: {', '.join(unknown)}")
+    for option in options:
+        option.validate()
+    for update in updates:
+        update.validate()
+
+    selected = tuple(by_name[name] for name in selected_names)
+    routes = []
+    maintenance = 0.0
+    for update in updates:
+        valid = [
+            option
+            for option in selected
+            if option.quality_fraction >= minimum_quality_fraction
+            and option.remains_valid(update)
+        ]
+        if valid:
+            source = min(valid, key=lambda item: (item.replay_seconds, item.name))
+            route = UpdateRoute(
+                update.name,
+                source.name,
+                source.replay_seconds,
+                update.expected_count,
+            )
+        else:
+            route = UpdateRoute(
+                update.name,
+                "raw",
+                raw_rebuild_seconds,
+                update.expected_count,
+            )
+        routes.append(route)
+        maintenance += route.expected_seconds
+    materialization = sum(option.materialization_seconds for option in selected)
+    raw_baseline = raw_rebuild_seconds * sum(
+        update.expected_count for update in updates
+    )
+    return MaterializationDecision(
+        selected=selected_names,
+        routes=tuple(routes),
+        storage_bytes=sum(option.storage_bytes for option in selected),
+        materialization_seconds=materialization,
+        expected_seconds=materialization + maintenance,
+        raw_baseline_seconds=raw_baseline,
+    )
+
+
 def choose_materializations(
     options: tuple[MaterializationOption, ...],
     updates: tuple[UpdateScenario, ...],
@@ -129,51 +204,18 @@ def choose_materializations(
     for update in updates:
         update.validate()
 
-    raw_baseline = raw_rebuild_seconds * sum(
-        update.expected_count for update in updates
-    )
     best: MaterializationDecision | None = None
     for count in range(len(options) + 1):
         for selected in itertools.combinations(options, count):
             storage = sum(option.storage_bytes for option in selected)
             if storage > storage_budget_bytes:
                 continue
-            materialization = sum(option.materialization_seconds for option in selected)
-            routes = []
-            maintenance = 0.0
-            for update in updates:
-                valid = [
-                    option
-                    for option in selected
-                    if option.quality_fraction >= minimum_quality_fraction
-                    and option.remains_valid(update)
-                ]
-                if valid:
-                    source = min(
-                        valid, key=lambda item: (item.replay_seconds, item.name)
-                    )
-                    route = UpdateRoute(
-                        update.name,
-                        source.name,
-                        source.replay_seconds,
-                        update.expected_count,
-                    )
-                else:
-                    route = UpdateRoute(
-                        update.name,
-                        "raw",
-                        raw_rebuild_seconds,
-                        update.expected_count,
-                    )
-                routes.append(route)
-                maintenance += route.expected_seconds
-            decision = MaterializationDecision(
-                selected=tuple(option.name for option in selected),
-                routes=tuple(routes),
-                storage_bytes=storage,
-                materialization_seconds=materialization,
-                expected_seconds=materialization + maintenance,
-                raw_baseline_seconds=raw_baseline,
+            decision = evaluate_materializations(
+                tuple(option.name for option in selected),
+                options,
+                updates,
+                raw_rebuild_seconds=raw_rebuild_seconds,
+                minimum_quality_fraction=minimum_quality_fraction,
             )
             if best is None or (
                 decision.expected_seconds,

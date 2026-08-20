@@ -6,6 +6,7 @@ from .materialization import (
     UpdateRoute,
     UpdateScenario,
     choose_materializations,
+    evaluate_materializations,
 )
 from .models import BackboneProfile, CompilePlan
 from .planner import plan_topology_anchored
@@ -18,5 +19,6 @@ __all__ = [
     "UpdateRoute",
     "UpdateScenario",
     "choose_materializations",
+    "evaluate_materializations",
     "plan_topology_anchored",
 ]

@@ -4,6 +4,7 @@ from reprforge import (
     MaterializationOption,
     UpdateScenario,
     choose_materializations,
+    evaluate_materializations,
 )
 
 
@@ -139,3 +140,38 @@ def test_quality_and_storage_contracts_can_exclude_an_artifact() -> None:
 
     assert too_large.selected == ()
     assert too_lossy.selected == ()
+
+
+def test_calibrated_selection_can_be_scored_with_holdout_measurements() -> None:
+    update = UpdateScenario("adapter", frozenset({"adapter"}), expected_count=2)
+    calibration = MaterializationOption(
+        name="post_vision",
+        depends_on=frozenset({"processor", "vision"}),
+        storage_bytes=100,
+        replay_seconds=2,
+        materialization_seconds=1,
+    )
+    selected = choose_materializations(
+        (calibration,),
+        (update,),
+        raw_rebuild_seconds=10,
+        storage_budget_bytes=100,
+    )
+    holdout = MaterializationOption(
+        name="post_vision",
+        depends_on=calibration.depends_on,
+        storage_bytes=90,
+        replay_seconds=3,
+        materialization_seconds=2,
+    )
+
+    observed = evaluate_materializations(
+        selected.selected,
+        (holdout,),
+        (update,),
+        raw_rebuild_seconds=12,
+    )
+
+    assert observed.selected == ("post_vision",)
+    assert observed.expected_seconds == pytest.approx(8)
+    assert observed.raw_baseline_seconds == pytest.approx(24)
