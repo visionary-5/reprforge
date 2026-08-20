@@ -140,6 +140,43 @@ reloaded, observed_manifest = load_index("indexes/my-collection")
 assert observed_manifest.plan.fingerprint == manifest.plan.fingerprint
 ```
 
+For a versioned collection, a reusable boundary is worthwhile only when it
+survives the expected update, meets the quality and storage contract, and
+amortizes its own materialization cost. ReprForge plans that decision from
+measured costs rather than assuming every intermediate state should be kept:
+
+```python
+from reprforge import (
+    MaterializationOption,
+    UpdateScenario,
+    choose_materializations,
+)
+
+post_vision = MaterializationOption(
+    name="post_vision_ir",
+    depends_on=frozenset({"processor", "vision", "base_embedding"}),
+    storage_bytes=6_266_593_554,
+    replay_seconds=1_243.8,
+    materialization_seconds=29.8,
+    quality_fraction=0.999,
+)
+adapter_update = UpdateScenario(
+    "adapter_v2",
+    frozenset({"adapter", "projection"}),
+    expected_count=2,
+)
+decision = choose_materializations(
+    (post_vision,),
+    (adapter_update,),
+    raw_rebuild_seconds=5_000.2,
+    storage_budget_bytes=6_369_873_920,
+)
+```
+
+The planner can also return an empty portfolio: when the valid prefix is cheap,
+the artifact is too large, or updates are too rare, rebuilding from the source
+is the correct physical plan.
+
 Optional query-time recovery is a separate runtime decision:
 
 ```python

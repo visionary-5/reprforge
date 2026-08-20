@@ -20,7 +20,16 @@ from .indexing import (
     normalize_rows,
     save_index,
 )
-from .planning import BackboneProfile, CompilePlan, plan_topology_anchored
+from .planning import (
+    BackboneProfile,
+    CompilePlan,
+    MaterializationDecision,
+    MaterializationOption,
+    UpdateRoute,
+    UpdateScenario,
+    choose_materializations,
+    plan_topology_anchored,
+)
 from .runtime import (
     Lifecycle,
     LifecycleDecision,
@@ -40,13 +49,18 @@ __all__ = [
     "IndexManifest",
     "Lifecycle",
     "LifecycleDecision",
+    "MaterializationDecision",
+    "MaterializationOption",
     "PageAssignment",
     "ReprForgeCompiler",
     "SearchResult",
+    "UpdateRoute",
+    "UpdateScenario",
     "WorkloadProfile",
     "apply_assignment",
     "assign_topology_anchored",
     "choose_lifecycle",
+    "choose_materializations",
     "coalesce_hidden_states",
     "load_index",
     "maxsim_score",
@@ -57,4 +71,4 @@ __all__ = [
     "topology_anchors",
 ]
 
-__version__ = "0.3.0"
+__version__ = "0.4.0"
