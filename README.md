@@ -197,6 +197,29 @@ mask, position state, and suffix inputs using the returned compact positions.
 
 ## Evidence and limits
 
+The version-maintenance path has now been exercised on complete MMDocIR: 313
+documents, 20,395 pages, 1,658 expert queries, and 10 domains. An Energy-fitted
+PCA-256 post-vision artifact transfers without refitting. Rebuilding the
+terminal ColQwen2.5 index from that artifact takes 1,243.83 seconds versus
+5,000.18 seconds from page images, a **75.12% warm-storage saving**. Recall@5 is
+0.85601 versus 0.85289 for Full; the paired-query bootstrap interval for the
+difference is [-0.00356, +0.00989], so this is a quality-preservation result.
+
+The artifact is 0.984x the terminal index by itself. Keeping both therefore
+uses about 1.984x terminal representation storage; ReprForge does not call that
+free compression. A physical policy-only rewrite of the same 20,395-page
+terminal index, from 313 shards to 32, takes a 7.20-second median and preserves
+every tensor exactly. The planner accordingly routes policy updates from the
+terminal index, adapter/projection updates from post-vision state when the
+storage budget permits it, and vision/processor updates from raw evidence.
+
+This dependency split also survives an official ColQwen2.5 v0.1-to-v0.2
+canary. Both released adapters contain 506 non-vision tensors; all 506 change.
+With one explicitly frozen 768-token processor contract, the cached prefix is
+bitwise identical across 16 pages while every terminal element changes. The
+model repositories' bundled processor defaults differ, so whole-package reuse
+is not assumed: processor identity is part of the artifact contract.
+
 The frozen ColPali v1.1 operating point compiles after layer 9 of 18 and retains
 50.29% of Full index vectors. It was selected by a preregistered split-depth
 frontier: layers 3/6 were too early, layer 8 missed the cross-task quality gate,
