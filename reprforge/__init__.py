@@ -18,12 +18,18 @@ from .execution import (
 )
 from .indexing import (
     CompactIndex,
+    GenerationArtifact,
+    GenerationManifest,
     IndexManifest,
     SearchResult,
     load_index,
     maxsim_score,
     normalize_rows,
+    publish_generation,
+    resolve_active_generation,
     save_index,
+    seal_generation,
+    validate_generation,
 )
 from .planning import (
     BackboneProfile,
@@ -54,6 +60,8 @@ __all__ = [
     "CompilePlan",
     "CompilerConfig",
     "DocumentEncoderAdapter",
+    "GenerationArtifact",
+    "GenerationManifest",
     "IndexManifest",
     "Lifecycle",
     "LifecycleDecision",
@@ -77,9 +85,13 @@ __all__ = [
     "maxsim_score",
     "normalize_rows",
     "plan_topology_anchored",
+    "publish_generation",
     "refine_candidates",
+    "resolve_active_generation",
     "save_index",
+    "seal_generation",
     "topology_anchors",
+    "validate_generation",
 ]
 
 __version__ = "0.4.0"

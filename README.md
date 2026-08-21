@@ -18,10 +18,9 @@ contract and the collection may need to be compiled again.
 ReprForge treats that repeated indexing work as a compilation problem:
 
 ```text
-logical evidence       physical plan        model lowering       artifact
-page / layout / chart → boundary + workers → prefix / coalesce / suffix → index
-                              │                                        │
-                              └──── workload and quality contract ─────┘
+version diff → dependency cut → deepest valid artifact → target index generation
+                                      │                        │
+                        measured cost + quality contract  validate → publish
 ```
 
 This learned semantic view is precisely what RAG contributes beyond ordinary
@@ -30,9 +29,36 @@ an exact schema or key. It also creates the systems problem. The goal is not to
 make one Transformer forward pass look cheaper, but to reduce the total cost
 of constructing, storing, refreshing, and using that model-dependent view.
 
-## Current physical operator
+## How recompilation works
 
-For a ColPali-style visual late-interaction encoder, the current plan:
+ReprForge does not assume that a model upgrade invalidates the whole index, or
+that every intermediate tensor is worth keeping. For each version transition it:
+
+1. fingerprints the source, processor, vision tower, base embedding, retrieval
+   adapter, projection, and physical index policy;
+2. classifies the changed checkpoint tensors by the stages they actually touch;
+3. chooses the deepest stored artifact that remains valid and satisfies the
+   measured storage, quality, and amortization contract;
+4. builds the true target-version terminal vectors and a disposable candidate
+   index, then validates both retrieval quality and artifact identity;
+5. publishes one checksummed immutable generation through an atomic pointer.
+
+The legal route depends on what changed:
+
+| Update | Deepest legal source | Work performed |
+|---|---|---|
+| index layout or ANN policy | terminal vectors | rebuild serving artifacts |
+| decoder adapter or projection | post-vision IR | replay the affected suffix |
+| processor, vision tower, or unknown tensors | source pages | rebuild from raw evidence |
+
+The planner is allowed to choose raw evidence even when a reusable boundary
+exists: an artifact with poor quality, excessive storage, or too little future
+reuse is not a useful cache.
+
+## Optional in-flight lowering
+
+For a ColPali-style visual late-interaction encoder, ReprForge also exposes an
+optional lossy physical operator:
 
 1. lets the Full visual state evolve to an evidence-maturation boundary;
 2. reserves two stable suffix positions from every visual 2×2 cell;
@@ -46,7 +72,8 @@ assignment decides which evidence each worker owns. Query encoding and MaxSim
 remain unchanged. No query, qrel, answer, or task-specific training is used by
 the operator. The boundary and persistent capacity are separate physical-plan
 choices: a vector can remain transiently active long enough to mature without
-being written to the long-lived index.
+being written to the long-lived index. This operator requires a workload quality
+admission; it is not the default route for version maintenance.
 
 ## Architecture
 
@@ -59,7 +86,7 @@ reprforge/
 ├── planning/    backbone admission and serializable physical CompilePlan
 ├── execution/   evidence assignment, hidden-state coalescing, build compiler
 ├── adapters/    contract for lowering a plan into a real model prefix/suffix
-├── indexing/    MaxSim index plus checksummed, plan-aware persistent artifacts
+├── indexing/    MaxSim index, immutable generations, validation and publication
 └── runtime/     optional Full refinement and workload lifecycle decisions
 
 examples/        executable reference pipeline
@@ -150,6 +177,31 @@ assert observed_manifest.plan.fingerprint == manifest.plan.fingerprint
 assert observed_manifest.version == version
 ```
 
+Serving files are sealed into a create-only generation before they can become
+active. Publication validates every declared file, writes a manifest-addressed
+pointer, and atomically replaces the previous pointer:
+
+```python
+from reprforge import (
+    publish_generation,
+    resolve_active_generation,
+    seal_generation,
+)
+
+# These files already exist under deployment/generations/adapter-v1/.
+seal_generation(
+    "deployment",
+    "adapter-v1",
+    ("terminal/vectors.bin", "serving/sq8.faiss", "serving/token-to-page.i32"),
+    version=version,
+)
+publish_generation("deployment", "adapter-v1")
+generation_path, active_manifest = resolve_active_generation("deployment")
+```
+
+Garbage collection is deliberately separate: readers resolve one pointer
+snapshot and keep that immutable generation for the lifetime of a request.
+
 For a versioned collection, a reusable boundary is worthwhile only when it
 survives the expected update, meets the quality and storage contract, and
 amortizes its own materialization cost. ReprForge plans that decision from
@@ -233,6 +285,17 @@ terminal ColQwen2.5 index from that artifact takes 1,243.83 seconds versus
 0.85601 versus 0.85289 for Full; the paired-query bootstrap interval for the
 difference is [-0.00356, +0.00989], so this is a quality-preservation result.
 
+The same workload has also been executed as one complete target-generation
+transition rather than a sum of isolated microbenchmarks. ReprForge replayed
+all 12,441,160 target vectors, wrote and hashed 313 terminal shards, built a
+fresh SQ8 candidate index from those vectors, reran quality admission, sealed
+the generation, and published it only after every gate passed. The warm route
+took 1,350.86 seconds versus 5,077.86 seconds for raw-page construction with
+the same downstream work: a **73.40% end-to-end saving**. The SQ8 probe covered
+98.5% of Full exact global Top-10 pages while sending 10.77% of pages to exact
+reranking. This serving probe is internal; MMDocIR's official quality remains
+the source-document result above.
+
 The artifact is 0.984x the terminal index by itself. Keeping both therefore
 uses about 1.984x terminal representation storage; ReprForge does not call that
 free compression. A physical policy-only rewrite of the same 20,395-page
@@ -297,15 +360,18 @@ when a smaller one is already better.
 
 ## Research status
 
-The repository contains the validated reference operator and its physical-plan
-contracts. A paper-level artifact still requires:
+The public package contains the physical planner, tensor-scope admission,
+reference in-flight compiler, versioned index manifests, immutable generation
+sealing, full-file validation, and local-filesystem atomic publication. The
+research evidence currently supports dependency-aware adapter/projection
+recompilation as the main method. In-flight token coalescing remains an optional
+operator because its quality does not transfer uniformly to ViDoSeek and no
+tested query-free geometry statistic reliably certifies its ranking loss.
 
-- at least one maintained real-model adapter;
-- reproducible complete benchmark entry points;
-- a second backbone family and adapter;
-- repeated measurements beyond one A100 host, plus query-runtime accounting;
-- comparison with post-hoc pruning, local in-flight pooling, Full, and a
-  compact-native smaller model.
+The remaining paper-level external-validity work is a second complete
+model/version transition, cold or object-storage execution, garbage collection,
+and an observed update-frequency trace. Current timing is from one A100 host and
+local NVMe; it must not be presented as distributed or hardware-general.
 
 Large datasets, checkpoints, raw result bundles, research logs, and paper
 drafts are deliberately excluded from this repository.
