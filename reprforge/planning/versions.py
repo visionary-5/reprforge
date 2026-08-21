@@ -7,7 +7,6 @@ from typing import Any
 
 from .materialization import UpdateScenario
 
-
 _COMPONENTS = (
     "source",
     "processor",
