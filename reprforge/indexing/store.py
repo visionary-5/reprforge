@@ -10,7 +10,7 @@ from typing import Any
 
 import numpy as np
 
-from ..planning import CompilePlan
+from ..planning import CompilePlan, VersionManifest
 from .late_interaction import CompactIndex
 
 
@@ -31,10 +31,14 @@ class IndexManifest:
     vector_count: int
     dimension: int
     payload_sha256: str
-    format_version: int = 1
+    version: VersionManifest | None = None
+
+    @property
+    def format_version(self) -> int:
+        return 2 if self.version is not None else 1
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        value = {
             "format_version": self.format_version,
             "plan": self.plan.to_dict(),
             "plan_fingerprint": self.plan.fingerprint,
@@ -43,9 +47,19 @@ class IndexManifest:
             "dimension": self.dimension,
             "payload_sha256": self.payload_sha256,
         }
+        if self.version is not None:
+            value["version"] = self.version.to_dict()
+        return value
 
     @classmethod
     def from_dict(cls, value: dict[str, Any]) -> IndexManifest:
+        format_version = int(value["format_version"])
+        if format_version not in (1, 2):
+            raise ValueError("unsupported index-artifact format")
+        if format_version == 1 and "version" in value:
+            raise ValueError("format 1 cannot contain a version manifest")
+        if format_version == 2 and "version" not in value:
+            raise ValueError("format 2 requires a version manifest")
         plan = CompilePlan.from_dict(value["plan"])
         if value["plan_fingerprint"] != plan.fingerprint:
             raise ValueError("compile-plan fingerprint mismatch")
@@ -55,7 +69,11 @@ class IndexManifest:
             vector_count=int(value["vector_count"]),
             dimension=int(value["dimension"]),
             payload_sha256=str(value["payload_sha256"]),
-            format_version=int(value["format_version"]),
+            version=(
+                VersionManifest.from_dict(value["version"])
+                if format_version == 2
+                else None
+            ),
         )
 
 
@@ -63,9 +81,12 @@ def save_index(
     path: str | Path,
     index: CompactIndex,
     plan: CompilePlan,
+    version: VersionManifest | None = None,
 ) -> IndexManifest:
     """Persist an index and its exact physical plan without overwriting."""
 
+    if version is not None:
+        version.validate()
     root = Path(path)
     root.mkdir(parents=True, exist_ok=False)
     records = index.records()
@@ -85,6 +106,7 @@ def save_index(
         vector_count=index.vector_count,
         dimension=index.dimension,
         payload_sha256=_sha256(payload),
+        version=version,
     )
     (root / "manifest.json").write_text(
         json.dumps(manifest.to_dict(), indent=2, sort_keys=True) + "\n"
@@ -99,8 +121,6 @@ def load_index(path: str | Path) -> tuple[CompactIndex, IndexManifest]:
     manifest = IndexManifest.from_dict(
         json.loads((root / "manifest.json").read_text())
     )
-    if manifest.format_version != 1:
-        raise ValueError("unsupported index-artifact format")
     payload = root / "vectors.npz"
     if _sha256(payload) != manifest.payload_sha256:
         raise ValueError("index payload checksum mismatch")

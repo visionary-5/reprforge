@@ -10,6 +10,7 @@ from .materialization import (
 )
 from .models import BackboneProfile, CompilePlan
 from .planner import plan_topology_anchored
+from .versions import VersionManifest
 
 __all__ = [
     "BackboneProfile",
@@ -18,6 +19,7 @@ __all__ = [
     "MaterializationOption",
     "UpdateRoute",
     "UpdateScenario",
+    "VersionManifest",
     "choose_materializations",
     "evaluate_materializations",
     "plan_topology_anchored",

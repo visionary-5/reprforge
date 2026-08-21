@@ -133,11 +133,21 @@ candidates = index.search(query_vectors, top_k=20)
 The compiled artifact records both vectors and the exact physical plan:
 
 ```python
-from reprforge import load_index, save_index
+from reprforge import VersionManifest, load_index, save_index
 
-manifest = save_index("indexes/my-collection", index, compiler.plan)
+version = VersionManifest(
+    source="pages-sha256:...",
+    processor="processor-v1",
+    vision="vision-sha256:...",
+    base_embedding="embedding-sha256:...",
+    adapter="adapter-sha256:...",
+    projection="projection-sha256:...",
+    index_policy="maxsim-flat-v1",
+)
+manifest = save_index("indexes/my-collection", index, compiler.plan, version)
 reloaded, observed_manifest = load_index("indexes/my-collection")
 assert observed_manifest.plan.fingerprint == manifest.plan.fingerprint
+assert observed_manifest.version == version
 ```
 
 For a versioned collection, a reusable boundary is worthwhile only when it
@@ -182,7 +192,11 @@ unrecognized module:
 from reprforge import inspect_adapter_tensor_keys
 
 scope = inspect_adapter_tensor_keys(checkpoint_tensor_keys)
-update = scope.to_update_scenario("domain_adapter_v2")
+target_version = VersionManifest(
+    **{**version.to_dict(), "adapter": "adapter-sha256:new"}
+)
+update = version.update_scenario(target_version, "domain_adapter_v2")
+assert update.changed_components == frozenset({"adapter"})
 if not scope.post_vision_replay_valid:
     print("rebuild from raw evidence:", scope.post_vision_replay_blockers)
 ```
