@@ -173,6 +173,20 @@ decision = choose_materializations(
 )
 ```
 
+Adapter checkpoints are admitted by their actual tensor dependency scope, not
+by an `adapter` label. A post-vision artifact survives a language/projection
+update but must be rejected when the checkpoint touches the vision tower or an
+unrecognized module:
+
+```python
+from reprforge import inspect_adapter_tensor_keys
+
+scope = inspect_adapter_tensor_keys(checkpoint_tensor_keys)
+update = scope.to_update_scenario("domain_adapter_v2")
+if not scope.post_vision_replay_valid:
+    print("rebuild from raw evidence:", scope.post_vision_replay_blockers)
+```
+
 The planner can also return an empty portfolio: when the valid prefix is cheap,
 the artifact is too large, or updates are too rare, rebuilding from the source
 is the correct physical plan.
@@ -219,6 +233,22 @@ With one explicitly frozen 768-token processor contract, the cached prefix is
 bitwise identical across 16 pages while every terminal element changes. The
 model repositories' bundled processor defaults differ, so whole-package reuse
 is not assumed: processor identity is part of the artifact contract.
+
+The same dependency rule was then tested against two public domain adapters,
+not inferred from their names. A
+[Vietnamese ColQwen2.5 adapter](https://huggingface.co/quyet498/fine-turn-ColQwen2-vn)
+contains 504
+decoder LoRA tensors and two retrieval-projection tensors, with no vision
+weights. On a frozen 128-page system slice, replaying its index from the old
+post-vision state is bitwise equal to rebuilding from page images and reduces
+median build time from 43.68 to 6.21 seconds (**85.79%**; three paired runs).
+In contrast, a
+[Turkish ColPali domain adapter](https://huggingface.co/selimc/turkish-colpali)
+contains 162 vision LoRA tensors,
+so ReprForge rejects post-vision replay and routes it to a raw rebuild. This is
+an admission result, not a claim that every adapter update is reusable, and the
+128-page experiment measures index construction rather than Vietnamese
+retrieval quality.
 
 The frozen ColPali v1.1 operating point compiles after layer 9 of 18 and retains
 50.29% of Full index vectors. It was selected by a preregistered split-depth

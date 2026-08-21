@@ -1,6 +1,11 @@
 """ReprForge: physical-plan compilation for multimodal RAG indexes."""
 
-from .adapters import BoundaryState, DocumentEncoderAdapter
+from .adapters import (
+    AdapterDependencyScope,
+    BoundaryState,
+    DocumentEncoderAdapter,
+    inspect_adapter_tensor_keys,
+)
 from .execution import (
     CoalescedState,
     CompilerConfig,
@@ -40,6 +45,7 @@ from .runtime import (
 )
 
 __all__ = [
+    "AdapterDependencyScope",
     "BackboneProfile",
     "BoundaryState",
     "CoalescedState",
@@ -64,6 +70,7 @@ __all__ = [
     "choose_materializations",
     "coalesce_hidden_states",
     "evaluate_materializations",
+    "inspect_adapter_tensor_keys",
     "load_index",
     "maxsim_score",
     "normalize_rows",
