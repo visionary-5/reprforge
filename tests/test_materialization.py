@@ -175,3 +175,55 @@ def test_calibrated_selection_can_be_scored_with_holdout_measurements() -> None:
     assert observed.selected == ("post_vision",)
     assert observed.expected_seconds == pytest.approx(8)
     assert observed.raw_baseline_seconds == pytest.approx(24)
+
+
+def test_validation_cost_can_make_legal_reuse_slower_than_raw() -> None:
+    option = MaterializationOption(
+        name="post_vision",
+        depends_on=frozenset({"vision"}),
+        storage_bytes=10,
+        replay_seconds=8,
+    )
+    update = UpdateScenario(
+        "adapter",
+        frozenset({"adapter"}),
+        validation_seconds=3,
+    )
+
+    decision = evaluate_materializations(
+        ("post_vision",),
+        (option,),
+        (update,),
+        raw_rebuild_seconds=10,
+    )
+
+    assert decision.routes[0].source == "raw"
+    assert decision.routes[0].seconds_per_update == 10
+    assert decision.routes[0].validation_seconds == 0
+
+
+def test_validation_cost_is_charged_to_a_winning_reuse_route() -> None:
+    option = MaterializationOption(
+        name="post_vision",
+        depends_on=frozenset({"vision"}),
+        storage_bytes=10,
+        replay_seconds=4,
+    )
+    update = UpdateScenario(
+        "adapter",
+        frozenset({"adapter"}),
+        expected_count=2,
+        validation_seconds=3,
+    )
+
+    decision = evaluate_materializations(
+        ("post_vision",),
+        (option,),
+        (update,),
+        raw_rebuild_seconds=10,
+    )
+
+    assert decision.routes[0].source == "post_vision"
+    assert decision.routes[0].seconds_per_update == 7
+    assert decision.routes[0].validation_seconds == 3
+    assert decision.expected_seconds == 14

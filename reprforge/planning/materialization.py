@@ -14,6 +14,7 @@ class UpdateScenario:
     name: str
     changed_components: frozenset[str]
     expected_count: float = 1.0
+    validation_seconds: float = 0.0
 
     def validate(self) -> None:
         if not self.name:
@@ -22,6 +23,8 @@ class UpdateScenario:
             raise ValueError("an update scenario must change at least one component")
         if not math.isfinite(self.expected_count) or self.expected_count < 0:
             raise ValueError("expected update count must be finite and non-negative")
+        if not math.isfinite(self.validation_seconds) or self.validation_seconds < 0:
+            raise ValueError("validation time must be finite and non-negative")
 
 
 @dataclass(frozen=True)
@@ -71,6 +74,7 @@ class UpdateRoute:
     source: str
     seconds_per_update: float
     expected_count: float
+    validation_seconds: float = 0.0
 
     @property
     def expected_seconds(self) -> float:
@@ -141,11 +145,17 @@ def evaluate_materializations(
         ]
         if valid:
             source = min(valid, key=lambda item: (item.replay_seconds, item.name))
+            reused_seconds = source.replay_seconds + update.validation_seconds
+        else:
+            source = None
+            reused_seconds = math.inf
+        if source is not None and reused_seconds < raw_rebuild_seconds:
             route = UpdateRoute(
                 update.name,
                 source.name,
-                source.replay_seconds,
+                reused_seconds,
                 update.expected_count,
+                update.validation_seconds,
             )
         else:
             route = UpdateRoute(
@@ -153,6 +163,7 @@ def evaluate_materializations(
                 "raw",
                 raw_rebuild_seconds,
                 update.expected_count,
+                0.0,
             )
         routes.append(route)
         maintenance += route.expected_seconds

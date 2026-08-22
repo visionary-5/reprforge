@@ -70,6 +70,7 @@ class AdapterDependencyScope:
         name: str,
         *,
         expected_count: float = 1.0,
+        validation_seconds: float = 0.0,
     ) -> UpdateScenario:
         """Lower the inspected scope into the materialization planner."""
 
@@ -77,6 +78,7 @@ class AdapterDependencyScope:
             name=name,
             changed_components=self.changed_components,
             expected_count=expected_count,
+            validation_seconds=validation_seconds,
         )
         scenario.validate()
         return scenario

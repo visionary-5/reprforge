@@ -253,6 +253,18 @@ if not scope.post_vision_replay_valid:
     print("rebuild from raw evidence:", scope.post_vision_replay_blockers)
 ```
 
+File changes are treated conservatively, but they need not cause false
+invalidation. If two processor packages have different fingerprints,
+`certify_component_equivalence` can compare their exact outputs over the
+fingerprinted collection. `VersionManifest.invalidation_scenario` accepts the
+certificate only for that source, target, and collection scope; any output
+difference, stale scope, or unmatched fingerprint fails closed. This separates
+three decisions that are often conflated: dependency legality, collection-level
+semantic equivalence, and whether the reusable artifact is worth its measured
+storage and replay cost. Certificate scans are not free: pass their measured
+time as `UpdateScenario.validation_seconds`. The planner charges that cost only
+to reuse and falls back to raw rebuilding whenever legal replay would be slower.
+
 The planner can also return an empty portfolio: when the valid prefix is cheap,
 the artifact is too large, or updates are too rare, rebuilding from the source
 is the correct physical plan.
