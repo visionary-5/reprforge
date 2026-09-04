@@ -1,107 +1,94 @@
-"""ReprForge: physical-plan compilation for multimodal RAG indexes."""
+"""ReprForge: semantic recompilation cuts for versioned late-interaction indexes.
 
-from .adapters import (
+Public surface, one module per concern:
+
+* :mod:`reprforge.versions`     -- the version tuple and its dependency delta
+* :mod:`reprforge.dependencies` -- classify adapter tensors by encoder stage
+* :mod:`reprforge.equivalence`  -- collection-scoped output certificates
+* :mod:`reprforge.planning`     -- cut selection, leverage and break-even
+* :mod:`reprforge.adapter`      -- the emit-cut / resume contract for backbones
+* :mod:`reprforge.index`        -- MaxSim, Target Agreement, checksummed storage
+* :mod:`reprforge.generation`   -- immutable generations and atomic publication
+"""
+
+from .adapter import CutState, DocumentEncoderAdapter
+from .dependencies import (
     AdapterDependencyScope,
-    BoundaryState,
-    DocumentEncoderAdapter,
+    classify_tensor,
     inspect_adapter_tensor_keys,
 )
-from .execution import (
-    CoalescedState,
-    CompilerConfig,
-    PageAssignment,
-    ReprForgeCompiler,
-    apply_assignment,
-    assign_topology_anchored,
-    coalesce_hidden_states,
-    topology_anchors,
+from .equivalence import (
+    ComponentEquivalence,
+    ComponentOutputFingerprint,
+    certify_component_equivalence,
+    certify_component_fingerprints,
+    fingerprint_component_outputs,
 )
-from .indexing import (
-    CompactIndex,
+from .generation import (
     GenerationArtifact,
     GenerationManifest,
+    publish_generation,
+    resolve_active_generation,
+    seal_generation,
+    validate_generation,
+)
+from .index import (
     IndexManifest,
+    LateInteractionIndex,
     SearchResult,
     load_index,
     maxsim_score,
     normalize_rows,
-    publish_generation,
-    resolve_active_generation,
     save_index,
-    seal_generation,
-    validate_generation,
+    target_agreement,
 )
 from .planning import (
-    BackboneProfile,
-    CompilePlan,
-    ComponentEquivalence,
-    ComponentOutputFingerprint,
     MaterializationDecision,
     MaterializationOption,
     UpdateRoute,
     UpdateScenario,
-    VersionManifest,
-    certify_component_equivalence,
-    certify_component_fingerprints,
+    break_even_upgrades,
     choose_materializations,
+    cut_leverage,
     evaluate_materializations,
-    fingerprint_component_outputs,
-    plan_topology_anchored,
 )
-from .runtime import (
-    Lifecycle,
-    LifecycleDecision,
-    WorkloadProfile,
-    choose_lifecycle,
-    refine_candidates,
-)
+from .versions import COMPONENTS, VersionManifest
 
 __all__ = [
+    "COMPONENTS",
     "AdapterDependencyScope",
-    "BackboneProfile",
-    "BoundaryState",
-    "CoalescedState",
-    "CompactIndex",
-    "CompilePlan",
     "ComponentEquivalence",
     "ComponentOutputFingerprint",
-    "CompilerConfig",
+    "CutState",
     "DocumentEncoderAdapter",
     "GenerationArtifact",
     "GenerationManifest",
     "IndexManifest",
-    "Lifecycle",
-    "LifecycleDecision",
+    "LateInteractionIndex",
     "MaterializationDecision",
     "MaterializationOption",
-    "PageAssignment",
-    "ReprForgeCompiler",
     "SearchResult",
     "UpdateRoute",
     "UpdateScenario",
     "VersionManifest",
+    "break_even_upgrades",
     "certify_component_equivalence",
     "certify_component_fingerprints",
-    "WorkloadProfile",
-    "apply_assignment",
-    "assign_topology_anchored",
-    "choose_lifecycle",
     "choose_materializations",
-    "coalesce_hidden_states",
+    "classify_tensor",
+    "cut_leverage",
     "evaluate_materializations",
     "fingerprint_component_outputs",
     "inspect_adapter_tensor_keys",
     "load_index",
     "maxsim_score",
     "normalize_rows",
-    "plan_topology_anchored",
     "publish_generation",
-    "refine_candidates",
     "resolve_active_generation",
     "save_index",
     "seal_generation",
-    "topology_anchors",
+    "target_agreement",
     "validate_generation",
 ]
 
-__version__ = "0.4.0"
+__version__ = "0.5.0"

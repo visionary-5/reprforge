@@ -1,4 +1,24 @@
-"""Cost-aware materialization for versioned index maintenance."""
+"""Cost-aware selection of the rebuild source for versioned index updates.
+
+Vocabulary
+----------
+* An :class:`UpdateScenario` names the version components an expected upgrade
+  changes and how often it is expected within the planning horizon.
+* A :class:`MaterializationOption` is a candidate *semantic recompilation cut*:
+  a stored intermediate state, the components already compiled into it, the
+  storage it costs to keep and the time it takes to replay the target suffix
+  from it. Its ``quality_fraction`` is the retrieval-quality admission
+  measurement for a lossy cut.
+* :func:`choose_materializations` selects the portfolio of cuts that minimises
+  expected upgrade time under a storage budget and a quality floor, routing
+  each scenario to the cheapest cut that remains dependency-valid and falling
+  back to a raw rebuild otherwise.
+
+Two cheap predictors accompany the planner. :func:`cut_leverage` is the share
+of raw encoding time spent before a cut, which bounds any replay saving before
+a codec exists. :func:`break_even_upgrades` turns storage and GPU prices into
+the number of upgrades needed for a retained cut to pay for itself.
+"""
 
 from __future__ import annotations
 
@@ -29,11 +49,11 @@ class UpdateScenario:
 
 @dataclass(frozen=True)
 class MaterializationOption:
-    """A reusable artifact and the cost of replaying from its boundary.
+    """A candidate cut and the cost of replaying the target suffix from it.
 
-    ``depends_on`` contains the components already compiled into the artifact.
-    The artifact is valid only when an update changes none of those components.
-    Storage is incremental to the source corpus and current terminal index.
+    ``depends_on`` lists the components already compiled into the stored state;
+    the cut is legal for an update only when the update changes none of them.
+    ``storage_bytes`` is incremental to the collection and the active index.
     """
 
     name: str
@@ -61,14 +81,14 @@ class MaterializationOption:
             raise ValueError("quality fraction cannot exceed one")
 
     def remains_valid(self, update: UpdateScenario) -> bool:
-        """Return whether this artifact survives an update exactly as stored."""
+        """Return whether this cut survives an update exactly as stored."""
 
         return self.depends_on.isdisjoint(update.changed_components)
 
 
 @dataclass(frozen=True)
 class UpdateRoute:
-    """The cheapest valid rebuild source selected for one update scenario."""
+    """The rebuild source selected for one update scenario."""
 
     update: str
     source: str
@@ -83,7 +103,7 @@ class UpdateRoute:
 
 @dataclass(frozen=True)
 class MaterializationDecision:
-    """Minimum-cost artifact portfolio and its per-update execution routes."""
+    """Minimum-cost cut portfolio and its per-update routes."""
 
     selected: tuple[str, ...]
     routes: tuple[UpdateRoute, ...]
@@ -107,12 +127,11 @@ def evaluate_materializations(
     raw_rebuild_seconds: float,
     minimum_quality_fraction: float = 0.99,
 ) -> MaterializationDecision:
-    """Evaluate a fixed portfolio using measured costs.
+    """Score a fixed portfolio with measured costs.
 
-    This separates *planning* measurements from held-out *execution*
-    measurements: callers can select a portfolio with one profile and score
-    that unchanged decision with another profile that uses the same artifact
-    names and dependency contracts.
+    Planning and execution measurements can differ: select a portfolio with one
+    cost profile, then score the unchanged selection with a held-out profile
+    that uses the same cut names and dependency sets.
     """
 
     if not math.isfinite(raw_rebuild_seconds) or raw_rebuild_seconds < 0:
@@ -159,11 +178,7 @@ def evaluate_materializations(
             )
         else:
             route = UpdateRoute(
-                update.name,
-                "raw",
-                raw_rebuild_seconds,
-                update.expected_count,
-                0.0,
+                update.name, "raw", raw_rebuild_seconds, update.expected_count, 0.0
             )
         routes.append(route)
         maintenance += route.expected_seconds
@@ -189,12 +204,11 @@ def choose_materializations(
     storage_budget_bytes: int,
     minimum_quality_fraction: float = 0.99,
 ) -> MaterializationDecision:
-    """Select the minimum expected-cost valid artifact portfolio.
+    """Select the minimum expected-cost portfolio of cuts.
 
-    ReprForge evaluates all feasible subsets because a model exposes only a
-    small number of semantically meaningful boundaries. For each update it
-    routes execution from the cheapest selected artifact that remains valid;
-    otherwise it falls back to a raw rebuild.
+    All feasible subsets are evaluated because an encoder exposes only a handful
+    of semantically meaningful cuts. Each update is routed to the cheapest
+    selected cut that remains valid, otherwise to a raw rebuild.
     """
 
     if not math.isfinite(raw_rebuild_seconds) or raw_rebuild_seconds < 0:
@@ -228,12 +242,13 @@ def choose_materializations(
                 raw_rebuild_seconds=raw_rebuild_seconds,
                 minimum_quality_fraction=minimum_quality_fraction,
             )
-            if best is None or (
+            key = (
                 decision.expected_seconds,
                 decision.storage_bytes,
                 len(decision.selected),
                 decision.selected,
-            ) < (
+            )
+            if best is None or key < (
                 best.expected_seconds,
                 best.storage_bytes,
                 len(best.selected),
@@ -243,3 +258,57 @@ def choose_materializations(
     if best is None:
         raise RuntimeError("no materialization portfolio satisfies the storage budget")
     return best
+
+
+def cut_leverage(
+    *, preprocess_seconds: float, prefix_seconds: float, suffix_seconds: float
+) -> float:
+    """Share of raw encoding time spent before the cut.
+
+    Measured on a sample of pages with the same batching as production, this
+    upper-bounds the fraction of encode time any replay from that cut can save.
+    A backbone with low leverage (for example a small vision tower in front of a
+    large decoder) should be routed to raw rebuilding without fitting a codec.
+    """
+
+    for value, label in (
+        (preprocess_seconds, "preprocess time"),
+        (prefix_seconds, "prefix time"),
+        (suffix_seconds, "suffix time"),
+    ):
+        if not math.isfinite(value) or value < 0:
+            raise ValueError(f"{label} must be finite and non-negative")
+    total = preprocess_seconds + prefix_seconds + suffix_seconds
+    if total <= 0:
+        raise ValueError("stage times must not all be zero")
+    return (preprocess_seconds + prefix_seconds) / total
+
+
+def break_even_upgrades(
+    *,
+    saved_seconds_per_upgrade: float,
+    gpu_usd_per_hour: float,
+    retained_gb: float,
+    storage_usd_per_gb_month: float,
+    horizon_months: float,
+) -> float:
+    """Upgrades within the horizon needed for a retained cut to pay for itself.
+
+    Storage is charged for the whole horizon; each upgrade saves the GPU time
+    the cut avoids. A result below one means a single upgrade already pays.
+    """
+
+    for value, label in (
+        (saved_seconds_per_upgrade, "saved seconds"),
+        (gpu_usd_per_hour, "GPU price"),
+        (retained_gb, "retained gigabytes"),
+        (storage_usd_per_gb_month, "storage price"),
+        (horizon_months, "horizon"),
+    ):
+        if not math.isfinite(value) or value < 0:
+            raise ValueError(f"{label} must be finite and non-negative")
+    saving_per_upgrade = saved_seconds_per_upgrade / 3600.0 * gpu_usd_per_hour
+    storage_cost = retained_gb * storage_usd_per_gb_month * horizon_months
+    if saving_per_upgrade == 0:
+        return math.inf if storage_cost > 0 else 0.0
+    return storage_cost / saving_per_upgrade

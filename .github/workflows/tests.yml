@@ -22,4 +22,5 @@ jobs:
       - run: python -m ruff check .
       - run: python -m pytest -q
       - run: python examples/quickstart.py
+      - run: python examples/versioned_update.py
       - run: python -m pip wheel . --no-deps --wheel-dir /tmp/reprforge-wheel

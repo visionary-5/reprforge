@@ -1,393 +1,133 @@
 # ReprForge
 
-**A physical-plan compiler for multimodal RAG indexes.**
+**Semantic recompilation cuts for evolving visual late-interaction indexes.**
 
 [![Tests](https://github.com/visionary-5/reprforge/actions/workflows/tests.yml/badge.svg)](https://github.com/visionary-5/reprforge/actions/workflows/tests.yml)
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/)
 [![License](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 
-## Why an index compiler?
+A visual document retriever (ColPali, ColQwen2/2.5, ColSmol, ...) is upgraded far
+more often than the collection it indexes. Every upgrade forces a choice between
+serving a stale index and re-encoding every page through a multi-billion
+parameter vision-language model. ReprForge is the planner and contract layer
+for a third option: keep the deepest intermediate state that the new version has
+not changed, replay only the target suffix from it, admit the result by measured
+retrieval quality, and publish it as an immutable generation.
 
-A conventional database index has explicit source fields, update semantics,
-and an exact operator contract. A multimodal RAG index is different: it is a
-lossy, model-compiled view of unstructured evidence. The stored vectors mean
-something only together with the document encoder, query encoder, adapter,
-visual resolution, retrieval granularity, and score function. Change that
-contract and the collection may need to be compiled again.
+The library is small and CPU-only. Model integrations live outside it and plug in
+through one protocol.
 
-ReprForge treats that repeated indexing work as a compilation problem:
+## Why this works
 
-```text
-version diff → dependency cut → deepest valid artifact → target index generation
-                                      │                        │
-                        measured cost + quality contract  validate → publish
-```
+Public ColPali-family releases change the decoder LoRA and the retrieval head;
+none of the 19 adapter checkpoints we parsed touches the vision tower or the
+vision-language merger, and three vendors ship a byte-identical visual prefix.
+An upgrade therefore lives in the suffix. Replaying the target suffix from an
+exact post-vision cut reproduces the target index bit for bit (Target Agreement
+1.000 on three benchmarks); compressed cuts trade retained bytes for ranking
+fidelity along a measured frontier. The share of raw encode time spent before
+the cut (0.85–0.88 on document pages with ColQwen2.5) equals the saving, and
+predicts which backbones benefit: ColPali's small vision tower is 23% of its
+forward pass, so its cut never pays.
 
-This learned semantic view is precisely what RAG contributes beyond ordinary
-lookup: a query can retrieve relevant text, layout, tables, and figures without
-an exact schema or key. It also creates the systems problem. The goal is not to
-make one Transformer forward pass look cheaper, but to reduce the total cost
-of constructing, storing, refreshing, and using that model-dependent view.
-
-## How recompilation works
-
-ReprForge does not assume that a model upgrade invalidates the whole index, or
-that every intermediate tensor is worth keeping. For each version transition it:
-
-1. fingerprints the source, processor, vision tower, base embedding, retrieval
-   adapter, projection, and physical index policy;
-2. classifies the changed checkpoint tensors by the stages they actually touch;
-3. chooses the deepest stored artifact that remains valid and satisfies the
-   measured storage, quality, and amortization contract;
-4. builds the true target-version terminal vectors and a disposable candidate
-   index, then validates both retrieval quality and artifact identity;
-5. publishes one checksummed immutable generation through an atomic pointer.
-
-The legal route depends on what changed:
-
-| Update | Deepest legal source | Work performed |
-|---|---|---|
-| index layout or ANN policy | terminal vectors | rebuild serving artifacts |
-| decoder adapter or projection | post-vision IR | replay the affected suffix |
-| processor, vision tower, or unknown tensors | source pages | rebuild from raw evidence |
-
-The planner is allowed to choose raw evidence even when a reusable boundary
-exists: an artifact with poor quality, excessive storage, or too little future
-reuse is not a useful cache.
-
-## Optional in-flight lowering
-
-For a ColPali-style visual late-interaction encoder, ReprForge also exposes an
-optional lossy physical operator:
-
-1. lets the Full visual state evolve to an evidence-maturation boundary;
-2. reserves two stable suffix positions from every visual 2×2 cell;
-3. assigns every visual hidden state to its most similar reserved anchor;
-4. averages the raw states owned by each variable-size cluster;
-5. continues the original frozen suffix with half as many visual workers;
-6. stores only the compact retrieval endpoints and their plan manifest.
-
-The fixed anchors preserve positional identity for the suffix. Global semantic
-assignment decides which evidence each worker owns. Query encoding and MaxSim
-remain unchanged. No query, qrel, answer, or task-specific training is used by
-the operator. The boundary and persistent capacity are separate physical-plan
-choices: a vector can remain transiently active long enough to mature without
-being written to the long-lived index. This operator requires a workload quality
-admission; it is not the default route for version maintenance.
-
-## Architecture
-
-The repository root is the project boundary; the inner `reprforge/` directory
-is the installable Python namespace. Keeping that namespace is conventional
-Python packaging. The meaningful architecture is inside it:
-
-```text
-reprforge/
-├── planning/    backbone admission and serializable physical CompilePlan
-├── execution/   evidence assignment, hidden-state coalescing, build compiler
-├── adapters/    contract for lowering a plan into a real model prefix/suffix
-├── indexing/    MaxSim index, immutable generations, validation and publication
-└── runtime/     optional Full refinement and workload lifecycle decisions
-
-examples/        executable reference pipeline
-tests/           subsystem and end-to-end contract tests
-```
-
-These boundaries follow the index lifecycle rather than arbitrary file size:
-
-- `planning` decides what representation should exist;
-- `execution` changes which states remain active during index construction;
-- `adapters` isolate model-specific attention, position, and layer APIs;
-- `indexing` makes the compiled representation durable and reproducible;
-- `runtime` decides when the compact view is sufficient or should defer to Full.
-
-This follows the same separation of indexing, search, infrastructure, and model
-integration used by mature late-interaction projects such as
-[ColBERT](https://github.com/stanford-futuredata/ColBERT),
-[ColPali](https://github.com/nomic-ai/colpali), and
-[RAGatouille](https://github.com/AnswerDotAI/RAGatouille), while keeping raw
-experiments and paper drafts outside the public package.
+Query-side compatibility bridges (Procrustes, affine, Drift-Adapter MLP) keep
+the *old* ranking searchable; fitted cross-domain or in-domain they reach
+0.60–0.83 Target Agreement. Constructing the target index is a different
+contract, and this library is about that contract.
 
 ## Install
 
 ```bash
-git clone https://github.com/visionary-5/reprforge.git
-cd reprforge
-python -m pip install -e .
-```
-
-Development checks:
-
-```bash
-python -m pip install -e '.[dev]'
-python -m ruff check .
+pip install -e '.[dev]'
 python -m pytest -q
 python examples/quickstart.py
 ```
 
-## API walkthrough
+Only `numpy` is required at runtime.
 
-First freeze a physical plan for one backbone and collection:
+## What the library does
 
-```python
-from reprforge import BackboneProfile, CompilerConfig, ReprForgeCompiler
-
-profile = BackboneProfile(
-    name="colpali-v1.1",
-    total_layers=18,
-    split_after_layer=9,
-    full_visual_tokens=1024,
-    compact_visual_tokens=512,
-)
-compiler = ReprForgeCompiler(
-    CompilerConfig(profile=profile, grid_shape=(32, 32))
-)
-
-print(compiler.plan.fingerprint)
+```text
+version tuple ──diff──▶ changed components ──▶ legal cuts ──▶ planner ──▶ route
+ (h_C,h_P,h_E,h_V,       (tensor census,          (depends_on ∩      (storage,      raw | cut
+  h_A,h_R,h_I)            output certificates)     changed = ∅)       quality,
+                                                                     leverage,
+                                                                     break-even)
+                                      route ──▶ resume target suffix ──▶ validate ──▶ seal ──▶ publish
 ```
 
-A model adapter implements `run_prefix` and `run_suffix`. The compiler then
-owns the collection build rather than accepting unexplained endpoint arrays:
+| Module | Concern |
+|---|---|
+| `reprforge.versions` | The version tuple (collection, processor, vision, base embedding, adapter, projection, index policy) and its exact dependency delta. |
+| `reprforge.dependencies` | Classify an adapter checkpoint's tensor names by encoder stage. Unknown names fail closed. |
+| `reprforge.equivalence` | Collection-scoped output certificates that discharge processor-file changes which do not change outputs. |
+| `reprforge.planning` | Select the cut portfolio that minimises expected upgrade time under storage and quality contracts; `cut_leverage` and `break_even_upgrades` as pre-codec predictors. |
+| `reprforge.adapter` | `DocumentEncoderAdapter`: `encode` (raw route), `emit_cut`, `resume`. `CutState` carries the stored tensor, its compiled dependencies and the resume contract. |
+| `reprforge.index` | Reference MaxSim index, `target_agreement`, checksummed storage that records the rebuild source. |
+| `reprforge.generation` | Immutable, hashed generations and atomic active-pointer publication. |
+
+## Minimal walkthrough
 
 ```python
-index = compiler.build_documents(
-    adapter,
-    [(page_id, image) for page_id, image in pages],
-)
-candidates = index.search(query_vectors, top_k=20)
-```
+from reprforge import (VersionManifest, inspect_adapter_tensor_keys,
+                       MaterializationOption, choose_materializations)
 
-The compiled artifact records both vectors and the exact physical plan:
+# 1. What changed? Read the target checkpoint's tensor names (safetensors header).
+scope = inspect_adapter_tensor_keys(tensor_names)        # decoder + head only
+assert scope.post_vision_cut_legal
 
-```python
-from reprforge import VersionManifest, load_index, save_index
-
-version = VersionManifest(
-    source="pages-sha256:...",
-    processor="processor-v1",
-    vision="vision-sha256:...",
-    base_embedding="embedding-sha256:...",
-    adapter="adapter-sha256:...",
-    projection="projection-sha256:...",
-    index_policy="maxsim-flat-v1",
-)
-manifest = save_index("indexes/my-collection", index, compiler.plan, version)
-reloaded, observed_manifest = load_index("indexes/my-collection")
-assert observed_manifest.plan.fingerprint == manifest.plan.fingerprint
-assert observed_manifest.version == version
-```
-
-Serving files are sealed into a create-only generation before they can become
-active. Publication validates every declared file, writes a manifest-addressed
-pointer, and atomically replaces the previous pointer:
-
-```python
-from reprforge import (
-    publish_generation,
-    resolve_active_generation,
-    seal_generation,
-)
-
-# These files already exist under deployment/generations/adapter-v1/.
-seal_generation(
-    "deployment",
-    "adapter-v1",
-    ("terminal/vectors.bin", "serving/sq8.faiss", "serving/token-to-page.i32"),
-    version=version,
-)
-publish_generation("deployment", "adapter-v1")
-generation_path, active_manifest = resolve_active_generation("deployment")
-```
-
-Garbage collection is deliberately separate: readers resolve one pointer
-snapshot and keep that immutable generation for the lifetime of a request.
-
-For a versioned collection, a reusable boundary is worthwhile only when it
-survives the expected update, meets the quality and storage contract, and
-amortizes its own materialization cost. ReprForge plans that decision from
-measured costs rather than assuming every intermediate state should be kept:
-
-```python
-from reprforge import (
-    MaterializationOption,
-    UpdateScenario,
-    choose_materializations,
-)
-
-post_vision = MaterializationOption(
-    name="post_vision_ir",
-    depends_on=frozenset({"processor", "vision", "base_embedding"}),
-    storage_bytes=6_266_593_554,
-    replay_seconds=1_243.8,
-    materialization_seconds=29.8,
-    quality_fraction=0.999,
-)
-adapter_update = UpdateScenario(
-    "adapter_v2",
-    frozenset({"adapter", "projection"}),
-    expected_count=2,
-)
+# 2. Which source? Costs come from a small calibration run on this collection.
 decision = choose_materializations(
-    (post_vision,),
-    (adapter_update,),
-    raw_rebuild_seconds=5_000.2,
-    storage_budget_bytes=6_369_873_920,
+    (MaterializationOption("post_vision",
+                           depends_on=frozenset({"processor", "vision", "base_embedding"}),
+                           storage_bytes=6_267_000_000, replay_seconds=1_244,
+                           quality_fraction=0.997),),
+    (scope.to_update_scenario("colqwen2.5-v0.2"),),
+    raw_rebuild_seconds=5_000, storage_budget_bytes=7_000_000_000,
 )
+decision.routes[0].source    # "post_vision"  -> replay; "raw" -> rebuild from pages
+
+# 3. Execute through your model integration, then seal and publish.
+vectors = adapter.resume(stored_cut)                     # target suffix from the cut
 ```
 
-Adapter checkpoints are admitted by their actual tensor dependency scope, not
-by an `adapter` label. A post-vision artifact survives a language/projection
-update but must be rejected when the checkpoint touches the vision tower or an
-unrecognized module:
+`examples/quickstart.py` runs this end to end with a synthetic encoder and
+checks the exact cut against the raw target index with Target Agreement;
+`examples/versioned_update.py` shows the planning and publication path alone.
 
-```python
-from reprforge import inspect_adapter_tensor_keys
+## Reproducing the paper
 
-scope = inspect_adapter_tensor_keys(checkpoint_tensor_keys)
-target_version = VersionManifest(
-    **{**version.to_dict(), "adapter": "adapter-sha256:new"}
-)
-update = version.update_scenario(target_version, "domain_adapter_v2")
-assert update.changed_components == frozenset({"adapter"})
-if not scope.post_vision_replay_valid:
-    print("rebuild from raw evidence:", scope.post_vision_replay_blockers)
-```
+The GPU experiments (public-release census, codec frontier, build-time anatomy,
+cross-backbone leverage, MMDocIR generation transition) are model-specific and
+live in the research repository released with the paper, each as a frozen
+protocol, runner, raw output and analysis report. This package contains the
+model-agnostic decision and publication logic those experiments exercise, plus
+the numbers they measured as test fixtures (`tests/test_planning.py`).
 
-File changes are treated conservatively, but they need not cause false
-invalidation. If two processor packages have different fingerprints,
-`certify_component_equivalence` can compare their exact outputs over the
-fingerprinted collection. `VersionManifest.invalidation_scenario` accepts the
-certificate only for that source, target, and collection scope; any output
-difference, stale scope, or unmatched fingerprint fails closed. This separates
-three decisions that are often conflated: dependency legality, collection-level
-semantic equivalence, and whether the reusable artifact is worth its measured
-storage and replay cost. Certificate scans are not free: pass their measured
-time as `UpdateScenario.validation_seconds`. The planner charges that cost only
-to reuse and falls back to raw rebuilding whenever legal replay would be slower.
+Headline measurements (one A100 unless stated):
 
-The planner can also return an empty portfolio: when the valid prefix is cheap,
-the artifact is too large, or updates are too rare, rebuilding from the source
-is the correct physical plan.
+| Claim | Evidence |
+|---|---|
+| 19 / 19 public adapters change only decoder + head | safetensors header census, 2026-09-04 |
+| Exact post-vision cut reproduces target index | TA@10 = 1.000 on ArxivQA, DocVQA, Flickr |
+| Compressed cuts: fidelity vs bytes | INT8 .96–.98 at 4× terminal; PCA-256/INT8 .85–.90 at 0.5× |
+| Cut leverage equals replay saving | .845 / .876 leverage → 84.6% / 87.5% saving (ArxivQA / DocVQA) |
+| Small images depend on suffix batching | Flickr 54% at batch 1, 77% at batch 4 (A100); 78% on RTX 4090 |
+| Complete 20,395-page transition | 1,351 s from cut vs 5,078 s raw incl. validation, sealing, publication (73%) |
 
-Optional query-time recovery is a separate runtime decision:
+## Scope and limits
 
-```python
-from reprforge import refine_candidates
+- Alpha research package, not a serving system. The reference index is in-memory;
+  production ANN engines keep the manifest and publication contract.
+- Positive lifecycle evidence covers ColQwen2.5 under a pinned processor
+  contract; the shipped v0.2 release also lowers `max_pixels`, which under the
+  version tuple is a processor change requiring a raw rebuild.
+- Timings are single-host (A100, RTX 4090) with warm local storage.
 
-ranking = refine_candidates(
-    index,
-    query_vectors,
-    candidates,
-    materialize_full_page,
-    top_k=5,
-)
-```
+## Citation
 
-[`examples/quickstart.py`](examples/quickstart.py) runs the complete contract
-with a synthetic adapter. A production adapter must update the model's attention
-mask, position state, and suffix inputs using the returned compact positions.
-
-## Evidence and limits
-
-The version-maintenance path has now been exercised on complete MMDocIR: 313
-documents, 20,395 pages, 1,658 expert queries, and 10 domains. An Energy-fitted
-PCA-256 post-vision artifact transfers without refitting. Rebuilding the
-terminal ColQwen2.5 index from that artifact takes 1,243.83 seconds versus
-5,000.18 seconds from page images, a **75.12% warm-storage saving**. Recall@5 is
-0.85601 versus 0.85289 for Full; the paired-query bootstrap interval for the
-difference is [-0.00356, +0.00989], so this is a quality-preservation result.
-
-The same workload has also been executed as one complete target-generation
-transition rather than a sum of isolated microbenchmarks. ReprForge replayed
-all 12,441,160 target vectors, wrote and hashed 313 terminal shards, built a
-fresh SQ8 candidate index from those vectors, reran quality admission, sealed
-the generation, and published it only after every gate passed. The warm route
-took 1,350.86 seconds versus 5,077.86 seconds for raw-page construction with
-the same downstream work: a **73.40% end-to-end saving**. The SQ8 probe covered
-98.5% of Full exact global Top-10 pages while sending 10.77% of pages to exact
-reranking. This serving probe is internal; MMDocIR's official quality remains
-the source-document result above.
-
-The artifact is 0.984x the terminal index by itself. Keeping both therefore
-uses about 1.984x terminal representation storage; ReprForge does not call that
-free compression. A physical policy-only rewrite of the same 20,395-page
-terminal index, from 313 shards to 32, takes a 7.20-second median and preserves
-every tensor exactly. The planner accordingly routes policy updates from the
-terminal index, adapter/projection updates from post-vision state when the
-storage budget permits it, and vision/processor updates from raw evidence.
-
-This dependency split also survives an official ColQwen2.5 v0.1-to-v0.2
-canary. Both released adapters contain 506 non-vision tensors; all 506 change.
-With one explicitly frozen 768-token processor contract, the cached prefix is
-bitwise identical across 16 pages while every terminal element changes. The
-model repositories' bundled processor defaults differ, so whole-package reuse
-is not assumed: processor identity is part of the artifact contract.
-
-The same dependency rule was then tested against two public domain adapters,
-not inferred from their names. A
-[Vietnamese ColQwen2.5 adapter](https://huggingface.co/quyet498/fine-turn-ColQwen2-vn)
-contains 504
-decoder LoRA tensors and two retrieval-projection tensors, with no vision
-weights. On a frozen 128-page system slice, replaying its index from the old
-post-vision state is bitwise equal to rebuilding from page images and reduces
-median build time from 43.68 to 6.21 seconds (**85.79%**; three paired runs).
-In contrast, a
-[Turkish ColPali domain adapter](https://huggingface.co/selimc/turkish-colpali)
-contains 162 vision LoRA tensors,
-so ReprForge rejects post-vision replay and routes it to a raw rebuild. This is
-an admission result, not a claim that every adapter update is reusable, and the
-128-page experiment measures index construction rather than Vietnamese
-retrieval quality.
-
-The frozen ColPali v1.1 operating point compiles after layer 9 of 18 and retains
-50.29% of Full index vectors. It was selected by a preregistered split-depth
-frontier: layers 3/6 were too early, layer 8 missed the cross-task quality gate,
-and layers 10/11/12 did not dominate layer 9 on quality and construction cost.
-
-Across six complete ViDoRe-v3 domains—15,194 pages and 10,782 queries—moving the
-unchanged topology-global compiler from layer 6 to layer 9 improves every task.
-Macro nDCG@10 rises from **0.42503 to 0.43414**: **+0.00911**, exact task
-bootstrap 95% interval **[+0.00620, +0.01172]**. The equal-capacity post-hoc and
-Full references are 0.43824 and 0.45253. Layer 9 therefore recovers about 69% of
-the former layer-6-to-post-hoc gap while keeping the same half-size index.
-
-The unchanged point also transfers to complete MP-DocVQA (741 pages, 591
-queries): nDCG@10 rises from **0.85134 to 0.86148**, paired-query bootstrap 95%
-interval for the gain **[+0.00178, +0.01872]**. Post-hoc and Full score 0.86722
-and 0.87001.
-
-Three uncontended, order-alternated MP-DocVQA measurements give **6.82% mean
-document-build saving** versus Full (sample SD 0.54 percentage points; all three
-runs positive), **49.71% tensor-storage saving**, and a 3.2% lower peak allocated
-GPU-memory point. The build result did not pass the experiment's stricter 8%
-promotion gate, so it is reported as a modest but repeatable payoff rather than
-a large systems speedup.
-
-The boundary remains explicit. Evidence covers two benchmark families but only
-one backbone family. A storage-matched compact-native model dominates this
-backbone on ViDoSeek and MP-DocVQA, while the compiled large model remains much
-stronger across most ViDoRe domains. ReprForge is useful when the chosen large
-backbone has a real capability premium; it is not a reason to use a large model
-when a smaller one is already better.
-
-## Research status
-
-The public package contains the physical planner, tensor-scope admission,
-reference in-flight compiler, versioned index manifests, immutable generation
-sealing, full-file validation, and local-filesystem atomic publication. The
-research evidence currently supports dependency-aware adapter/projection
-recompilation as the main method. In-flight token coalescing remains an optional
-operator because its quality does not transfer uniformly to ViDoSeek and no
-tested query-free geometry statistic reliably certifies its ranking loss.
-
-The remaining paper-level external-validity work is a second complete
-model/version transition, cold or object-storage execution, garbage collection,
-and an observed update-frequency trace. Current timing is from one A100 host and
-local NVMe; it must not be presented as distributed or hardware-general.
-
-Large datasets, checkpoints, raw result bundles, research logs, and paper
-drafts are deliberately excluded from this repository.
+See `CITATION.cff`.
 
 ## License
 
-Apache-2.0. See [LICENSE](LICENSE).
+Apache-2.0.

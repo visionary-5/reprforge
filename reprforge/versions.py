@@ -1,4 +1,12 @@
-"""Version fingerprints for dependency-correct index maintenance."""
+"""Version fingerprints for dependency-correct index maintenance.
+
+An index version is the tuple of components that determine its document
+vectors: the collection, the processor contract, the visual tower, the base
+embedding, the retrieval adapter, the terminal projection and the physical
+index policy. Two versions differ exactly in the components whose fingerprints
+differ; a stored artifact survives a transition only if it depends on none of
+them.
+"""
 
 from __future__ import annotations
 
@@ -6,9 +14,9 @@ from dataclasses import asdict, dataclass
 from typing import Any
 
 from .equivalence import ComponentEquivalence
-from .materialization import UpdateScenario
+from .planning import UpdateScenario
 
-_COMPONENTS = (
+COMPONENTS: tuple[str, ...] = (
     "source",
     "processor",
     "vision",
@@ -34,7 +42,7 @@ class VersionManifest:
     def validate(self) -> None:
         missing = [
             name
-            for name in _COMPONENTS
+            for name in COMPONENTS
             if not isinstance(getattr(self, name), str) or not getattr(self, name)
         ]
         if missing:
@@ -48,7 +56,7 @@ class VersionManifest:
         self.validate()
         target.validate()
         return frozenset(
-            name for name in _COMPONENTS if getattr(self, name) != getattr(target, name)
+            name for name in COMPONENTS if getattr(self, name) != getattr(target, name)
         )
 
     def invalidated_components(
@@ -62,8 +70,8 @@ class VersionManifest:
 
         Raw fingerprint differences remain invalidating unless an exact,
         collection-scoped output certificate covers that component transition.
-        Certificates are intentionally fail-closed: stale fingerprints, wrong
-        collection scopes, and certificates for unchanged components raise.
+        Certificates fail closed: stale fingerprints, wrong collection scopes and
+        certificates for unchanged components raise.
         """
 
         if not isinstance(scope_fingerprint, str) or not scope_fingerprint:
@@ -72,7 +80,7 @@ class VersionManifest:
         for certificate in equivalences:
             certificate.validate()
             component = certificate.component
-            if component not in _COMPONENTS:
+            if component not in COMPONENTS:
                 raise ValueError(f"unknown certified component: {component}")
             if component not in changed:
                 raise ValueError(
@@ -110,12 +118,7 @@ class VersionManifest:
         )
         if not invalidated:
             raise ValueError("version changes are equivalent on the certified scope")
-        scenario = UpdateScenario(
-            name,
-            invalidated,
-            expected_count,
-            validation_seconds,
-        )
+        scenario = UpdateScenario(name, invalidated, expected_count, validation_seconds)
         scenario.validate()
         return scenario
 
@@ -127,7 +130,7 @@ class VersionManifest:
         expected_count: float = 1.0,
         validation_seconds: float = 0.0,
     ) -> UpdateScenario:
-        """Lower a manifest diff into the materialization planner."""
+        """Lower a manifest diff into the planner without any certificates."""
 
         changed = self.changed_components(target)
         if not changed:
@@ -142,8 +145,8 @@ class VersionManifest:
 
     @classmethod
     def from_dict(cls, value: dict[str, Any]) -> VersionManifest:
-        unknown = sorted(set(value) - set(_COMPONENTS))
-        missing = sorted(set(_COMPONENTS) - set(value))
+        unknown = sorted(set(value) - set(COMPONENTS))
+        missing = sorted(set(COMPONENTS) - set(value))
         if unknown or missing:
             details = []
             if missing:
@@ -151,6 +154,6 @@ class VersionManifest:
             if unknown:
                 details.append("unknown " + ", ".join(unknown))
             raise ValueError("invalid version manifest: " + "; ".join(details))
-        manifest = cls(**{name: value[name] for name in _COMPONENTS})
+        manifest = cls(**{name: value[name] for name in COMPONENTS})
         manifest.validate()
         return manifest

@@ -12,7 +12,7 @@ from dataclasses import asdict, dataclass
 from pathlib import Path, PurePosixPath
 from typing import Any
 
-from ..planning import VersionManifest
+from .versions import VersionManifest
 
 _GENERATION_NAME = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 
