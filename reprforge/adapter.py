@@ -30,8 +30,9 @@ class CutState:
     the version components already compiled into it, which the planner uses to
     decide whether the cut survives an upgrade. ``context`` carries the
     model-specific resume data (masks, positions, grid); it is opaque to the
-    planner and is fingerprinted into ``contract`` so that a decoded state is
-    resumed only under the contract it was produced with.
+    planner. The integration must bind it into ``contract`` and check that
+    binding before resume; this dataclass does not compute fingerprints or
+    verify that the declared dependencies cover the complete computation.
     """
 
     cut: str

@@ -70,7 +70,12 @@ class AdapterDependencyScope:
 
     @property
     def post_vision_cut_legal(self) -> bool:
-        """Whether a post-vision cut survives this tensor update."""
+        """Conservative profile for a cut including base text embeddings.
+
+        A visual-only state with target-side text reconstruction can have a
+        smaller dependency set. This convenience property is not a complete
+        processor/base/numerical contract check for a concrete integration.
+        """
 
         return not self.post_vision_cut_blockers
 

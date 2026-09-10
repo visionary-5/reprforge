@@ -1,0 +1,131 @@
+{
+  "protocol": {
+    "id": "core-mechanism-v1",
+    "question": "Does the dependency boundary of the actual factorized state predict which target changes replay can absorb, and which changes require fallback?",
+    "claim": "State sufficiency, state-specific upstream dependencies, and target-side reconstruction are jointly required for faithful replay.",
+    "sample": "First 8 pages in the already frozen independent-endpoint input order, covering six collections. No outcome-dependent selection.",
+    "setup": "Persisted v0.1 visual states; independently loaded v0.2 target; same verified base; 12845056 pixels; BF16; batch 1; A100; cuDNN SDPA disabled; TF32 allowed.",
+    "cases": {
+      "release_control": "Actual v0.1 to v0.2 adapter transition under the pinned processor.",
+      "target_text_embedding": "Controlled target perturbation: add 0.125 to alternating coordinates of the non-image token embedding rows present in the frozen sample. Compare factorized replay (target embeddings) against stale fused-input replay (old embeddings).",
+      "target_vision": "Controlled target perturbation: multiply visual patch_embed.proj.weight by 1.01 in BF16. Compare unsafe old-state replay against independent native target and executed raw fallback.",
+      "target_merger": "Controlled target perturbation: add 0.125 to alternating coordinates of visual.merger.mlp[2].bias. Same checks as vision.",
+      "missing_positions": "Restored original target, but ablate replay position reconstruction by replacing all position IDs with zero. This is an implementation ablation, not a real upgrade."
+    },
+    "predictions": "Control and target-embedding factorized replay match raw; stale fused embedding fails after embedding intervention; changed vision/merger invalidate old visual state even with unchanged tensor shape; removing position reconstruction can break replay. Raw fallback restores target under invalidating interventions.",
+    "observables": [
+      "Per-page byte equality, shape, finite check and max absolute error",
+      "Actual visual-module calls in native versus replay",
+      "State-specific invalidation from changed-component sets",
+      "Perturbed tensor hashes before/after and restoration check"
+    ],
+    "scope": "8 pages x 5 causal conditions, no training, ranking benchmark, new family, speed claim, or parameter sweep. All interventions are synthetic except release_control.",
+    "failure_interpretation": "Failure of admitted replay falsifies the declared sufficiency/dependency contract under this integration. If an ablation has no effect, report it and do not tune perturbations or select pages. Positive controlled evidence does not establish prevalence of these changes in real releases."
+  },
+  "diagnostics": {
+    "checkpoint_tensors": 506,
+    "missing_lora": [],
+    "unexpected": [],
+    "mask_non_image_embeddings": false
+  },
+  "interventions": {
+    "release_control": {
+      "changed_components": [
+        "adapter"
+      ],
+      "embedding_before": "87c668cd4962d804585e3232c12c4d7189b1df9e82ba4ca057975b9be0d062fe",
+      "embedding_after": "87c668cd4962d804585e3232c12c4d7189b1df9e82ba4ca057975b9be0d062fe",
+      "vision_before": "a68f46dbc6a020725893197404a0872db63771130d7191c46a7bb343051f757f",
+      "vision_after": "a68f46dbc6a020725893197404a0872db63771130d7191c46a7bb343051f757f",
+      "merger_before": "50e88239ef179b1aea6b5018de4bb08673c0f8e687c2ae112bfd4e66a534c844",
+      "merger_after": "50e88239ef179b1aea6b5018de4bb08673c0f8e687c2ae112bfd4e66a534c844"
+    },
+    "target_text_embedding": {
+      "changed_components": [
+        "adapter",
+        "base_embedding"
+      ],
+      "embedding_before": "87c668cd4962d804585e3232c12c4d7189b1df9e82ba4ca057975b9be0d062fe",
+      "embedding_after": "7b1aa5ecfa1351f670509376eb2ff414b82399ae6b8434d1a4ae33c75b7e56a5",
+      "vision_before": "a68f46dbc6a020725893197404a0872db63771130d7191c46a7bb343051f757f",
+      "vision_after": "a68f46dbc6a020725893197404a0872db63771130d7191c46a7bb343051f757f",
+      "merger_before": "50e88239ef179b1aea6b5018de4bb08673c0f8e687c2ae112bfd4e66a534c844",
+      "merger_after": "50e88239ef179b1aea6b5018de4bb08673c0f8e687c2ae112bfd4e66a534c844"
+    },
+    "target_vision": {
+      "changed_components": [
+        "adapter",
+        "vision"
+      ],
+      "embedding_before": "87c668cd4962d804585e3232c12c4d7189b1df9e82ba4ca057975b9be0d062fe",
+      "embedding_after": "87c668cd4962d804585e3232c12c4d7189b1df9e82ba4ca057975b9be0d062fe",
+      "vision_before": "a68f46dbc6a020725893197404a0872db63771130d7191c46a7bb343051f757f",
+      "vision_after": "4a4b00d3865d61f1cb52745a6afe542bf70f862488aa2c727d4fdd483e349626",
+      "merger_before": "50e88239ef179b1aea6b5018de4bb08673c0f8e687c2ae112bfd4e66a534c844",
+      "merger_after": "50e88239ef179b1aea6b5018de4bb08673c0f8e687c2ae112bfd4e66a534c844"
+    },
+    "target_merger": {
+      "changed_components": [
+        "adapter",
+        "vision"
+      ],
+      "embedding_before": "87c668cd4962d804585e3232c12c4d7189b1df9e82ba4ca057975b9be0d062fe",
+      "embedding_after": "87c668cd4962d804585e3232c12c4d7189b1df9e82ba4ca057975b9be0d062fe",
+      "vision_before": "a68f46dbc6a020725893197404a0872db63771130d7191c46a7bb343051f757f",
+      "vision_after": "a68f46dbc6a020725893197404a0872db63771130d7191c46a7bb343051f757f",
+      "merger_before": "50e88239ef179b1aea6b5018de4bb08673c0f8e687c2ae112bfd4e66a534c844",
+      "merger_after": "c12ca44812ad44c67935bd3bc4707a5f438341183ea2c6ad46d91a62a8266c9c"
+    },
+    "missing_positions": {
+      "changed_components": [
+        "adapter"
+      ],
+      "embedding_before": "87c668cd4962d804585e3232c12c4d7189b1df9e82ba4ca057975b9be0d062fe",
+      "embedding_after": "87c668cd4962d804585e3232c12c4d7189b1df9e82ba4ca057975b9be0d062fe",
+      "vision_before": "a68f46dbc6a020725893197404a0872db63771130d7191c46a7bb343051f757f",
+      "vision_after": "a68f46dbc6a020725893197404a0872db63771130d7191c46a7bb343051f757f",
+      "merger_before": "50e88239ef179b1aea6b5018de4bb08673c0f8e687c2ae112bfd4e66a534c844",
+      "merger_after": "50e88239ef179b1aea6b5018de4bb08673c0f8e687c2ae112bfd4e66a534c844"
+    }
+  },
+  "by_case": {
+    "release_control": {
+      "factorized_replay": 8,
+      "stale_fused_replay": 8
+    },
+    "target_text_embedding": {
+      "factorized_replay": 8,
+      "stale_fused_replay": 0
+    },
+    "target_vision": {
+      "factorized_replay": 0,
+      "raw_fallback": 8
+    },
+    "target_merger": {
+      "factorized_replay": 0,
+      "raw_fallback": 8
+    },
+    "missing_positions": {
+      "factorized_replay": 8,
+      "zero_position_replay": 0
+    }
+  },
+  "pages_per_case": 8,
+  "rows": 40,
+  "all_native_called_vision": true,
+  "all_replay_skipped_vision": true,
+  "all_checks_finite": true,
+  "banks_sha256": "3dcfe34a06bdaaeff64bd5a74e1191b5654f75940be3a26a6634fe8aa2c64855",
+  "code_sha256": {
+    "experiments/core-mechanism/run.py": "00ca3de81ec650cc13ffa7ab60451d2e77824a0f918fb422aaa3e6b4c8af2d85",
+    "experiments/independent-endpoint/run.py": "ad4c07e4ddb6493f4eed7ba508789fe2184a14792b3d2bfacda41c00d45a8a6d",
+    "reprforge/planning.py": "d51dfcf64910fb06256334ee09fd95f35e4ddca7dc26e89ed7d7ab836a56af48"
+  },
+  "environment": {
+    "torch": "2.5.0+cu124",
+    "gpu": "NVIDIA A100-SXM4-80GB",
+    "dtype": "BF16",
+    "batch": 1
+  },
+  "limitation": "Controlled mechanism interventions, not prevalence or ranking/efficiency evidence. Stale fused text is reconstructed from the original shared base embedding, not a separately emitted historical fused checkpoint."
+}

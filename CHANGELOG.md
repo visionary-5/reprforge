@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased — core mechanism evidence
+
+- Specify replay sufficiency and state-specific dependency boundaries.
+- Add frozen controlled embedding/vision/merger and position-reconstruction
+  checks against independent native target encoding; no new algorithm added.
+- Correct documentation that conflated fused text inputs with visual-only
+  states and overstated automatic context/dependency validation.
+
 ## Unreleased — page-scoped validity
 
 - Add optional per-page processor-equivalence admission, preserving other

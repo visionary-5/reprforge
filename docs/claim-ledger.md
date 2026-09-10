@@ -7,7 +7,7 @@ relative to `experiments/`; raw numerical evidence is in the LFS archive.
 | Claim | Strongest evidence | Scope / condition | Safe wording | Unsafe wording |
 |---|---|---|---|---|
 | Upgrade locality | `2026-09-04-public-release-stage-census-v1/raw-output/census.json` | 19 inspected retrieval adapter releases; tensor headers, not a weight-level proof of the full pipeline | No inspected release contained vision-tower or merger LoRA tensors | All adapters change only the suffix |
-| Upstream validity | ColQwen2 CPU/GPU release protocol; processor certificate; dependency trace | Collection, processor/tokenization, vision, merger, text embeddings and numerical execution must be compatible with the cut | Reuse is conditional on unchanged or certified-equivalent upstream dependencies | Adapter-only means reusable; equal base names certify all dependencies |
+| Upstream validity | ColQwen2 CPU/GPU release protocol; processor certificate; dependency trace | Dependencies follow the concrete saved state; fused text inputs depend on embeddings, while the visual-only endpoint rebuilds text embeddings on target; numerical/interface contracts also apply | Reuse is conditional on unchanged or certified-equivalent upstream dependencies | Adapter-only means reusable; equal base names certify all dependencies |
 | Clean official transition | `2026-08-22-colqwen2-release-transition-v1/{cpu-result,gpu-result}.json` | v0.1 → v1.0, same recorded base and shipped 602,112-pixel processor | A real official transition admits replay without changing the recorded shipped processor budget | Most real upgrades are like this |
 | Independent representation equality | ColQwen2 release GPU result | 128 Energy pages, batch 4, BF16; target reload and persisted source IR | All tested target document elements equal the independent raw target endpoint | All transitions/pages are bitwise exact; physical index equality |
 | Pooled historical BF16 rows | `2026-09-07-pooled-gallery-upgrade-matrix-v1`; `2026-09-09-colqwen2-pooled-upgrade-v1` | Same prefix tensor feeds target and BF16 suffix paths; cross-version canary on one page | Shared-prefix suffix consistency checks, with ranking metrics as recorded | Independent raw-versus-stored-state proof; four pooled targets ran BF16 |
@@ -67,3 +67,18 @@ full factory-processor, new ranking, or end-to-end efficiency result. Do not
 state that every processor change invalidates every page, nor that recovering
 7.5% of pages saves 7.5% of time. The gain extends existing scoped equivalence;
 it does not establish a new general theory of computation reuse.
+
+## Core mechanism: controlled interventions
+
+The argument is documented in `docs/replay-contract.md`, with results in
+`experiments/core-mechanism/result.json`. On eight frozen pages: target text
+embedding changes preserve visual-state replay (8/8 bitwise matches) but not
+stale fused-text replay (0/8); controlled vision and merger changes each cause
+same-shape forced-replay errors (0/8 matches), while separately executed raw
+fallback matches (8/8). Ablating position reconstruction also fails (0/8).
+All native forwards execute vision and all normal replays skip it. These are
+controlled interventions, not new real-release census entries or ranking/speed
+results. They support state-specific dependencies and complete reconstruction.
+They do not prove automatic dependency discovery: library declarations must
+be established by integration. Visual-only state excludes text embeddings;
+fused language-input state includes them. Do not conflate these two contracts.

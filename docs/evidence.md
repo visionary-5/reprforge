@@ -62,3 +62,11 @@ in their preparation directories.
 `experiments/page-validity/README.md` maps the frozen 200-page CPU check and
 16-page independent GPU boundary check to the new `reprforge/page_reuse.py`
 mechanism. Raw records are in `evidence/page-validity-evidence.tar.gz`.
+
+### Core mechanism validation
+
+`docs/replay-contract.md` connects the sufficiency conditions to actual saved
+values and integration obligations. `experiments/core-mechanism/README.md`
+records the controlled component/reconstruction interventions; raw evidence
+is in `evidence/core-mechanism-evidence.tar.gz`. These validate causal conditions,
+not prevalence across releases.

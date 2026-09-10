@@ -34,6 +34,11 @@ it demonstrates contracts and execution, not evidence about a real checkpoint.
 
 ## Find the implementation
 
+[Replay correctness conditions](docs/replay-contract.md) explain which values
+must be retained, how their dependencies differ, and what the library actually
+checks. [Controlled mechanism evidence](experiments/core-mechanism/README.md)
+tests those conditions through component changes and reconstruction ablations.
+
 | Location | Purpose |
 |---|---|
 | [`reprforge/versions.py`](reprforge/versions.py), [`dependencies.py`](reprforge/dependencies.py) | Version differences and the dependencies of reusable states. Adapter tensor names alone do not certify the entire upstream contract. |

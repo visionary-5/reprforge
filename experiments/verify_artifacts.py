@@ -51,7 +51,7 @@ def main():
         if path.stat().st_size < 200 and path.read_bytes().startswith(b"version https://git-lfs"):
             raise RuntimeError("LFS pointer found: run git lfs pull first")
         assert sha256(path) == bundle["sha256"], str(path)
-        if args.extract_to and bundle["kind"] in {"historical-evidence", "independent-endpoint-evidence", "page-validity-evidence"}:
+        if args.extract_to and bundle["kind"] in {"historical-evidence", "independent-endpoint-evidence", "page-validity-evidence", "core-mechanism-evidence"}:
             extract(path, args.extract_to)
     if args.extract_to:
         for row in records:
@@ -91,6 +91,21 @@ def main():
         assert sum(p["routed_bit_equal"] for p in gpu["pages_detail"]) == gpu["routed_bit_equal"]
         assert sum(p["unsafe_bit_equal"] for p in gpu["pages_detail"]) == gpu["unsafe_bit_equal"]
         for name, digest in gpu["code_sha256"].items():
+            assert sha256(ROOT / name) == digest, name
+        core = args.extract_to / "core-mechanism"
+        result = json.loads((core / "result.json").read_text())
+        assert result == json.loads((ROOT / "experiments/core-mechanism/result.json").read_text())
+        assert result["protocol"] == json.loads((ROOT / "experiments/core-mechanism/protocol.json").read_text())
+        pages = [json.loads(line) for line in (core / "pages.jsonl").read_text().splitlines()]
+        assert len(pages) == result["rows"]
+        for case, checks in result["by_case"].items():
+            subset = [p for p in pages if p["case"] == case]
+            assert [p["index"] for p in subset] == list(range(result["pages_per_case"]))
+            for check, equal in checks.items():
+                assert sum(p["checks"][check]["bit_equal"] for p in subset) == equal
+        assert all(p["raw_vision_calls"] > 0 for p in pages) == result["all_native_called_vision"]
+        assert all(p["replay_vision_calls"] == 0 for p in pages) == result["all_replay_skipped_vision"]
+        for name, digest in result["code_sha256"].items():
             assert sha256(ROOT / name) == digest, name
     print("Published code and evidence hashes verified.")
 
