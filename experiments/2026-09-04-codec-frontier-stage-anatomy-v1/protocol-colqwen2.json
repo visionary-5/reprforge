@@ -1,0 +1,48 @@
+{
+  "protocol_id": "codec-frontier-colqwen2-v01-to-v10-v1",
+  "status": "frozen-before-gpu-output",
+  "frozen_at": "2026-09-04T20:30:00+08:00",
+  "research_questions": [
+    "Is ColQwen2 v0.1->v1.0 a second backbone on which a post-vision cut is legal, reproduces the target index exactly, and admits at least one compressed point under the frozen -0.01 nDCG@5 floor?"
+  ],
+  "transition": {
+    "source": "vidore/colqwen2-v0.1@38b8ebb6198e2704bc24fe0027b3743f25f03bfc",
+    "target": "vidore/colqwen2-v1.0@2b6ac8fb37f46a49e4841e599583d00ae8a20117",
+    "old_adapter_sha256": "1f26000fd1fbd64be94a32e99012afde7b375f8342bb54b7a7dd0c1dd0d57066",
+    "new_adapter_sha256": "fc856312174dc99a4c7f88a2c54d9590a3b3f5b5a86e2728d7138c7f4758c6d5",
+    "projection_seed_sha256": "39f4ed6a2db7a43d8e7cd8b4365778efc642309c1c94315d2032a847f9ca9003",
+    "processor_contract": "Qwen2-VL-2B-Instruct base processor as loaded by colpali_engine ColQwen2Processor (602,112 max pixels); identical for both versions by construction."
+  },
+  "codecs": [
+    "bf16",
+    "int8_token",
+    "int4_group64",
+    "pca512_int8",
+    "pca256_int8",
+    "pca256_bf16",
+    "pca128_int8",
+    "pca64_int8"
+  ],
+  "calibration": "Same split as sigir-version-evolution-matrix-v1: numpy RandomState(0) reserves 30% of documents as the holdout; the first 64 sorted non-holdout documents fit one query-free PCA basis of rank 512 from 8192 uniformly sampled visual tokens. Lower ranks truncate that nested basis.",
+  "sampled_visual_tokens": 8192,
+  "power_iterations": 4,
+  "torch_seed": 20260904,
+  "evaluation": {
+    "reference": "target_full: exact v0.2 documents encoded from raw pages",
+    "metrics": [
+      "nDCG@5",
+      "Recall@1/5/10",
+      "MRR",
+      "TA@10 (top10_overlap vs target_full)",
+      "top1_agreement"
+    ],
+    "uncertainty": "paired query bootstrap, 20000 draws"
+  },
+  "predictions_frozen_before_output": {
+    "bf16": "TA@10 = 1.0 (the 128-page Energy run already showed exact endpoint equality).",
+    "leverage": "Qwen2-VL-2B has a 600M vision tower in front of a 1.5B decoder at 602k max pixels; leverage on document pages is predicted between 0.6 and 0.8, lower than ColQwen2.5 at 12.8M pixels.",
+    "quality": "The earlier Energy result rejected PCA-256 (-0.027 nDCG@10). Prediction: PCA-256 fails the floor on at least one holdout while INT8 and PCA-512 pass on all three; if so ColQwen2 is a second positive backbone at a different frontier point."
+  },
+  "claim_boundary": "Second backbone, one release pair, one GPU, batch size 1. Same holdouts and split rule as the ColQwen2.5 run.",
+  "compatibility_baselines": "Procrustes and affine ridge (lambda 0.01) bridges from target-version query tokens to legacy query tokens, fitted in-domain on the non-holdout 70% queries of the same corpus; evaluated against the legacy (stale) document bank. This removes the cross-domain (Energy-fitted) handicap of the paper's bridges."
+}

@@ -1,0 +1,20 @@
+[
+  {
+    "file": "historical-evidence.tar.gz",
+    "kind": "historical-evidence",
+    "sha256": "eeacb16bd53cb657c64712a6c3c39d9422ce8bf898e7ae25ec37faeb7ac11874",
+    "bytes": 8006317
+  },
+  {
+    "file": "independent-endpoint-evidence.tar.gz",
+    "kind": "independent-endpoint-evidence",
+    "sha256": "8fb92e459abc655e15554d1f666ca6bf30646988f072de4fcf76ed506a948a05",
+    "bytes": 244772
+  },
+  {
+    "file": "input-metadata.tar.gz",
+    "kind": "input-metadata",
+    "sha256": "d626c3fb670e8cc5367f74c7c929fd871b59c8adb8dffddcdbacb1ede391698a",
+    "bytes": 5917931
+  }
+]

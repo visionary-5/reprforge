@@ -1,0 +1,36 @@
+{
+  "protocol_id": "colqwen2-release-transition-cpu-v1",
+  "status": "frozen-before-remote-static-inspection",
+  "question": "Is the official vidore/colqwen2-v0.1 to vidore/colqwen2-v1.0 successor release a genuine decoder/projection update that preserves the post-vision replay boundary, rather than another convenience example selected after seeing tensor scope?",
+  "selection": {
+    "source": "vidore/colqwen2-v0.1",
+    "target": "vidore/colqwen2-v1.0",
+    "reason": "The source model card explicitly names v1.0 as its newer version; this named successor relation was frozen before tensor-header inspection.",
+    "boundary": "One additional official transition from the same publisher strengthens release-history characterization but is not a production-frequency sample."
+  },
+  "official_revisions": {
+    "source": "38b8ebb6198e2704bc24fe0027b3743f25f03bfc",
+    "target": "2b6ac8fb37f46a49e4841e599583d00ae8a20117"
+  },
+  "frozen_files": {
+    "source_adapter_sha256": "1f26000fd1fbd64be94a32e99012afde7b375f8342bb54b7a7dd0c1dd0d57066",
+    "target_adapter_sha256": "fc856312174dc99a4c7f88a2c54d9590a3b3f5b5a86e2728d7138c7f4758c6d5",
+    "adapter_config_sha256": "97bace26d51aa47b926438235d8bec26dbc721ec2182e876985536af81d46916",
+    "processor_sha256": "4ddb56e63fbb08cde866dde534c8e4d9fbd926df087be33ff7a74a32040432f6",
+    "base_model_name_or_path": "vidore/colqwen2-base",
+    "rank": 32,
+    "target_modules": "(.*(model).*(down_proj|gate_proj|up_proj|k_proj|q_proj|v_proj|o_proj).*$|.*(custom_text_proj).*$)"
+  },
+  "competing_predictions": {
+    "repeated_backend_update": "Both checkpoints contain only decoder LoRA plus retrieval projection tensors under the same base and processor contract; post-vision replay is statically legal.",
+    "publisher_label_is_misleading": "The target checkpoint touches vision/base-embedding/unknown tensors or changes the processor/base contract; raw rebuild is required and the GPU experiment is cancelled."
+  },
+  "gates": {
+    "provenance": "All frozen file hashes match the exact official revisions.",
+    "changed_target": "Source and target adapter checkpoint hashes differ.",
+    "same_contract": "Adapter config, base name, tensor key/shape contract, and processor bytes are identical.",
+    "scope": "Target has zero vision, base-embedding, and unknown tensors and at least one decoder plus one retrieval-projection tensor.",
+    "gpu_promotion": "Run the GPU canary only if every CPU gate passes."
+  },
+  "claim_boundary": "This is a deterministic inspection of one named official successor transition. It establishes dependency legality, not output correctness, retrieval quality, physical payoff, or deployment frequency."
+}

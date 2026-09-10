@@ -1,0 +1,52 @@
+{
+  "base_model": "inputs/qwen2.5-vl-3b",
+  "processor_model": "inputs/qwen2.5-vl-3b",
+  "source": {
+    "adapter": "inputs/colqwen2.5-v0.1",
+    "projection": "inputs/vidore-v0.2/base-shard2-header.bin"
+  },
+  "targets": {
+    "vidore-v0.2": {
+      "adapter": "inputs/vidore-v0.2",
+      "projection": "inputs/vidore-v0.2/base-shard2-header.bin"
+    },
+    "metric-ai-3b": {
+      "adapter": "inputs/metric-ai-3b",
+      "projection": "inputs/metric-ai-3b/base_projection.json"
+    },
+    "tsystems-3b": {
+      "adapter": "inputs/tsystems-3b",
+      "projection": "inputs/tsystems-3b/base_projection.json"
+    },
+    "colnomic-3b": {
+      "adapter": "inputs/colnomic-3b",
+      "projection": "inputs/colnomic-3b/base_projection.json"
+    }
+  },
+  "collections": {
+    "arxivqa": {
+      "parquet": "inputs/datasets/arxivqa/test.parquet",
+      "query_column": "query"
+    },
+    "docvqa": {
+      "parquet": "inputs/datasets/docvqa/test.parquet",
+      "query_column": "query"
+    },
+    "infovqa": {
+      "parquet": "inputs/datasets/infovqa/test.parquet",
+      "query_column": "query"
+    },
+    "tabfquad": {
+      "parquet": "inputs/datasets/tabfquad/test.parquet",
+      "query_column": "query"
+    },
+    "tatdqa": {
+      "parquet": "inputs/datasets/tatdqa/test.parquet",
+      "query_column": "query"
+    },
+    "shiftproject": {
+      "parquet": "inputs/datasets/shiftproject/test.parquet",
+      "query_column": "query"
+    }
+  }
+}

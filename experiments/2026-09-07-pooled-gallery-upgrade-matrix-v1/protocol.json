@@ -1,0 +1,98 @@
+{
+  "protocol_id": "pooled-gallery-upgrade-matrix-v1",
+  "status": "frozen-before-gpu-output",
+  "frozen_at": "2026-09-07T15:00:00+08:00",
+  "motivation": "Stage 3 review and the author agree that 150-300 page galleries and a same-vendor LoRA refresh compress every delta into +-0.02 nDCG. This experiment evaluates the same routes on one pooled cross-collection gallery of about 5,000 pages, against four real upgrades of one deployed adapter (one same-vendor, three cross-vendor), with external baselines: stale index (no-op), Drift-Adapter style compatibility bridges (Procrustes, affine ridge), gradual hot-refresh re-encoding at matched GPU budget, full re-encode (upper bound), and composition with hierarchical token pooling (Clavie et al.).",
+  "deployed": {
+    "source": "vidore/colqwen2.5-v0.1@d8bacd9564935c65f560e6aa841320e970bce02b",
+    "adapter_sha256": "955d771b5cae99cdbac82d8960dd1731ff92a0d89a2f15475e418fb5dbae44ed",
+    "projection_sha256": "1eef055fb49d9cec83c05e381832e9856392d95778436527398c7b1b0a889dad"
+  },
+  "targets": {
+    "vidore-v0.2": {
+      "kind": "same-vendor data refresh",
+      "adapter_sha256": "d8a0a2aa5b97160cde30d9fc26874e11f7c9dfce607fd3e2a02c91a09b17e697",
+      "projection_sha256": "1eef055fb49d9cec83c05e381832e9856392d95778436527398c7b1b0a889dad",
+      "codecs": [
+        "bf16",
+        "int8_token",
+        "pca512_int8",
+        "pca256_int8",
+        "pca128_int8"
+      ]
+    },
+    "metric-ai-3b": {
+      "kind": "cross-vendor (Metric-AI ColQwen2.5-3B-multilingual)",
+      "adapter_sha256": "9232748e7d1c1c73f4e1071b5c44f47459121b8887e797fb9a167332f9ac7d65",
+      "projection_sha256": "30026b5e8cb4b7af0532b191242bb525052f253e372de04b731de07287b24609",
+      "codecs": [
+        "bf16",
+        "int8_token",
+        "pca512_int8",
+        "pca256_int8",
+        "pca128_int8"
+      ]
+    },
+    "tsystems-3b": {
+      "kind": "cross-vendor (T-Systems colqwen2.5-3b-multilingual)",
+      "adapter_sha256": "0c26583c535a9e42ff7f795d2adaa1c6fd64f991c7dadfccb31d7757d1427e12",
+      "projection_sha256": "dc00698321851dca41da1b689100fee0dae48d211c2f7aec9a6926fcf28a8daa",
+      "codecs": [
+        "pca256_int8"
+      ]
+    },
+    "colnomic-3b": {
+      "kind": "cross-vendor (Nomic colnomic-embed-multimodal-3b)",
+      "adapter_sha256": "af23b67a003f94075927e2ed853edc7498dd4e9353f9c75f88e45859811afdc3",
+      "projection_sha256": "f48c8a01501f6e886f075d76b63bce49b57943a0558271fdd06383699c1e1f0b",
+      "codecs": [
+        "pca256_int8"
+      ]
+    }
+  },
+  "processor": "One processor contract per run, applied identically to every version (the census treats the processor as part of the version tuple; holding it fixed isolates the adapter change). Run A: Qwen2.5-VL base contract, max_pixels 12,845,056. Run B: the shipped colqwen2.5-v0.2 contract, max_pixels 602,112. Vendor preprocessor configs of third-party adapters are NOT applied.",
+  "gallery": {
+    "collections": [
+      "arxivqa",
+      "docvqa",
+      "infovqa",
+      "tabfquad",
+      "tatdqa",
+      "shiftproject"
+    ],
+    "distractors": "MMDocIR page-level stage-1 subset (580 pages, 22 documents), no queries",
+    "holdout": "Per collection, numpy RandomState(0) permutation reserves 30% of rows; their queries are the evaluation queries and their pages are relevant pages. ALL pages of every collection plus distractors form one pooled gallery, so every query is scored against roughly 5,000 pages.",
+    "calibration": "Query-free: the first 16 sorted non-holdout pages of each collection (96 pages) supply 8,192 uniformly sampled visual tokens for one pooled nested PCA basis of rank 512 (exact float64 eigendecomposition). Lower ranks truncate it.",
+    "bridges": "Per target, Procrustes and affine ridge (lambda 0.01) maps from target query tokens to deployed query tokens, fitted on the first 200 non-holdout queries of each collection (1,200 queries), evaluated against the stale document bank.",
+    "hot_refresh": "Per target, a mixed bank in which a random subset of pages (RandomState(1)) is re-encoded with the target and the rest stay stale; fractions = {matched, 0.25, 0.5}, where matched = measured target-suffix seconds / (preprocess + prefix + target-suffix seconds), i.e. the GPU budget the exact cut spends per page.",
+    "token_pooling": "Hierarchical (Ward) token pooling with pool factor 3 applied to the terminal vectors of target_full and pca256_int8 for vidore-v0.2 and metric-ai-3b; TA is measured between the two pooled indexes.",
+    "deduplication": "Each distinct page image appears once in the gallery (SHA-1 of image bytes); queries sharing a page share its gold slot. The 150-300 page per-collection holdouts of the earlier protocol contain no duplicate images (checked: ArxivQA, DocVQA, InfoVQA, Shift are duplicate-free)."
+  },
+  "sampled_visual_tokens": 8192,
+  "torch_seed": 20260907,
+  "metrics": [
+    "nDCG@5",
+    "Recall@1/5/10",
+    "MRR",
+    "TA@10 and TA@5 (overlap with target_full top-k)",
+    "top1_agreement",
+    "top-1 flip rate = 1 - top1_agreement",
+    "paired query bootstrap (20,000 draws) vs target_full",
+    "per-page stage seconds",
+    "payload bytes per page"
+  ],
+  "predictions_frozen_before_output": {
+    "Q1_spread": "Pooled-gallery target nDCG@5 for vidore-v0.2 on ArxivQA queries is <= 0.90 (150-page value 0.952): the larger gallery spreads the metric.",
+    "Q2_cross_vendor_collapse": "Stale-index nDCG@5 <= 0.10 for metric-ai-3b and tsystems-3b on every collection; for vidore-v0.2 stale is within 0.05 of target pooled.",
+    "Q3_exact_cut": "Exact BF16 cut TA@10 = 1.000 for every target that runs it (correctness check of the replay path).",
+    "Q4_top1_flip": "Pooled top-1 flip rate of stale vs target for vidore-v0.2 >= 0.10.",
+    "Q5_hot_refresh": "At the matched fraction, hot-refresh TA@10 < 0.50 for every target, while pca256_int8 TA@10 >= 0.80 for every target.",
+    "Q6_leverage_budget": "Cut leverage under the 602,112-pixel contract is lower than under 12,845,056 and lies in [0.60, 0.85].",
+    "Q7_fidelity_at_scale": "pca256_int8 nDCG@5 is within 0.01 of target_full pooled for every target.",
+    "Q8_composition": "TA@10 between pooled(pca256_int8) and pooled(target_full) >= 0.80, and pooled(target_full) nDCG@5 is within 0.02 of unpooled target_full."
+  },
+  "claim_boundary": "One deployed adapter, four public targets on one base model, one A100, image batch size 1, two processor contracts. Relevance is single-gold-page (the query's own page); nDCG@5 is therefore a bounded proxy, not qrel effectiveness. Third-party adapters are evaluated under a processor contract their vendors may not have shipped.",
+  "amendment_2026-09-07T17:00": "First full run (602k px) showed target nDCG@5 = .45 and stale top-1 flip = .64 on the pooled gallery. Cause: TabFQuAD (280 rows / 70 distinct pages) and TAT-DQA (1,663 rows / 271 distinct pages) repeat one page image across many queries, so the gallery held identical pages whose tie order was arbitrary. Fix: the gallery holds each distinct image (SHA-1 of bytes) once and every query's gold is that page's slot; argsort made stable. Gallery becomes 3,420 pages. The contaminated run is archived as raw-output/output-602112-dup-contaminated and is not used. Predictions Q1-Q8 are unchanged.",
+  "amendment_2026-09-08": "Post-run analysis found that ViDoRe shiftproject_test carries a query on 100 of 1,000 rows; the runner scored the literal string 'None' for 273 of its 300 holdout rows (target nDCG@5 .077 on that collection). Correction, applied in analyze.load() from per_query.json + rankings.json: Shift queries are dropped (its 999 pages stay in the gallery as distractors), giving 1,033 evaluation queries; all aggregates, per-collection numbers and bootstrap intervals are recomputed from the saved per-query rows. Agreement metrics are recomputed against the stable target order (the runner's reference order was numpy's default unstable argsort; ColNomic target_full read .998 against itself because of tied scores). Known residual: 127 of the 1,200 bridge-fitting queries were Shift rows without a query (text 'None'); the Procrustes and affine bridges were therefore fitted on about 1,070 informative queries. Predictions Q1-Q8 unchanged; the runner now skips rows without a query for future runs.",
+  "amendment_2026-09-08b": "Disclosure requested at re-review: prediction Q5 (PCA-256 TA@10 >= .80 on every upgrade) holds on the cleaned 1,033-query set (.874 for vidore-v0.2) and would fail on the uncleaned runner aggregate that scored Shift's 273 empty-text queries (.696). The stable-argsort recomputation changes no kept-query number. The Shift drop also lowers the stale-index and hot-refresh numbers, so it is not outcome-selective, but it is a post-hoc cleaning step and the paper says so (Section 5.8). The Procrustes/affine bridges were not refitted; they remain fitted on 1,200 non-holdout queries of which 127 Shift rows carry the text 'None'."
+}

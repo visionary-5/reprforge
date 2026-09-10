@@ -1,0 +1,21 @@
+{
+  "protocol_id": "flickr-corpus-calibrated-paired-analysis-v3",
+  "status": "post-hoc-after-aggregate",
+  "unit": "one held-out flickr document/query pair from the pinned 30% document split",
+  "scope_queries": 300,
+  "contrasts": [
+    "reprforge_full - raw_full",
+    "reprforge_light10 - raw_light10",
+    "reprforge_light05 - raw_light05"
+  ],
+  "metric": "per-query nDCG@5 contribution",
+  "bootstrap": {
+    "draws": 20000,
+    "seed": 20260824,
+    "interval": "paired document percentile 95%"
+  },
+  "test": "two-sided paired Wilcoxon signed-rank on nonzero differences with Holm correction across three contrasts",
+  "primary_paper_gate": "Light10 paired-bootstrap 95% lower bound >= -0.01",
+  "fidelity_gate": "every reconstructed aggregate agrees with analysis-output/stats.json within 0.0001",
+  "boundary": "Post-hoc uncertainty analysis after observing aggregate corpus-calibration results; intervals describe paired query heterogeneity and are not untouched confirmatory evidence."
+}

@@ -1,0 +1,90 @@
+{
+  "protocol_id": "flickr-matched-lifecycle-4090-v3-corpus-calibration",
+  "status": "frozen-before-gpu-output",
+  "question": "Does the same query-free corpus-calibration rule preserve the Flickr lifecycle point without labels or evaluation-image leakage?",
+  "benchmark": {
+    "slice": "flickr",
+    "repository": "nlphuji/flickr_1k_test_image_text_retrieval",
+    "revision": "c4a4cdc67b77fce148b45484a067957bf75ec4c3",
+    "files_sha256": {
+      "images_flickr_1k_test.zip": "b0fa9970cc1680a9334818b9da151a62024772b72b961e1454eb6e9866dd7cee",
+      "test_1k_flickr.csv": "a427bd870759196b9af09ba9cbd3f0a49c6e6a50c7eafcd9001fdd9f81219105"
+    },
+    "split": "test",
+    "rows": 1000,
+    "image_column": "image",
+    "query_column": "caption",
+    "gold": "row identity",
+    "evaluation": "MarginMerge baselines_memory.py document-disjoint 30% holdout; the same released protocol previously reproduced 0.9332 Full and 0.8791 Light10 on v0.1",
+    "document_permutation_seed": 0,
+    "metric": "nDCG@5"
+  },
+  "transition": {
+    "source": "vidore/colqwen2.5-v0.1@d8bacd9564935c65f560e6aa841320e970bce02b",
+    "target": "vidore/colqwen2.5-v0.2@11fee7270dcb48f07f3e54cef600619125da60fe",
+    "base": "vidore/colqwen2.5-base@92908120384b7a2110c5beda3ab29cbdb2c08e49",
+    "base_shards_sha256": {
+      "model-00001-of-00002.safetensors": "6b45c7afe391b4d9cc49f1ed3f6976f4a25ed40aa2165ed2ae118ff549355985",
+      "model-00002-of-00002.safetensors": "32c18f3342ed82c900e02a01b0a6fe7c6aef16eb8ae9a4a83547fbe6e057d512"
+    },
+    "changed_components": [
+      "decoder LoRA adapter",
+      "custom projection LoRA adapter"
+    ],
+    "v01_adapter_sha256": "955d771b5cae99cdbac82d8960dd1731ff92a0d89a2f15475e418fb5dbae44ed",
+    "v02_adapter_sha256": "d8a0a2aa5b97160cde30d9fc26874e11f7c9dfce607fd3e2a02c91a09b17e697",
+    "processor_contract": "ColQwen2_5_Processor loaded from the pinned v0.2 adapter package with no max-token override and held fixed for both routes; this is an adapter-only rollout, not a complete v0.1 package upgrade because the released v0.1 processor has a different max_pixels setting.",
+    "preprocessor_sha256": "76dedebbc3633c73604fec7174425f42fa1194d32a800926ea9d69d228170edb",
+    "video_preprocessor_sha256": "7a758d2d1cc5edcb0570af2288768f9405897798efb2128795440d39d9e3840b",
+    "dependency_gate": "The v0.1 and v0.2 adapters contain no vision tensors; additionally require bitwise-equal post-vision fields on a Flickr canary under this processor contract."
+  },
+  "reprforge": {
+    "artifact": "Query-free corpus-calibrated post-vision PCA-256 token-wise symmetric INT8 coefficients, BF16 scales, input IDs, attention masks, image grids, and one shared corpus basis.",
+    "basis_sha256": "1057bae31fabe621e9bf16c9eb8b8847583e0cd44787c7b656d6c958ef04b369",
+    "calibration_protocol_sha256": "4ee24a245c066d923d2d5bb61a8eb00ae102129a3c5a2989964831153b99d680",
+    "calibration": "8,192 visual tokens sampled deterministically from 64 query-free Flickr images that are document-disjoint from the official evaluation split.",
+    "codec_selection": "Unchanged corpus-calibration rule: 64 pages, rank 256, 8,192 tokens, seed 20260824, and BF16 basis for every corpus.",
+    "forbidden_adaptation": "No caption, query, qrel, label, evaluation image, rank sweep, precision sweep, or retention-ratio selection participates in calibration.",
+    "materialization_accounting": "IR creation is reported as source-version overhead and is not charged to the later v0.2 transition; persistent physical IR bytes are always reported."
+  },
+  "methods": {
+    "raw_full": "pixels -> target v0.2 Full terminal vectors",
+    "raw_light10": "pixels -> target v0.2 Full -> official Light geometric merge to 10% vectors",
+    "raw_light05": "pixels -> target v0.2 Full -> official Light geometric merge to 5% vectors",
+    "reprforge_full": "valid PCA-256 post-vision IR -> target v0.2 suffix -> Full terminal vectors",
+    "reprforge_light10": "valid PCA-256 post-vision IR -> target v0.2 suffix -> the same Light 10% operator",
+    "reprforge_light05": "valid PCA-256 post-vision IR -> target v0.2 suffix -> the same Light 5% operator"
+  },
+  "measurement": {
+    "image_batch_size": 8,
+    "batch_size_reason": "Frozen before output from the previously observed Flickr range of 101 to 335 endpoint tokens and the 24 GiB device limit; both matched routes use the same batch size.",
+    "warm_storage": "local NVMe and already-materialized source-version IR",
+    "raw_build": "image access, processor, host-to-device transfer, vision, target suffix/projection, document endpoint D2H, terminal serialization",
+    "replay_build": "IR shard load, PCA decode, target suffix/projection, document endpoint D2H, terminal serialization",
+    "light_cost": "fused official geometric merge while target endpoints remain on GPU, compact endpoint D2H, and compressed-index serialization; Full terminal serialization is not charged to a Light route",
+    "excluded_common_work": "target query encoding and retrieval evaluation",
+    "timing_inference": "one complete transition plus batch-level descriptive timings; do not treat batches as independent experimental seeds",
+    "terminal_compression_source": "MarginMerge commit 94cdafbc5e4c17d17aaeb0c5cdf3f0238462b42a src/baselines_memory.py; endpoint input is BF16 and merge arithmetic is FP32 exactly as released",
+    "hardware": "one NVIDIA RTX 4090 with the complete experiment rooted on local /root/autodl-tmp storage",
+    "artifact_boundary": "Per-batch recovery shards and evaluation-only Full caches are excluded from route cost; only the selected final target index write is charged."
+  },
+  "primary_gates": {
+    "scope": "all 1000 image-caption rows and 1000 queries",
+    "dependency": "all compared canary fields bitwise equal",
+    "lowering": "custom raw decomposition matches the official model endpoint within 1e-6 maximum absolute error",
+    "quality": "reprforge_light10 nDCG@5 minus raw_light10 nDCG@5 >= -0.01",
+    "lifecycle": "reprforge_light10 complete target-build saving versus raw_light10 >= 0.50",
+    "storage": "physical reusable INT8 IR <= 1.10x the actually serialized 16-bit raw Full terminal bytes",
+    "cardinality": "raw and ReprForge Light outputs retain identical per-document vector counts",
+    "physical_index_fidelity": "direct nDCG@5 of every serialized Light index agrees within 0.0001 with the pinned official scorer's independent re-merge from its BF16 Full cache"
+  },
+  "repair_gate": "mixed-domain ReprForge Full nDCG@5 minus Energy-only ReprForge Full nDCG@5 >= +0.005",
+  "secondary": "Report 5% retention as a stress boundary; it cannot overturn the primary 10% decision.",
+  "mechanism_prediction": {
+    "statistic": "(ReprForge Light10 - Raw Light10) nDCG delta minus (ReprForge Full - Raw Full) nDCG delta",
+    "gate": ">= +0.005",
+    "interpretation_if_pass": "terminal geometric merge systematically compensates enough replay distortion to reproduce the ArxivQA composition pattern",
+    "interpretation_if_fail": "compression compensation is not a stable cross-domain mechanism; retain lifecycle non-inferiority only if the primary gates still pass"
+  },
+  "claim_boundary": "Post-failure mechanism regression. It tests a fixed unlabeled deployment-calibration protocol, not untouched confirmation."
+}

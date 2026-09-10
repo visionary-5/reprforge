@@ -5,9 +5,11 @@ document encoder up to a named cut and returns the state stored there together
 with everything the suffix needs to resume (attention mask, position identities,
 grid contract). ``resume`` continues the *target* version's suffix from a cut
 state, whether that state was just emitted or decoded from storage. ``encode``
-is the raw route: the complete target encoder from source pages. Replaying an
-exact cut must reproduce ``encode`` bit for bit; a lossy cut is admitted only by
-measured retrieval quality. Everything model specific (layer indices, image
+is the raw route: the complete target encoder from source pages. An exact
+integration validates target representation equality against an
+independent raw ``encode`` under its declared numerical and processor contract.
+This does not imply serialized index-byte equality. A lossy cut is admitted only
+by measured retrieval quality. Everything model specific (layer indices, image
 grids, cache layout) stays inside the integration.
 """
 

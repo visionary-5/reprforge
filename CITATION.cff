@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-message: "If you use ReprForge, please cite the paper below."
+message: "If you use ReprForge, please cite this software; paper metadata will be added when finalized."
 title: "ReprForge: Semantic Recompilation Cuts for Evolving Visual Late-Interaction Indexes"
 type: software
 version: 0.5.0
@@ -8,10 +8,3 @@ license: Apache-2.0
 repository-code: "https://github.com/visionary-5/reprforge"
 authors:
   - name: "ReprForge Authors"
-preferred-citation:
-  type: article
-  title: "Where a Retriever Upgrade Lives: Semantic Cuts for Evolving Visual Late-Interaction Indexes"
-  authors:
-    - name: "Anonymous Authors"
-  year: 2026
-  notes: "Under review."

@@ -1,0 +1,35 @@
+{
+  "protocol_id": "processor-equivalence-certificate-v1",
+  "status": "frozen-before-cpu-execution",
+  "question": "Can ReprForge discharge a changed processor-file fingerprint with a compact, exact, collection-scoped output certificate, and what CPU cost does that proof add to a version transition?",
+  "surface": {
+    "benchmark": "complete vidore/vidore_v3_energy corpus",
+    "pages": 2225,
+    "source_processor": "vidore/colpali-v1.2",
+    "target_processor": "vidore/colpali-v1.3",
+    "batch_size": 4,
+    "output_fields": ["attention_mask", "input_ids", "pixel_values"]
+  },
+  "frozen_inputs": {
+    "corpus": [
+      {"rows": 742, "sha256": "f932aa73ac1f60e4f31870e256e0b09fdd7a9b5152869977dd77af527c334664"},
+      {"rows": 742, "sha256": "156294b157e09f83e7383cf2e3e30e8a0ae6fd5a0c46e5a033fa4695a525a7fb"},
+      {"rows": 741, "sha256": "4f01202b0972183c45f2feaef49b5315adc8e58b4544ecad7bb608fe75d36c9e"}
+    ],
+    "source_processor_sha256": "5fc342baea95529a5eb9746a0232fb88941d759812d7b616c382f2f87ba6123f",
+    "target_processor_sha256": "ac4aa2138b6778ac0aa2c7cec4e7cfd9b5211ee83b7f21d7335d338f9b9d1a7e"
+  },
+  "measurement": {
+    "source_fingerprint": "One-time source-build work: image decode, source processing, and streaming output hashing.",
+    "target_certificate": "Update-time work: image decode, target processing, streaming output hashing, and digest comparison. No model or GPU execution.",
+    "comparison": "The target processor scan is also required by a raw rebuild. Report it separately from hashing/certificate metadata; do not compare the entire scan directly with GPU-only model timings."
+  },
+  "gates": {
+    "exact_equivalence": "Source and target ordered output digests, field contracts, item counts, and scope fingerprints are identical.",
+    "coverage": "All 2,225 pages in the three frozen corpus shards are processed.",
+    "compact_proof": "Serialized source output fingerprint plus transition certificate is <= 4096 bytes.",
+    "negative_control": "A one-bit digest change is rejected by certificate construction.",
+    "gpu": "No CUDA context and no GPU model execution."
+  },
+  "claim_boundary": "Collection-scoped processor-output equivalence for this exact ordered corpus and batch schedule. It does not prove global processor equivalence or make ColPali compact IR deployable."
+}

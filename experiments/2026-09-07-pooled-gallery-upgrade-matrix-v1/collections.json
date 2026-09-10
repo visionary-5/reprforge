@@ -1,0 +1,8 @@
+{
+  "arxivqa": {"parquet": "/home/ldf/.cache/huggingface/hub/datasets--vidore--arxivqa_test_subsampled/snapshots/b8a106812c8682bab08935cf5d1b4566c82562de/data/test-00000-of-00001.parquet", "query_column": "query"},
+  "docvqa": {"parquet": "/home/ldf/.cache/huggingface/hub/datasets--vidore--docvqa_test_subsampled/snapshots/49bf8f13e13c41dd8cdb0cae5314e31c1da1e0d6/data/test-00000-of-00001.parquet", "query_column": "query"},
+  "infovqa": {"parquet": "/home/ldf/.cache/huggingface/hub/datasets--vidore--infovqa_test_subsampled/snapshots/f793e830aaeae1ceb8a2df626fc555b3fd04d3db/data/test-00000-of-00001.parquet", "query_column": "query"},
+  "tabfquad": {"parquet": "/data/ldf/reprforge/external/datasets/tabfquad_test_subsampled/data/test-00000-of-00001.parquet", "query_column": "query"},
+  "tatdqa": {"parquet": "/data/ldf/reprforge/external/datasets/tatdqa_test/data/tatdqa_test.parquet", "query_column": "query"},
+  "shiftproject": {"parquet": "/data/ldf/reprforge/external/datasets/shiftproject_test/data/test-00000-of-00001.parquet", "query_column": "query"}
+}

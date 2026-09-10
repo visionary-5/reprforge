@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased — paper reproducibility
+
+- Publish frozen GPU runners, protocols, input preparation, evidence indexes and
+  Git LFS numerical evidence bundles.
+- Add independent native-raw versus persisted-state checks for four ColQwen2.5
+  target adapters, and verify ordered rankings from existing ColQwen2 outputs.
+- Clarify representation/ranking/index equality and timing boundaries; retain
+  all historical measurements and keep the core algorithm unchanged.
+
 ## 0.5.0 (2026-09-04)
 
 Repository reorganised around the paper's claims.

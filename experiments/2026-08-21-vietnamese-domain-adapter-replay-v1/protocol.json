@@ -1,0 +1,36 @@
+{
+  "protocol_id": "vietnamese-domain-adapter-replay-v1",
+  "status": "frozen-before-gpu-execution",
+  "question": "Does exact post-vision replay remain valid and materially cheaper for a real public domain adapter that explicitly freezes visual modules?",
+  "update": {
+    "source_adapter": "vidore/colqwen2.5-v0.2",
+    "domain_adapter": "quyet498/fine-turn-ColQwen2-vn@861105f1cf0bd1ca75f65ba4ab463ba90d3c472d",
+    "domain": "Vietnamese document retrieval",
+    "target_contract": "rank-32 LoRA on language model and custom_text_proj; adapter_config regex explicitly excludes visual modules",
+    "adapter_sha256": "8acec35758346034aac099b6b95c8062dbb8acad12fbb6d64556485ce06a5a90"
+  },
+  "dataset": {
+    "benchmark": "MMDocIR Energy frozen 128-page system slice",
+    "manifest": "energy-portrait-128-manifest-v1.json",
+    "page_count": 128,
+    "batch_size": 8,
+    "processor_signature": {
+      "grid_thw": [1, 64, 46],
+      "sequence_tokens": 747,
+      "visual_tokens": 736
+    }
+  },
+  "measurement": {
+    "repeats": 3,
+    "warmup_minibatches": 1,
+    "alternating_method_order": true,
+    "interpretation": "Warm-storage build timing. The exact IR predates the domain adapter and is reused because processor, input embeddings, and vision weights are dependency-valid."
+  },
+  "gates": {
+    "adapter_load": "all 504 decoder LoRA tensors and two projection tensors load with no missing or unexpected adapter tensors",
+    "dependency_validity": "zero adapter tensors target visual modules",
+    "semantic_equivalence": "raw and exact-IR Full endpoints have maximum absolute error <= 1e-6",
+    "minimum_recompile_saving": 0.5
+  },
+  "claim_boundary": "This validates build replay for a real Vietnamese domain adapter on a frozen system slice. It does not claim Vietnamese retrieval quality because the adapter's public training set has no untouched standard evaluation split."
+}

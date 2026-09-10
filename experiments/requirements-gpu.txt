@@ -1,0 +1,15 @@
+# Historical Linux / Python 3.11 A100 environment. CUDA wheel source is explicit.
+--extra-index-url https://download.pytorch.org/whl/cu124
+torch==2.5.0+cu124
+transformers==4.53.2
+peft==0.15.2
+colpali-engine==0.3.12
+numpy==2.1.2
+pyarrow==19.0.1
+pillow==11.1.0
+safetensors==0.5.3
+huggingface-hub==0.34.4
+scipy==1.15.2
+pandas==2.2.3
+matplotlib==3.9.2
+# Optional for MMDocIR build_publish.py: faiss-cpu

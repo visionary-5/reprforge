@@ -1,133 +1,99 @@
 # ReprForge
 
-**Semantic recompilation cuts for evolving visual late-interaction indexes.**
+**Reuse valid intermediate states when rebuilding visual document representations after a retriever upgrade.**
 
 [![Tests](https://github.com/visionary-5/reprforge/actions/workflows/tests.yml/badge.svg)](https://github.com/visionary-5/reprforge/actions/workflows/tests.yml)
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/)
 [![License](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 
-A visual document retriever (ColPali, ColQwen2/2.5, ColSmol, ...) is upgraded far
-more often than the collection it indexes. Every upgrade forces a choice between
-serving a stale index and re-encoding every page through a multi-billion
-parameter vision-language model. ReprForge is the planner and contract layer
-for a third option: keep the deepest intermediate state that the new version has
-not changed, replay only the target suffix from it, admit the result by measured
-retrieval quality, and publish it as an immutable generation.
+Visual document retrievers encode pages offline and store their representations
+in an index. An upgrade may change only part of that computation. ReprForge
+checks whether an existing intermediate state remains valid for the target
+version. If its upstream dependencies are unchanged, the target suffix resumes
+from that state; otherwise the route falls back to raw-page encoding.
 
-The library is small and CPU-only. Model integrations live outside it and plug in
-through one protocol.
+The core package provides dependency and version contracts, replay integration
+interfaces, and a small reference index. Optional GPU experiment runners expose
+the actual ColQwen cut and its target suffix. The cut stores post-merger visual
+token representations at the language-model entrance, together with resume
+metadata. It is not just the vision tower's output.
 
-## Why this works
+## Minimal CPU run
 
-Public ColPali-family releases change the decoder LoRA and the retrieval head;
-none of the 19 adapter checkpoints we parsed touches the vision tower or the
-vision-language merger, and three vendors ship a byte-identical visual prefix.
-An upgrade therefore lives in the suffix. Replaying the target suffix from an
-exact post-vision cut reproduces the target index bit for bit (Target Agreement
-1.000 on three benchmarks); compressed cuts trade retained bytes for ranking
-fidelity along a measured frontier. The share of raw encode time spent before
-the cut (0.85–0.88 on document pages with ColQwen2.5) equals the saving, and
-predicts which backbones benefit: ColPali's small vision tower is 23% of its
-forward pass, so its cut never pays.
-
-Query-side compatibility bridges (Procrustes, affine, Drift-Adapter MLP) keep
-the *old* ranking searchable; fitted cross-domain or in-domain they reach
-0.60–0.83 Target Agreement. Constructing the target index is a different
-contract, and this library is about that contract.
-
-## Install
+From a checkout of this repository:
 
 ```bash
-pip install -e '.[dev]'
+python -m pip install -e '.[dev]'
 python -m pytest -q
 python examples/quickstart.py
 ```
 
-Only `numpy` is required at runtime.
+Only NumPy is required by the library. The quickstart uses a synthetic encoder;
+it demonstrates contracts and execution, not evidence about a real checkpoint.
 
-## What the library does
+## Find the implementation
 
-```text
-version tuple ──diff──▶ changed components ──▶ legal cuts ──▶ planner ──▶ route
- (h_C,h_P,h_E,h_V,       (tensor census,          (depends_on ∩      (storage,      raw | cut
-  h_A,h_R,h_I)            output certificates)     changed = ∅)       quality,
-                                                                     leverage,
-                                                                     break-even)
-                                      route ──▶ resume target suffix ──▶ validate ──▶ seal ──▶ publish
-```
-
-| Module | Concern |
+| Location | Purpose |
 |---|---|
-| `reprforge.versions` | The version tuple (collection, processor, vision, base embedding, adapter, projection, index policy) and its exact dependency delta. |
-| `reprforge.dependencies` | Classify an adapter checkpoint's tensor names by encoder stage. Unknown names fail closed. |
-| `reprforge.equivalence` | Collection-scoped output certificates that discharge processor-file changes which do not change outputs. |
-| `reprforge.planning` | Select the cut portfolio that minimises expected upgrade time under storage and quality contracts; `cut_leverage` and `break_even_upgrades` as pre-codec predictors. |
-| `reprforge.adapter` | `DocumentEncoderAdapter`: `encode` (raw route), `emit_cut`, `resume`. `CutState` carries the stored tensor, its compiled dependencies and the resume contract. |
-| `reprforge.index` | Reference MaxSim index, `target_agreement`, checksummed storage that records the rebuild source. |
-| `reprforge.generation` | Immutable, hashed generations and atomic active-pointer publication. |
+| [`reprforge/versions.py`](reprforge/versions.py), [`dependencies.py`](reprforge/dependencies.py) | Version differences and the dependencies of reusable states. Adapter tensor names alone do not certify the entire upstream contract. |
+| [`reprforge/equivalence.py`](reprforge/equivalence.py) | Collection-scoped certificates for processor changes with equivalent observed outputs. |
+| [`reprforge/adapter.py`](reprforge/adapter.py) | `encode`, `emit_cut`, `resume`, and the state contract. |
+| [`experiments/independent-endpoint/run.py`](experiments/independent-endpoint/run.py) | Real ColQwen2.5 integration: `capture`, `replay`, and independent native raw encoding in separate source/target processes. |
+| [`reprforge/index.py`](reprforge/index.py) | Reference MaxSim and TA@k (set overlap, not ordered equality). |
+| [`reprforge/planning.py`](reprforge/planning.py), [`generation.py`](reprforge/generation.py) | Optional cost selection and reference publication machinery; these are not the paper's locality evidence. |
 
-## Minimal walkthrough
+## Reproduce and inspect evidence
 
-```python
-from reprforge import (VersionManifest, inspect_adapter_tensor_keys,
-                       MaterializationOption, choose_materializations)
+Start with [the reproduction guide](experiments/README.md),
+[experiment-to-claim index](docs/evidence.md), and
+[claim ledger](docs/claim-ledger.md). Frozen historical runners and protocols
+are under `experiments/<date>-<experiment>/`; shared dependencies are under
+`experiments/support/`. [Provenance](docs/provenance.json) maps published code and
+external output files to their SHA-256 digests. Model weights, datasets, retained
+states and embedding banks are external artifacts and are not committed.
 
-# 1. What changed? Read the target checkpoint's tensor names (safetensors header).
-scope = inspect_adapter_tensor_keys(tensor_names)        # decoder + head only
-assert scope.post_vision_cut_legal
+The experiments address three questions:
 
-# 2. Which source? Costs come from a small calibration run on this collection.
-decision = choose_materializations(
-    (MaterializationOption("post_vision",
-                           depends_on=frozenset({"processor", "vision", "base_embedding"}),
-                           storage_bytes=6_267_000_000, replay_seconds=1_244,
-                           quality_fraction=0.997),),
-    (scope.to_update_scenario("colqwen2.5-v0.2"),),
-    raw_rebuild_seconds=5_000, storage_budget_bytes=7_000_000_000,
-)
-decision.routes[0].source    # "post_vision"  -> replay; "raw" -> rebuild from pages
+1. **Upgrade locality:** the public-release census inspects changed stages and
+   base/processor contracts. Absence of vision LoRA does not itself prove reuse.
+2. **Target fidelity:** independent raw/replay checks compare document tensors;
+   pooled and codec experiments report ranking agreement with explicitly stated
+   reference paths. Representation equality, ordered ranking equality and
+   serialized index-byte equality are different claims.
+3. **Recomputation savings:** stage measurements isolate preprocessing, prefix
+   and suffix; complete-build measurements have separately documented boundaries.
+   Compressed routes are approximate and must retain their quality conditions.
 
-# 3. Execute through your model integration, then seal and publish.
-vectors = adapter.resume(stored_cut)                     # target suffix from the cut
-```
+The [new independent endpoint check](experiments/independent-endpoint/summary.json)
+passed for vidore v0.2, Metric-AI 3B, T-Systems 3B and ColNomic 3B: each has
+200/200 equal document representations (95,869,056 elements, zero maximum error)
+and 1,033/1,033 equal ordered top-10 lists on the 200-page gallery, under a
+pinned common base and processor. This is a bounded correctness result.
 
-`examples/quickstart.py` runs this end to end with a synthetic encoder and
-checks the exact cut against the raw target index with Target Agreement;
-`examples/versioned_update.py` shows the planning and publication path alone.
+## Evidence boundaries
 
-## Reproducing the paper
+- The 19 inspected retrieval adapter releases contained no vision-tower or
+  merger LoRA tensors. This is a scoped census, not a statement about all
+  adapters. A Turkish ColPali adapter in the dependency audit changes vision.
+- The clean official ColQwen2 v0.1 → v1.0 transition retains the recorded base
+  and shipped processor contract. ColQwen2.5 v0.2 changes the pixel budget;
+  pooled comparisons pin a common processor and do not test vendor defaults.
+- Historical mixed-pool `target_full` rows run the target suffix on a shared
+  prefix. Their BF16 rows are consistency checks, not independent raw-target
+  endpoint tests. Historical Energy checks independently reload the target.
+- A100 batch-1 suffix costs are about 9.3% of raw page encoding at 12,845,056
+  max pixels and 20% at 602,112. These stage ratios exclude state IO, index
+  construction, validation and serialization; they are not full rebuild times.
+- MMDocIR's 73.4% complete-transition saving uses approximate PCA-256 replay and
+  a frozen raw baseline from a prior run. RTX 4090 build savings also use
+  approximate routes. Neither is an exact-replay headline.
+- No experiment establishes physical serialized-index byte equality.
 
-The GPU experiments (public-release census, codec frontier, build-time anatomy,
-cross-backbone leverage, MMDocIR generation transition) are model-specific and
-live in the research repository released with the paper, each as a frozen
-protocol, runner, raw output and analysis report. This package contains the
-model-agnostic decision and publication logic those experiments exercise, plus
-the numbers they measured as test fixtures (`tests/test_planning.py`).
+The library is a research reference, with an in-memory index and single-host
+experiments. See [environment and timing conditions](docs/environment.md).
 
-Headline measurements (one A100 unless stated):
+## Citation and license
 
-| Claim | Evidence |
-|---|---|
-| 19 / 19 public adapters change only decoder + head | safetensors header census, 2026-09-04 |
-| Exact post-vision cut reproduces target index | TA@10 = 1.000 on ArxivQA, DocVQA, Flickr |
-| Compressed cuts: fidelity vs bytes | INT8 .96–.98 at 4× terminal; PCA-256/INT8 .85–.90 at 0.5× |
-| Cut leverage equals replay saving | .845 / .876 leverage → 84.6% / 87.5% saving (ArxivQA / DocVQA) |
-| Small images depend on suffix batching | Flickr 54% at batch 1, 77% at batch 4 (A100); 78% on RTX 4090 |
-| Complete 20,395-page transition | 1,351 s from cut vs 5,078 s raw incl. validation, sealing, publication (73%) |
-
-## Scope and limits
-
-- Alpha research package, not a serving system. The reference index is in-memory;
-  production ANN engines keep the manifest and publication contract.
-- Positive lifecycle evidence covers ColQwen2.5 under a pinned processor
-  contract; the shipped v0.2 release also lowers `max_pixels`, which under the
-  version tuple is a processor change requiring a raw rebuild.
-- Timings are single-host (A100, RTX 4090) with warm local storage.
-
-## Citation
-
-See `CITATION.cff`.
-
-## License
-
-Apache-2.0.
+[CITATION.cff](CITATION.cff) cites the software. Paper title and author metadata
+will be added when finalized. Code is licensed under [Apache-2.0](LICENSE);
+external models and datasets retain their own licenses.

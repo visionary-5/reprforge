@@ -1,0 +1,6 @@
+{
+  "colqwen2-v1.0": {
+    "adapter": "/data/ldf/reprforge/scratch/colqwen2-release-transition-v1/models/target",
+    "projection": "/data/ldf/reprforge/experiments/conditioned-transport-a100-20260815/models/colqwen2-base/custom_text_proj.safetensors"
+  }
+}

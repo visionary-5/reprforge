@@ -1,0 +1,31 @@
+{
+  "protocol_id": "public-release-dependency-trace-v1",
+  "status": "frozen-before-static-checkpoint-inspection",
+  "question": "Across a frozen census of public multi-vector visual retriever releases already mirrored by 2026-08-22, which checkpoint updates preserve a post-vision replay boundary, and does that legal boundary imply a useful physical plan?",
+  "census": {
+    "official_release_sequences": [
+      "vidore/colpali-v1.1 -> vidore/colpali-v1.2 -> vidore/colpali-v1.3",
+      "vidore/colqwen2.5-v0.1 -> vidore/colqwen2.5-v0.2"
+    ],
+    "public_domain_adapters": [
+      "quyet498/fine-turn-ColQwen2-vn@861105f1cf0bd1ca75f65ba4ab463ba90d3c472d",
+      "public Turkish ColPali adapter@ae1e82b"
+    ],
+    "selection_boundary": "Public checkpoints that were already mirrored on the authoritative A100 data volume before this protocol was frozen. The census is intentionally small and descriptive; it is not a production-frequency sample."
+  },
+  "inspection": {
+    "checkpoint": "Read the safetensors header without loading tensor payloads; hash the complete checkpoint; classify every tensor as vision, base_embedding, decoder_adapter, retrieval_projection, or unknown.",
+    "processor": "Hash packaged preprocessor_config.json when present. A changed or missing processor package blocks unconditional whole-package prefix reuse even when adapter tensors themselves are replayable.",
+    "transition": "A transition is post-vision replay-legal only if source and target share a base contract, target tensors contain no vision/base-embedding/unknown dependency, and the processor is explicitly pinned or observed equivalent."
+  },
+  "measured_cost_profiles": {
+    "colqwen2_5": "Complete-MMDocIR raw 5000.183300813542 s, PCA256 replay 1243.8262620323803 s, IR 6266593554 bytes, terminal 6369873920 bytes.",
+    "colpali": "Held-out 128-page raw 4.554119373341867 s, exact replay 3.704416881334813 s, exact IR/terminal 12.56396010315534x; complete Energy PCA256-INT8 replay saves 5.89% and fails the frozen quality/execution gate."
+  },
+  "gates": {
+    "reality": "At least two official consecutive version transitions must be adapter/projection-only after tensor inspection.",
+    "counterexample": "At least one public adapter must invalidate post-vision replay, demonstrating that labels are insufficient.",
+    "payoff_boundary": "Report replay legality separately from measured storage/time admission; do not count a legal but rejected ColPali boundary as a system win.",
+    "claim": "Promote observed-update support only as a bounded release-history characterization; never infer production update frequency from this census."
+  }
+}

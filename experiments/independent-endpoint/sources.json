@@ -1,0 +1,103 @@
+[
+  {
+    "repo": "Qwen/Qwen2.5-VL-3B-Instruct",
+    "revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+    "filename": "model-00001-of-00002.safetensors",
+    "destination": "qwen2.5-vl-3b/model-00001-of-00002.safetensors",
+    "sha256": "41a8895c164b4d32bae6b302f4603fcbc1797f32dafa45c7e9bcda23c6755df8"
+  },
+  {
+    "repo": "Qwen/Qwen2.5-VL-3B-Instruct",
+    "revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+    "filename": "model-00002-of-00002.safetensors",
+    "destination": "qwen2.5-vl-3b/model-00002-of-00002.safetensors",
+    "sha256": "365531ff8752420e89dee707b79d021fb2d6e25abafe486f080555a4fe6972e4"
+  },
+  {
+    "repo": "vidore/colqwen2.5-v0.1",
+    "revision": "d8bacd9564935c65f560e6aa841320e970bce02b",
+    "filename": "adapter_model.safetensors",
+    "destination": "colqwen2.5-v0.1/adapter_model.safetensors",
+    "sha256": "955d771b5cae99cdbac82d8960dd1731ff92a0d89a2f15475e418fb5dbae44ed"
+  },
+  {
+    "repo": "vidore/colqwen2.5-v0.2",
+    "revision": "dcbe8d9cede518bce830488364ba0e40c873645b",
+    "filename": "adapter_model.safetensors",
+    "destination": "vidore-v0.2/adapter_model.safetensors",
+    "sha256": "d8a0a2aa5b97160cde30d9fc26874e11f7c9dfce607fd3e2a02c91a09b17e697"
+  },
+  {
+    "repo": "Metric-AI/ColQwen2.5-3b-multilingual-v1.0",
+    "revision": "e2a1c05d053dcf4ad6e39b6c48ced9d6a81071f0",
+    "filename": "adapter_model.safetensors",
+    "destination": "metric-ai-3b/adapter_model.safetensors",
+    "sha256": "9232748e7d1c1c73f4e1071b5c44f47459121b8887e797fb9a167332f9ac7d65"
+  },
+  {
+    "repo": "tsystems/colqwen2.5-3b-multilingual-v1.0",
+    "revision": "d5bd3db7ca57a1de3dc862828f343904ca07efd9",
+    "filename": "adapter_model.safetensors",
+    "destination": "tsystems-3b/adapter_model.safetensors",
+    "sha256": "0c26583c535a9e42ff7f795d2adaa1c6fd64f991c7dadfccb31d7757d1427e12"
+  },
+  {
+    "repo": "nomic-ai/colnomic-embed-multimodal-3b",
+    "revision": "86627b4a9b0cade577851a70afa469084f9863a4",
+    "filename": "adapter_model.safetensors",
+    "destination": "colnomic-3b/adapter_model.safetensors",
+    "sha256": "af23b67a003f94075927e2ed853edc7498dd4e9353f9c75f88e45859811afdc3"
+  },
+  {
+    "repo": "vidore/arxivqa_test_subsampled",
+    "repo_type": "dataset",
+    "revision": "b8a106812c8682bab08935cf5d1b4566c82562de",
+    "filename": "data/test-00000-of-00001.parquet",
+    "destination": "datasets/arxivqa/test.parquet",
+    "sha256": "a45cb85bb49dce83b1beb851e312fe38179035151a55401a8801a2e53c1159d3"
+  },
+  {
+    "repo": "vidore/docvqa_test_subsampled",
+    "repo_type": "dataset",
+    "revision": "49bf8f13e13c41dd8cdb0cae5314e31c1da1e0d6",
+    "filename": "data/test-00000-of-00001.parquet",
+    "destination": "datasets/docvqa/test.parquet",
+    "sha256": "107326c08ad48c65d68b6aa6d83a57305949edf6ad568ced08094f0cbd5805d9"
+  },
+  {
+    "repo": "vidore/infovqa_test_subsampled",
+    "repo_type": "dataset",
+    "revision": "f793e830aaeae1ceb8a2df626fc555b3fd04d3db",
+    "filename": "data/test-00000-of-00001.parquet",
+    "destination": "datasets/infovqa/test.parquet",
+    "sha256": "6554ee2b6620ae6e3153853bbbd0474234c97e2147088e663e05cd0f72b52b2c"
+  },
+  {
+    "repo": "vidore/tabfquad_test_subsampled",
+    "repo_type": "dataset",
+    "revision": "16c8e633612fbda7400bfcbbc31d61a7534f580f",
+    "filename": "data/test-00000-of-00001.parquet",
+    "destination": "datasets/tabfquad/test.parquet",
+    "sha256": "cd52a0b2fe16463606b3c18d02ad1e8b6c62dcbaf516a34f108a8dacc2ceb2eb"
+  },
+  {
+    "repo": "vidore/tatdqa_test",
+    "repo_type": "dataset",
+    "revision": "b46fea43695e14697510104a3331d9e88683a416",
+    "destination": "datasets/tatdqa/test.parquet",
+    "sha256": "fcb74a257a52e648cb127cbdba8a763d526677682a06c8020f6e296e537fdd64",
+    "filenames": [
+      "data/test-00000-of-00002.parquet",
+      "data/test-00001-of-00002.parquet"
+    ],
+    "transform": "pyarrow 19.0.1 concat_tables, then default write_table in shard order"
+  },
+  {
+    "repo": "vidore/shiftproject_test",
+    "repo_type": "dataset",
+    "revision": "6e6223b3839a3f4e62d676e70a1b715ee520cc66",
+    "filename": "data/test-00000-of-00001.parquet",
+    "destination": "datasets/shiftproject/test.parquet",
+    "sha256": "109879fd1726e4da2a6302075a888251b72700087f0b94f62d1121a3b91cf00b"
+  }
+]

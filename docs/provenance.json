@@ -1,0 +1,1208 @@
+[
+  {
+    "artifact": "2026-09-04-public-release-stage-census-v1/analysis-output/analysis-report.md",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-public-release-stage-census-v1/analysis-output/analysis-report.md",
+    "sha256": "398eda0e7beb05d690be91b49f3663aa9895db03f53b2683151adb585c0e0b2a",
+    "bytes": 5175
+  },
+  {
+    "artifact": "2026-09-04-public-release-stage-census-v1/analysis-output/census-table.md",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-public-release-stage-census-v1/analysis-output/census-table.md",
+    "sha256": "00812ef3b974fe2611928c7dc49005f9d400b897728a8820935c6c01c15291e7",
+    "bytes": 1652
+  },
+  {
+    "artifact": "2026-09-04-public-release-stage-census-v1/analysis-output/transitions.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-public-release-stage-census-v1/analysis-output/transitions.json",
+    "sha256": "2532f36a0ed2e8aa3cef4a0ca306e8de00cd5739b97f6b628c2236e37eb05361",
+    "bytes": 1413
+  },
+  {
+    "published": "experiments/2026-09-04-public-release-stage-census-v1/analyze.py",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-public-release-stage-census-v1/analyze.py",
+    "sha256": "4f659bb15f412ed5c551f1dce37f0f50fc9a4acac2def7d9f9145bd4afb83d75",
+    "bytes": 7868
+  },
+  {
+    "published": "experiments/2026-09-04-public-release-stage-census-v1/census.py",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-public-release-stage-census-v1/census.py",
+    "sha256": "70f9c2097277adbede133c7fa98ffa4945cd93064d8db6a1265762e802cec3c0",
+    "bytes": 9001
+  },
+  {
+    "artifact": "2026-09-04-public-release-stage-census-v1/raw-output/census.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-public-release-stage-census-v1/raw-output/census.json",
+    "sha256": "8f5830d1197b211cc402d3f1d9281fe6781b6505807af2b3ae591ab2afc41b58",
+    "bytes": 45460
+  },
+  {
+    "artifact": "2026-08-22-public-release-dependency-trace-v1/analysis-output/analysis-report.md",
+    "source": "reprforge-baseline-lab/experiments/2026-08-22-public-release-dependency-trace-v1/analysis-output/analysis-report.md",
+    "sha256": "c91f6943bb974406506b8782fefa6a590606f3c044bcefe15d16a88972442808",
+    "bytes": 3649
+  },
+  {
+    "published": "experiments/2026-08-22-public-release-dependency-trace-v1/inspect_checkpoints.py",
+    "source": "reprforge-baseline-lab/experiments/2026-08-22-public-release-dependency-trace-v1/inspect_checkpoints.py",
+    "sha256": "d72a0c172719d3aff9b1b5fcc8aad3e75db7d76e6f367eee28d42e8c281b71d2",
+    "bytes": 6317
+  },
+  {
+    "published": "experiments/2026-08-22-public-release-dependency-trace-v1/protocol.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-22-public-release-dependency-trace-v1/protocol.json",
+    "sha256": "09cb890e453659ff24c5a3fbf08f24c06edb071370811d8e7471fd8a2369b405",
+    "bytes": 2657
+  },
+  {
+    "artifact": "2026-08-22-public-release-dependency-trace-v1/result.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-22-public-release-dependency-trace-v1/result.json",
+    "sha256": "1e905747c566bc8764adc6322dba3b6a54f08624a7c47eafd2471749560ff54a",
+    "bytes": 4423
+  },
+  {
+    "artifact": "2026-08-22-processor-equivalence-certificate-v1/analysis-output/analysis-report.md",
+    "source": "reprforge-baseline-lab/experiments/2026-08-22-processor-equivalence-certificate-v1/analysis-output/analysis-report.md",
+    "sha256": "1dda9968b45c279529efb1eaf3e7d4db490593cb4bbc6b6215b54e8e799f00bc",
+    "bytes": 3199
+  },
+  {
+    "published": "experiments/2026-08-22-processor-equivalence-certificate-v1/protocol.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-22-processor-equivalence-certificate-v1/protocol.json",
+    "sha256": "8c001d8d9cdcc96fe1c221f3e477e27181711f9ac91098f335d52a503a36f140",
+    "bytes": 2338
+  },
+  {
+    "artifact": "2026-08-22-processor-equivalence-certificate-v1/result.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-22-processor-equivalence-certificate-v1/result.json",
+    "sha256": "8d31ec169b6883b5adeb52a06d05a7968ee6a121f154f00d8af8772c5f12b99a",
+    "bytes": 2404
+  },
+  {
+    "published": "experiments/2026-08-22-processor-equivalence-certificate-v1/run.py",
+    "source": "reprforge-baseline-lab/experiments/2026-08-22-processor-equivalence-certificate-v1/run.py",
+    "sha256": "bd3713199d94deee57891a2ae93e09c303a93374309b014e1c600d4bd6d6ee5c",
+    "bytes": 8036
+  },
+  {
+    "artifact": "2026-08-22-colqwen2-release-transition-v1/analysis-output/analysis-report.md",
+    "source": "reprforge-baseline-lab/experiments/2026-08-22-colqwen2-release-transition-v1/analysis-output/analysis-report.md",
+    "sha256": "0e2920e5ebb7e8112fb4d45f621fcea39d47a7116ce2e8f9ba5c91daeb753b25",
+    "bytes": 5553
+  },
+  {
+    "artifact": "2026-08-22-colqwen2-release-transition-v1/analysis-output/figure-catalog.md",
+    "source": "reprforge-baseline-lab/experiments/2026-08-22-colqwen2-release-transition-v1/analysis-output/figure-catalog.md",
+    "sha256": "82b1bf8fce667dce4c6219df06c693ed3fb38a5939cba273be138f5b4834c63f",
+    "bytes": 2010
+  },
+  {
+    "artifact": "2026-08-22-colqwen2-release-transition-v1/analysis-output/stats-appendix.md",
+    "source": "reprforge-baseline-lab/experiments/2026-08-22-colqwen2-release-transition-v1/analysis-output/stats-appendix.md",
+    "sha256": "d4c83bba5fd0157ae979301e26c8da291d7fec7dda475664d51ddc936a3ff847",
+    "bytes": 3242
+  },
+  {
+    "artifact": "2026-08-22-colqwen2-release-transition-v1/analysis-output/stats.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-22-colqwen2-release-transition-v1/analysis-output/stats.json",
+    "sha256": "aa4ae9133b0109084f3b68cc9832425c29e931d6e979c50257d19ede62d363bb",
+    "bytes": 1961
+  },
+  {
+    "published": "experiments/2026-08-22-colqwen2-release-transition-v1/analyze.py",
+    "source": "reprforge-baseline-lab/experiments/2026-08-22-colqwen2-release-transition-v1/analyze.py",
+    "sha256": "5e985e1c3ad7815d44b432c038bb238011ac30139602f941dcc88165ad8fc8f1",
+    "bytes": 7170
+  },
+  {
+    "published": "experiments/2026-08-22-colqwen2-release-transition-v1/cpu-protocol.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-22-colqwen2-release-transition-v1/cpu-protocol.json",
+    "sha256": "cd00abde77af7d9e9dae006332426330c4b3db186fe300bbe7d5313736447d28",
+    "bytes": 2694
+  },
+  {
+    "artifact": "2026-08-22-colqwen2-release-transition-v1/cpu-result.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-22-colqwen2-release-transition-v1/cpu-result.json",
+    "sha256": "e36748aa8cc8d71f1342b668710cb72b79d4bac80c0f8f49964009c54b41c7f5",
+    "bytes": 2492
+  },
+  {
+    "published": "experiments/2026-08-22-colqwen2-release-transition-v1/gpu-protocol.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-22-colqwen2-release-transition-v1/gpu-protocol.json",
+    "sha256": "e42395bffb3e6826b49752fcade5c718c1dfc35909a2a2b19841a4a14d722a6d",
+    "bytes": 3492
+  },
+  {
+    "artifact": "2026-08-22-colqwen2-release-transition-v1/gpu-result.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-22-colqwen2-release-transition-v1/gpu-result.json",
+    "sha256": "ad497dd90f5fea5229beeeedd5b2ecc0688af0b4c72f1a94c48a6705f5bb45c6",
+    "bytes": 3897
+  },
+  {
+    "published": "experiments/2026-08-22-colqwen2-release-transition-v1/inspect_cpu.py",
+    "source": "reprforge-baseline-lab/experiments/2026-08-22-colqwen2-release-transition-v1/inspect_cpu.py",
+    "sha256": "445d506ed27810bf5da4688d9db8d3fdef10da31d53bf9f0f12ac71fd3419771",
+    "bytes": 5744
+  },
+  {
+    "published": "experiments/2026-08-22-colqwen2-release-transition-v1/run-a100.sh",
+    "source": "reprforge-baseline-lab/experiments/2026-08-22-colqwen2-release-transition-v1/run-a100.sh",
+    "sha256": "322ce536116ac9236e5c64ab0cb2405d2b3679d03585b90253cf261005497d78",
+    "bytes": 1066
+  },
+  {
+    "published": "experiments/2026-08-22-colqwen2-release-transition-v1/run_gpu.py",
+    "source": "reprforge-baseline-lab/experiments/2026-08-22-colqwen2-release-transition-v1/run_gpu.py",
+    "sha256": "af64faf3c54548591f182dff7ffec708338a9cc3f7041a140120324f52df799b",
+    "bytes": 15556
+  },
+  {
+    "artifact": "2026-09-07-pooled-gallery-upgrade-matrix-v1/analysis-output/by_collection-12845056.md",
+    "source": "reprforge-baseline-lab/experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/analysis-output/by_collection-12845056.md",
+    "sha256": "e1ea964d966f5dfdd2e103bca138cb71e74405507cbda2f7fe3a32fe2261a854",
+    "bytes": 6524
+  },
+  {
+    "artifact": "2026-09-07-pooled-gallery-upgrade-matrix-v1/analysis-output/by_collection-602112.md",
+    "source": "reprforge-baseline-lab/experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/analysis-output/by_collection-602112.md",
+    "sha256": "8afefb6c5369fe618f20c3239b859104d6cc66c7f81b7c09cebbb51a049e721f",
+    "bytes": 6524
+  },
+  {
+    "artifact": "2026-09-07-pooled-gallery-upgrade-matrix-v1/analysis-output/extras-12845056.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/analysis-output/extras-12845056.json",
+    "sha256": "9eab6c033442ddf3e077c27f9b24ef23125ecc06f365d44123c390f3d2e41f08",
+    "bytes": 14297
+  },
+  {
+    "artifact": "2026-09-07-pooled-gallery-upgrade-matrix-v1/analysis-output/extras-12845056.md",
+    "source": "reprforge-baseline-lab/experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/analysis-output/extras-12845056.md",
+    "sha256": "d387532edb71ac4ec9883a2fabfb4cc6a6a4de5c93568c2e21e66d93d9a09c5d",
+    "bytes": 4175
+  },
+  {
+    "artifact": "2026-09-07-pooled-gallery-upgrade-matrix-v1/analysis-output/extras-602112.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/analysis-output/extras-602112.json",
+    "sha256": "11f4ca8fc3336ccd6d95bcb99a551a2db13c2e315a9f1a2157c9e46d5b21eb81",
+    "bytes": 14295
+  },
+  {
+    "artifact": "2026-09-07-pooled-gallery-upgrade-matrix-v1/analysis-output/extras-602112.md",
+    "source": "reprforge-baseline-lab/experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/analysis-output/extras-602112.md",
+    "sha256": "a886c65a169eb0493b3d95e4d1a3a046f84165c32d55a687f07d2a894ddb5688",
+    "bytes": 4174
+  },
+  {
+    "artifact": "2026-09-07-pooled-gallery-upgrade-matrix-v1/analysis-output/matrix-12845056.md",
+    "source": "reprforge-baseline-lab/experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/analysis-output/matrix-12845056.md",
+    "sha256": "9286f918f7c2fc7662b20a25b8b8867e94f6da6664ce0b1c4b11d9a3d0353dfd",
+    "bytes": 6010
+  },
+  {
+    "artifact": "2026-09-07-pooled-gallery-upgrade-matrix-v1/analysis-output/matrix-602112.md",
+    "source": "reprforge-baseline-lab/experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/analysis-output/matrix-602112.md",
+    "sha256": "b18e2e8ae5c9b0bc4523ea417c6fb38526a310175fbb34fcadf364482c723671",
+    "bytes": 6004
+  },
+  {
+    "artifact": "2026-09-07-pooled-gallery-upgrade-matrix-v1/analysis-output/placeholders.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/analysis-output/placeholders.json",
+    "sha256": "9a760b556539589f7df91ed1513d78ce1ec2b621d6fb22948aed44fbe995e423",
+    "bytes": 907
+  },
+  {
+    "artifact": "2026-09-07-pooled-gallery-upgrade-matrix-v1/analysis-output/predictions.md",
+    "source": "reprforge-baseline-lab/experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/analysis-output/predictions.md",
+    "sha256": "9eb583406deb48f44fb981ba68cca0c307e0a92a6878ef12df3d2599424135b6",
+    "bytes": 1191
+  },
+  {
+    "artifact": "2026-09-07-pooled-gallery-upgrade-matrix-v1/analysis-output/summary.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/analysis-output/summary.json",
+    "sha256": "97d215f8e5798a21ff01b257470e911fb01f08762f8019ee5b0ed55f824a593b",
+    "bytes": 3424
+  },
+  {
+    "published": "experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/analyze.py",
+    "source": "reprforge-baseline-lab/experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/analyze.py",
+    "sha256": "00e0e72893a65b1acba4e60d73726064d27bbd6a47e5b217cd00c07c096e2905",
+    "bytes": 13057
+  },
+  {
+    "published": "experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/collections.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/collections.json",
+    "sha256": "83eba84c8e0784dc0842b89173ca3260732b6c269afcdddc604941af954c777e",
+    "bytes": 1067
+  },
+  {
+    "published": "experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/extras.py",
+    "source": "reprforge-baseline-lab/experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/extras.py",
+    "sha256": "180cb6156ae05efbff2d2b3119f182aaf4d0b92d2c0734aa8911c82bf4cb7a0b",
+    "bytes": 5527
+  },
+  {
+    "published": "experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/make_tables.py",
+    "source": "reprforge-baseline-lab/experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/make_tables.py",
+    "sha256": "367c42b1bd4d467513fae36f4595b7a0d4f27009c08696c48c0055be6ddd397f",
+    "bytes": 13225
+  },
+  {
+    "published": "experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/plot_upgrades.py",
+    "source": "reprforge-baseline-lab/experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/plot_upgrades.py",
+    "sha256": "08059110ced3c0a867afff9a571c3235d934fdfde913ff75ab718d24bd178272",
+    "bytes": 4683
+  },
+  {
+    "published": "experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/pooled_upgrade_matrix.py",
+    "source": "reprforge-baseline-lab/experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/pooled_upgrade_matrix.py",
+    "sha256": "659d3237791db1c955dfb8b80928060a6414a19a7784898818fd791cef764884",
+    "bytes": 33821
+  },
+  {
+    "published": "experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/protocol.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/protocol.json",
+    "sha256": "db5d17f29a86d14ebadd75ec57613bc9284e2341dcf0ca2de258b01e9bd3edc5",
+    "bytes": 8957
+  },
+  {
+    "artifact": "2026-09-07-pooled-gallery-upgrade-matrix-v1/raw-output/output-12845056/per_page.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/raw-output/output-12845056/per_page.json",
+    "sha256": "99cae9b327042187d3d2056c6537456abb3690c9a75cc3f6bd985d01b3dea4e9",
+    "bytes": 746055
+  },
+  {
+    "artifact": "2026-09-07-pooled-gallery-upgrade-matrix-v1/raw-output/output-12845056/per_query.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/raw-output/output-12845056/per_query.json",
+    "sha256": "4d6a39bf5b62e0206dab5b547dc0cf9641b86f0e368d2b458a1537193110d1dc",
+    "bytes": 11295402
+  },
+  {
+    "artifact": "2026-09-07-pooled-gallery-upgrade-matrix-v1/raw-output/output-12845056/rankings.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/raw-output/output-12845056/rankings.json",
+    "sha256": "402b667cb8ef3553bf8441682afdaf4db71c226469f4a5b09221d7ef4e6fcd76",
+    "bytes": 6919673
+  },
+  {
+    "artifact": "2026-09-07-pooled-gallery-upgrade-matrix-v1/raw-output/output-12845056/result.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/raw-output/output-12845056/result.json",
+    "sha256": "e8ba23a8d31b99c3e4f9d6bd49384b173729e876e4a797b85eef2a92ca21e10e",
+    "bytes": 175911
+  },
+  {
+    "artifact": "2026-09-07-pooled-gallery-upgrade-matrix-v1/raw-output/output-602112/per_page.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/raw-output/output-602112/per_page.json",
+    "sha256": "73e4a511647ec64f0b5157d7b9260718940eb730cc496fa2d72485e067542bf9",
+    "bytes": 747020
+  },
+  {
+    "artifact": "2026-09-07-pooled-gallery-upgrade-matrix-v1/raw-output/output-602112/per_query.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/raw-output/output-602112/per_query.json",
+    "sha256": "4ef9246854175aa97936ff8856113452e711a9daaf4471425ce48e84ca9a9c1d",
+    "bytes": 11296502
+  },
+  {
+    "artifact": "2026-09-07-pooled-gallery-upgrade-matrix-v1/raw-output/output-602112/rankings.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/raw-output/output-602112/rankings.json",
+    "sha256": "a40278817c5734108faffd820fc6b7207b66a6ff4dff99de4474c01601e1135f",
+    "bytes": 6957668
+  },
+  {
+    "artifact": "2026-09-07-pooled-gallery-upgrade-matrix-v1/raw-output/output-602112/result.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/raw-output/output-602112/result.json",
+    "sha256": "a57f3631ffcbd2f8ab02bde15a7b82c9b7983d0b965e2f2a182df14abed89d0a",
+    "bytes": 177162
+  },
+  {
+    "artifact": "2026-09-07-pooled-gallery-upgrade-matrix-v1/raw-output/output-602112-dup-contaminated/per_page.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/raw-output/output-602112-dup-contaminated/per_page.json",
+    "sha256": "a401f32fbb9e5be53776a521f968295e037f35bfbf64a61e16228e7307cf278b",
+    "bytes": 1093952
+  },
+  {
+    "artifact": "2026-09-07-pooled-gallery-upgrade-matrix-v1/raw-output/output-602112-dup-contaminated/per_query.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/raw-output/output-602112-dup-contaminated/per_query.json",
+    "sha256": "606a7d245a2db7ebd63aa2e2630a97f55b99211c5a6fe72303f91dad383070b9",
+    "bytes": 11474221
+  },
+  {
+    "artifact": "2026-09-07-pooled-gallery-upgrade-matrix-v1/raw-output/output-602112-dup-contaminated/rankings.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/raw-output/output-602112-dup-contaminated/rankings.json",
+    "sha256": "5282108abf1711d31877a8add2857e393b64864b79715ca535e2e997717912d1",
+    "bytes": 7013995
+  },
+  {
+    "artifact": "2026-09-07-pooled-gallery-upgrade-matrix-v1/raw-output/output-602112-dup-contaminated/result.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/raw-output/output-602112-dup-contaminated/result.json",
+    "sha256": "2f49403afa31e8bdaff26846663fd7efa2cdd7b075db44abf01870e3bffba8c9",
+    "bytes": 176139
+  },
+  {
+    "artifact": "2026-09-07-pooled-gallery-upgrade-matrix-v1/raw-output/query_mask.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/raw-output/query_mask.json",
+    "sha256": "07c67d1912d562bb3c3629cbdd1d53e5c9072018efe8ceaa79de80b46637cf1d",
+    "bytes": 8978
+  },
+  {
+    "published": "experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/run-a100.sh",
+    "source": "reprforge-baseline-lab/experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/run-a100.sh",
+    "sha256": "58f8cffbd81569c5d8f024b31009dfed7bdcdac861fdcaa5638fb9f0802d3cb7",
+    "bytes": 1530
+  },
+  {
+    "published": "experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/targets.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-07-pooled-gallery-upgrade-matrix-v1/targets.json",
+    "sha256": "f6b6e7a15cdd4ec8414e75ebaccc94682e29878d482556fabe15c0238f3a9acb",
+    "bytes": 800
+  },
+  {
+    "artifact": "2026-09-09-colqwen2-pooled-upgrade-v1/analysis-output/by_collection.md",
+    "source": "reprforge-baseline-lab/experiments/2026-09-09-colqwen2-pooled-upgrade-v1/analysis-output/by_collection.md",
+    "sha256": "d87bc0f93e8d97b96d76a85e90e56430ebe717a5509e5195dd539d356ca8ca6f",
+    "bytes": 2074
+  },
+  {
+    "artifact": "2026-09-09-colqwen2-pooled-upgrade-v1/analysis-output/matrix.md",
+    "source": "reprforge-baseline-lab/experiments/2026-09-09-colqwen2-pooled-upgrade-v1/analysis-output/matrix.md",
+    "sha256": "a766fea3a74b82909eb19c35a4af632dd756dc63864906bca2f284b08646e540",
+    "bytes": 2190
+  },
+  {
+    "artifact": "2026-09-09-colqwen2-pooled-upgrade-v1/analysis-output/predictions.md",
+    "source": "reprforge-baseline-lab/experiments/2026-09-09-colqwen2-pooled-upgrade-v1/analysis-output/predictions.md",
+    "sha256": "286efcb32163bf77e7ff9678a6394d01204e73ce9d9969bb957c2523f6b22789",
+    "bytes": 494
+  },
+  {
+    "artifact": "2026-09-09-colqwen2-pooled-upgrade-v1/analysis-output/summary.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-09-colqwen2-pooled-upgrade-v1/analysis-output/summary.json",
+    "sha256": "8f9c5d7d58647311ce23c3b38f68d37dd3341187c837f73ce9c8f8ff97b8325a",
+    "bytes": 7812
+  },
+  {
+    "published": "experiments/2026-09-09-colqwen2-pooled-upgrade-v1/analyze.py",
+    "source": "reprforge-baseline-lab/experiments/2026-09-09-colqwen2-pooled-upgrade-v1/analyze.py",
+    "sha256": "947c459256d4c46e053c8b61d7ab5fac172ed719a4ca403b4eb8da7cfd629011",
+    "bytes": 3355
+  },
+  {
+    "published": "experiments/2026-09-09-colqwen2-pooled-upgrade-v1/protocol.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-09-colqwen2-pooled-upgrade-v1/protocol.json",
+    "sha256": "f6037086dce8e73b4b4cdc70d84377ea4680ddaa18fafaf4749d67af797ba945",
+    "bytes": 3108
+  },
+  {
+    "artifact": "2026-09-09-colqwen2-pooled-upgrade-v1/raw-output/output/per_page.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-09-colqwen2-pooled-upgrade-v1/raw-output/output/per_page.json",
+    "sha256": "67f9142078e7ea9981e7ed3ca1b61107a61f3347c6b37aff0b5ec9faf74f19b6",
+    "bytes": 747675
+  },
+  {
+    "artifact": "2026-09-09-colqwen2-pooled-upgrade-v1/raw-output/output/per_query.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-09-colqwen2-pooled-upgrade-v1/raw-output/output/per_query.json",
+    "sha256": "733700b2558d3534274f4e3d02ee4a91154df9acc1e832256a50c42f1a3e7c2f",
+    "bytes": 2784700
+  },
+  {
+    "artifact": "2026-09-09-colqwen2-pooled-upgrade-v1/raw-output/output/rankings.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-09-colqwen2-pooled-upgrade-v1/raw-output/output/rankings.json",
+    "sha256": "ea0b550c87dbc9edee32bc2e0488ea7e9127f5d86b487a99901e3b4d74fff8b8",
+    "bytes": 1828161
+  },
+  {
+    "artifact": "2026-09-09-colqwen2-pooled-upgrade-v1/raw-output/output/result.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-09-colqwen2-pooled-upgrade-v1/raw-output/output/result.json",
+    "sha256": "16fb3e7574011029ba9dba66997da65a6d3a908420b232000f279dd34c730f7a",
+    "bytes": 58433
+  },
+  {
+    "artifact": "2026-09-09-colqwen2-pooled-upgrade-v1/raw-output/query_mask.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-09-colqwen2-pooled-upgrade-v1/raw-output/query_mask.json",
+    "sha256": "07c67d1912d562bb3c3629cbdd1d53e5c9072018efe8ceaa79de80b46637cf1d",
+    "bytes": 8978
+  },
+  {
+    "published": "experiments/2026-09-09-colqwen2-pooled-upgrade-v1/run-a100.sh",
+    "source": "reprforge-baseline-lab/experiments/2026-09-09-colqwen2-pooled-upgrade-v1/run-a100.sh",
+    "sha256": "8c2f512e2c59183ef8a33d5991852aa5c5194d8ba9cf0ceb08569313cbc7794e",
+    "bytes": 1508
+  },
+  {
+    "published": "experiments/2026-09-09-colqwen2-pooled-upgrade-v1/targets.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-09-colqwen2-pooled-upgrade-v1/targets.json",
+    "sha256": "24a43f7d5e415dbead80fa82c3416eff1fa459e78ae9d778ebb8681d6c3b0d68",
+    "bytes": 258
+  },
+  {
+    "artifact": "2026-09-04-codec-frontier-stage-anatomy-v1/README.md",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/README.md",
+    "sha256": "667c6fb0517c695ce750c6e64ae8b51e4cc74a53e9dc246e441e09ed567749f7",
+    "bytes": 950
+  },
+  {
+    "artifact": "2026-09-04-codec-frontier-stage-anatomy-v1/analysis-output/analysis-report.md",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/analysis-output/analysis-report.md",
+    "sha256": "dc5ce0831078d4acb4edfdaccd66b979869b4d9ceb8d305272c72e6cc6a4a068",
+    "bytes": 5641
+  },
+  {
+    "artifact": "2026-09-04-codec-frontier-stage-anatomy-v1/analysis-output/anatomy-table.md",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/analysis-output/anatomy-table.md",
+    "sha256": "ab82e18545f450fb41c9ce6db074b953d6c8cc20a7033b2f06d8af7e5cfd241a",
+    "bytes": 392
+  },
+  {
+    "artifact": "2026-09-04-codec-frontier-stage-anatomy-v1/analysis-output/extra-report.md",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/analysis-output/extra-report.md",
+    "sha256": "e70e9e91c474452f5fcd407b817fbec984b58bc428154bdc01bd2ed1d4859534",
+    "bytes": 1889
+  },
+  {
+    "artifact": "2026-09-04-codec-frontier-stage-anatomy-v1/analysis-output/extra-summary.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/analysis-output/extra-summary.json",
+    "sha256": "75cc9d81f0b14f9265973e6e304411d4840088f198a87d12bc39ad03c98c3f90",
+    "bytes": 2167
+  },
+  {
+    "artifact": "2026-09-04-codec-frontier-stage-anatomy-v1/analysis-output/frontier-table.md",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/analysis-output/frontier-table.md",
+    "sha256": "dbdcc79c0bea882065a6e1a06b18cc3e6634c61c18aa24fa2c3875b5a4d8c862",
+    "bytes": 1810
+  },
+  {
+    "artifact": "2026-09-04-codec-frontier-stage-anatomy-v1/analysis-output/leverage-table.md",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/analysis-output/leverage-table.md",
+    "sha256": "d396cecb596f8f34f58b7f9d9a7cd3a0cd19c74f3f46d8a4dff353cbfe9af3f7",
+    "bytes": 1064
+  },
+  {
+    "artifact": "2026-09-04-codec-frontier-stage-anatomy-v1/analysis-output/second-backbone-summary.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/analysis-output/second-backbone-summary.json",
+    "sha256": "e44b501a89766d9ba173d607d647bdf57d13dc1d36021d382f3bbdcdc4dbc0c2",
+    "bytes": 399
+  },
+  {
+    "artifact": "2026-09-04-codec-frontier-stage-anatomy-v1/analysis-output/summary.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/analysis-output/summary.json",
+    "sha256": "c50a27336ab0b11efc6c0afef309f975316987fe93472447aaf1f9ac6e6eedf9",
+    "bytes": 15123
+  },
+  {
+    "published": "experiments/2026-09-04-codec-frontier-stage-anatomy-v1/analyze.py",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/analyze.py",
+    "sha256": "e337065189fe89de22fb10cd01a4d1a591a0905084e9efcd98ffd74aab7d1b8f",
+    "bytes": 7535
+  },
+  {
+    "published": "experiments/2026-09-04-codec-frontier-stage-anatomy-v1/analyze_extra.py",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/analyze_extra.py",
+    "sha256": "441da95fa0327a65bd0a14c9a2a947f7067c3700af9a38214bd429e6ce9d46fd",
+    "bytes": 4410
+  },
+  {
+    "published": "experiments/2026-09-04-codec-frontier-stage-anatomy-v1/indomain_mlp_bridge.py",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/indomain_mlp_bridge.py",
+    "sha256": "e80a4e3502e3b81f0d0fada5a8016df43d9a3ce16bebad44c74822b089cdb4af",
+    "bytes": 9979
+  },
+  {
+    "published": "experiments/2026-09-04-codec-frontier-stage-anatomy-v1/plot_figures.py",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/plot_figures.py",
+    "sha256": "1d70f2e56ddb33d7058338ab3b1a2d6c343897943eb059230409401f2f44ab0b",
+    "bytes": 5414
+  },
+  {
+    "published": "experiments/2026-09-04-codec-frontier-stage-anatomy-v1/protocol-batch4.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/protocol-batch4.json",
+    "sha256": "9e48a726ba2ab8d0a72debd8470d26321aa27900be44d3d4feab45a25a8e964d",
+    "bytes": 2803
+  },
+  {
+    "published": "experiments/2026-09-04-codec-frontier-stage-anatomy-v1/protocol-colqwen2.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/protocol-colqwen2.json",
+    "sha256": "d196b152218d6768194243acae17e22c5ad4bbd74fe859dae5cd7921b01c50c9",
+    "bytes": 2931
+  },
+  {
+    "published": "experiments/2026-09-04-codec-frontier-stage-anatomy-v1/protocol-infovqa.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/protocol-infovqa.json",
+    "sha256": "39d78bd8149fcff3ca98cd1e8a82eb6f7037e1657eaaf80a460b91edf0c9acbf",
+    "bytes": 2251
+  },
+  {
+    "published": "experiments/2026-09-04-codec-frontier-stage-anatomy-v1/protocol.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/protocol.json",
+    "sha256": "a7447e846621d453e86fd4f32dc82d636e8efd0cc7750508da838b15638a9e6f",
+    "bytes": 3109
+  },
+  {
+    "artifact": "2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/arxivqa/result.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/arxivqa/result.json",
+    "sha256": "7fef2be64a4eb0a28f9c22ac8d0944ea0524645dbd5697bdb30fa7591899118d",
+    "bytes": 45632
+  },
+  {
+    "artifact": "2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/arxivqa-result.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/arxivqa-result.json",
+    "sha256": "7fef2be64a4eb0a28f9c22ac8d0944ea0524645dbd5697bdb30fa7591899118d",
+    "bytes": 45632
+  },
+  {
+    "artifact": "2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/docvqa/result.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/docvqa/result.json",
+    "sha256": "184ab979778dc61216b2d4cd14d0a5e27407d1222dc4e05063cad5d5d3d148df",
+    "bytes": 45569
+  },
+  {
+    "artifact": "2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/flickr/result.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/flickr/result.json",
+    "sha256": "32a7a1aefa4b74a6bb1e705747d304fd10c7ce61ba841e81b2b90fce55aedae2",
+    "bytes": 77986
+  },
+  {
+    "artifact": "2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/leverage-output/colpali.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/leverage-output/colpali.json",
+    "sha256": "d653679a7ed4c16a0b992b17cbff465a61b29cdbfde5a2262a93a7f378f59791",
+    "bytes": 1309
+  },
+  {
+    "artifact": "2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/leverage-output/colqwen2.5-7b.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/leverage-output/colqwen2.5-7b.json",
+    "sha256": "b0bab239c12c6852a107e85f691710eb99f197e7d79f8d3d171e7df2db7a7f72",
+    "bytes": 1300
+  },
+  {
+    "artifact": "2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/leverage-output/colqwen2.5.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/leverage-output/colqwen2.5.json",
+    "sha256": "1b69b04b845ad3d3a6873018ab1ea2cde50b10be8536bdf8cb914ffd85cf474d",
+    "bytes": 1305
+  },
+  {
+    "artifact": "2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/leverage-output/colsmol.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/leverage-output/colsmol.json",
+    "sha256": "bbb98035e35dd0638839ca887a6bed2eed2c0f0338862d9187c2b367ad9ed54d",
+    "bytes": 1290
+  },
+  {
+    "artifact": "2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/output-batch2-docvqa/docvqa/result.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/output-batch2-docvqa/docvqa/result.json",
+    "sha256": "130ad170bd3d5c29dd7f854d6b57333d26b5b10d8ee94c106251d3b6bbc21609",
+    "bytes": 38589
+  },
+  {
+    "artifact": "2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/output-batch2-docvqa/result.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/output-batch2-docvqa/result.json",
+    "sha256": "67761e5d9f799b6aac4a72818f2bad0674d010265f27f43fa5f4a880d99e8301",
+    "bytes": 8231
+  },
+  {
+    "artifact": "2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/output-batch4/arxivqa/result.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/output-batch4/arxivqa/result.json",
+    "sha256": "827e91c0706f99b38bb74b91f87d5dcf3a6ff990d9954affe4dcc7cb30b95f1e",
+    "bytes": 38557
+  },
+  {
+    "artifact": "2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/output-batch4-flickr/flickr/result.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/output-batch4-flickr/flickr/result.json",
+    "sha256": "85c5d5fc3a5940a7dc4a2bf5f6d755299fd3e140b40efde0df80de43554e1153",
+    "bytes": 71038
+  },
+  {
+    "artifact": "2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/output-batch4-flickr/result.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/output-batch4-flickr/result.json",
+    "sha256": "3fc5a39ec9869f3d54b805b15170ced0c1c57dbe942508c52ff5bc71b29ec6a4",
+    "bytes": 8340
+  },
+  {
+    "artifact": "2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/output-colqwen2/arxivqa/result.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/output-colqwen2/arxivqa/result.json",
+    "sha256": "a1721557c403225b80ce1d1dd6d1e55259b88d04bcddb5db02119beb848f0c49",
+    "bytes": 45733
+  },
+  {
+    "artifact": "2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/output-colqwen2/docvqa/result.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/output-colqwen2/docvqa/result.json",
+    "sha256": "cee9f71cf48176ff2656e082195432f2c4a8a08b5334dcf6bf9aeedbf72c2772",
+    "bytes": 45605
+  },
+  {
+    "artifact": "2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/output-colqwen2/flickr/result.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/output-colqwen2/flickr/result.json",
+    "sha256": "c622326008e2e8316811fa2deca7419021cc17aac1be13567e5af335acce9d2c",
+    "bytes": 77982
+  },
+  {
+    "artifact": "2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/output-colqwen2/result.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/output-colqwen2/result.json",
+    "sha256": "8a9375113b5666013258e8db1022484fb27e2ae3dae88c572bac38a6fb0d2ae0",
+    "bytes": 48834
+  },
+  {
+    "artifact": "2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/output-infovqa/infovqa/result.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/output-infovqa/infovqa/result.json",
+    "sha256": "be9c6d01350f1212fa0277ca0a11b034e1dec45b25a81aa7ee15a8164fff3a41",
+    "bytes": 45650
+  },
+  {
+    "artifact": "2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/output-infovqa/result.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/output-infovqa/result.json",
+    "sha256": "b9353fa2bf9314681ae439c0accb3f6b5f70c5b306e3f12b791f93983027bf6a",
+    "bytes": 16514
+  },
+  {
+    "artifact": "2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/output-mlp/arxivqa.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/output-mlp/arxivqa.json",
+    "sha256": "dcbbf928d5e830b58d7e9ca399a217aaa7d3d08ffcf5a36a5401bead214e35a4",
+    "bytes": 8494
+  },
+  {
+    "artifact": "2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/output-mlp/docvqa.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/output-mlp/docvqa.json",
+    "sha256": "1b6d80e844f2105664dc750f3643ed52ec031059ab437a501e44850e56cb30d8",
+    "bytes": 6480
+  },
+  {
+    "artifact": "2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/output-mlp/flickr.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/output-mlp/flickr.json",
+    "sha256": "0cf2663c0e43cc7432e4eff407c868a2606abae4934228e42c025414640bb4ee",
+    "bytes": 8550
+  },
+  {
+    "artifact": "2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/output-mlp/result.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/output-mlp/result.json",
+    "sha256": "f71eb60ef1085e3689e7ad8e39c6fb71b722bca7784c60d49a58b1606bcb5a1f",
+    "bytes": 27766
+  },
+  {
+    "artifact": "2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/result.json",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/raw-output/result.json",
+    "sha256": "3ea1e8294ca0d51e639ad574857615e9668c58506b6475a9981aa12eba8a1952",
+    "bytes": 48644
+  },
+  {
+    "published": "experiments/2026-09-04-codec-frontier-stage-anatomy-v1/run-a100.sh",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/run-a100.sh",
+    "sha256": "a4969afba79a95e1efc0773c325557be6e782afe9d463673b523b78932460e3d",
+    "bytes": 1867
+  },
+  {
+    "published": "experiments/2026-09-04-codec-frontier-stage-anatomy-v1/run-extra-a100.sh",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/run-extra-a100.sh",
+    "sha256": "2f910f188930004a47645940bd62de018020582f0746948275387940925465cd",
+    "bytes": 1909
+  },
+  {
+    "published": "experiments/2026-09-04-codec-frontier-stage-anatomy-v1/run-leverage-7b-a100.sh",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/run-leverage-7b-a100.sh",
+    "sha256": "252db2b3e59e3114db17386594fbdf021c6da3fb0d32c9f36598edc3a4362ef4",
+    "bytes": 1367
+  },
+  {
+    "published": "experiments/2026-09-04-codec-frontier-stage-anatomy-v1/run-leverage-a100.sh",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/run-leverage-a100.sh",
+    "sha256": "5d4dfc40280e4d64f82e2f6720a0e8db5aac1053a35f64fb43090f1a400e2dec",
+    "bytes": 1835
+  },
+  {
+    "published": "experiments/2026-09-04-codec-frontier-stage-anatomy-v1/run-second-backbone-a100.sh",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/run-second-backbone-a100.sh",
+    "sha256": "0facd0b2243a8274ac1021c7f7c1bd370de19c7c06b0ecaddca1e9d9ae84c617",
+    "bytes": 2699
+  },
+  {
+    "published": "experiments/2026-09-04-codec-frontier-stage-anatomy-v1/run_codec_frontier.py",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/run_codec_frontier.py",
+    "sha256": "dbe6fd1a3c060ad81bedda49986f9834e562e94352c3409ca8c8d37fc61ab0f3",
+    "bytes": 24696
+  },
+  {
+    "published": "experiments/2026-09-04-codec-frontier-stage-anatomy-v1/stage_leverage.py",
+    "source": "reprforge-baseline-lab/experiments/2026-09-04-codec-frontier-stage-anatomy-v1/stage_leverage.py",
+    "sha256": "922b7486dd119f9039fb64206796c05f53c35447b7d465ff9cb8b390ab7e56b6",
+    "bytes": 5821
+  },
+  {
+    "artifact": "2026-08-22-mmdocir-version-transition-v1/analysis-output/analysis-report.md",
+    "source": "reprforge-baseline-lab/experiments/2026-08-22-mmdocir-version-transition-v1/analysis-output/analysis-report.md",
+    "sha256": "397e2de3fb8e63a46fcee511c4a84b29c43253cf6931acf3bcaa57ceaf7f2fc6",
+    "bytes": 4115
+  },
+  {
+    "artifact": "2026-08-22-mmdocir-version-transition-v1/analysis-output/analysis-summary.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-22-mmdocir-version-transition-v1/analysis-output/analysis-summary.json",
+    "sha256": "384779c7c05261394b1193c632413f86d41d8afcde666a13e3de28a84f6a63a5",
+    "bytes": 400
+  },
+  {
+    "artifact": "2026-08-22-mmdocir-version-transition-v1/analysis-output/figure-catalog.md",
+    "source": "reprforge-baseline-lab/experiments/2026-08-22-mmdocir-version-transition-v1/analysis-output/figure-catalog.md",
+    "sha256": "6b6773705efd2b80c7e3749d127816ebd6eaa22beea33c3b73c4d4b0cb40ba05",
+    "bytes": 273
+  },
+  {
+    "artifact": "2026-08-22-mmdocir-version-transition-v1/analysis-output/stats-appendix.md",
+    "source": "reprforge-baseline-lab/experiments/2026-08-22-mmdocir-version-transition-v1/analysis-output/stats-appendix.md",
+    "sha256": "839b8850114922d85519d3f33ba4bb0aa06e4471815ace49c33bad3280c39ffa",
+    "bytes": 842
+  },
+  {
+    "published": "experiments/2026-08-22-mmdocir-version-transition-v1/analyze.py",
+    "source": "reprforge-baseline-lab/experiments/2026-08-22-mmdocir-version-transition-v1/analyze.py",
+    "sha256": "420326bbdc297bb502758d5c617f5b83fd011766ab5e0b66f6cd947fe770b062",
+    "bytes": 12520
+  },
+  {
+    "published": "experiments/2026-08-22-mmdocir-version-transition-v1/build_publish.py",
+    "source": "reprforge-baseline-lab/experiments/2026-08-22-mmdocir-version-transition-v1/build_publish.py",
+    "sha256": "b45ceab02f9a94190f8e8d2fd5c51a30a942b3d7970973923aae39d245a5b2d4",
+    "bytes": 13218
+  },
+  {
+    "published": "experiments/2026-08-22-mmdocir-version-transition-v1/protocol.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-22-mmdocir-version-transition-v1/protocol.json",
+    "sha256": "53b452545b3162d6fce3d5f2f52e8903768adf515d23ee1e0aa00262df2931c9",
+    "bytes": 3389
+  },
+  {
+    "published": "experiments/2026-08-22-mmdocir-version-transition-v1/provenance.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-22-mmdocir-version-transition-v1/provenance.json",
+    "sha256": "477034890532f1862d6952d2e28d35fa58bbc8ed5defbf1574e0df119763636c",
+    "bytes": 632
+  },
+  {
+    "artifact": "2026-08-22-mmdocir-version-transition-v1/remote-artifacts/ACTIVE.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-22-mmdocir-version-transition-v1/remote-artifacts/ACTIVE.json",
+    "sha256": "74ccc8a720db1338cab6a0248cdc8b80160949d6ebe2e9019e432b5014aa5db4",
+    "bytes": 250
+  },
+  {
+    "artifact": "2026-08-22-mmdocir-version-transition-v1/remote-artifacts/MANIFEST.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-22-mmdocir-version-transition-v1/remote-artifacts/MANIFEST.json",
+    "sha256": "ac8f933cd4515b504f9e1b3f751387604f9c02fef61a9a85732ccf4c87ef5b69",
+    "bytes": 30896
+  },
+  {
+    "artifact": "2026-08-22-mmdocir-version-transition-v1/replay-result.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-22-mmdocir-version-transition-v1/replay-result.json",
+    "sha256": "459110470a62c9426159972931ea7f507a802e40656e07f066eb8506c33fda5e",
+    "bytes": 2273
+  },
+  {
+    "published": "experiments/2026-08-22-mmdocir-version-transition-v1/replay_terminal.py",
+    "source": "reprforge-baseline-lab/experiments/2026-08-22-mmdocir-version-transition-v1/replay_terminal.py",
+    "sha256": "ee012a7264da00903bf08b91ac6189814a8d8215bb4a9bbbb5e47fbdd95c37f4",
+    "bytes": 16382
+  },
+  {
+    "artifact": "2026-08-22-mmdocir-version-transition-v1/result.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-22-mmdocir-version-transition-v1/result.json",
+    "sha256": "968ffde4b7db46e05e0808ace33cd7e328bcfc1f3f3c954a21614d10582a7816",
+    "bytes": 8637
+  },
+  {
+    "published": "experiments/2026-08-22-mmdocir-version-transition-v1/run-a100.sh",
+    "source": "reprforge-baseline-lab/experiments/2026-08-22-mmdocir-version-transition-v1/run-a100.sh",
+    "sha256": "fff8de74da2535a10287f8cc5929a7255c5fa47c136cfeda41811f2244ca21b6",
+    "bytes": 1929
+  },
+  {
+    "artifact": "2026-08-24-paper4090-main-table-repeats-v1/analysis-output/analysis-report.md",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-paper4090-main-table-repeats-v1/analysis-output/analysis-report.md",
+    "sha256": "d487d08ed945e5ce46c716480768f8e30a9f53dbfdc957e4d731d80ebf1030b5",
+    "bytes": 2335
+  },
+  {
+    "artifact": "2026-08-24-paper4090-main-table-repeats-v1/analysis-output/exact-table.csv",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-paper4090-main-table-repeats-v1/analysis-output/exact-table.csv",
+    "sha256": "58c73fab424255f761bd0730d9e7a5e5eb4dd0c0d665caaa4128773b114c7fdc",
+    "bytes": 1073
+  },
+  {
+    "artifact": "2026-08-24-paper4090-main-table-repeats-v1/analysis-output/figure-catalog.md",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-paper4090-main-table-repeats-v1/analysis-output/figure-catalog.md",
+    "sha256": "e1562d95f8eefd0f07629bddea15136b404cb357757ff04da05ec51432abdf8b",
+    "bytes": 460
+  },
+  {
+    "artifact": "2026-08-24-paper4090-main-table-repeats-v1/analysis-output/stats-appendix.md",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-paper4090-main-table-repeats-v1/analysis-output/stats-appendix.md",
+    "sha256": "f9c08986d5807e7c24c58686c8a67f232a348c852de19038be240d681da26e03",
+    "bytes": 935
+  },
+  {
+    "artifact": "2026-08-24-paper4090-main-table-repeats-v1/analysis-output/stats.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-paper4090-main-table-repeats-v1/analysis-output/stats.json",
+    "sha256": "b941b86daa9c595407fff82acdf2713400b74094a847803871009805f284e071",
+    "bytes": 6444
+  },
+  {
+    "published": "experiments/2026-08-24-paper4090-main-table-repeats-v1/analyze.py",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-paper4090-main-table-repeats-v1/analyze.py",
+    "sha256": "5e6912bff340068997d020818714f8771d00f987ad8d22098d71d3c4e134ef04",
+    "bytes": 14490
+  },
+  {
+    "published": "experiments/2026-08-24-paper4090-main-table-repeats-v1/host-manifest.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-paper4090-main-table-repeats-v1/host-manifest.json",
+    "sha256": "61fcac5ab50dd4ce12f12718e30bb8b403b8c97c8cdf090c006595f6f06d0525",
+    "bytes": 641
+  },
+  {
+    "published": "experiments/2026-08-24-paper4090-main-table-repeats-v1/protocol.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-paper4090-main-table-repeats-v1/protocol.json",
+    "sha256": "fca36b7297a57e55370fdd3d3b348a881d07369ba3610a592c4ed90b4c8f3913",
+    "bytes": 2487
+  },
+  {
+    "artifact": "2026-08-24-paper4090-main-table-repeats-v1/raw-output/arxivqa-run1.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-paper4090-main-table-repeats-v1/raw-output/arxivqa-run1.json",
+    "sha256": "fd0c71cee3d6f9c82c2485f6fe96bd128d962947556f56f771dc0fd5102838df",
+    "bytes": 38522
+  },
+  {
+    "artifact": "2026-08-24-paper4090-main-table-repeats-v1/raw-output/arxivqa-run2.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-paper4090-main-table-repeats-v1/raw-output/arxivqa-run2.json",
+    "sha256": "a38efec2f60c3f01bba8ce334e30bd6c68bdb2350b6b62ef7187061f8a47a7ca",
+    "bytes": 38522
+  },
+  {
+    "artifact": "2026-08-24-paper4090-main-table-repeats-v1/raw-output/arxivqa-run3.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-paper4090-main-table-repeats-v1/raw-output/arxivqa-run3.json",
+    "sha256": "28533cfb0e5c69f8d0d26fb7d827a611891990b11203617e207297f74d394d21",
+    "bytes": 38522
+  },
+  {
+    "artifact": "2026-08-24-paper4090-main-table-repeats-v1/raw-output/docvqa-run1.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-paper4090-main-table-repeats-v1/raw-output/docvqa-run1.json",
+    "sha256": "ea1afe6154c44c22657cde50d76acaafbc0cc8d1657458fb0e9b646a3a527f66",
+    "bytes": 38542
+  },
+  {
+    "artifact": "2026-08-24-paper4090-main-table-repeats-v1/raw-output/docvqa-run2.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-paper4090-main-table-repeats-v1/raw-output/docvqa-run2.json",
+    "sha256": "07a3ff23356a2fccedd380868dba69fa2d26bc5bd747ab9f1317f0e18f4fd8f6",
+    "bytes": 38546
+  },
+  {
+    "artifact": "2026-08-24-paper4090-main-table-repeats-v1/raw-output/docvqa-run3.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-paper4090-main-table-repeats-v1/raw-output/docvqa-run3.json",
+    "sha256": "4bd742cab24003f27b9c12441642276f6dc6f272a5146d1f41014946bec4e758",
+    "bytes": 38543
+  },
+  {
+    "artifact": "2026-08-24-paper4090-main-table-repeats-v1/raw-output/flickr-run1.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-paper4090-main-table-repeats-v1/raw-output/flickr-run1.json",
+    "sha256": "883bd4fd81f5e554b661a592fad8945e2205b0af825d07cb7f6b57082f6b661f",
+    "bytes": 70659
+  },
+  {
+    "artifact": "2026-08-24-paper4090-main-table-repeats-v1/raw-output/flickr-run2.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-paper4090-main-table-repeats-v1/raw-output/flickr-run2.json",
+    "sha256": "4e8e821e3c29c5326b514862fe7bd61d918b8a93c6d843ad6dd5d471ca37bc27",
+    "bytes": 70662
+  },
+  {
+    "artifact": "2026-08-24-paper4090-main-table-repeats-v1/raw-output/flickr-run3.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-paper4090-main-table-repeats-v1/raw-output/flickr-run3.json",
+    "sha256": "a8890b44500b25837177ff2d578f8b8dea0a96bbcaec2314cf3ac3fa55949e20",
+    "bytes": 70663
+  },
+  {
+    "artifact": "2026-08-24-paper4090-main-table-repeats-v1/raw-output/infovqa-run1.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-paper4090-main-table-repeats-v1/raw-output/infovqa-run1.json",
+    "sha256": "633ab9aa6d604e55c9411c53dc57215cb766a87afaee181d31f3f931c7dd1b74",
+    "bytes": 38588
+  },
+  {
+    "artifact": "2026-08-24-paper4090-main-table-repeats-v1/raw-output/infovqa-run2.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-paper4090-main-table-repeats-v1/raw-output/infovqa-run2.json",
+    "sha256": "e9a1a940bec0eb752295df1e6b03590862becb74c7219bcc519d2f93dbbcaf32",
+    "bytes": 38592
+  },
+  {
+    "artifact": "2026-08-24-paper4090-main-table-repeats-v1/raw-output/infovqa-run3.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-paper4090-main-table-repeats-v1/raw-output/infovqa-run3.json",
+    "sha256": "706162dd38b400dbbf80c4b27de41a65182bcdb41dd1585b3164fa3ca29ff79c",
+    "bytes": 38587
+  },
+  {
+    "published": "experiments/2026-08-21-vietnamese-domain-adapter-replay-v1/protocol.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-21-vietnamese-domain-adapter-replay-v1/protocol.json",
+    "sha256": "4adc83bc66407f323cd74ba227eeb76d474acb64c266d8c9a6e24244366e5cdf",
+    "bytes": 1896
+  },
+  {
+    "artifact": "2026-08-21-vietnamese-domain-adapter-replay-v1/result.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-21-vietnamese-domain-adapter-replay-v1/result.json",
+    "sha256": "633e5263742d3b21a767de3c3872dd23d4a1210333cbaf5de2740a5a788d548a",
+    "bytes": 11668
+  },
+  {
+    "published": "experiments/2026-08-21-vietnamese-domain-adapter-replay-v1/run-a100.sh",
+    "source": "reprforge-baseline-lab/experiments/2026-08-21-vietnamese-domain-adapter-replay-v1/run-a100.sh",
+    "sha256": "ec6f34598dc4838cd5d62263671e3b0ba0461c06284fc6eea5438d96f4879ad2",
+    "bytes": 1034
+  },
+  {
+    "artifact": "2026-08-21-incremental-index-recompile-v1/analysis-output/analysis-report.md",
+    "source": "reprforge-baseline-lab/experiments/2026-08-21-incremental-index-recompile-v1/analysis-output/analysis-report.md",
+    "sha256": "b37a20926ed10b0904cc429f0ae8f11421d06610ce07f9ef2001f02d67265a7d",
+    "bytes": 7213
+  },
+  {
+    "artifact": "2026-08-21-incremental-index-recompile-v1/analysis-output/figure-catalog.md",
+    "source": "reprforge-baseline-lab/experiments/2026-08-21-incremental-index-recompile-v1/analysis-output/figure-catalog.md",
+    "sha256": "025ba86926c84e2a2fa4a94a688116e8343f5760c3263a489dc7e47b6e94286a",
+    "bytes": 1663
+  },
+  {
+    "artifact": "2026-08-21-incremental-index-recompile-v1/analysis-output/stats-appendix.md",
+    "source": "reprforge-baseline-lab/experiments/2026-08-21-incremental-index-recompile-v1/analysis-output/stats-appendix.md",
+    "sha256": "6734a0de5b30ae79d8b316af328710faae362a95e460a78443e5cd07d3b001c6",
+    "bytes": 4124
+  },
+  {
+    "artifact": "2026-08-21-incremental-index-recompile-v1/energy-portrait-128-manifest-v1.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-21-incremental-index-recompile-v1/energy-portrait-128-manifest-v1.json",
+    "sha256": "b33893be9eced2650657ae42522fdcabb1fbc6fb302dce5d9bba17cb1c34066a",
+    "bytes": 28790
+  },
+  {
+    "published": "experiments/2026-08-21-incremental-index-recompile-v1/protocol-incremental-recompile-v1.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-21-incremental-index-recompile-v1/protocol-incremental-recompile-v1.json",
+    "sha256": "058dfe5ab2bfa05a2cd9b7b9338faa2d23facbd32f728c610ec2c12ba710b7b7",
+    "bytes": 3101
+  },
+  {
+    "artifact": "2026-08-21-incremental-index-recompile-v1/result-v1.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-21-incremental-index-recompile-v1/result-v1.json",
+    "sha256": "9e8d2396b122bb62729286f3de2e96de8d833f5e5848f1b61946fe154769f439",
+    "bytes": 12257
+  },
+  {
+    "published": "experiments/2026-08-21-incremental-index-recompile-v1/run_colqwen_recompile.py",
+    "source": "reprforge-baseline-lab/experiments/2026-08-21-incremental-index-recompile-v1/run_colqwen_recompile.py",
+    "sha256": "c18711779bb3afd59cc6e3c926114aa75f0265816410b8a19639271fb0e85df9",
+    "bytes": 21592
+  },
+  {
+    "published": "experiments/2026-08-24-arxivqa-matched-lifecycle-4090-v3-corpus-calibration/run-full-4090.sh",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-arxivqa-matched-lifecycle-4090-v3-corpus-calibration/run-full-4090.sh",
+    "sha256": "604a167233fdfa59e4f3e9743f7741ca6752ce21a7adb1dcda31baf0760ebd24",
+    "bytes": 2475
+  },
+  {
+    "published": "experiments/2026-08-24-arxivqa-matched-lifecycle-4090-v3-corpus-calibration/protocol.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-arxivqa-matched-lifecycle-4090-v3-corpus-calibration/protocol.json",
+    "sha256": "993180d908c3ddc10acaa96901ff2fb31217ad56fb664fd56e971f76ff8428ab",
+    "bytes": 6307
+  },
+  {
+    "published": "experiments/2026-08-24-arxivqa-matched-lifecycle-4090-v3-corpus-calibration/run-smoke-4090.sh",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-arxivqa-matched-lifecycle-4090-v3-corpus-calibration/run-smoke-4090.sh",
+    "sha256": "f4a1eb3252a567efec801cf9d1e209c3d49f1cd70bb1a7209e594fc8b0c3f032",
+    "bytes": 1517
+  },
+  {
+    "published": "experiments/2026-08-24-arxivqa-matched-lifecycle-4090-v3-corpus-calibration/run_matched_lifecycle.py",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-arxivqa-matched-lifecycle-4090-v3-corpus-calibration/run_matched_lifecycle.py",
+    "sha256": "d0211f6d63eb1f8d62fbda22a9ae22b81f7e16de43be6406b8c222198b98ace9",
+    "bytes": 31920
+  },
+  {
+    "published": "experiments/2026-08-24-arxivqa-matched-lifecycle-4090-v3-corpus-calibration/paired-analysis-protocol.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-arxivqa-matched-lifecycle-4090-v3-corpus-calibration/paired-analysis-protocol.json",
+    "sha256": "0ad50246c37455bde9eb1a3e62a712dcbbb51c21f030ba6ec1791911dac49293",
+    "bytes": 1003
+  },
+  {
+    "published": "experiments/2026-08-24-arxivqa-matched-lifecycle-4090-v3-corpus-calibration/score_paired_queries.py",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-arxivqa-matched-lifecycle-4090-v3-corpus-calibration/score_paired_queries.py",
+    "sha256": "14916e01e081f2a8da1735c8d557e82c2f387adc3e2e26e776a7bd583250b1a1",
+    "bytes": 8651
+  },
+  {
+    "published": "experiments/2026-08-24-arxivqa-matched-lifecycle-4090-v3-corpus-calibration/analyze.py",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-arxivqa-matched-lifecycle-4090-v3-corpus-calibration/analyze.py",
+    "sha256": "4790306aa8581cbde2d74a91ae900f3261cb5328b798a60b5cee6913f10f2d6d",
+    "bytes": 16024
+  },
+  {
+    "published": "experiments/2026-08-24-docvqa-matched-lifecycle-4090-v3-corpus-calibration/run-full-4090.sh",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-docvqa-matched-lifecycle-4090-v3-corpus-calibration/run-full-4090.sh",
+    "sha256": "67ba5bc7a76cefa7c2890d493289e8bde3afb6a92023b5bb23f450234be7c6e0",
+    "bytes": 2467
+  },
+  {
+    "published": "experiments/2026-08-24-docvqa-matched-lifecycle-4090-v3-corpus-calibration/protocol.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-docvqa-matched-lifecycle-4090-v3-corpus-calibration/protocol.json",
+    "sha256": "fd2b3431170bc88749074523eb3e66c2337e23f78766cdc84737705a780d601b",
+    "bytes": 7096
+  },
+  {
+    "published": "experiments/2026-08-24-docvqa-matched-lifecycle-4090-v3-corpus-calibration/run-smoke-4090.sh",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-docvqa-matched-lifecycle-4090-v3-corpus-calibration/run-smoke-4090.sh",
+    "sha256": "4c4937ab27cc17fa3cde4f52c931cdb5ed720a33ee8f9118d7e46d3f0dc02d94",
+    "bytes": 1818
+  },
+  {
+    "published": "experiments/2026-08-24-docvqa-matched-lifecycle-4090-v3-corpus-calibration/run_matched_lifecycle.py",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-docvqa-matched-lifecycle-4090-v3-corpus-calibration/run_matched_lifecycle.py",
+    "sha256": "554c605c50e214d6cf88b6c641325119a7fc8cc55bb3ba876da557182179350a",
+    "bytes": 32043
+  },
+  {
+    "published": "experiments/2026-08-24-docvqa-matched-lifecycle-4090-v3-corpus-calibration/paired-analysis-protocol.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-docvqa-matched-lifecycle-4090-v3-corpus-calibration/paired-analysis-protocol.json",
+    "sha256": "90d9ebf25bef1cd03e68929e3c75f025d9f44619f10accd30f8022279e3cff0f",
+    "bytes": 1001
+  },
+  {
+    "published": "experiments/2026-08-24-docvqa-matched-lifecycle-4090-v3-corpus-calibration/score_paired_queries.py",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-docvqa-matched-lifecycle-4090-v3-corpus-calibration/score_paired_queries.py",
+    "sha256": "a10bbfa1b75df5fe21cd229a216be1f03c26d83d516a4c571fd4c2aa8f8cbed8",
+    "bytes": 8644
+  },
+  {
+    "published": "experiments/2026-08-24-docvqa-matched-lifecycle-4090-v3-corpus-calibration/analyze.py",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-docvqa-matched-lifecycle-4090-v3-corpus-calibration/analyze.py",
+    "sha256": "c58d0aee5ca0d182b10c09d5a7fe8f38d5c1c897a1adecf5456e810ebc4749cc",
+    "bytes": 17270
+  },
+  {
+    "published": "experiments/2026-08-24-flickr-matched-lifecycle-4090-v3-corpus-calibration/run-full-4090.sh",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-flickr-matched-lifecycle-4090-v3-corpus-calibration/run-full-4090.sh",
+    "sha256": "bd1b2149e0c63e89ee8a53bcb5abab608e1a43822d46a1c9d89b79d35a56e46f",
+    "bytes": 2431
+  },
+  {
+    "published": "experiments/2026-08-24-flickr-matched-lifecycle-4090-v3-corpus-calibration/protocol.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-flickr-matched-lifecycle-4090-v3-corpus-calibration/protocol.json",
+    "sha256": "55f05fc6314c26203c5ded09cb5e9bb9bf40b3f3f14633f2c0adfd9be5f01458",
+    "bytes": 7327
+  },
+  {
+    "published": "experiments/2026-08-24-flickr-matched-lifecycle-4090-v3-corpus-calibration/run-smoke-4090.sh",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-flickr-matched-lifecycle-4090-v3-corpus-calibration/run-smoke-4090.sh",
+    "sha256": "ad7cfc15a74f6bb4a753c8899467003d0a6a52e6cb0c9e6b9f93f95330affca3",
+    "bytes": 1782
+  },
+  {
+    "published": "experiments/2026-08-24-flickr-matched-lifecycle-4090-v3-corpus-calibration/run_matched_lifecycle.py",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-flickr-matched-lifecycle-4090-v3-corpus-calibration/run_matched_lifecycle.py",
+    "sha256": "fdb0a73e6fecd7be595453e7f06dfa8f2be1993090895f7e887945a6038934c5",
+    "bytes": 33059
+  },
+  {
+    "published": "experiments/2026-08-24-flickr-matched-lifecycle-4090-v3-corpus-calibration/paired-analysis-protocol.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-flickr-matched-lifecycle-4090-v3-corpus-calibration/paired-analysis-protocol.json",
+    "sha256": "532b58ddb2ff76f494b8fe523829f0049656551b6821e5850e9ebc500466ff15",
+    "bytes": 1001
+  },
+  {
+    "published": "experiments/2026-08-24-flickr-matched-lifecycle-4090-v3-corpus-calibration/score_paired_queries.py",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-flickr-matched-lifecycle-4090-v3-corpus-calibration/score_paired_queries.py",
+    "sha256": "9a8b23d90c0241687ce991f7c3dc22abba7cd2db6f91ce554ca826a89431bf7a",
+    "bytes": 8646
+  },
+  {
+    "published": "experiments/2026-08-24-flickr-matched-lifecycle-4090-v3-corpus-calibration/analyze.py",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-flickr-matched-lifecycle-4090-v3-corpus-calibration/analyze.py",
+    "sha256": "b7d0e45432704a6f0d167d79cd7459ad98d95080f2801dbe11de26300cef7f51",
+    "bytes": 17304
+  },
+  {
+    "published": "experiments/2026-08-24-infovqa-prospective-lifecycle-4090-v1/calibration-protocol.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-infovqa-prospective-lifecycle-4090-v1/calibration-protocol.json",
+    "sha256": "6dac23f0b3cb7ab6e0d7e904cb3f85d4b77e98b226ded062a73c80e4384fe128",
+    "bytes": 2002
+  },
+  {
+    "published": "experiments/2026-08-24-infovqa-prospective-lifecycle-4090-v1/run-full-4090.sh",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-infovqa-prospective-lifecycle-4090-v1/run-full-4090.sh",
+    "sha256": "482472b95b3ecfa2542b4fdafb6b5a406dddc857705fe37c17337e2bfa44326d",
+    "bytes": 2450
+  },
+  {
+    "published": "experiments/2026-08-24-infovqa-prospective-lifecycle-4090-v1/protocol.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-infovqa-prospective-lifecycle-4090-v1/protocol.json",
+    "sha256": "15e90952943756cdcc3a235e6b38fc2793d356797165ee48405d03a21e258f11",
+    "bytes": 7055
+  },
+  {
+    "published": "experiments/2026-08-24-infovqa-prospective-lifecycle-4090-v1/run-smoke-4090.sh",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-infovqa-prospective-lifecycle-4090-v1/run-smoke-4090.sh",
+    "sha256": "c94d9ac62b6b94162fd737690a564ccd054354dfec9d134395712c81020fe3a5",
+    "bytes": 1797
+  },
+  {
+    "published": "experiments/2026-08-24-infovqa-prospective-lifecycle-4090-v1/run_matched_lifecycle.py",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-infovqa-prospective-lifecycle-4090-v1/run_matched_lifecycle.py",
+    "sha256": "f92af35c707427d4834febd61d45492a1db819b0c321ed53e8af64ebf9486c03",
+    "bytes": 32044
+  },
+  {
+    "published": "experiments/2026-08-24-infovqa-prospective-lifecycle-4090-v1/fit_corpus_basis.py",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-infovqa-prospective-lifecycle-4090-v1/fit_corpus_basis.py",
+    "sha256": "4ad213fcfbc33420fddd3f48badbff7b0400cc10f85e005b24cc1b87bfd40e56",
+    "bytes": 7550
+  },
+  {
+    "published": "experiments/2026-08-24-infovqa-prospective-lifecycle-4090-v1/paired-analysis-protocol.json",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-infovqa-prospective-lifecycle-4090-v1/paired-analysis-protocol.json",
+    "sha256": "3b268881df944827b69d9d08cfa97754297f8fd1de8f54d4cb5d5e8b02857267",
+    "bytes": 918
+  },
+  {
+    "published": "experiments/2026-08-24-infovqa-prospective-lifecycle-4090-v1/score_paired_queries.py",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-infovqa-prospective-lifecycle-4090-v1/score_paired_queries.py",
+    "sha256": "cacf17f970204f0f688c3b358006ad11606f55ca1947736f64de1179d86c7a30",
+    "bytes": 8655
+  },
+  {
+    "published": "experiments/2026-08-24-infovqa-prospective-lifecycle-4090-v1/analyze.py",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-infovqa-prospective-lifecycle-4090-v1/analyze.py",
+    "sha256": "0330853d3f30a8bd3d0a013e50762de9cd359f4dacf864c095d02daa9693b2cc",
+    "bytes": 17273
+  },
+  {
+    "published": "experiments/2026-08-21-vietnamese-domain-adapter-replay-v1/run_colqwen_recompile.py",
+    "source": "reprforge-baseline-lab/experiments/2026-08-21-incremental-index-recompile-v1/run_colqwen_recompile.py",
+    "sha256": "c18711779bb3afd59cc6e3c926114aa75f0265816410b8a19639271fb0e85df9",
+    "bytes": 21592
+  },
+  {
+    "published": "experiments/support/run_smoke.py",
+    "source": "reprforge-baseline-lab/experiments/2026-08-20-colqwen-lifecycle-transfer-v1/run_smoke.py",
+    "sha256": "1ef43e52b0db8c26d966f136b29d6cfc2cdf6f33286f486cd2fefacd88363a60",
+    "bytes": 15425
+  },
+  {
+    "published": "experiments/support/ir_codecs.py",
+    "source": "reprforge-baseline-lab/experiments/2026-08-21-versioned-ir-codec-v1/ir_codecs.py",
+    "sha256": "7297cb2468ca354a92b7c611ec5b4931540767f2ee473e019776be38db575512",
+    "bytes": 3666
+  },
+  {
+    "published": "experiments/support/streaming_maxsim.py",
+    "source": "reprforge-baseline-lab/experiments/2026-08-20-colqwen-lifecycle-transfer-v1/streaming_maxsim.py",
+    "sha256": "935387da998363e4d1c74f04df63e103cbf70726686b132bd78b410ca338d51f",
+    "bytes": 2943
+  },
+  {
+    "published": "experiments/support/run_matrix.py",
+    "source": "reprforge-baseline-lab/experiments/2026-08-24-sigir-version-evolution-matrix-v1/run_matrix.py",
+    "sha256": "956275f534ce6df3c86a6fe22c50e2cf38c8e3593c4b243c05c341def62c84f8",
+    "bytes": 23273
+  },
+  {
+    "published": "experiments/data-preparation/prepare_qrel_closed_slice.py",
+    "source": "/data/ldf/reprforge/experiments/conditioned-transport-a100-20260815/code/experiments/prepare_qrel_closed_slice.py",
+    "sha256": "e21d15c33428865eb20aae004f6fe890be400f0f0f76485aab26391911341d77",
+    "bytes": 3178
+  },
+  {
+    "published": "experiments/data-preparation/prepare_vidore_complete_task.py",
+    "source": "/data/ldf/reprforge/experiments/conditioned-transport-a100-20260815/code/experiments/prepare_vidore_complete_task.py",
+    "sha256": "f11891ce353e0446f79989c03f0df674184128d4be4d3598be03cc4665eb0e9b",
+    "bytes": 3973
+  }
+]
