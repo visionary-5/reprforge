@@ -27,5 +27,6 @@ jobs:
       - name: Verify paper evidence and executed endpoint source
         if: matrix.python-version == '3.12'
         run: |
+          git lfs install --local
           git lfs pull
           python experiments/verify_artifacts.py --extract-to "$RUNNER_TEMP/reprforge-evidence"

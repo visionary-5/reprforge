@@ -10,6 +10,7 @@ supports each claim and which historical interpretations have been corrected.
 Install Git LFS, then from the repository root:
 
 ```bash
+git lfs install --local
 git lfs pull
 python experiments/verify_artifacts.py --extract-to /tmp/reprforge-paper-evidence
 ```
@@ -100,6 +101,9 @@ target text embeddings, positions and suffix. No raw-prefix tensor is reused.
 Outputs include `manifest.json`, `inputs.json`, `source.json`, per-target
 `*-pages.jsonl`, `*-rankings.json`, `*-result.json`, and final `result.json`.
 Large `states/*.pt` and `*-banks.pt` remain in your external output directory.
+`verify_tensor_payloads.py --output-root /path/to/endpoint-output --report /new/report.json`
+checks persisted BF16 payload bits on CPU, including signed zero. The completed
+check found 200/200 bitwise-equal pages for each target.
 The 1,033 queries are scored against **200 pages**, not the historical 3,420-page
 pool. This tests ordered fidelity, not benchmark retrieval effectiveness.
 

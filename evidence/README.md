@@ -1,7 +1,7 @@
 # Evidence assets
 
 Files ending in `.tar.gz` are Git LFS objects; Git stores only pointers. Run
-`git lfs pull` after cloning, then use `experiments/verify_artifacts.py`.
+`git lfs install --local` and `git lfs pull` after cloning, then use `experiments/verify_artifacts.py`.
 
 - `historical-evidence.tar.gz`: immutable numerical output and reports for the
   experiments in `docs/provenance.json`. Excluded/contaminated runs remain marked

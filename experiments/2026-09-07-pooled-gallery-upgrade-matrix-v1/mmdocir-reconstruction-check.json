@@ -1,0 +1,10 @@
+{
+  "source_repo": "MMDocIR/MMDocIR_Evaluation_Dataset",
+  "source_revision": "bdcb36ecb3eee73667180ee3fb24fe433f6dd2a4",
+  "source_file": "MMDocIR_pages.parquet",
+  "verified_source_sha256": "dee84027bf3c07bc48e992c485d31e547c683bf735f81bfa628503e09eed7e94",
+  "selected_pages": 580,
+  "image_payloads_equal_to_historical_input": 580,
+  "verification": "Published prepare_mmdocir_distractors.py succeeded against a fresh download of the pinned public file; all selected image SHA256 checks passed.",
+  "scope": "Image bytes and selected order match; output Parquet stores only image_binary and is not required to match historical container bytes."
+}

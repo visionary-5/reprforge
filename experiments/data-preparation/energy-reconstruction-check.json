@@ -1,0 +1,10 @@
+{
+  "original_protocol_sha256": "e42395bffb3e6826b49752fcade5c718c1dfc35909a2a2b19841a4a14d722a6d",
+  "original_dataset_sha256": "26020259fe345652806f2a1a2a8de08b08bc85739a32e8a7bfc40b0130be7502",
+  "reconstructed_dataset_sha256": "172d2f8de0fa1a862faaff20d5be2c5e3e37f140a115d1a4c75661cb06b9a24c",
+  "payload_manifest_sha256": "03b5c2aec2fdcd582c80841301b57eb6a49eb9c289f40939eb539f79224a8953",
+  "ordered_equal_pages": 128,
+  "scope": "All input image bytes and corpus IDs equal in order; Parquet container bytes may differ.",
+  "changes": "Only dataset file digest amended for explicit reproduction; no model, page, batch, metric or timing definition changed.",
+  "gpu_execution": "Not performed by this utility; original measurement files unchanged."
+}

@@ -50,3 +50,9 @@ Source SHA-256 entries in `provenance.json` certify the imported snapshot, not
 that the historical run captured that exact code hash. The pooled protocol
 records post-run runner amendments; only the new endpoint has a pre-execution
 code/weight/processor/data manifest.
+
+Strict payload-bit verification is recorded in
+`experiments/independent-endpoint/bitwise-verification.json`, with the hashes of
+the externally retained tensor banks. Both public MMDocIR source reconstruction
+and Energy logical-input reconstruction were executed on CPU; receipts are
+in their preparation directories.

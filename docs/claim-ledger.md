@@ -48,3 +48,8 @@ stage/page-encoding measurements, not full index rebuild measurements. The
 ColQwen2 ordered-top-10 statement now has direct saved-ranking verification;
 its reference still uses the shared prefix, with independent representation
 evidence supplied by the separate Energy check. No prose is rewritten here.
+
+Post-run CPU verification of the persisted banks also confirmed bitwise BF16
+tensor payload equality (including signed zero), 200/200 pages per target. See
+`experiments/independent-endpoint/bitwise-verification.json`; bank hashes are
+recorded there. This still does not establish physical index-file equality.
