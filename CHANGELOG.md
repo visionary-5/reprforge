@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased — page-scoped validity
+
+- Add optional per-page processor-equivalence admission, preserving other
+  upstream invalidations and existing collection-wide behavior.
+- Validate a mixed-validity budget change on 200 CPU pages and 16 independent
+  GPU endpoints; no end-to-end speed or population accuracy claim.
+
 ## Unreleased — paper reproducibility
 
 - Publish frozen GPU runners, protocols, input preparation, evidence indexes and

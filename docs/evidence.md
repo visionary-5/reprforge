@@ -56,3 +56,9 @@ Strict payload-bit verification is recorded in
 the externally retained tensor banks. Both public MMDocIR source reconstruction
 and Energy logical-input reconstruction were executed on CPU; receipts are
 in their preparation directories.
+
+### Page-scoped processor refinement
+
+`experiments/page-validity/README.md` maps the frozen 200-page CPU check and
+16-page independent GPU boundary check to the new `reprforge/page_reuse.py`
+mechanism. Raw records are in `evidence/page-validity-evidence.tar.gz`.

@@ -53,3 +53,17 @@ Post-run CPU verification of the persisted banks also confirmed bitwise BF16
 tensor payload equality (including signed zero), 200/200 pages per target. See
 `experiments/independent-endpoint/bitwise-verification.json`; bank hashes are
 recorded there. This still does not establish physical index-file equality.
+
+## Page-scoped processor refinement
+
+See `experiments/page-validity/{protocol.json,cpu-summary.json,result.json}`.
+Under the isolated 12.8M → 602k budget change, 15/200 frozen pages have identical
+complete processor outputs. This refines global processor invalidation to a
+per-page decision while retaining all other upstream blockers. On the frozen
+8-matching/8-differing diagnostic, all 16 routed outputs match the independent
+raw target bitwise; unsafe replay fails shape equality on the eight differing
+pages. Source fingerprints were reconstructed retrospectively. This is not a
+full factory-processor, new ranking, or end-to-end efficiency result. Do not
+state that every processor change invalidates every page, nor that recovering
+7.5% of pages saves 7.5% of time. The gain extends existing scoped equivalence;
+it does not establish a new general theory of computation reuse.

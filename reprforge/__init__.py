@@ -42,6 +42,7 @@ from .index import (
     save_index,
     target_agreement,
 )
+from .page_reuse import PageReuseDecision, assess_page_reuse
 from .planning import (
     MaterializationDecision,
     MaterializationOption,
@@ -67,10 +68,12 @@ __all__ = [
     "LateInteractionIndex",
     "MaterializationDecision",
     "MaterializationOption",
+    "PageReuseDecision",
     "SearchResult",
     "UpdateRoute",
     "UpdateScenario",
     "VersionManifest",
+    "assess_page_reuse",
     "break_even_upgrades",
     "certify_component_equivalence",
     "certify_component_fingerprints",

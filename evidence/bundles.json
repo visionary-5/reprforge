@@ -16,5 +16,11 @@
     "kind": "input-metadata",
     "sha256": "d626c3fb670e8cc5367f74c7c929fd871b59c8adb8dffddcdbacb1ede391698a",
     "bytes": 5917931
+  },
+  {
+    "file": "page-validity-evidence.tar.gz",
+    "kind": "page-validity-evidence",
+    "sha256": "146681dd3eb7001c5a2c4c9ec97f70caf1bdac9d98678c739b61f3f713e81121",
+    "bytes": 51117
   }
 ]

@@ -51,7 +51,7 @@ def main():
         if path.stat().st_size < 200 and path.read_bytes().startswith(b"version https://git-lfs"):
             raise RuntimeError("LFS pointer found: run git lfs pull first")
         assert sha256(path) == bundle["sha256"], str(path)
-        if args.extract_to and bundle["kind"] in {"historical-evidence", "independent-endpoint-evidence"}:
+        if args.extract_to and bundle["kind"] in {"historical-evidence", "independent-endpoint-evidence", "page-validity-evidence"}:
             extract(path, args.extract_to)
     if args.extract_to:
         for row in records:
@@ -74,6 +74,24 @@ def main():
             assert sum(p["equal_elements"] for p in pages) == summary["equal_elements"]
             assert len(ranks["raw_top10"]) == len(ranks["replay_top10"]) == summary["queries"]
             assert sum(a == b for a, b in zip(ranks["raw_top10"], ranks["replay_top10"])) == summary["ordered_top10_equal_queries"]
+        page = args.extract_to / "page-validity"
+        cpu = json.loads((page / "cpu-v1/summary.json").read_text())
+        gpu = json.loads((page / "result.json").read_text())
+        assert cpu == json.loads((ROOT / "experiments/page-validity/cpu-summary.json").read_text())
+        assert gpu == json.loads((ROOT / "experiments/page-validity/result.json").read_text())
+        assert sha256(ROOT / "experiments/page-validity/probe.py") == cpu["code_sha256"]
+        assert sha256(page / "code/probe.py") == cpu["code_sha256"]
+        protocol = json.loads((ROOT / "experiments/page-validity/protocol.json").read_text())
+        assert cpu["protocol"] == gpu["protocol"] == protocol
+        cpu_pages = [json.loads(line) for line in (page / "cpu-v1/pages.jsonl").read_text().splitlines()]
+        assert len(cpu_pages) == cpu["pages"]
+        assert sum(p["equal"] for p in cpu_pages) == cpu["equal"]
+        selected = [r["index"] for equal in (True, False) for r in [x for x in cpu_pages if x["equal"] == equal][:8]]
+        assert selected == [p["index"] for p in gpu["pages_detail"]]
+        assert sum(p["routed_bit_equal"] for p in gpu["pages_detail"]) == gpu["routed_bit_equal"]
+        assert sum(p["unsafe_bit_equal"] for p in gpu["pages_detail"]) == gpu["unsafe_bit_equal"]
+        for name, digest in gpu["code_sha256"].items():
+            assert sha256(ROOT / name) == digest, name
     print("Published code and evidence hashes verified.")
 
 

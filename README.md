@@ -9,7 +9,8 @@
 Visual document retrievers encode pages offline and store their representations
 in an index. An upgrade may change only part of that computation. ReprForge
 checks whether an existing intermediate state remains valid for the target
-version. If its upstream dependencies are unchanged, the target suffix resumes
+version. If its upstream dependencies are unchanged or certified equivalent
+for the relevant pages, the target suffix resumes
 from that state; otherwise the route falls back to raw-page encoding.
 
 The core package provides dependency and version contracts, replay integration
@@ -37,6 +38,7 @@ it demonstrates contracts and execution, not evidence about a real checkpoint.
 |---|---|
 | [`reprforge/versions.py`](reprforge/versions.py), [`dependencies.py`](reprforge/dependencies.py) | Version differences and the dependencies of reusable states. Adapter tensor names alone do not certify the entire upstream contract. |
 | [`reprforge/equivalence.py`](reprforge/equivalence.py) | Collection-scoped certificates for processor changes with equivalent observed outputs. |
+| [`reprforge/page_reuse.py`](reprforge/page_reuse.py) | Refine processor invalidation per page using complete output evidence; other upstream blockers remain. |
 | [`reprforge/adapter.py`](reprforge/adapter.py) | `encode`, `emit_cut`, `resume`, and the state contract. |
 | [`experiments/independent-endpoint/run.py`](experiments/independent-endpoint/run.py) | Real ColQwen2.5 integration: `capture`, `replay`, and independent native raw encoding in separate source/target processes. |
 | [`reprforge/index.py`](reprforge/index.py) | Reference MaxSim and TA@k (set overlap, not ordered equality). |
@@ -69,6 +71,11 @@ passed for vidore v0.2, Metric-AI 3B, T-Systems 3B and ColNomic 3B: each has
 200/200 equal document representations (95,869,056 elements, zero maximum error)
 and 1,033/1,033 equal ordered top-10 lists on the 200-page gallery, under a
 pinned common base and processor. This is a bounded correctness result.
+
+The [page-validity extension](experiments/page-validity/README.md) examines an
+isolated processor-budget change: 15/200 pages retain identical processed
+inputs. A stratified 16-page independent endpoint verifies selective replay
+and fallback. This is a method/boundary result, not an additional speed claim.
 
 ## Evidence boundaries
 
