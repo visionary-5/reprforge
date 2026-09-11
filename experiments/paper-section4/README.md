@@ -47,3 +47,12 @@ one pinned base/processor. They do not represent distinct model families.
 the hashes of all used raw files, the builder, software versions, and micro/macro
 summary values. Descriptive fixed-set results do not have population confidence
 intervals. Per-page timing SD describes heterogeneity, not repeated-run error.
+
+## Claim-focused redesign
+
+`redesign.py --data /path/to/previous/data --output /new/figures` draws a result
+retention histogram, ordered-ranking agreement, and matched aggregate encoding
+time. Existing and independent-native reference scopes remain explicitly named.
+After new experiments complete, `--full /completed/full-collection` and
+`--mechanism /completed/mechanism-200` consume their actual results. No pending
+or predicted measurements are drawn. See `../full-collection-endpoint/`.
