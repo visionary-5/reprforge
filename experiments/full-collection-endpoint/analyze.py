@@ -40,7 +40,7 @@ def main():
         subset=[r for r in records if r['route']==route]
         summary[route]={k:float(np.mean([r[k] for r in subset])) for k in metrics}
     (root/'analysis.json').write_text(json.dumps(dict(pages=result['pages'],queries=len(inputs['queries']),
-        summary=summary,scope='Frozen ViDoRe evaluation splits, not full original source benchmarks; descriptive fixed-set evaluation.'),indent=2)+'\n')
+        summary=summary,state_storage_bytes=sum(s['bytes'] for s in json.loads((root/'source.json').read_text())['states']),scope='Frozen ViDoRe evaluation splits, not full original source benchmarks; descriptive fixed-set evaluation.'),indent=2)+'\n')
     (root/'per-query-analysis.json').write_text(json.dumps(records)+'\n')
     print(json.dumps(summary,indent=2))
 

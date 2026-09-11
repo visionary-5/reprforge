@@ -65,15 +65,17 @@ def main():
     ax.set_xlabel('Target top-10 pages recovered (out of 10)')
     ax.set_ylabel('Queries (%)');ax.set_title('(a) Which pages are returned?',loc='left',fontsize=10,pad=12)
     ax.text(3.7,56,f'Old index retains\n{recovered.mean():.2f} of 10 pages\non average',color=ORANGE,ha='center',fontsize=9)
-    ax.annotate(f'{np.mean(replay_recovered==10)*100:.0f}%',(10.18,100),xytext=(8.1,91),color=BLUE,
+    recovered_all=float(np.mean(replay_recovered==10)*100)
+    ax.annotate(f'{recovered_all:.1f}%',(10.18,recovered_all),xytext=(8.1,min(101,recovered_all+10)),color=BLUE,
                 arrowprops={'arrowstyle':'-','color':BLUE},ha='center',weight='bold')
     ax.legend(frameon=False,loc='upper left',fontsize=8)
     ax=axes[1]
     vals=np.array([old_exact,new_exact])/n*100
     ax.barh([1,0],vals,color=[ORANGE,BLUE],height=.42)
     for y,v,k in zip([1,0],vals,[old_exact,new_exact],strict=True):
-        ax.text(3 if v==0 else v-3,y,f'{k:,} / {n:,}',ha='left' if v==0 else 'right',
-                va='center',color=ORANGE if v==0 else 'white',weight='bold',fontsize=10)
+        outside=v<40
+        ax.text(v+3 if outside else v-3,y,f'{k:,} / {n:,}',ha='left' if outside else 'right',
+                va='center',color=([ORANGE,BLUE][1-y] if outside else 'white'),weight='bold',fontsize=10)
     ax.set_yticks([1,0],['Keep old index','ReprForge']);ax.set_xlim(0,105);ax.set_ylim(-.6,1.6)
     ax.set_xticks([0,50,100]);ax.set_xlabel('Queries with identical ordered top-10 (%)')
     ax.set_title('(b) Is the entire ranking identical?',loc='left',fontsize=10,pad=12)
@@ -94,8 +96,9 @@ def main():
     ax.text(98,1,f'{raw:.1f} s',va='center',ha='right',color='white',weight='bold')
     ax.text(ratio*100+2,0,f'{replay_time:.1f} s  ({ratio*100:.1f}% of raw)',va='center',color=BLUE,weight='bold')
     ax.annotate('',xy=(ratio*100,-.34),xytext=(100,-.34),arrowprops={'arrowstyle':'<->','color':BLUE})
-    ax.text((100+ratio*100)/2,-.59,f'{(1-ratio)*100:.1f}% less measured document encoding time',ha='center',color=BLUE,fontsize=9)
-    ax.set_yticks([1,0],['Full target encoding','ReprForge replay']);ax.set_xlim(0,105);ax.set_ylim(-.8,1.45)
+    direction='less' if ratio<=1 else 'more'
+    ax.text((100+ratio*100)/2,-.59,f'{abs(1-ratio)*100:.1f}% {direction} measured document encoding time',ha='center',color=BLUE,fontsize=9)
+    ax.set_yticks([1,0],['Full target encoding','ReprForge replay']);ax.set_xlim(0,max(105,ratio*105));ax.set_ylim(-.8,1.45)
     ax.set_xticks([0,25,50,75,100]);ax.set_xlabel('Document-side time (% of paired raw baseline)')
     ax.set_title(f'ColQwen2.5 v0.1 → v0.2 | {pages:,} pages | A100, BF16, batch 1',fontsize=10,pad=14)
     fig.subplots_adjust(left=.25,right=.97,bottom=.23,top=.8)
@@ -120,7 +123,7 @@ def main():
         ax.imshow(vals,cmap=ListedColormap(['#F9E7D8','#DCEAF5']),vmin=0,vmax=1,aspect='auto')
         for y,row in enumerate(vals):
             for x,v in enumerate(row):
-                ax.text(x,y,f'{v*100:.0f}% exact',va='center',ha='center',weight='bold',color=BLUE if v==1 else ORANGE)
+                ax.text(x,y,f'{round(v*n)}/{n} exact',va='center',ha='center',weight='bold',color=BLUE if v==1 else ORANGE)
         ax.set_yticks(range(4),[v[1] for v in specs]);ax.set_xticks([0,1],['Always reuse\nvisual state','Dependency-validated\nexecution'])
         ax.tick_params(length=0);ax.set_title('(a) Does reuse preserve the target?',loc='left',fontsize=10,pad=12)
         for sp in ax.spines.values():sp.set_visible(False)

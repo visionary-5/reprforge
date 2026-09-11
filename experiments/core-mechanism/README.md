@@ -79,7 +79,7 @@ Git and are identified by SHA-256 in the summary.
 
 ## Expanded validation (v2, results pending)
 
-`--pages 200` uses every page in the same frozen prior sample and keeps all five
+`run_v2.py --pages 200` uses every page in the same frozen prior sample and keeps all five
 interventions unchanged. This successor was launched on 2026-09-11 to check
 coverage beyond the original diagnostic eight pages. It writes its effective
 protocol before model execution and refuses an existing output directory.

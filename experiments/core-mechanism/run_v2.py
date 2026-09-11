@@ -15,6 +15,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--prior", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--pages", type=int, default=8)
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=False)
     import pyarrow.parquet as pq
@@ -31,8 +32,16 @@ def main():
     config = manifest["config"]
     for name, expected in manifest["artifacts_sha256"].items():
         assert ep.digest(name) == expected, name
-    inputs = json.loads((args.prior / "inputs.json").read_text())["pages"][:8]
-    state_records = json.loads((args.prior / "source.json").read_text())["states"][:8]
+    all_inputs = json.loads((args.prior / "inputs.json").read_text())["pages"]
+    if not 1 <= args.pages <= len(all_inputs):
+        raise ValueError("pages must be within the frozen prior sample")
+    inputs = all_inputs[:args.pages]
+    state_records = json.loads((args.prior / "source.json").read_text())["states"][:args.pages]
+    if args.pages != 8:
+        protocol = dict(protocol, id="core-mechanism-v2",
+            sample=f"First {args.pages} pages from the frozen prior; no outcome selection.",
+            scope=f"{args.pages} pages x 5 unchanged interventions; no timing or population claim.")
+    (args.output / "protocol.json").write_text(json.dumps(protocol, indent=2) + "\n")
     torch.manual_seed(0)
     torch.set_num_threads(8)
     torch.backends.cuda.matmul.allow_tf32 = True

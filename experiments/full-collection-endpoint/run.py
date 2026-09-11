@@ -178,6 +178,7 @@ def worker(args, config, protocol):
         torch.cuda.synchronize()
         return out, time.perf_counter() - start
     if args.phase == "source":
+        source_bank = []
         with torch.inference_mode():
             for i, item in enumerate(inputs["pages"]):
                 batch = processor.process_images([image_of(item)]).to("cuda:0")
@@ -185,8 +186,12 @@ def worker(args, config, protocol):
                 if not torch.isfinite(state["vision"]).all():
                     raise RuntimeError("Nonfinite source state")
                 torch.save(state, root / "states" / f"{i:04d}.pt")
+                if protocol.get("compare_stale_index", False):
+                    source_bank.append(replay(base, state, torch).cpu())
                 if i % 20 == 0:
                     print(json.dumps({"phase": "source", "pages": i + 1}), flush=True)
+        if source_bank:
+            torch.save(source_bank, root / "source-documents.pt")
         write(root / "source.json", {"diagnostics": diagnostics, "pid": os.getpid(),
               "processor": processor.to_dict(),
               "states": [{"file": p.name, "sha256": digest(p), "bytes": p.stat().st_size}
@@ -219,6 +224,8 @@ def worker(args, config, protocol):
             finite = bool(torch.isfinite(a).all() and torch.isfinite(b).all())
             rec = {**item, "raw_shape": list(a.shape), "replay_shape": list(b.shape),
                    "finite": finite, "tensor_equal": bool(shape_equal and torch.equal(a, b)),
+                   "bit_equal": bool(shape_equal and a.dtype == b.dtype and
+                       torch.equal(a.contiguous().view(torch.uint8), b.contiguous().view(torch.uint8))),
                    "elements": a.numel(), "equal_elements": int((a == b).sum()) if shape_equal else 0,
                    "max_abs_error": float((a.float()-b.float()).abs().max()) if shape_equal else None,
                    "raw_page_seconds": ta, "replay_with_read_seconds": tb}
@@ -242,6 +249,12 @@ def worker(args, config, protocol):
     order_a = np.argsort(-a, axis=1, kind="stable")[:, :10]
     order_b = np.argsort(-b, axis=1, kind="stable")[:, :10]
     ordered = (order_a == order_b).all(axis=1)
+    if protocol.get("compare_stale_index", False):
+        stale_bank = torch.load(root / "source-documents.pt", weights_only=True, map_location="cpu")
+        stale_scores = streaming_maxsim(queries, stale_bank, device="cuda:0", query_chunk=8, document_chunk=4)
+        stale_order = np.argsort(-stale_scores, axis=1, kind="stable")[:, :10]
+        write(root / "stale-rankings.json", {"stale_top10": stale_order.tolist(),
+              "target_top10": order_a.tolist(), "replay_top10": order_b.tolist()})
     write(root / f"{args.phase}-rankings.json", {"raw_top10": order_a.tolist(), "replay_top10": order_b.tolist()})
     torch.save({"raw": raw_bank, "replay": replay_bank, "queries": queries}, root / f"{args.phase}-banks.pt")
     write(root / f"{args.phase}-result.json", {

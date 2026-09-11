@@ -27,3 +27,14 @@ Failure interpretation: any admitted nonidentical page limits representation
 exactness; ranking differences must be reported separately. No failed pages
 may be dropped. Complete collection coverage does not establish arbitrary-model
 correctness. Synthetic mechanism interventions remain a separate experiment.
+
+## Versioned entry point
+
+`run.py` is the expanded successor of the frozen independent endpoint script.
+The original `experiments/independent-endpoint/run.py` is retained byte-for-byte
+so historical evidence verification remains valid. Run this successor with the
+`config.json` and `protocol.json` emitted by `prepare.py`.
+
+The already launched 2026-09-11 run used this same code under the old deployment
+path; its manifest and archived executed source must retain that original path.
+Renaming the publication entry point does not change the historical manifest.
