@@ -45,3 +45,22 @@ protocol; they are not substituted for target agreement. Multiple queries may
 share a gold page, so queries are not independent sampling units for uncertainty.
 The companion `verify.py --tensors` checks actual saved tensor bytes and accepts
 negative outcomes while rejecting missing, duplicated or inconsistent evidence.
+
+## Matched repeated timing (prepared, not yet executed)
+
+`repeat-protocol.json` freezes three fresh target processes over all prior pages.
+`repeat_timing.py` requires a completed `verify.py --kind full --tensors` report
+bound to the same input and model manifest before launching. It records every
+page, including mismatches, and samples GPU process activity outside timed regions.
+
+```bash
+CUDA_VISIBLE_DEVICES=0 python experiments/full-collection-endpoint/repeat_timing.py \
+  --prior /completed/full-collection --verification /completed/full-verification.json \
+  --output /new/three-round-output
+```
+
+This successor includes image-byte validation on raw and state-hash validation
+on replay. Its numbers must not be mixed with the earlier validation-excluded
+replay clocks. Report all three rounds, not the best one. Timing excludes source
+capture, static model validation/loading, parquet loading, queries, output
+serialization and physical index construction. No global cache flush is used.
