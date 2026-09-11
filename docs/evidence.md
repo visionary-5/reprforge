@@ -70,3 +70,11 @@ values and integration obligations. `experiments/core-mechanism/README.md`
 records the controlled component/reconstruction interventions; raw evidence
 is in `evidence/core-mechanism-evidence.tar.gz`. These validate causal conditions,
 not prevalence across releases.
+
+### Dataset-centered Section 4 figures
+
+`experiments/paper-section4/` rebuilds five English figures and LaTeX tables
+from verified raw evidence. Main comparisons use A100/BF16/page batch 1;
+3,420-page shared-prefix ranking references and 200-page native endpoints are
+explicitly separated. Selection policy and exclusions are machine-readable.
+No new GPU run or reinterpretation of old timing definitions is involved.
