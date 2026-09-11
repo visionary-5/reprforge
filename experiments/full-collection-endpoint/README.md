@@ -38,3 +38,10 @@ so historical evidence verification remains valid. Run this successor with the
 The already launched 2026-09-11 run used this same code under the old deployment
 path; its manifest and archived executed source must retain that original path.
 Renaming the publication entry point does not change the historical manifest.
+
+Analysis uses the provided page associated with each frozen query row as its
+single gold page. nDCG@5 and Recall@10 are descriptive under this annotation
+protocol; they are not substituted for target agreement. Multiple queries may
+share a gold page, so queries are not independent sampling units for uncertainty.
+The companion `verify.py --tensors` checks actual saved tensor bytes and accepts
+negative outcomes while rejecting missing, duplicated or inconsistent evidence.

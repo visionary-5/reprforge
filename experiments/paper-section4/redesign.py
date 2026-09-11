@@ -91,17 +91,44 @@ def main():
         r=next(r for r in csv_read(args.data/'independent-summary.csv') if r['target']=='ColQwen2.5 v0.2')
         raw,replay_time=float(r['raw_seconds']),float(r['replay_seconds']);pages=int(r['pages'])
     ratio=replay_time/raw
-    fig,ax=plt.subplots(figsize=(6.3,2.25))
-    ax.barh([1,0],[100,ratio*100],height=.36,color=[GRAY,BLUE])
-    ax.text(98,1,f'{raw:.1f} s',va='center',ha='right',color='white',weight='bold')
-    ax.text(ratio*100+2,0,f'{replay_time:.1f} s  ({ratio*100:.1f}% of raw)',va='center',color=BLUE,weight='bold')
-    ax.annotate('',xy=(ratio*100,-.34),xytext=(100,-.34),arrowprops={'arrowstyle':'<->','color':BLUE})
-    direction='less' if ratio<=1 else 'more'
-    ax.text((100+ratio*100)/2,-.59,f'{abs(1-ratio)*100:.1f}% {direction} measured document encoding time',ha='center',color=BLUE,fontsize=9)
-    ax.set_yticks([1,0],['Full target encoding','ReprForge replay']);ax.set_xlim(0,max(105,ratio*105));ax.set_ylim(-.8,1.45)
-    ax.set_xticks([0,25,50,75,100]);ax.set_xlabel('Document-side time (% of paired raw baseline)')
-    ax.set_title(f'ColQwen2.5 v0.1 → v0.2 | {pages:,} pages | A100, BF16, batch 1',fontsize=10,pad=14)
-    fig.subplots_adjust(left=.25,right=.97,bottom=.23,top=.8)
+    if args.full:
+        p=args.full/'vidore-v0.2-pages.jsonl'
+        provenance[str(p)]=hashlib.sha256(p.read_bytes()).hexdigest()
+        timing_pages=[json.loads(line) for line in p.read_text().splitlines()]
+    else:
+        timing_pages=[p for p in read(args.data/'independent-pages.json') if p['target']=='vidore-v0.2']
+    fig,axes=plt.subplots(1,2,figsize=(7.2,2.8),gridspec_kw={'width_ratios':[1,1.25]})
+    ax=axes[0]
+    ax.bar([0,1],[100,ratio*100],width=.55,color=[GRAY,BLUE])
+    for x,value,seconds in [(0,100,raw),(1,ratio*100,replay_time)]:
+        ax.text(x,value+4,f'{seconds:.1f} s',ha='center',fontsize=9,weight='bold',color=GRAY if x==0 else BLUE)
+    ax.set_xticks([0,1],['Full target','ReprForge']);ax.set_ylim(0,max(125,ratio*125))
+    ax.set_ylabel('Total encoding time (% of raw)')
+    ax.set_title('(a) Same pages, paired execution',loc='left',fontsize=10,pad=12)
+    ax.text(1,65,f'{ratio*100:.1f}%\nof raw time',ha='center',color=BLUE,fontsize=10,
+            bbox={'facecolor':'white','edgecolor':'none','pad':2})
+    ax=axes[1]
+    sizes=np.array([p['raw_shape'][0] for p in timing_pages])
+    edges=np.array([0,512,1024,2048,4096,8192,16384,32768])
+    bins=[]
+    for key,label,color in [('raw_page_seconds','Full target',GRAY),('replay_with_read_seconds','ReprForge',BLUE)]:
+        values=np.array([p[key] for p in timing_pages])
+        ax.scatter(sizes,values,s=7,alpha=.14,color=color,edgecolors='none')
+        xx,yy=[],[]
+        for lo,hi in zip(edges[:-1],edges[1:],strict=True):
+            mask=(sizes>=lo)&(sizes<hi)
+            if mask.sum()>=3:
+                xx.append(float(np.median(sizes[mask])));yy.append(float(np.median(values[mask])))
+                bins.append({'route':key,'lower_vectors':int(lo),'upper_vectors':int(hi),'pages':int(mask.sum()),'median_vectors':xx[-1],'median_seconds':yy[-1]})
+        ax.plot(xx,yy,'o-',color=color,lw=1.7,ms=3,label=label)
+    ax.set_xlabel('Document vectors per page');ax.set_ylabel('Encoding time (s / page)')
+    ax.set_ylim(bottom=0);ax.set_xlim(left=0)
+    ax.set_title('(b) Cost across page sizes',loc='left',fontsize=10,pad=12)
+    ax.ticklabel_format(axis='x',style='sci',scilimits=(3,3),useMathText=True)
+    ax.legend(frameon=False,loc='upper left',fontsize=8)
+    (args.output/'timing-bins.json').write_text(json.dumps(bins,indent=2)+'\n')
+    fig.suptitle(f'ColQwen2.5 v0.1 → v0.2 | {pages:,} pages | A100, BF16, batch 1',fontsize=9,y=1.03,color=GRAY)
+    fig.subplots_adjust(left=.09,right=.98,bottom=.23,top=.83,wspace=.43)
     save(fig,'02-recomputation')
 
     if args.mechanism:

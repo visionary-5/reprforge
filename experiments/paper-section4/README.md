@@ -56,3 +56,11 @@ time. Existing and independent-native reference scopes remain explicitly named.
 After new experiments complete, `--full /completed/full-collection` and
 `--mechanism /completed/mechanism-200` consume their actual results. No pending
 or predicted measurements are drawn. See `../full-collection-endpoint/`.
+
+`state_choice.py --pages /path/to/pages.jsonl --output /new/figures` pairs a
+state/reconstruction schematic with the two prespecified control and embedding
+conditions. It refuses missing, repeated or incomplete page sequences. The
+current author preview uses the completed 200-page conditions while the full
+five-condition run remains pending; it does not extrapolate missing outcomes.
+The cost panel also shows individual pages and fixed-bin medians by document
+vector count, without fitting a complexity law or inventing confidence intervals.
