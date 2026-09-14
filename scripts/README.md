@@ -1,8 +1,14 @@
-# Use ReprForge with ColQwen2.5
+# Use ReprForge
 
-Install the GPU environment and prepare the model config as described in
-[reproduction](../docs/reproduction.md). Create a `pages.json` list of image paths,
-relative to that JSON file. Use an available GPU and new output directories:
+The public command-line integration currently supports the ColQwen2.5
+retrievers evaluated in the paper. ReprForge's state and validation interfaces
+are model-independent, but each model family needs an explicit capture,
+continuation and dependency contract.
+
+Install the GPU environment and prepare the verified ColQwen2.5 configuration
+as described in [reproduction](../docs/reproduction.md). Create a `pages.json`
+list of image paths, relative to that JSON file. Use an available GPU and new
+output directories:
 
 ```bash
 CUDA_VISIBLE_DEVICES=0 python scripts/build_source_index.py \
