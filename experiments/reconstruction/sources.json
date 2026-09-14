@@ -1,0 +1,289 @@
+[
+  {
+    "repo": "Qwen/Qwen2.5-VL-3B-Instruct",
+    "revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+    "filename": "model-00001-of-00002.safetensors",
+    "destination": "qwen2.5-vl-3b/model-00001-of-00002.safetensors",
+    "sha256": "41a8895c164b4d32bae6b302f4603fcbc1797f32dafa45c7e9bcda23c6755df8"
+  },
+  {
+    "repo": "Qwen/Qwen2.5-VL-3B-Instruct",
+    "revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+    "filename": "model-00002-of-00002.safetensors",
+    "destination": "qwen2.5-vl-3b/model-00002-of-00002.safetensors",
+    "sha256": "365531ff8752420e89dee707b79d021fb2d6e25abafe486f080555a4fe6972e4"
+  },
+  {
+    "repo": "vidore/colqwen2.5-v0.1",
+    "revision": "d8bacd9564935c65f560e6aa841320e970bce02b",
+    "filename": "adapter_model.safetensors",
+    "destination": "colqwen2.5-v0.1/adapter_model.safetensors",
+    "sha256": "955d771b5cae99cdbac82d8960dd1731ff92a0d89a2f15475e418fb5dbae44ed"
+  },
+  {
+    "repo": "vidore/colqwen2.5-v0.2",
+    "revision": "dcbe8d9cede518bce830488364ba0e40c873645b",
+    "filename": "adapter_model.safetensors",
+    "destination": "vidore-v0.2/adapter_model.safetensors",
+    "sha256": "d8a0a2aa5b97160cde30d9fc26874e11f7c9dfce607fd3e2a02c91a09b17e697"
+  },
+  {
+    "repo": "Metric-AI/ColQwen2.5-3b-multilingual-v1.0",
+    "revision": "e2a1c05d053dcf4ad6e39b6c48ced9d6a81071f0",
+    "filename": "adapter_model.safetensors",
+    "destination": "metric-ai-3b/adapter_model.safetensors",
+    "sha256": "9232748e7d1c1c73f4e1071b5c44f47459121b8887e797fb9a167332f9ac7d65"
+  },
+  {
+    "repo": "tsystems/colqwen2.5-3b-multilingual-v1.0",
+    "revision": "d5bd3db7ca57a1de3dc862828f343904ca07efd9",
+    "filename": "adapter_model.safetensors",
+    "destination": "tsystems-3b/adapter_model.safetensors",
+    "sha256": "0c26583c535a9e42ff7f795d2adaa1c6fd64f991c7dadfccb31d7757d1427e12"
+  },
+  {
+    "repo": "nomic-ai/colnomic-embed-multimodal-3b",
+    "revision": "86627b4a9b0cade577851a70afa469084f9863a4",
+    "filename": "adapter_model.safetensors",
+    "destination": "colnomic-3b/adapter_model.safetensors",
+    "sha256": "af23b67a003f94075927e2ed853edc7498dd4e9353f9c75f88e45859811afdc3"
+  },
+  {
+    "repo": "vidore/arxivqa_test_subsampled",
+    "repo_type": "dataset",
+    "revision": "b8a106812c8682bab08935cf5d1b4566c82562de",
+    "filename": "data/test-00000-of-00001.parquet",
+    "destination": "datasets/arxivqa/test.parquet",
+    "sha256": "a45cb85bb49dce83b1beb851e312fe38179035151a55401a8801a2e53c1159d3"
+  },
+  {
+    "repo": "vidore/docvqa_test_subsampled",
+    "repo_type": "dataset",
+    "revision": "49bf8f13e13c41dd8cdb0cae5314e31c1da1e0d6",
+    "filename": "data/test-00000-of-00001.parquet",
+    "destination": "datasets/docvqa/test.parquet",
+    "sha256": "107326c08ad48c65d68b6aa6d83a57305949edf6ad568ced08094f0cbd5805d9"
+  },
+  {
+    "repo": "vidore/infovqa_test_subsampled",
+    "repo_type": "dataset",
+    "revision": "f793e830aaeae1ceb8a2df626fc555b3fd04d3db",
+    "filename": "data/test-00000-of-00001.parquet",
+    "destination": "datasets/infovqa/test.parquet",
+    "sha256": "6554ee2b6620ae6e3153853bbbd0474234c97e2147088e663e05cd0f72b52b2c"
+  },
+  {
+    "repo": "vidore/tabfquad_test_subsampled",
+    "repo_type": "dataset",
+    "revision": "16c8e633612fbda7400bfcbbc31d61a7534f580f",
+    "filename": "data/test-00000-of-00001.parquet",
+    "destination": "datasets/tabfquad/test.parquet",
+    "sha256": "cd52a0b2fe16463606b3c18d02ad1e8b6c62dcbaf516a34f108a8dacc2ceb2eb"
+  },
+  {
+    "repo": "vidore/tatdqa_test",
+    "repo_type": "dataset",
+    "revision": "b46fea43695e14697510104a3331d9e88683a416",
+    "destination": "datasets/tatdqa/test.parquet",
+    "sha256": "fcb74a257a52e648cb127cbdba8a763d526677682a06c8020f6e296e537fdd64",
+    "filenames": [
+      "data/test-00000-of-00002.parquet",
+      "data/test-00001-of-00002.parquet"
+    ],
+    "transform": "pyarrow 19.0.1 concat_tables, then default write_table in shard order"
+  },
+  {
+    "repo": "vidore/shiftproject_test",
+    "repo_type": "dataset",
+    "revision": "6e6223b3839a3f4e62d676e70a1b715ee520cc66",
+    "filename": "data/test-00000-of-00001.parquet",
+    "destination": "datasets/shiftproject/test.parquet",
+    "sha256": "109879fd1726e4da2a6302075a888251b72700087f0b94f62d1121a3b91cf00b"
+  },
+  {
+    "repo": "Qwen/Qwen2.5-VL-3B-Instruct",
+    "revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+    "filename": "LICENSE",
+    "destination": "qwen2.5-vl-3b/LICENSE",
+    "sha256": "b5c0e5cf74cf51af1ecbc4af597cfcd13fd9925611838884a681070838a14a50"
+  },
+  {
+    "repo": "Qwen/Qwen2.5-VL-3B-Instruct",
+    "revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+    "filename": "chat_template.json",
+    "destination": "qwen2.5-vl-3b/chat_template.json",
+    "sha256": "ad60d90252ed0b0705ba14e2d0ad0fec0beac1ea955642b54059b36052d8bc96"
+  },
+  {
+    "repo": "Qwen/Qwen2.5-VL-3B-Instruct",
+    "revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+    "filename": "config.json",
+    "destination": "qwen2.5-vl-3b/config.json",
+    "sha256": "7ed3eed5be6924cc800e8a5e53fc405c1aab1aaf36bad65c33403b36c56827f5"
+  },
+  {
+    "repo": "Qwen/Qwen2.5-VL-3B-Instruct",
+    "revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+    "filename": "generation_config.json",
+    "destination": "qwen2.5-vl-3b/generation_config.json",
+    "sha256": "533f191cc257b7de37a4fccd0a7a1706d75e1aa660f93efaa54e5a2a9f9aace9"
+  },
+  {
+    "repo": "Qwen/Qwen2.5-VL-3B-Instruct",
+    "revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+    "filename": "merges.txt",
+    "destination": "qwen2.5-vl-3b/merges.txt",
+    "sha256": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3"
+  },
+  {
+    "repo": "Qwen/Qwen2.5-VL-3B-Instruct",
+    "revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+    "filename": "model.safetensors.index.json",
+    "destination": "qwen2.5-vl-3b/model.safetensors.index.json",
+    "sha256": "c7dd78a4c6bea60b51332f1baf37b8f8124ecab2c35395a29a29825bf2619768"
+  },
+  {
+    "repo": "Qwen/Qwen2.5-VL-3B-Instruct",
+    "revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+    "filename": "preprocessor_config.json",
+    "destination": "qwen2.5-vl-3b/preprocessor_config.json",
+    "sha256": "f2058c716eef96ccaed1cc1e2d0c08306b62586d535b28d9d08e691b2fab7ca0"
+  },
+  {
+    "repo": "Qwen/Qwen2.5-VL-3B-Instruct",
+    "revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+    "filename": "tokenizer.json",
+    "destination": "qwen2.5-vl-3b/tokenizer.json",
+    "sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+  },
+  {
+    "repo": "Qwen/Qwen2.5-VL-3B-Instruct",
+    "revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+    "filename": "tokenizer_config.json",
+    "destination": "qwen2.5-vl-3b/tokenizer_config.json",
+    "sha256": "4abd3520120e266da84c0864fee064d1fb10806f02225911a47253dd38dc5f56"
+  },
+  {
+    "repo": "Qwen/Qwen2.5-VL-3B-Instruct",
+    "revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+    "filename": "vocab.json",
+    "destination": "qwen2.5-vl-3b/vocab.json",
+    "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+  },
+  {
+    "repo": "vidore/colqwen2.5-v0.1",
+    "revision": "d8bacd9564935c65f560e6aa841320e970bce02b",
+    "filename": "adapter_config.json",
+    "destination": "colqwen2.5-v0.1/adapter_config.json",
+    "sha256": "b6ee5afd9e64c44a4470fec9616e712d1025996342349460ee5b216088757d33"
+  },
+  {
+    "repo": "vidore/colqwen2.5-v0.2",
+    "revision": "dcbe8d9cede518bce830488364ba0e40c873645b",
+    "filename": "adapter_config.json",
+    "destination": "vidore-v0.2/adapter_config.json",
+    "sha256": "b19199f316cd17bb5198239e7d4d462657b694b1b386ef54486f32fd36495107"
+  },
+  {
+    "repo": "vidore/colqwen2.5-v0.2",
+    "revision": "dcbe8d9cede518bce830488364ba0e40c873645b",
+    "filename": "git_hash.txt",
+    "destination": "vidore-v0.2/git_hash.txt",
+    "sha256": "a626fba49e871c9b8d76b7c661658b60f9a7531547fda5cdda4c2d9620f8aec7"
+  },
+  {
+    "repo": "Metric-AI/ColQwen2.5-3b-multilingual-v1.0",
+    "revision": "e2a1c05d053dcf4ad6e39b6c48ced9d6a81071f0",
+    "filename": "adapter_config.json",
+    "destination": "metric-ai-3b/adapter_config.json",
+    "sha256": "28dafc08cf36ce46c3db6813ff9202bb95be7258c6a2a8d0e7375d21cdf8e107"
+  },
+  {
+    "repo": "Metric-AI/ColQwen2.5-3b-multilingual-v1.0",
+    "revision": "e2a1c05d053dcf4ad6e39b6c48ced9d6a81071f0",
+    "filename": "preprocessor_config.json",
+    "destination": "metric-ai-3b/preprocessor_config.json",
+    "sha256": "99ad46998408aacf171b9187c6c6d047d2f534b7abb7fc7995ddb58a5170d4de"
+  },
+  {
+    "repo": "Metric-AI/ColQwen2.5-3b-multilingual-v1.0",
+    "revision": "e2a1c05d053dcf4ad6e39b6c48ced9d6a81071f0",
+    "filename": "tokenizer_config.json",
+    "destination": "metric-ai-3b/tokenizer_config.json",
+    "sha256": "25e9ae66dda7f567787a1411aadf0cf9007b4932caa69178be013fc2eb035b45"
+  },
+  {
+    "repo": "tsystems/colqwen2.5-3b-multilingual-v1.0",
+    "revision": "d5bd3db7ca57a1de3dc862828f343904ca07efd9",
+    "filename": "adapter_config.json",
+    "destination": "tsystems-3b/adapter_config.json",
+    "sha256": "aba9ea0a9b395d7deafc563c59dfcac8718889a9c79482ef54469b1cf12a2d18"
+  },
+  {
+    "repo": "tsystems/colqwen2.5-3b-multilingual-v1.0",
+    "revision": "d5bd3db7ca57a1de3dc862828f343904ca07efd9",
+    "filename": "preprocessor_config.json",
+    "destination": "tsystems-3b/preprocessor_config.json",
+    "sha256": "1a427e12a15406a5c4701273c91a0b319528de5c78523ae5ba5329d86e5d5557"
+  },
+  {
+    "repo": "tsystems/colqwen2.5-3b-multilingual-v1.0",
+    "revision": "d5bd3db7ca57a1de3dc862828f343904ca07efd9",
+    "filename": "tokenizer_config.json",
+    "destination": "tsystems-3b/tokenizer_config.json",
+    "sha256": "4bf477cad6a30f330fcfe69bc8716d3da870a7e6983cc863e85b4ba22d357367"
+  },
+  {
+    "repo": "nomic-ai/colnomic-embed-multimodal-3b",
+    "revision": "86627b4a9b0cade577851a70afa469084f9863a4",
+    "filename": "adapter_config.json",
+    "destination": "colnomic-3b/adapter_config.json",
+    "sha256": "b6ee5afd9e64c44a4470fec9616e712d1025996342349460ee5b216088757d33"
+  },
+  {
+    "repo": "nomic-ai/colnomic-embed-multimodal-3b",
+    "revision": "86627b4a9b0cade577851a70afa469084f9863a4",
+    "filename": "preprocessor_config.json",
+    "destination": "colnomic-3b/preprocessor_config.json",
+    "sha256": "b1cd935bafddfb8df94f0a5e80bc55c0ed69fc7fd14e3909b6a49ac019cb3e02"
+  },
+  {
+    "repo": "nomic-ai/colnomic-embed-multimodal-3b",
+    "revision": "86627b4a9b0cade577851a70afa469084f9863a4",
+    "filename": "tokenizer_config.json",
+    "destination": "colnomic-3b/tokenizer_config.json",
+    "sha256": "e9b9fa64cc1437d664bb5a8539d29025ebd72c5ffa4bcb8f8cde9461984b20df"
+  },
+  {
+    "repo": "vidore/colqwen2.5-base",
+    "revision": "92908120384b7a2110c5beda3ab29cbdb2c08e49",
+    "filename": "model-00002-of-00002.safetensors",
+    "destination": "vidore-v0.2/base-shard2-header.bin",
+    "sha256": "1eef055fb49d9cec83c05e381832e9856392d95778436527398c7b1b0a889dad",
+    "bundled": "configs/projections/vidore-v0.2-base-shard2-header.bin"
+  },
+  {
+    "repo": "Metric-AI/colqwen2.5-3b-base",
+    "revision": "main",
+    "filename": "model-00002-of-00002.safetensors",
+    "destination": "metric-ai-3b/base_projection.json",
+    "sha256": "30026b5e8cb4b7af0532b191242bb525052f253e372de04b731de07287b24609",
+    "bundled": "configs/projections/metric-ai-3b.json"
+  },
+  {
+    "repo": "tsystems/colqwen2.5-3b-base",
+    "revision": "main",
+    "filename": "model-00002-of-00002.safetensors",
+    "destination": "tsystems-3b/base_projection.json",
+    "sha256": "dc00698321851dca41da1b689100fee0dae48d211c2f7aec9a6926fcf28a8daa",
+    "bundled": "configs/projections/tsystems-3b.json"
+  },
+  {
+    "repo": "vidore/colqwen2.5-base",
+    "revision": "92908120384b7a2110c5beda3ab29cbdb2c08e49",
+    "filename": "model-00002-of-00002.safetensors",
+    "destination": "colnomic-3b/base_projection.json",
+    "sha256": "f48c8a01501f6e886f075d76b63bce49b57943a0558271fdd06383699c1e1f0b",
+    "bundled": "configs/projections/colnomic-3b.json"
+  }
+]

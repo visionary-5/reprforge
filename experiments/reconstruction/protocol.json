@@ -1,0 +1,67 @@
+{
+  "id": "independent-endpoint-v1",
+  "status": "frozen-before-gpu-output",
+  "claim": "Target document representation equality and ordered ranking agreement on a bounded sample under a fixed processor contract.",
+  "pages": 200,
+  "selection": "Round-robin first unique image-byte SHA256 per collection in fixed collection order: 34/34/33/33/33/33. No outcomes used for selection.",
+  "queries": "Original RandomState(0) 30% holdouts from five collections; exclude Shift as in corrected pooled analysis; 1033 expected. Ranking gallery is ONLY the selected 200 pages.",
+  "max_pixels": 12845056,
+  "dtype": "bfloat16",
+  "image_batch_size": 1,
+  "query_batch_size": 32,
+  "source": {
+    "source": "vidore/colqwen2.5-v0.1@d8bacd9564935c65f560e6aa841320e970bce02b",
+    "adapter_sha256": "955d771b5cae99cdbac82d8960dd1731ff92a0d89a2f15475e418fb5dbae44ed",
+    "projection_sha256": "1eef055fb49d9cec83c05e381832e9856392d95778436527398c7b1b0a889dad"
+  },
+  "targets": {
+    "vidore-v0.2": {
+      "kind": "same-vendor data refresh",
+      "adapter_sha256": "d8a0a2aa5b97160cde30d9fc26874e11f7c9dfce607fd3e2a02c91a09b17e697",
+      "projection_sha256": "1eef055fb49d9cec83c05e381832e9856392d95778436527398c7b1b0a889dad",
+      "codecs": [
+        "bf16",
+        "int8_token",
+        "pca512_int8",
+        "pca256_int8",
+        "pca128_int8"
+      ]
+    },
+    "metric-ai-3b": {
+      "kind": "cross-vendor (Metric-AI ColQwen2.5-3B-multilingual)",
+      "adapter_sha256": "9232748e7d1c1c73f4e1071b5c44f47459121b8887e797fb9a167332f9ac7d65",
+      "projection_sha256": "30026b5e8cb4b7af0532b191242bb525052f253e372de04b731de07287b24609",
+      "codecs": [
+        "bf16",
+        "int8_token",
+        "pca512_int8",
+        "pca256_int8",
+        "pca128_int8"
+      ]
+    },
+    "tsystems-3b": {
+      "kind": "cross-vendor (T-Systems colqwen2.5-3b-multilingual)",
+      "adapter_sha256": "0c26583c535a9e42ff7f795d2adaa1c6fd64f991c7dadfccb31d7757d1427e12",
+      "projection_sha256": "dc00698321851dca41da1b689100fee0dae48d211c2f7aec9a6926fcf28a8daa",
+      "codecs": [
+        "pca256_int8"
+      ]
+    },
+    "colnomic-3b": {
+      "kind": "cross-vendor (Nomic colnomic-embed-multimodal-3b)",
+      "adapter_sha256": "af23b67a003f94075927e2ed853edc7498dd4e9353f9c75f88e45859811afdc3",
+      "projection_sha256": "f48c8a01501f6e886f075d76b63bce49b57943a0558271fdd06383699c1e1f0b",
+      "codecs": [
+        "pca256_int8"
+      ]
+    }
+  },
+  "processor": "Pinned base processor for all versions; vendor defaults are not tested. Persist input_ids, attention_mask, image_grid_thw and post-merger visual embeddings; reconstruct text embeddings and positions on target.",
+  "independence": "Separate subprocesses for source capture and each target. Target raw calls native full forward with newly processed pixels; replay reads stored states, never raw prefix tensors.",
+  "measurements": [
+    "per-page shape, finite check, equal elements, tensor equality, maximum absolute error",
+    "ordered top10 equality and set overlap with stable tie handling",
+    "paired raw page encoding and replay seconds including warm disk read, metadata reconstruction, transfers and output D2H; excludes model load, scoring, validation and serialization"
+  ],
+  "scope": "One A100, shared host, 200 source captures + 4x200 paired target endpoints; no fitting; approximately 30 GPU minutes plus load/scoring, contingent on page sizes."
+}

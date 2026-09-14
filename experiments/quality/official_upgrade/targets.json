@@ -1,0 +1,6 @@
+{
+  "colqwen2-v1.0": {
+    "adapter": "inputs/scratch/colqwen2-release-transition-v1/models/target",
+    "projection": "inputs/experiments/conditioned-transport-a100-20260815/models/colqwen2-base/custom_text_proj.safetensors"
+  }
+}

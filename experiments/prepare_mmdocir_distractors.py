@@ -6,7 +6,7 @@ import hashlib
 import json
 from pathlib import Path
 
-from verify_artifacts import sha256
+from support.files import sha256
 
 
 def main():
@@ -15,7 +15,7 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     manifest = json.loads((Path(__file__).parent /
-        "2026-09-07-pooled-gallery-upgrade-matrix-v1/mmdocir-distractors.json").read_text())
+        "quality/mmdocir-distractors.json").read_text())
     if args.output.exists():
         raise FileExistsError(args.output)
     if sha256(args.pages_parquet) != manifest["source_sha256"]:

@@ -1,0 +1,18 @@
+{
+  "vidore-v0.2": {
+    "adapter": "inputs/vidore-v0.2",
+    "projection": "inputs/vidore-v0.2/base-shard2-header.bin"
+  },
+  "metric-ai-3b": {
+    "adapter": "inputs/metric-ai-3b",
+    "projection": "inputs/metric-ai-3b/base_projection.json"
+  },
+  "tsystems-3b": {
+    "adapter": "inputs/tsystems-3b",
+    "projection": "inputs/tsystems-3b/base_projection.json"
+  },
+  "colnomic-3b": {
+    "adapter": "inputs/colnomic-3b",
+    "projection": "inputs/colnomic-3b/base_projection.json"
+  }
+}

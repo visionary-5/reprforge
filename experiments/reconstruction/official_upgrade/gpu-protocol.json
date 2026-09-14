@@ -1,0 +1,58 @@
+{
+  "protocol_id": "colqwen2-release-transition-gpu-v1",
+  "status": "frozen-after-cpu-gate-before-gpu-execution",
+  "promotion_evidence": {
+    "cpu_dependency_decision": "post_vision_replay_legal",
+    "source_revision": "38b8ebb6198e2704bc24fe0027b3743f25f03bfc",
+    "target_revision": "2b6ac8fb37f46a49e4841e599583d00ae8a20117"
+  },
+  "frozen_inputs": {
+    "dataset": "Energy qrel-closed 128-page slice used by prior ColQwen2 experiments",
+    "dataset_sha256": "26020259fe345652806f2a1a2a8de08b08bc85739a32e8a7bfc40b0130be7502",
+    "pages": 128,
+    "batch_size": 4,
+    "source_adapter_sha256": "1f26000fd1fbd64be94a32e99012afde7b375f8342bb54b7a7dd0c1dd0d57066",
+    "target_adapter_sha256": "fc856312174dc99a4c7f88a2c54d9590a3b3f5b5a86e2728d7138c7f4758c6d5",
+    "processor_sha256": "4ddb56e63fbb08cde866dde534c8e4d9fbd926df087be33ff7a74a32040432f6",
+    "base_shard_sha256": [
+      "994ac2b03f97de8bc647d0fe5eba2e4b632b3e28dc03574c29bdfc36cf47e1b9",
+      "92540d8353c8d226a589a3b179bdb33851c970ee2cc2ac7ba035f79425e7b833"
+    ],
+    "base_projection_sha256": "39f4ed6a2db7a43d8e7cd8b4365778efc642309c1c94315d2032a847f9ca9003",
+    "max_pixels": 602112,
+    "min_pixels": 3136
+  },
+  "methods": {
+    "raw_target": "Decode/process page images, execute the frozen base vision path, then execute the complete v1.0 decoder adapter and retrieval projection.",
+    "source_ir_to_target": "Load exact post-vision input states materialized under v0.1, then execute the complete v1.0 decoder adapter and retrieval projection.",
+    "source_ir_to_source_control": "Replay the same IR through v0.1 once to prove the old terminal index is genuinely invalidated by the successor release."
+  },
+  "measurement": {
+    "repeats": 3,
+    "order": [
+      [
+        "raw",
+        "replay"
+      ],
+      [
+        "replay",
+        "raw"
+      ],
+      [
+        "raw",
+        "replay"
+      ]
+    ],
+    "wall_time": "Same-process warm-worker measurement including raw decode/processor/vision or IR load/H2D, target decoder/projection, and full terminal D2H.",
+    "shared_setup_excluded": "Frozen hash verification, checkpoint loading, source-IR creation, and one-minibatch graph warmup are reported separately.",
+    "storage": "Exact IR bytes are diagnostic; no compact-IR or production-storage claim is permitted."
+  },
+  "gates": {
+    "target_equivalence": "Raw-target and source-IR-to-target outputs are tensor-identical on all pages, or maximum absolute error <= 1e-6.",
+    "terminal_invalidation": "At least 99% of source/target terminal elements differ and mean token cosine <= 0.999.",
+    "physical_payoff": "Replay saves at least 50% median target rebuild wall time and wins all three matched pairs.",
+    "scope": "Every run emits all 128 page tensors with a stable per-page shape.",
+    "storage_boundary": "Report IR amplification relative to raw compressed images and target float32 terminal vectors; storage does not silently pass."
+  },
+  "claim_boundary": "One official ColQwen2 successor transition, one 128-page Energy slice, one A100, warm local storage. Exact representation equality supports retrieval equality for this slice, but this is not a full-benchmark quality result or production-frequency estimate."
+}

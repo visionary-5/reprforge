@@ -1,0 +1,23 @@
+{
+  "id": "matched-full-collection-repeats-v1",
+  "status": "frozen-before-execution",
+  "claim": "Matched document-side reconstruction time, not physical index rebuild time.",
+  "setup": "Same frozen full-collection pages and source state bytes; same target, processor, A100, BF16, batch 1. Three fresh target processes; alternate raw/replay order by page and round.",
+  "rounds": 3,
+  "scope": "All 2840 frozen pages per round; 8520 paired page checks. Approximately 6\u201312 A100 hours including repeated model loading and validation, subject to shared host load. No new dataset or model family.",
+  "timing_includes": [
+    "page image-byte validation and image preprocessing for raw",
+    "saved-state hash verification and warm state read for replay",
+    "host/device transfer and synchronized target computation"
+  ],
+  "timing_excludes": [
+    "initial source state capture",
+    "model loading and static artifact verification",
+    "parquet dataset loading",
+    "query encoding and scoring",
+    "output serialization and physical index construction"
+  ],
+  "cache": "Natural warm state-read path; do not flush system caches or relabel as cold IO.",
+  "reporting": "Per-round totals and all three ratios; median and range across rounds. Pages are not repeated-run uncertainty samples. Log co-resident GPU processes.",
+  "failure_interpretation": "Preserve all unequal pages and all timing rounds. If variance or active competing load dominates, do not publish a single headline ratio; timing does not rescue a fidelity failure."
+}

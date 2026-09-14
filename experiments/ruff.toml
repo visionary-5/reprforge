@@ -1,5 +1,4 @@
-target-version = "py312"
-# Frozen experiment runners retain their original bytes for provenance.
-# Check undefined names and syntax; do not reformat historical measurement code.
+target-version = "py311"
+# Preserve numerical runners while checking syntax and unresolved names.
 [lint]
 select = ["F821", "F822", "F823", "E9"]

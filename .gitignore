@@ -40,7 +40,9 @@ paper/
 **/*.pt
 **/*.safetensors
 
-# Reconstructed outputs stay external or ignored; published reports use tables/.
+# Generated experiment outputs stay external or ignored.
 experiments/**/analysis-output/
 experiments/**/raw-output/
 inputs/
+
+._*

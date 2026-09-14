@@ -1,0 +1,26 @@
+{
+  "arxivqa": {
+    "parquet": "inputs/datasets/arxivqa/test.parquet",
+    "query_column": "query"
+  },
+  "docvqa": {
+    "parquet": "inputs/datasets/docvqa/test.parquet",
+    "query_column": "query"
+  },
+  "infovqa": {
+    "parquet": "inputs/datasets/infovqa/test.parquet",
+    "query_column": "query"
+  },
+  "tabfquad": {
+    "parquet": "inputs/datasets/tabfquad/test.parquet",
+    "query_column": "query"
+  },
+  "tatdqa": {
+    "parquet": "inputs/datasets/tatdqa/test.parquet",
+    "query_column": "query"
+  },
+  "shiftproject": {
+    "parquet": "inputs/datasets/shiftproject/test.parquet",
+    "query_column": "query"
+  }
+}
