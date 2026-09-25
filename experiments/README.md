@@ -1,8 +1,8 @@
 # Reproduce the experiments
 
 Install the [GPU environment](../docs/reproduction.md), prepare the public inputs,
-and run the relevant evaluation below. Outputs are produced by your execution;
-this repository does not distribute the authors' historical result bundles.
+and run the relevant evaluation below. New runs produce their own outputs. Selected historical summaries are supplied
+in the accompanying supplementary archive, outside Git; see the [paper-to-code map](../docs/paper-map.md) for coverage.
 
 | Directory | Evaluation |
 |---|---|
@@ -11,6 +11,8 @@ this repository does not distribute the authors' historical result bundles.
 | [reconstruction](reconstruction/) | Independent exactness checks and rebuild timing |
 | [storage](storage/) | BF16, INT8 and PCA storage–fidelity trade-offs |
 | [ablation](ablation/) | State design, target reconstruction and invalidation |
+| [paper](paper/) | Released-pair audit, architecture discovery and lifecycle |
+| [final_pass](final_pass/) | Complete manual interfaces, HR quality and validation timing |
 
 `support/` contains shared model and scoring utilities. Keep numerical settings,
 page selection, calibration splits, warmup and timing scope from the selected

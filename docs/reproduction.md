@@ -65,3 +65,55 @@ processor budgets and reference paths.
 - Proactive state retention and retrofit acquisition have different costs.
   Measure initial retention, transfers, serialization and writes separately
   when estimating deployment cost.
+
+## Recorded evidence without a GPU
+
+The selected records are distributed in the supplementary archive, outside this
+Git repository. Run the following commands from the unpacked supplement.
+
+Run `python scripts/summarize_records.py` for quality/timing aggregates and
+processor-fallback counts. Run `python scripts/check_paper_evidence.py` for the
+lifecycle arithmetic. Both use only standard-library Python and read the
+included records without modifying them.
+
+The optional plot/report analyzer requires NumPy and Matplotlib. It writes its
+output under the supplied root. To preserve the original evidence directory,
+copy `evidence/final-pass` to a new work directory first, then run:
+
+```sh
+python experiments/final_pass/analyze.py /data/reprforge-analysis
+```
+
+The directory passed above must contain the copied `quality-full`,
+`manual-qwen25-full`, and `manual-qwen3-full` directories.
+
+## Final paper configurations
+
+The earlier preparation command above prepares the independent reconstruction
+inputs. It does not prepare every input needed by the lifecycle and Qwen3 runs.
+Final-run templates use `${INPUTS}` and `${CODE}` placeholders:
+
+```sh
+python scripts/materialize_config.py experiments/paper/e2e/config.template.json /data/reprforge-inputs/e2e-config.json --inputs /data/reprforge-inputs
+python scripts/materialize_config.py experiments/final_pass/config.template.json /data/reprforge-inputs/final-config.json --inputs /data/reprforge-inputs
+python experiments/paper/e2e/e2e_rebuild.py --help
+```
+
+`materialize_config.py` resolves paths and refuses to overwrite its output; it
+neither downloads nor verifies model/data contents. The lifecycle corpus
+requires the specified rendered ViDoSeek pages and five ViDoRe v3 domains in
+addition to ViDoRe v1. The HR quality run also requires the matching corpus,
+query and qrel files. Public model revisions available in the records are
+listed in `configs/paper-model-revisions.json`; file hashes for the older
+independent-reconstruction input set are in its `sources.json`.
+
+Use separate Qwen2.5 and Qwen3 environments. The recorded inventories in
+`environments/` are provenance, not portable dependency locks. The Qwen3 2B
+probe additionally depends on producer/probe modules that are not distributed
+in this archive. The Qwen3 4B loader is included under `experiments/final_pass`.
+See the [coverage map](paper-map.md) before selecting an experiment.
+
+For the final generic runner, set `PYTHONPATH` to this archive's root so that
+`experiments.support` is importable. Use a new output directory for each run.
+Do not use the package inventories to replace one experiment's environment
+with another or treat CPU smoke tests as CUDA reproducibility checks.

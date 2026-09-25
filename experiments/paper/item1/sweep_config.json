@@ -1,0 +1,511 @@
+{
+  "corpus": "${INPUTS}/followup/e2e-full/corpus.json",
+  "families": {
+    "paligemma-mix448": {
+      "loader": "colpali",
+      "base": "${INPUTS}/models/colpaligemma-3b-mix-448-base-verified-b4d673f",
+      "processor": "${INPUTS}/models/colpaligemma-3b-mix-448-base-verified-b4d673f",
+      "source": {
+        "repo": "vidore/colpali-v1.1",
+        "path": "${INPUTS}/models/colpali-v1.1",
+        "kind": "adapter"
+      },
+      "targets": [
+        {
+          "repo": "vidore/colpali",
+          "path": "${INPUTS}/followup/models/vidore__colpali",
+          "kind": "adapter"
+        },
+        {
+          "repo": "vidore/colpali-hard-v1.1",
+          "path": "${INPUTS}/followup/models/vidore__colpali-hard-v1.1",
+          "kind": "adapter"
+        },
+        {
+          "repo": "vidore/colpali-v1.2",
+          "path": "${INPUTS}/followup/models/vidore__colpali-v1.2",
+          "kind": "adapter",
+          "base": "${INPUTS}/followup/models/vidore__colpaligemma-3b-pt-448-base",
+          "declared_base": "vidore/colpaligemma-3b-pt-448-base"
+        },
+        {
+          "repo": "Nayana-cognitivelab/exp-colpali-trained-hi-en-20k-lora",
+          "path": "${INPUTS}/followup/models/Nayana-cognitivelab__exp-colpali-trained-hi-en-20k-lora",
+          "kind": "adapter",
+          "declared_base": null
+        },
+        {
+          "repo": "Nayana-cognitivelab/colpali-trained-model",
+          "path": "${INPUTS}/followup/models/Nayana-cognitivelab__colpali-trained-model",
+          "kind": "adapter",
+          "declared_base": null
+        },
+        {
+          "repo": "Nayana-cognitivelab/exp-lora-colpali-trained-model-test2",
+          "path": "${INPUTS}/followup/models/Nayana-cognitivelab__exp-lora-colpali-trained-model-test2",
+          "kind": "adapter",
+          "declared_base": null
+        },
+        {
+          "repo": "Nayana-cognitivelab/colpali-trained-model-hi-10k",
+          "path": "${INPUTS}/followup/models/Nayana-cognitivelab__colpali-trained-model-hi-10k",
+          "kind": "adapter",
+          "declared_base": null
+        },
+        {
+          "repo": "Nayana-cognitivelab/exp-colpali-trained-hi-en-10k-lora",
+          "path": "${INPUTS}/followup/models/Nayana-cognitivelab__exp-colpali-trained-hi-en-10k-lora",
+          "kind": "adapter",
+          "declared_base": null
+        },
+        {
+          "repo": "Nayana-cognitivelab/exp-colpali-trained-en-20k-lora",
+          "path": "${INPUTS}/followup/models/Nayana-cognitivelab__exp-colpali-trained-en-20k-lora",
+          "kind": "adapter",
+          "declared_base": null
+        }
+      ]
+    },
+    "qwen25vl-3b": {
+      "loader": "colqwen25",
+      "base": "${INPUTS}/legacy-base/models/qwen2.5-vl-3b",
+      "processor": "${INPUTS}/legacy-base/models/qwen2.5-vl-3b",
+      "projection": "${INPUTS}/legacy-endpoint/models/colqwen2.5-v0.2/base-shard2-header.bin",
+      "common_max_pixels": 602112,
+      "source": {
+        "repo": "vidore/colqwen2.5-v0.1",
+        "path": "${INPUTS}/external/colqwen2.5-v0.1-d8bacd9",
+        "kind": "adapter",
+        "revision": "d8bacd9564935c65f560e6aa841320e970bce02b"
+      },
+      "targets": [
+        {
+          "repo": "vidore/colqwen2.5-v0.2",
+          "path": "${INPUTS}/followup/models/vidore__colqwen2.5-v0.2",
+          "kind": "adapter"
+        },
+        {
+          "repo": "Metric-AI/ColQwen2.5-3b-multilingual-v1.0",
+          "path": "${INPUTS}/external/third-party-adapters/metric-ai-3b",
+          "kind": "adapter",
+          "projection": "${INPUTS}/external/third-party-adapters/metric-ai-3b/base_projection.json"
+        },
+        {
+          "repo": "tsystems/colqwen2.5-3b-multilingual-v1.0",
+          "path": "${INPUTS}/external/third-party-adapters/tsystems-3b",
+          "kind": "adapter",
+          "projection": "${INPUTS}/external/third-party-adapters/tsystems-3b/base_projection.json"
+        },
+        {
+          "repo": "nomic-ai/colnomic-embed-multimodal-3b",
+          "path": "${INPUTS}/external/third-party-adapters/colnomic-3b",
+          "kind": "adapter",
+          "projection": "${INPUTS}/external/third-party-adapters/colnomic-3b/base_projection.json"
+        },
+        {
+          "repo": "smith-nathanh/colqwen2.5-3b-v1.3",
+          "path": "${INPUTS}/followup/models/smith-nathanh__colqwen2.5-3b-v1.3",
+          "kind": "adapter",
+          "declared_base": "vidore/colqwen2.5-base"
+        },
+        {
+          "repo": "ad6398/colqwen-mpdocvqa-21-4-1k",
+          "path": "${INPUTS}/followup/models/ad6398__colqwen-mpdocvqa-21-4-1k",
+          "kind": "adapter",
+          "declared_base": "vidore/colqwen2.5-base"
+        },
+        {
+          "repo": "santapo/finetune_colqwen",
+          "path": "${INPUTS}/followup/models/santapo__finetune_colqwen",
+          "kind": "adapter",
+          "declared_base": "vidore/colqwen2.5-base"
+        },
+        {
+          "repo": "quyet498/fine-turn-ColQwen2-vn",
+          "path": "${INPUTS}/followup/models/quyet498__fine-turn-ColQwen2-vn",
+          "kind": "adapter",
+          "declared_base": "vidore/colqwen2.5-base"
+        },
+        {
+          "repo": "quyet498/fine-turn-ColQwen2-vn-direct",
+          "path": "${INPUTS}/followup/models/quyet498__fine-turn-ColQwen2-vn-direct",
+          "kind": "adapter",
+          "declared_base": "vidore/colqwen2.5-base"
+        },
+        {
+          "repo": "vidore/colqwen2.5-v0.1",
+          "path": "${INPUTS}/followup/models/vidore__colqwen2.5-v0.1",
+          "kind": "adapter",
+          "revision": "4379ecfd4c9446836ad0ef4dd7390b1c748f68d8"
+        }
+      ]
+    },
+    "paligemma-pt448": {
+      "loader": "colpali",
+      "base": "${INPUTS}/followup/models/vidore__colpaligemma-3b-pt-448-base",
+      "processor": "${INPUTS}/followup/models/vidore__colpaligemma-3b-pt-448-base",
+      "source": {
+        "repo": "vidore/colpali-v1.2",
+        "path": "${INPUTS}/followup/models/vidore__colpali-v1.2",
+        "kind": "adapter"
+      },
+      "targets": [
+        {
+          "repo": "vidore/colpali-v1.3",
+          "path": "${INPUTS}/followup/models/vidore__colpali-v1.3",
+          "kind": "adapter",
+          "declared_base": "vidore/colpaligemma-3b-pt-448-base"
+        },
+        {
+          "repo": "impactframes/colpali-v1.2",
+          "path": "${INPUTS}/followup/models/impactframes__colpali-v1.2",
+          "kind": "adapter",
+          "declared_base": "vidore/colpaligemma-3b-pt-448-base"
+        },
+        {
+          "repo": "3sara/BD_10_epochs_colpali_v1.3",
+          "path": "${INPUTS}/followup/models/3sara__BD_10_epochs_colpali_v1.3",
+          "kind": "adapter",
+          "declared_base": "vidore/colpaligemma-3b-pt-448-base"
+        },
+        {
+          "repo": "zxb111/colpali-v1.3",
+          "path": "${INPUTS}/followup/models/zxb111__colpali-v1.3",
+          "kind": "adapter",
+          "declared_base": "vidore/colpaligemma-3b-pt-448-base"
+        },
+        {
+          "repo": "Hoseob17/colpali_repro",
+          "path": "${INPUTS}/followup/models/Hoseob17__colpali_repro",
+          "kind": "adapter",
+          "declared_base": "vidore/colpaligemma-3b-pt-448-base"
+        },
+        {
+          "repo": "smjain/finetune_colpali_smjain",
+          "path": "${INPUTS}/followup/models/smjain__finetune_colpali_smjain",
+          "kind": "adapter",
+          "declared_base": "vidore/colpaligemma-3b-pt-448-base"
+        },
+        {
+          "repo": "seeker317/finetune_colpali_v1_2_fm",
+          "path": "${INPUTS}/followup/models/seeker317__finetune_colpali_v1_2_fm",
+          "kind": "adapter",
+          "declared_base": "vidore/colpaligemma-3b-pt-448-base"
+        },
+        {
+          "repo": "chanyongp/colpali_finetuning",
+          "path": "${INPUTS}/followup/models/chanyongp__colpali_finetuning",
+          "kind": "adapter",
+          "declared_base": "vidore/colpaligemma-3b-pt-448-base"
+        },
+        {
+          "repo": "kotaro0918/Japanese_colpali",
+          "path": "${INPUTS}/followup/models/kotaro0918__Japanese_colpali",
+          "kind": "adapter",
+          "declared_base": "vidore/colpaligemma-3b-pt-448-base"
+        },
+        {
+          "repo": "Nugrahasetyaardi/colpali_test_1",
+          "path": "${INPUTS}/followup/models/Nugrahasetyaardi__colpali_test_1",
+          "kind": "adapter",
+          "declared_base": "vidore/colpaligemma-3b-pt-448-base"
+        },
+        {
+          "repo": "Nugrahasetyaardi/colpali_test_2",
+          "path": "${INPUTS}/followup/models/Nugrahasetyaardi__colpali_test_2",
+          "kind": "adapter",
+          "declared_base": "vidore/colpaligemma-3b-pt-448-base"
+        },
+        {
+          "repo": "gajanhcc/finetune_colpali_v1_2-own",
+          "path": "${INPUTS}/followup/models/gajanhcc__finetune_colpali_v1_2-own",
+          "kind": "adapter",
+          "declared_base": "vidore/colpaligemma-3b-pt-448-base"
+        },
+        {
+          "repo": "gajanhcc/finetune_colpali_v1_3-ownep3",
+          "path": "${INPUTS}/followup/models/gajanhcc__finetune_colpali_v1_3-ownep3",
+          "kind": "adapter",
+          "declared_base": "vidore/colpaligemma-3b-pt-448-base"
+        },
+        {
+          "repo": "gajanhcc/finetune_colpali_v1_2-ownep1.5",
+          "path": "${INPUTS}/followup/models/gajanhcc__finetune_colpali_v1_2-ownep1.5",
+          "kind": "adapter",
+          "declared_base": "vidore/colpaligemma-3b-pt-448-base"
+        },
+        {
+          "repo": "gajanhcc/finetune_colpali_v1_2-owng",
+          "path": "${INPUTS}/followup/models/gajanhcc__finetune_colpali_v1_2-owng",
+          "kind": "adapter",
+          "declared_base": "vidore/colpaligemma-3b-pt-448-base"
+        },
+        {
+          "repo": "gajanhcc/finetune_colpali_v1_2-ownep6",
+          "path": "${INPUTS}/followup/models/gajanhcc__finetune_colpali_v1_2-ownep6",
+          "kind": "adapter",
+          "declared_base": "vidore/colpaligemma-3b-pt-448-base"
+        },
+        {
+          "repo": "gajanhcc/finetune_colpali_v1_2-own400_steps",
+          "path": "${INPUTS}/followup/models/gajanhcc__finetune_colpali_v1_2-own400_steps",
+          "kind": "adapter",
+          "declared_base": "vidore/colpaligemma-3b-pt-448-base"
+        },
+        {
+          "repo": "gajanhcc/finetune_colpali_v1_2-ownep1",
+          "path": "${INPUTS}/followup/models/gajanhcc__finetune_colpali_v1_2-ownep1",
+          "kind": "adapter",
+          "declared_base": "vidore/colpaligemma-3b-pt-448-base"
+        },
+        {
+          "repo": "gajanhcc/finetune_colpali_v1_2-ownep1200steps",
+          "path": "${INPUTS}/followup/models/gajanhcc__finetune_colpali_v1_2-ownep1200steps",
+          "kind": "adapter",
+          "declared_base": "vidore/colpaligemma-3b-pt-448-base"
+        },
+        {
+          "repo": "DyuHo/colpali-entrep-vi-demo",
+          "path": "${INPUTS}/followup/models/DyuHo__colpali-entrep-vi-demo",
+          "kind": "adapter",
+          "declared_base": "vidore/colpaligemma-3b-pt-448-base"
+        }
+      ]
+    },
+    "qwen2vl-2b": {
+      "loader": "colqwen2",
+      "base": "${INPUTS}/followup/models/vidore__colqwen2-base",
+      "processor": "${INPUTS}/followup/models/vidore__colqwen2-base",
+      "common_max_pixels": 602112,
+      "source": {
+        "repo": "vidore/colqwen2-v0.1",
+        "path": "${INPUTS}/followup/models/vidore__colqwen2-v0.1",
+        "kind": "adapter"
+      },
+      "targets": [
+        {
+          "repo": "vidore/colqwen2-v1.0",
+          "path": "${INPUTS}/followup/models/vidore__colqwen2-v1.0",
+          "kind": "adapter",
+          "declared_base": "vidore/colqwen2-base"
+        },
+        {
+          "repo": "tsystems/colqwen2-2b-v1.0",
+          "path": "${INPUTS}/followup/models/tsystems__colqwen2-2b-v1.0",
+          "kind": "adapter",
+          "declared_base": "vidore/colqwen2-base"
+        },
+        {
+          "repo": "manu/colqwen2-alpha",
+          "path": "${INPUTS}/followup/models/manu__colqwen2-alpha",
+          "kind": "adapter",
+          "declared_base": "vidore/colqwen2-base"
+        },
+        {
+          "repo": "manu/colqwen2-5e",
+          "path": "${INPUTS}/followup/models/manu__colqwen2-5e",
+          "kind": "adapter",
+          "declared_base": "vidore/colqwen2-base"
+        },
+        {
+          "repo": "duongntd2/colqwen2-v1.0-classify-v1.1",
+          "path": "${INPUTS}/followup/models/duongntd2__colqwen2-v1.0-classify-v1.1",
+          "kind": "adapter",
+          "declared_base": "vidore/colqwen2-base"
+        },
+        {
+          "repo": "thoddnn/colqwen2-v1.0",
+          "path": "${INPUTS}/followup/models/thoddnn__colqwen2-v1.0",
+          "kind": "adapter",
+          "declared_base": "vidore/colqwen2-base"
+        },
+        {
+          "repo": "impactframes/colqwen2-v0.1",
+          "path": "${INPUTS}/followup/models/impactframes__colqwen2-v0.1",
+          "kind": "adapter",
+          "declared_base": "vidore/colqwen2-base"
+        },
+        {
+          "repo": "manu/colqwen2-v0.2",
+          "path": "${INPUTS}/followup/models/manu__colqwen2-v0.2",
+          "kind": "adapter",
+          "declared_base": "vidore/colqwen2-base"
+        },
+        {
+          "repo": "Oysiyl/colqwen_ufo",
+          "path": "${INPUTS}/followup/models/Oysiyl__colqwen_ufo",
+          "kind": "adapter",
+          "declared_base": "vidore/colqwen2-base"
+        },
+        {
+          "repo": "duongntd2/colqwen2-v1.0-classify-v1.2",
+          "path": "${INPUTS}/followup/models/duongntd2__colqwen2-v1.0-classify-v1.2",
+          "kind": "adapter",
+          "declared_base": "vidore/colqwen2-base"
+        },
+        {
+          "repo": "DungND1107/col_qwen_xtrloss_prunedv2_adapter",
+          "path": "${INPUTS}/followup/models/DungND1107__col_qwen_xtrloss_prunedv2_adapter",
+          "kind": "adapter",
+          "declared_base": "vidore/colqwen2-base"
+        },
+        {
+          "repo": "manu/colqwen2-ba64",
+          "path": "${INPUTS}/followup/models/manu__colqwen2-ba64",
+          "kind": "adapter",
+          "declared_base": "vidore/colqwen2-base"
+        },
+        {
+          "repo": "manu/colqwen2-highres",
+          "path": "${INPUTS}/followup/models/manu__colqwen2-highres",
+          "kind": "adapter",
+          "declared_base": "vidore/colqwen2-base"
+        },
+        {
+          "repo": "manu/colqwen2-hardneg-128-5e",
+          "path": "${INPUTS}/followup/models/manu__colqwen2-hardneg-128-5e",
+          "kind": "adapter",
+          "declared_base": "vidore/colqwen2-base"
+        },
+        {
+          "repo": "duongntd2/colqwen2-v1.0-classify",
+          "path": "${INPUTS}/followup/models/duongntd2__colqwen2-v1.0-classify",
+          "kind": "adapter",
+          "declared_base": "vidore/colqwen2-base"
+        },
+        {
+          "repo": "DungND1107/col_qwen_xtrloss_prunedv1_adapter",
+          "path": "${INPUTS}/followup/models/DungND1107__col_qwen_xtrloss_prunedv1_adapter",
+          "kind": "adapter",
+          "declared_base": "vidore/colqwen2-base"
+        },
+        {
+          "repo": "Hoseob17/repro_ColQwen2",
+          "path": "${INPUTS}/followup/models/Hoseob17__repro_ColQwen2",
+          "kind": "adapter",
+          "declared_base": "vidore/colqwen2-base"
+        },
+        {
+          "repo": "manu/colqwen2-0304",
+          "path": "${INPUTS}/followup/models/manu__colqwen2-0304",
+          "kind": "adapter",
+          "declared_base": "vidore/colqwen2-base"
+        },
+        {
+          "repo": "DungND1107/col_qwen_xtrloss_prunedv3_adapter",
+          "path": "${INPUTS}/followup/models/DungND1107__col_qwen_xtrloss_prunedv3_adapter",
+          "kind": "adapter",
+          "declared_base": "vidore/colqwen2-base"
+        },
+        {
+          "repo": "manu/colqwen2-infonce-0304",
+          "path": "${INPUTS}/followup/models/manu__colqwen2-infonce-0304",
+          "kind": "adapter",
+          "declared_base": "vidore/colqwen2-base"
+        },
+        {
+          "repo": "Hoseob17/ColQwen2",
+          "path": "${INPUTS}/followup/models/Hoseob17__ColQwen2",
+          "kind": "adapter",
+          "declared_base": "vidore/colqwen2-base"
+        },
+        {
+          "repo": "manu/colqwen2-v0.1-hf",
+          "path": "${INPUTS}/followup/models/manu__colqwen2-v0.1-hf",
+          "kind": "adapter",
+          "declared_base": "manu/colqwen2base-v0.1-hf"
+        },
+        {
+          "repo": "amaye15/colqwen2-1.0-alpha-inference",
+          "path": "${INPUTS}/followup/models/amaye15__colqwen2-1.0-alpha-inference",
+          "kind": "adapter",
+          "declared_base": "vidore/colqwen2-base"
+        },
+        {
+          "repo": "re-mind/colqwen2-1.0-alpha-inference",
+          "path": "${INPUTS}/followup/models/re-mind__colqwen2-1.0-alpha-inference",
+          "kind": "adapter",
+          "declared_base": "vidore/colqwen2-base"
+        },
+        {
+          "repo": "toxic-pandas/finetune_colqwen2-v1.0",
+          "path": "${INPUTS}/followup/models/toxic-pandas__finetune_colqwen2-v1.0",
+          "kind": "adapter",
+          "declared_base": "vidore/colqwen2-base"
+        },
+        {
+          "repo": "LeakyAbstraction/colqwen2-v1.0-lite",
+          "path": "${INPUTS}/followup/models/LeakyAbstraction__colqwen2-v1.0-lite",
+          "kind": "adapter",
+          "declared_base": "Qwen/Qwen2-VL-2B-Instruct"
+        },
+        {
+          "repo": "AOTELIANG/ESG_COLQWEN",
+          "path": "${INPUTS}/followup/models/AOTELIANG__ESG_COLQWEN",
+          "kind": "adapter",
+          "declared_base": "vidore/colqwen2-base"
+        },
+        {
+          "repo": "jjore/colqwen_lr2e4",
+          "path": "${INPUTS}/followup/models/jjore__colqwen_lr2e4",
+          "kind": "adapter",
+          "declared_base": "vidore/colqwen2-v1.0-hf"
+        },
+        {
+          "repo": "DungND1107/colqwen2_5_xtr_pruned",
+          "path": "${INPUTS}/followup/models/DungND1107__colqwen2_5_xtr_pruned",
+          "kind": "adapter",
+          "declared_base": "vidore/colqwen2-base"
+        }
+      ]
+    },
+    "idefics3-256m": {
+      "loader": "colidefics3",
+      "base": "${INPUTS}/followup/models/vidore__ColSmolVLM-Instruct-256M-base",
+      "processor": "${INPUTS}/followup/models/vidore__ColSmolVLM-Instruct-256M-base",
+      "source": {
+        "repo": "vidore/colSmol-256M",
+        "path": "${INPUTS}/followup/models/vidore__colSmol-256M",
+        "kind": "adapter"
+      },
+      "targets": [
+        {
+          "repo": "vijay-ravichander/colsmolvlm-256",
+          "path": "${INPUTS}/followup/models/vijay-ravichander__colsmolvlm-256",
+          "kind": "adapter",
+          "declared_base": null
+        },
+        {
+          "repo": "vijay-ravichander/ColSmol-256-Dis-500M-tues",
+          "path": "${INPUTS}/followup/models/vijay-ravichander__ColSmol-256-Dis-500M-tues",
+          "kind": "adapter",
+          "declared_base": null
+        },
+        {
+          "repo": "vijay-ravichander/ColSmol-256-Distill-500-thurs-big-run",
+          "path": "${INPUTS}/followup/models/vijay-ravichander__ColSmol-256-Distill-500-thurs-big-run",
+          "kind": "adapter",
+          "declared_base": null
+        },
+        {
+          "repo": "vijay-ravichander/colsmol-non-distill-8k",
+          "path": "${INPUTS}/followup/models/vijay-ravichander__colsmol-non-distill-8k",
+          "kind": "adapter",
+          "declared_base": null
+        },
+        {
+          "repo": "Nayana-cognitivelab/NayanaEmbed-ColSmol-256M-2500",
+          "path": "${INPUTS}/followup/models/Nayana-cognitivelab__NayanaEmbed-ColSmol-256M-2500",
+          "kind": "adapter",
+          "declared_base": null
+        },
+        {
+          "repo": "Nayana-cognitivelab/NayanaEmbed-ColSmol-256M-5544",
+          "path": "${INPUTS}/followup/models/Nayana-cognitivelab__NayanaEmbed-ColSmol-256M-5544",
+          "kind": "adapter",
+          "declared_base": null
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,746 @@
+[
+  {
+    "repo": "3sara/BD_10_epochs_colpali_v1.3",
+    "sha": "aaea11c9bdb2eaae074efee6c0d46af6bdc8f482",
+    "kind": "adapter",
+    "family": "paligemma-pt448"
+  },
+  {
+    "repo": "AOTELIANG/ESG_COLQWEN",
+    "sha": "74954dc85507f23dd0884ddf3fec865bcf19ab80",
+    "kind": "adapter",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "BloomBerry/colqwen2-1.0-hf-vllm",
+    "sha": "d1cf74684079817bdfdb79d18ce7b1f289187904",
+    "kind": "base-or-full",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "DungND1107/col_qwen_xtrloss_prunedv1_adapter",
+    "sha": "e6d53dcb475d7daa3cbcf27a3e5c0102e09f678c",
+    "kind": "adapter",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "DungND1107/col_qwen_xtrloss_prunedv2_adapter",
+    "sha": "273c7f0ff8a160100fb333a20bf4f3aa30af52ff",
+    "kind": "adapter",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "DungND1107/col_qwen_xtrloss_prunedv3_adapter",
+    "sha": "66d69277c57d8eda9e1e21151cf111362b5d8219",
+    "kind": "adapter",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "DungND1107/colqwen2_5_xtr_pruned",
+    "sha": "d87fe432f3307385b2667198c61d5638ef3a692e",
+    "kind": "adapter",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "DyuHo/colpali-entrep-vi-demo",
+    "sha": "0c217d99db51a493632179d786237b537b959ab8",
+    "kind": "adapter",
+    "family": "paligemma-pt448"
+  },
+  {
+    "repo": "Godota/colqwen2.5-base",
+    "sha": "02b86a8fa9811b525cd98425e349c8353e877fc9",
+    "kind": "merged",
+    "family": "qwen25vl-3b"
+  },
+  {
+    "repo": "Hoseob17/ColQwen2",
+    "sha": "59213b0e6414a7e5517b55c10d49d08abf02d615",
+    "kind": "adapter",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "Hoseob17/colpali_repro",
+    "sha": "80b53e8a20f17294e869e16d75ff070aa2a1e94e",
+    "kind": "adapter",
+    "family": "paligemma-pt448"
+  },
+  {
+    "repo": "Hoseob17/repro_ColQwen2",
+    "sha": "6a187a2909a6b8161e756025db5b0284ccf68fb0",
+    "kind": "adapter",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "LeakyAbstraction/colqwen2-v1.0-lite",
+    "sha": "dfdba11736e2943e073546734638bdba2eb4a857",
+    "kind": "adapter",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "Metric-AI/ColQwen2.5-3b-multilingual-v1.0",
+    "sha": "e2a1c05d053dcf4ad6e39b6c48ced9d6a81071f0",
+    "kind": "adapter",
+    "family": "qwen25vl-3b"
+  },
+  {
+    "repo": "Metric-AI/colqwen2.5-3b-base",
+    "sha": "12c62ce77b8a82368daec867fcdc8b9cea1ed149",
+    "kind": "merged",
+    "family": "qwen25vl-3b"
+  },
+  {
+    "repo": "Nayana-cognitivelab/NayanaEmbed-ColPali-v1.3-1500",
+    "sha": "97115b36a25c04adad18b0c53d691d7c54ef54f0",
+    "kind": "merged",
+    "family": "paligemma-pt448"
+  },
+  {
+    "repo": "Nayana-cognitivelab/NayanaEmbed-ColPali-v1.3-2772",
+    "sha": "bcaf4efa67c603b1c9b7c38ecdab52e1b99880c5",
+    "kind": "merged",
+    "family": "paligemma-pt448"
+  },
+  {
+    "repo": "Nayana-cognitivelab/NayanaEmbed-ColQwen2-v1.0-22langs-merged-6438",
+    "sha": "a01fe992ae69afa580665c8524164d0d151e6f37",
+    "kind": "merged",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "Nayana-cognitivelab/NayanaEmbed-ColQwen2-v1.0-3000",
+    "sha": "c5ee826ba07dfdcdb4dac23d61ae7d0f5c40a16e",
+    "kind": "merged",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "Nayana-cognitivelab/NayanaEmbed-ColQwen2-v1.0-6langs-colbert-merged-1430",
+    "sha": "49941ec73c1c8540c713ff44fb6053438af03ea8",
+    "kind": "merged",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "Nayana-cognitivelab/NayanaEmbed-ColSmol-256M-2500",
+    "sha": "cb66b885ffe33b719320e581eefdc31aeb6178ce",
+    "kind": "adapter",
+    "family": "idefics3-256m"
+  },
+  {
+    "repo": "Nayana-cognitivelab/NayanaEmbed-ColSmol-256M-5544",
+    "sha": "da50ce0a4d225bef867491ff93ade120e982da70",
+    "kind": "adapter",
+    "family": "idefics3-256m"
+  },
+  {
+    "repo": "Nayana-cognitivelab/colpali-trained-model",
+    "sha": "1c92b0c58c92b7874e710d9b9800a937fc675111",
+    "kind": "adapter",
+    "family": "paligemma-mix448"
+  },
+  {
+    "repo": "Nayana-cognitivelab/colpali-trained-model-hi-10k",
+    "sha": "353de2c39903161c5696a1d0183e74dc423347c8",
+    "kind": "adapter",
+    "family": "paligemma-mix448"
+  },
+  {
+    "repo": "Nayana-cognitivelab/exp-colpali-engine-merged-model",
+    "sha": "831f00da331bb067f3cb83ef1bc699ef97feefe6",
+    "kind": "merged",
+    "family": "paligemma-mix448"
+  },
+  {
+    "repo": "Nayana-cognitivelab/exp-colpali-merged-en-20k",
+    "sha": "cd38cbcf3170b9c62a3a61d205ca84b658eba708",
+    "kind": "merged",
+    "family": "paligemma-mix448"
+  },
+  {
+    "repo": "Nayana-cognitivelab/exp-colpali-merged-hi-en-10k",
+    "sha": "eabad632fcaacf1fbc2a0428950ddec3f6a8e01a",
+    "kind": "merged",
+    "family": "paligemma-mix448"
+  },
+  {
+    "repo": "Nayana-cognitivelab/exp-colpali-merged-hi-en-20k",
+    "sha": "c0b8fe4edafba81986e79f776f8a456768325868",
+    "kind": "merged",
+    "family": "paligemma-mix448"
+  },
+  {
+    "repo": "Nayana-cognitivelab/exp-colpali-merged-model-hi-10k",
+    "sha": "98abbcce8d60ce1fbfcf26535462b9b530898d7e",
+    "kind": "merged",
+    "family": "paligemma-mix448"
+  },
+  {
+    "repo": "Nayana-cognitivelab/exp-colpali-trained-en-20k-lora",
+    "sha": "ef0dbf29ee1ad1353a76583b5c43ddfdcd4b5b68",
+    "kind": "adapter",
+    "family": "paligemma-mix448"
+  },
+  {
+    "repo": "Nayana-cognitivelab/exp-colpali-trained-hi-en-10k-lora",
+    "sha": "8d12673f5492f4185eeea23adf297ec538cd3fda",
+    "kind": "adapter",
+    "family": "paligemma-mix448"
+  },
+  {
+    "repo": "Nayana-cognitivelab/exp-colpali-trained-hi-en-20k-lora",
+    "sha": "c84cada7750f12151d412ea7240dae1f269b5ec5",
+    "kind": "adapter",
+    "family": "paligemma-mix448"
+  },
+  {
+    "repo": "Nayana-cognitivelab/exp-lora-colpali-trained-model-test2",
+    "sha": "83d6fee9ea8a729e30e9ccbafacc0f2a19dba7b3",
+    "kind": "adapter",
+    "family": "paligemma-mix448"
+  },
+  {
+    "repo": "Nugrahasetyaardi/colpali_test_1",
+    "sha": "2c6b23a9f88cb485c2ff383803dca9beb17bad4b",
+    "kind": "adapter",
+    "family": "paligemma-pt448"
+  },
+  {
+    "repo": "Nugrahasetyaardi/colpali_test_2",
+    "sha": "da43bdbead00f1f48d3a4d9375544a3847cf4e27",
+    "kind": "adapter",
+    "family": "paligemma-pt448"
+  },
+  {
+    "repo": "Oysiyl/colqwen_ufo",
+    "sha": "564e9c27983dcc57ce04605d3f989d2b222ee766",
+    "kind": "adapter",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "PavloFesenko/colqwen2.5-v0.2-merged",
+    "sha": "2f6b20dac6ca7644207ac10ec111442e256901a9",
+    "kind": "base-or-full",
+    "family": "qwen25vl-3b"
+  },
+  {
+    "repo": "Qwen/Qwen2-VL-2B-Instruct",
+    "sha": "895c3a49bc3fa70a340399125c650a463535e71c",
+    "kind": "base-or-full",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "Qwen/Qwen2.5-VL-3B-Instruct",
+    "sha": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+    "kind": "base-or-full",
+    "family": "qwen25vl-3b"
+  },
+  {
+    "repo": "Sahil-Kabir/colqwen2.5-v0.2-hf",
+    "sha": "6a3a696dd7c801dbee4c417f19866da97d6af3da",
+    "kind": "base-or-full",
+    "family": "qwen25vl-3b"
+  },
+  {
+    "repo": "WaguyMZ/colqwen2.5-v0.2-merged",
+    "sha": "31a7fdfd9475c13aa5d146a5c45b0b488ab4d2c1",
+    "kind": "merged",
+    "family": "qwen25vl-3b"
+  },
+  {
+    "repo": "ad6398/colqwen-mpdocvqa-21-4-1k",
+    "sha": "d2f271ddbdbab7e1670e1ade7b5d003980651fe7",
+    "kind": "adapter",
+    "family": "qwen25vl-3b"
+  },
+  {
+    "repo": "akshayballal/colpali-merged",
+    "sha": "434921544b85f5154bd4735795a3b6137d811b7f",
+    "kind": "merged",
+    "family": "paligemma-mix448"
+  },
+  {
+    "repo": "amaye15/colqwen2-1.0-alpha-inference",
+    "sha": "566b0878d13b7f83b82a3990de438caeb6ff259b",
+    "kind": "adapter",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "chanyongp/colpali_finetuning",
+    "sha": "b6d984ea2c602d8284cdf102863d0964d9f46f09",
+    "kind": "adapter",
+    "family": "paligemma-pt448"
+  },
+  {
+    "repo": "cjkasbdkjnlakb/colqwen2.5-v0.2-merged",
+    "sha": "64e785aa50e1196af3ebdb22ec2a685a10114b9e",
+    "kind": "merged",
+    "family": "qwen25vl-3b"
+  },
+  {
+    "repo": "duongntd2/colqwen2-v1.0-classify",
+    "sha": "51d94b80e89d99566731ca1ecbf42910faa0d3a4",
+    "kind": "adapter",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "duongntd2/colqwen2-v1.0-classify-v1.1",
+    "sha": "bd5ebc6f1db4f099b5faacaf5dac3ee935e8635c",
+    "kind": "adapter",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "duongntd2/colqwen2-v1.0-classify-v1.2",
+    "sha": "75218dcd8c6b7b758d075650c64572ed61e72df5",
+    "kind": "adapter",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "gajanhcc/finetune_colpali_v1_2-own",
+    "sha": "b39d3bd69ad1072244aabfcadaf614820a76603c",
+    "kind": "adapter",
+    "family": "paligemma-pt448"
+  },
+  {
+    "repo": "gajanhcc/finetune_colpali_v1_2-own400_steps",
+    "sha": "ac798e566174052204b47e0f536055890889ff03",
+    "kind": "adapter",
+    "family": "paligemma-pt448"
+  },
+  {
+    "repo": "gajanhcc/finetune_colpali_v1_2-ownep1",
+    "sha": "5d139a42212fa0ca92bfce7352888e17e13c1d14",
+    "kind": "adapter",
+    "family": "paligemma-pt448"
+  },
+  {
+    "repo": "gajanhcc/finetune_colpali_v1_2-ownep1.5",
+    "sha": "b7aa67ed2617d0b7e12251523017e09ca910e8e5",
+    "kind": "adapter",
+    "family": "paligemma-pt448"
+  },
+  {
+    "repo": "gajanhcc/finetune_colpali_v1_2-ownep1200steps",
+    "sha": "94fc117acc2ccb0155417e51de132d0cdc61bd38",
+    "kind": "adapter",
+    "family": "paligemma-pt448"
+  },
+  {
+    "repo": "gajanhcc/finetune_colpali_v1_2-ownep6",
+    "sha": "a3ee32d1051d7bcca16895ebafaa5a271fe571b2",
+    "kind": "adapter",
+    "family": "paligemma-pt448"
+  },
+  {
+    "repo": "gajanhcc/finetune_colpali_v1_2-owng",
+    "sha": "892fd591f7387129be7875ff1d7551689d4ed101",
+    "kind": "adapter",
+    "family": "paligemma-pt448"
+  },
+  {
+    "repo": "gajanhcc/finetune_colpali_v1_3-ownep3",
+    "sha": "0ec6b784cd2ef0ed4e6f8c9c91a06fbc76e9ecc6",
+    "kind": "adapter",
+    "family": "paligemma-pt448"
+  },
+  {
+    "repo": "impactframes/colpali-v1.2",
+    "sha": "6de522d24105ff6b838b2baa73e118275675d59b",
+    "kind": "adapter",
+    "family": "paligemma-pt448"
+  },
+  {
+    "repo": "impactframes/colqwen2-v0.1",
+    "sha": "d0424b11cd67de1127a9d7ef6d9cd3fc89bc4f30",
+    "kind": "adapter",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "jjore/colqwen_lr2e4",
+    "sha": "9435f51fa5e5e06e4f00c15f87df517db8efe418",
+    "kind": "adapter",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "kotaro0918/Japanese_colpali",
+    "sha": "b8b4873d2518243c9ac6665123a1e52dd5c4c839",
+    "kind": "adapter",
+    "family": "paligemma-pt448"
+  },
+  {
+    "repo": "manu/colqwen2-0304",
+    "sha": "b98abdab07a2f4135d8e59d50e811e3bd532bbe3",
+    "kind": "adapter",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "manu/colqwen2-5e",
+    "sha": "a45c0b5509a07d2433ed031f47cb56c6dd23de95",
+    "kind": "adapter",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "manu/colqwen2-alpha",
+    "sha": "bf461d4a22a71eb99dd5d2dd77fdf7dfac72fe09",
+    "kind": "adapter",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "manu/colqwen2-ba64",
+    "sha": "cedf54fdf083efad102e83aff522c425a49dc3fd",
+    "kind": "adapter",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "manu/colqwen2-hardneg-128-5e",
+    "sha": "4841ea19e43101537c62fe9274eb6414dfe3d213",
+    "kind": "adapter",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "manu/colqwen2-highres",
+    "sha": "c6d1fb403fdbd901d309f81dfda28df25dfe87d6",
+    "kind": "adapter",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "manu/colqwen2-infonce-0304",
+    "sha": "1fcb528b096c5f50a3a7ca5f5f4a5097b7bdb969",
+    "kind": "adapter",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "manu/colqwen2-v0.1-hf",
+    "sha": "94e507cf488ccd381967374b0415a6eabf65f4d9",
+    "kind": "adapter",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "manu/colqwen2-v0.2",
+    "sha": "1c581317ee213b6141903f6fa3cac70d2e9ae23a",
+    "kind": "adapter",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "manu/colqwen2base-v0.1-hf",
+    "sha": "31bc9b21db6ae7eee02f7ba6ebc9f4133f7737b5",
+    "kind": "merged",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "michaelfeil/colqwen2-v0.1",
+    "sha": "abd4498fb656e0b2be9fac824c1a91ebe12e662b",
+    "kind": "merged",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "nomic-ai/colnomic-embed-multimodal-3b",
+    "sha": "86627b4a9b0cade577851a70afa469084f9863a4",
+    "kind": "adapter",
+    "family": "qwen25vl-3b"
+  },
+  {
+    "repo": "ns20001/colqwen2-v1.0-hf",
+    "sha": "1ca366058a766689cb9b712ddd0babf01bb5d909",
+    "kind": "base-or-full",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "qnguyen3/colnomic-embed-multimodal-3b-hf",
+    "sha": "ba21d7c89fbd001391d29592cfd1848520900453",
+    "kind": "base-or-full",
+    "family": "qwen25vl-3b"
+  },
+  {
+    "repo": "qnguyen3/colnomic-embed-multimodal-3b-merged",
+    "sha": "a898c77cd77ca20a1e7db5c8de637f91f79c2ca8",
+    "kind": "merged",
+    "family": "qwen25vl-3b"
+  },
+  {
+    "repo": "qnguyen3/colqwen2_5-v0.2-hf",
+    "sha": "adffb19999a0f658d544d2b0ebbbcadc73e4dfc4",
+    "kind": "base-or-full",
+    "family": "qwen25vl-3b"
+  },
+  {
+    "repo": "quyet498/fine-turn-ColQwen2-vn",
+    "sha": "861105f1cf0bd1ca75f65ba4ab463ba90d3c472d",
+    "kind": "adapter",
+    "family": "qwen25vl-3b"
+  },
+  {
+    "repo": "quyet498/fine-turn-ColQwen2-vn-direct",
+    "sha": "49e89d1c8770d962c825ef4005373dd7f683516d",
+    "kind": "adapter",
+    "family": "qwen25vl-3b"
+  },
+  {
+    "repo": "re-mind/colqwen2-1.0-alpha-inference",
+    "sha": "4b2d0b068fcda54ac63368c6873a4f208e6e65bb",
+    "kind": "adapter",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "santapo/finetune_colqwen",
+    "sha": "f411372c95e8e71ac227aa5c807d4faade00e08a",
+    "kind": "adapter",
+    "family": "qwen25vl-3b"
+  },
+  {
+    "repo": "seeker317/finetune_colpali_v1_2_fm",
+    "sha": "d590608eeb09ffec92973cf297a8b2b44a1efdf9",
+    "kind": "adapter",
+    "family": "paligemma-pt448"
+  },
+  {
+    "repo": "simon-artzet/colqwen2.5-v0.2-merged",
+    "sha": "fdbd0528dfeb33c0af790465f4b0226b75266e5f",
+    "kind": "merged",
+    "family": "qwen25vl-3b"
+  },
+  {
+    "repo": "smith-nathanh/colqwen2.5-3b-v1.3",
+    "sha": "118cda5ffeb93c1cce490d3636ff2f6092ec8743",
+    "kind": "adapter",
+    "family": "qwen25vl-3b"
+  },
+  {
+    "repo": "smjain/finetune_colpali_smjain",
+    "sha": "a570e01fcc686ad95955931653e67599e266f189",
+    "kind": "adapter",
+    "family": "paligemma-pt448"
+  },
+  {
+    "repo": "tech9-ai/colpali-v1.3-hf",
+    "sha": "9931aed23c89e0dab2d9f60034f48000404bc3fe",
+    "kind": "base-or-full",
+    "family": "paligemma-pt448"
+  },
+  {
+    "repo": "thoddnn/colqwen2-v1.0",
+    "sha": "9ff3c7cb67069474a626a627c034db49d8dfb3d0",
+    "kind": "adapter",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "tomaarsen/colpali-v1.3-hf-st",
+    "sha": "12e740739a5a22d23b1636d3e6e868c1b2c91b9a",
+    "kind": "base-or-full",
+    "family": "paligemma-pt448"
+  },
+  {
+    "repo": "tomaarsen/multivector-colqwen2-v1.0-hf-docqa-energy",
+    "sha": "ffd25875874db5d3517dc8f7ab089fe50d7d5f52",
+    "kind": "base-or-full",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "toxic-pandas/finetune_colqwen2-v1.0",
+    "sha": "cf1c17989d113706cbd1d5de8ad46e07e99d500d",
+    "kind": "adapter",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "tsystems/colqwen2-2b-v1.0",
+    "sha": "3b6af6590dd95d5a97e135d4cde3f5bc7a71d07c",
+    "kind": "adapter",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "tsystems/colqwen2-2b-v1.0-merged",
+    "sha": "01bd43f3f0b68c300757fb80f99fe5b25505e2ad",
+    "kind": "merged",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "tsystems/colqwen2.5-3b-base",
+    "sha": "355d4a3a84c21053795571f20a50e7fbd7c53994",
+    "kind": "merged",
+    "family": "qwen25vl-3b"
+  },
+  {
+    "repo": "tsystems/colqwen2.5-3b-multilingual-v1.0",
+    "sha": "d5bd3db7ca57a1de3dc862828f343904ca07efd9",
+    "kind": "adapter",
+    "family": "qwen25vl-3b"
+  },
+  {
+    "repo": "tsystems/colqwen2.5-3b-multilingual-v1.0-merged",
+    "sha": "db0d27eb032de3fa5bcd626a6558e7a560a2beb8",
+    "kind": "merged",
+    "family": "qwen25vl-3b"
+  },
+  {
+    "repo": "vidore/ColSmolVLM-Instruct-256M-base",
+    "sha": "99ca96f1f6b95b3a69e6abef74a2416cb738fed0",
+    "kind": "full",
+    "family": "idefics3-256m"
+  },
+  {
+    "repo": "vidore/colSmol-256M",
+    "sha": "c79b633e17e060cc109b11aa2bf92a1517d3bd6f",
+    "kind": "adapter",
+    "family": "idefics3-256m"
+  },
+  {
+    "repo": "vidore/colpali",
+    "sha": "7754422bfa37f8e3cd771e13d4d7f07de3103c95",
+    "kind": "adapter",
+    "family": "paligemma-mix448"
+  },
+  {
+    "repo": "vidore/colpali-duo-base",
+    "sha": "f659dd12fd30ca3656f72aa127e84e8d63bfa78e",
+    "kind": "merged",
+    "family": "paligemma-mix448"
+  },
+  {
+    "repo": "vidore/colpali-hard-v1.1",
+    "sha": "e33e63c57ee63a7cd27f7add5c0f0cff0dfe7ad6",
+    "kind": "adapter",
+    "family": "paligemma-mix448"
+  },
+  {
+    "repo": "vidore/colpali-v1.1",
+    "sha": "855a60dd9e466987f27c385609710152f8868f67",
+    "kind": "adapter",
+    "family": "paligemma-mix448"
+  },
+  {
+    "repo": "vidore/colpali-v1.2",
+    "sha": "6e6cf48566f6fbb8eb429a4bf90f39006d703317",
+    "kind": "adapter",
+    "family": "paligemma-pt448"
+  },
+  {
+    "repo": "vidore/colpali-v1.2-hf",
+    "sha": "3c712e95d5557c4d72a4107659cee01a40c1ece6",
+    "kind": "base-or-full",
+    "family": "paligemma-pt448"
+  },
+  {
+    "repo": "vidore/colpali-v1.2-merged",
+    "sha": "cd3977f763d2495ec7cfb605fb9f5aec65330509",
+    "kind": "merged",
+    "family": "paligemma-pt448"
+  },
+  {
+    "repo": "vidore/colpali-v1.3",
+    "sha": "b5c6dd62125326e6f0b540c1f7b36e901cdc0a11",
+    "kind": "adapter",
+    "family": "paligemma-pt448"
+  },
+  {
+    "repo": "vidore/colpali-v1.3-hf",
+    "sha": "133a9eb02947310513f52f8f0d39d622e0eab8dc",
+    "kind": "base-or-full",
+    "family": "paligemma-pt448"
+  },
+  {
+    "repo": "vidore/colpali-v1.3-merged",
+    "sha": "c24894ff88e82f6e11d92e89a62572d324969bbc",
+    "kind": "merged",
+    "family": "paligemma-pt448"
+  },
+  {
+    "repo": "vidore/colpaligemma-3b-mix-448-base",
+    "sha": "6ff0d944ea09c3ead97d2bc57427e3d4f01d192f",
+    "kind": "merged",
+    "family": "paligemma-mix448"
+  },
+  {
+    "repo": "vidore/colpaligemma-3b-pt-448-base",
+    "sha": "30ab955d073de4a91dc5a288e8c97226647e3e5a",
+    "kind": "merged",
+    "family": "paligemma-pt448"
+  },
+  {
+    "repo": "vidore/colqwen2-base",
+    "sha": "9fe8a713422a7cb4ef79ca77a09b381ee2243101",
+    "kind": "merged",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "vidore/colqwen2-v0.1",
+    "sha": "38b8ebb6198e2704bc24fe0027b3743f25f03bfc",
+    "kind": "adapter",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "vidore/colqwen2-v0.1-merged",
+    "sha": "3b929c914c5b0644fa6888189cbc70570344586a",
+    "kind": "merged",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "vidore/colqwen2-v1.0",
+    "sha": "2b6ac8fb37f46a49e4841e599583d00ae8a20117",
+    "kind": "adapter",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "vidore/colqwen2-v1.0-hf",
+    "sha": "ddc07d2317c80f75fc742b7362ee9ad1912908f9",
+    "kind": "base-or-full",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "vidore/colqwen2-v1.0-merged",
+    "sha": "8076c402380ee60b54663fbfdea2f6a9feb8ee03",
+    "kind": "merged",
+    "family": "qwen2vl-2b"
+  },
+  {
+    "repo": "vidore/colqwen2.5-base",
+    "sha": "92908120384b7a2110c5beda3ab29cbdb2c08e49",
+    "kind": "merged",
+    "family": "qwen25vl-3b"
+  },
+  {
+    "repo": "vidore/colqwen2.5-v0.1",
+    "sha": "4379ecfd4c9446836ad0ef4dd7390b1c748f68d8",
+    "kind": "adapter",
+    "family": "qwen25vl-3b"
+  },
+  {
+    "repo": "vidore/colqwen2.5-v0.2",
+    "sha": "dcbe8d9cede518bce830488364ba0e40c873645b",
+    "kind": "adapter",
+    "family": "qwen25vl-3b"
+  },
+  {
+    "repo": "vijay-ravichander/ColSmol-256-Dis-500M-tues",
+    "sha": "b28de0dd678ecd148bf443dc9ef3615dbf4e0aee",
+    "kind": "adapter",
+    "family": "idefics3-256m"
+  },
+  {
+    "repo": "vijay-ravichander/ColSmol-256-Distill-500-thurs-big-run",
+    "sha": "d306b0758caa02e9cf0ae8f852889edf2cd11f5b",
+    "kind": "adapter",
+    "family": "idefics3-256m"
+  },
+  {
+    "repo": "vijay-ravichander/colsmol-non-distill-8k",
+    "sha": "2e8f47d2c278dc9501eb3bede9da1d2e56e7d78c",
+    "kind": "adapter",
+    "family": "idefics3-256m"
+  },
+  {
+    "repo": "vijay-ravichander/colsmolvlm-256",
+    "sha": "5874651eedf0cda2d43ae12ea1dd7174f72ba97d",
+    "kind": "adapter",
+    "family": "idefics3-256m"
+  },
+  {
+    "repo": "yasyf/colnomic-embed-multimodal-3b-merged",
+    "sha": "77340422c90214068eaa15372d7e1cd39e224bc5",
+    "kind": "merged",
+    "family": "qwen25vl-3b"
+  },
+  {
+    "repo": "zxb111/colpali-v1.3",
+    "sha": "ef380e2bfb5b1cf8c7f834ff193b517ee16fb80a",
+    "kind": "adapter",
+    "family": "paligemma-pt448"
+  }
+]

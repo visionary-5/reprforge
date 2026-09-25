@@ -1,4 +1,4 @@
-"""ReprForge: semantic recompilation cuts for versioned late-interaction indexes.
+"""ReprForge: validated intermediate-state reuse for retriever upgrades.
 
 Public surface, one module per concern:
 

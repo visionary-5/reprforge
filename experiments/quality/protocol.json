@@ -1,7 +1,7 @@
 {
   "protocol_id": "pooled-gallery-upgrade-matrix-v1",
   "status": "frozen-before-gpu-output",
-  "motivation": "Stage 3 review and the author agree that 150-300 page galleries and a same-vendor LoRA refresh compress every delta into +-0.02 nDCG. This experiment evaluates the same routes on one pooled cross-collection gallery of about 5,000 pages, against four real upgrades of one deployed adapter (one same-vendor, three cross-vendor), with external baselines: stale index (no-op), Drift-Adapter style compatibility bridges (Procrustes, affine ridge), gradual hot-refresh re-encoding at matched GPU budget, full re-encode (upper bound), and composition with hierarchical token pooling (Clavie et al.).",
+  "motivation": "This experiment evaluates the same routes on one pooled cross-collection gallery of about 5,000 pages, against four real upgrades of one deployed adapter (one same-vendor, three cross-vendor), with external baselines: stale index (no-op), Drift-Adapter style compatibility bridges (Procrustes, affine ridge), gradual hot-refresh re-encoding at matched GPU budget, full re-encode (upper bound), and composition with hierarchical token pooling (Clavie et al.).",
   "deployed": {
     "source": "vidore/colqwen2.5-v0.1@d8bacd9564935c65f560e6aa841320e970bce02b",
     "adapter_sha256": "955d771b5cae99cdbac82d8960dd1731ff92a0d89a2f15475e418fb5dbae44ed",

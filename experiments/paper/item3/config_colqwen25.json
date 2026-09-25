@@ -1,0 +1,82 @@
+{
+ "base_model": "${INPUTS}/legacy-base/models/qwen2.5-vl-3b",
+ "processor_model": "${INPUTS}/legacy-base/models/qwen2.5-vl-3b",
+ "max_pixels": 602112,
+ "source": {
+  "adapter": "${INPUTS}/external/colqwen2.5-v0.1-d8bacd9",
+  "projection": "${INPUTS}/legacy-endpoint/models/colqwen2.5-v0.2/base-shard2-header.bin"
+ },
+ "targets": {
+  "vidore-v0.2": {
+   "adapter": "${INPUTS}/legacy-endpoint/models/colqwen2.5-v0.2",
+   "projection": "${INPUTS}/legacy-endpoint/models/colqwen2.5-v0.2/base-shard2-header.bin"
+  },
+  "metric-ai-3b": {
+   "adapter": "${INPUTS}/external/third-party-adapters/metric-ai-3b",
+   "projection": "${INPUTS}/external/third-party-adapters/metric-ai-3b/base_projection.json"
+  }
+ },
+ "collections": [
+  {
+   "name": "arxivqa",
+   "parquet": "${INPUTS}/scratch/independent-endpoint-20260910-v1/input-cache/datasets--vidore--arxivqa_test_subsampled/snapshots/b8a106812c8682bab08935cf5d1b4566c82562de/data/test-00000-of-00001.parquet",
+   "image_column": "image"
+  },
+  {
+   "name": "docvqa",
+   "parquet": "${INPUTS}/scratch/independent-endpoint-20260910-v1/input-cache/datasets--vidore--docvqa_test_subsampled/snapshots/49bf8f13e13c41dd8cdb0cae5314e31c1da1e0d6/data/test-00000-of-00001.parquet",
+   "image_column": "image"
+  },
+  {
+   "name": "infovqa",
+   "parquet": "${INPUTS}/scratch/independent-endpoint-20260910-v1/input-cache/datasets--vidore--infovqa_test_subsampled/snapshots/f793e830aaeae1ceb8a2df626fc555b3fd04d3db/data/test-00000-of-00001.parquet",
+   "image_column": "image"
+  },
+  {
+   "name": "tabfquad",
+   "parquet": "${INPUTS}/external/datasets/tabfquad_test_subsampled/data/test-00000-of-00001.parquet",
+   "image_column": "image"
+  },
+  {
+   "name": "tatdqa",
+   "parquet": "${INPUTS}/external/datasets/tatdqa_test/data/tatdqa_test.parquet",
+   "image_column": "image"
+  },
+  {
+   "name": "shiftproject",
+   "parquet": "${INPUTS}/external/datasets/shiftproject_test/data/test-00000-of-00001.parquet",
+   "image_column": "image"
+  },
+  {
+   "name": "vidoseek",
+   "parquet": "${INPUTS}/vidoseek-e91a92b/prepared/complete-200dpi-q95-pymupdf-v1/pages.parquet",
+   "image_column": "image_binary"
+  },
+  {
+   "name": "vidore_v3_computer_science",
+   "parquet_glob": "${INPUTS}/vidore-official-a70f23a/data/vidore_v3_computer_science/corpus/*.parquet",
+   "image_column": "image"
+  },
+  {
+   "name": "vidore_v3_finance_en",
+   "parquet_glob": "${INPUTS}/vidore-official-a70f23a/data/vidore_v3_finance_en/corpus/*.parquet",
+   "image_column": "image"
+  },
+  {
+   "name": "vidore_v3_hr",
+   "parquet_glob": "${INPUTS}/vidore-official-a70f23a/data/vidore_v3_hr/corpus/*.parquet",
+   "image_column": "image"
+  },
+  {
+   "name": "vidore_v3_industrial",
+   "parquet_glob": "${INPUTS}/vidore-official-a70f23a/data/vidore_v3_industrial/corpus/*.parquet",
+   "image_column": "image"
+  },
+  {
+   "name": "vidore_v3_pharmaceuticals",
+   "parquet_glob": "${INPUTS}/vidore-official-a70f23a/data/vidore_v3_pharmaceuticals/corpus/*.parquet",
+   "image_column": "image"
+  }
+ ],
+ "corpus": "${INPUTS}/followup/e2e-full/corpus.json"
+}

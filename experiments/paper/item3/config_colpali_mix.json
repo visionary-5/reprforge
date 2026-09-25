@@ -1,0 +1,6 @@
+{"base": "${INPUTS}/models/colpaligemma-3b-mix-448-base-verified-b4d673f",
+ "processor": "${INPUTS}/models/colpaligemma-3b-mix-448-base-verified-b4d673f",
+ "source": "${INPUTS}/models/colpali-v1.1",
+ "targets": {"colpali-v1.0": "${INPUTS}/followup/models/vidore__colpali",
+             "colpali-hard-v1.1": "${INPUTS}/followup/models/vidore__colpali-hard-v1.1"},
+ "corpus": "${INPUTS}/followup/e2e-full/corpus.json"}

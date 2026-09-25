@@ -1,7 +1,7 @@
 {
   "protocol_id": "colqwen2-pooled-upgrade-v1",
   "status": "frozen-before-gpu-output",
-  "motivation": "Re-review critique: the headline ColQwen2.5 v0.1->v0.2 transition is replayable only after pinning the released processor. ColQwen2 v0.1->v1.0 is the one official release pair whose two versions ship the same base and the same processor (max_pixels 602,112 in both adapter packages), so it is a public upgrade that is legal exactly as released. This run repeats the pooled-gallery upgrade matrix for it under the released contract.",
+  "motivation": "The ColQwen2.5 v0.1->v0.2 transition is replayable only after pinning the released processor. ColQwen2 v0.1->v1.0 is the one official release pair whose two versions ship the same base and the same processor (max_pixels 602,112 in both adapter packages), so it is a public upgrade that is legal exactly as released. This run repeats the pooled-gallery upgrade matrix for it under the released contract.",
   "deployed": {
     "source": "vidore/colqwen2-v0.1",
     "adapter_sha256": "1f26000fd1fbd64be94a32e99012afde7b375f8342bb54b7a7dd0c1dd0d57066",

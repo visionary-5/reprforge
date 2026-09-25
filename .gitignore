@@ -26,7 +26,7 @@ checkpoints/
 wandb/
 mlruns/
 notebooks/
-paper/
+/paper/
 *.tmp
 *.log
 *.tgz

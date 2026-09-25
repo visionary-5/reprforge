@@ -36,8 +36,10 @@ unresolved change in a required component rejects reuse and selects raw encoding
 | Vision encoder or merger | Requires equivalent upstream computation |
 
 Component identities and dependency declarations are supplied by the integration.
-The library checks those declarations; it does not automatically discover the
-complete forward graph. The real-model runner establishes a pinned contract
+The NumPy control library checks those declarations. The optional PyTorch
+`tracing.py` and `hooked.py` modules discover and replay the consumed visual
+interface for an executed path; they do not establish compatibility of all
+possible paths, operator semantics or non-tensor configuration. The real-model runner establishes a pinned contract
 before comparing independently executed raw and replay paths.
 
 ## Target reconstruction
