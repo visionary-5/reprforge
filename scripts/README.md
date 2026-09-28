@@ -40,4 +40,6 @@ model programs. Full config changes also reject replay.
 bank in identical page order. For an automatically constructed independent raw
 reference, ordered top-k checks and measured timings, run
 [`experiments/reconstruction`](../experiments/reconstruction/). For relevance
-metrics and query evaluation, use [`experiments/quality`](../experiments/quality/).
+metrics and query evaluation on the final HR split, use
+[`experiments/final_pass`](../experiments/final_pass/). Earlier collection-specific
+quality protocols remain in [`experiments/quality`](../experiments/quality/).

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Run from an artifact directory containing code/ and config.json. Set PYTHON to the appropriate environment.
-# The optional Qwen3 overlays remain user-provided; see docs/submission-coverage.md.
+# The optional Qwen3 overlays remain user-provided; see docs/reproduction.md.
 set -euo pipefail
 task=$1
 label=$2

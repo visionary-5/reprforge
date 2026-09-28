@@ -1,6 +1,6 @@
 cff-version: 1.2.0
-message: "If you use ReprForge, please cite this software; paper metadata will be added when finalized."
-title: "ReprForge: Semantic Recompilation Cuts for Evolving Visual Late-Interaction Indexes"
+message: "If you use ReprForge, please cite this software; paper metadata will be added when the manuscript is publicly available."
+title: "ReprForge: Efficient Index Rebuilding for Visual Document Retriever Upgrades"
 type: software
 version: 0.5.0
 date-released: 2026-09-04

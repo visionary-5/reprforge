@@ -7,7 +7,8 @@ archive. Generated results are not stored in this Git repository.
 
 `evidence/all_rows.json` preserves 74 family-audit records. Two Qwen3 transition
 summaries are supplied separately. Original verdict fields are historical
-runner outputs and are not rewritten during packaging.
+runner outputs. The paper calls the successful original `native` route
+**Direct**, including the recorded family-base processor fallback.
 
 Sixteen family rows have verdict `ACCEPT` and also record the note
 `native processor unusable (ValueError); base processor used`. On those rows,
@@ -42,5 +43,4 @@ with fsync. Its speedups are not substituted into the lifecycle measurements.
 CPU unit tests check implementation behavior on small synthetic inputs.
 Record aggregation verifies calculations over supplied historical measurements.
 Neither check re-executes the GPU experiments or independently verifies omitted
-full vector banks. The archive does not claim one-command reproduction of every
-appendix experiment; coverage is listed in [paper-map.md](paper-map.md).
+full vector banks. Coverage and additional inputs for the repository workflows are listed in [paper-map.md](paper-map.md).

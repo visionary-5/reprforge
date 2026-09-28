@@ -8,4 +8,5 @@ beginning with `inputs/` are resolved by
 `projections/` contains the retrieval projection extracted from each target's
 documented base checkpoint. These files are model inputs, not experiment
 outputs. Their upstream repository, revision or content hash, source shard and
-SHA-256 are recorded in `experiments/reconstruction/sources.json`.
+SHA-256 are recorded in `experiments/reconstruction/sources.json`. See
+[third-party notices](../THIRD_PARTY_NOTICES.md) for the bundled inputs' licenses.

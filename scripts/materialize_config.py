@@ -1,4 +1,4 @@
-"""Resolve anonymized input roots without modifying experimental settings."""
+"""Resolve configurable input roots without modifying experimental settings."""
 
 import argparse
 import json

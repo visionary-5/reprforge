@@ -57,6 +57,8 @@ target agreement. Structural metadata remains part of the recovery contract.
 
 | Component | Implementation |
 |---|---|
+| Executed-path interface discovery | [`tracing.py`](../reprforge/tracing.py) |
+| Capture, loaded dependencies and target replay | [`hooked.py`](../reprforge/hooked.py) |
 | State and encoder interface | [`adapter.py`](../reprforge/adapter.py) |
 | Component versions and changes | [`versions.py`](../reprforge/versions.py), [`dependencies.py`](../reprforge/dependencies.py) |
 | Replay eligibility and fallback routing | [`planning.py`](../reprforge/planning.py) |

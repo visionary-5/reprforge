@@ -2,7 +2,7 @@
 
 Runners for the expert-interface comparison, native/common processor quality,
 and generic-validation timing. Use the configurations and scope documented in
-[submission coverage](../../docs/submission-coverage.md).
+[reproduction guide](../../docs/reproduction.md).
 
 ## Manual versus automatic interface
 

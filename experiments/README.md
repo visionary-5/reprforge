@@ -1,20 +1,30 @@
-# Reproduce the experiments
+# Experiments
 
-Install the [GPU environment](../docs/reproduction.md), prepare the public inputs,
-and run the relevant evaluation below. New runs produce their own outputs. Selected historical summaries are supplied
-in the accompanying supplementary archive, outside Git; see the [paper-to-code map](../docs/paper-map.md) for coverage.
+Start with the [reproduction guide](../docs/reproduction.md) for environments and
+public inputs. Each workflow writes new outputs outside the checkout. The
+[paper map](../docs/paper-map.md) identifies the scope of each experiment.
+
+## Main paper workflows
 
 | Directory | Evaluation |
 |---|---|
-| [adapter_census](adapter_census/) | Changed components in public retriever adapters |
-| [quality](quality/) | Retrieval quality and target agreement after upgrades |
+| [paper](paper/) | Released-pair validity, interface discovery and lifecycle timing |
 | [reconstruction](reconstruction/) | Independent exactness checks and rebuild timing |
-| [storage](storage/) | BF16, INT8 and PCA storage–fidelity trade-offs |
+| [final_pass](final_pass/) | Manual/automatic interfaces, native/common HR quality and validation cost |
 | [ablation](ablation/) | State design, target reconstruction and invalidation |
-| [paper](paper/) | Released-pair audit, architecture discovery and lifecycle |
-| [final_pass](final_pass/) | Complete manual interfaces, HR quality and validation timing |
+| [adapter_census](adapter_census/) | Changed components in public retriever adapters |
 
-`support/` contains shared model and scoring utilities. Keep numerical settings,
-page selection, calibration splits, warmup and timing scope from the selected
-protocol when comparing runs. Model weights, datasets and generated results
-should be written outside the repository.
+## Auxiliary workflows
+
+| Directory | Evaluation |
+|---|---|
+| [quality](quality/) | Earlier quality and target-agreement protocols |
+| [storage](storage/) | Collection-specific BF16, INT8 and PCA storage–fidelity experiments |
+| [reconstruction/official_upgrade](reconstruction/official_upgrade/) | Earlier ColQwen2 release-pair reconstruction |
+| [reconstruction/large_scale](reconstruction/large_scale/) | Streaming reconstruction and serving-index utilities |
+
+These auxiliary workflows have their own protocols; they do not replace the
+final HR quality experiment or reproduce every appendix figure. `support/`
+contains shared input, scoring and codec utilities. Preserve page selection,
+processor budgets, calibration splits, warmup and timing scope when comparing
+runs. Historical measurements are distributed with the paper supplement.
